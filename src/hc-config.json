@@ -1,0 +1,69 @@
+{
+    "general": {
+        "packageName": "HCCore",
+        "sequence": 0,
+        "namespace": "InteractiveSolutions\\HoneycombCore"
+    },
+    "formData": {
+        "user": "HoneyComb\\Core\\Forms\\HCUserForm",
+        "user-login": "HoneyComb\\Core\\Forms\\HCUserLoginForm",
+        "user-register": "HoneyComb\\Core\\Forms\\HCUserRegisterForm",
+        "password-remind": "HoneyComb\\Core\\Forms\\HCPasswordRemindForm",
+        "password-reset": "HoneyComb\\Core\\Forms\\HCPasswordResetForm"
+    },
+    "adminMenu": [
+        {
+            "route": "admin.user.index",
+            "parent": "admin.index",
+            "translation": "HCCore::user.page_title",
+            "icon": "fa-user",
+            "aclPermission": "interactivesolutions_honeycomb_user_list"
+        },
+        {
+            "route": "admin.acl.role.index",
+            "parent": "admin.user.index",
+            "translation": "HCCore::acl_roles.page_title",
+            "icon": "fa-user-md",
+            "aclPermission": "interactivesolutions_honeycomb_acl_role_list"
+        }
+    ],
+    "seeder": "HoneyComb\\Core\\Database\\Seeds\\HCCoreSeeder",
+    "routes": [
+        "Routes/routes.form-manager.php",
+
+        "Routes/Admin/routes.admin.php",
+        "Routes/Admin/routes.logs.php",
+        "Routes/Admin/routes.roles.php",
+        "Routes/Admin/routes.users.php",
+
+        "Routes/Frontend/routes.welcome.php",
+        "Routes/Frontend/routes.auth.php",
+        "Routes/Frontend/routes.password.php"
+    ],
+    "acl": {
+        "permissions": [
+            {
+                "name": "admin.acl.role",
+                "controller": "HoneyComb\\Core\\Http\\Controllers\\Admin\\Acl\\HCRoleController",
+                "actions": [
+                    "interactivesolutions_honeycomb_acl_role_list",
+                    "interactivesolutions_honeycomb_acl_role_create",
+                    "interactivesolutions_honeycomb_acl_role_update",
+                    "interactivesolutions_honeycomb_acl_role_delete",
+                    "interactivesolutions_honeycomb_acl_role_force_delete"
+                ]
+            },
+            {
+                "name": "admin.user",
+                "controller": "HoneyComb\\Core\\Http\\Controllers\\Admin\\HCUserController",
+                "actions": [
+                    "interactivesolutions_honeycomb_user_list",
+                    "interactivesolutions_honeycomb_user_create",
+                    "interactivesolutions_honeycomb_user_update",
+                    "interactivesolutions_honeycomb_user_delete",
+                    "interactivesolutions_honeycomb_user_force_delete"
+                ]
+            }
+        ]
+    }
+}
