@@ -34,14 +34,14 @@ trait HCAdminListHeaders
     /**
      * Admin header text type
      *
-     * @param string $translation
+     * @param string $label
      * @return array
      */
-    protected function headerText(string $translation)
+    protected function headerText(string $label)
     {
         return [
             'type' => 'text',
-            'label' => $translation,
+            'label' => $label,
         ];
     }
 }
