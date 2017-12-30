@@ -10,11 +10,11 @@
 
     @yield('css')
 </head>
-<body class="skin-blue">
+<body class="{{config('hc.admin_skin')}}">
 <div class="wrapper">
 
     @if(app()->environment() == "local")
-        <div style="position: absolute">
+        <div id="dev-env">
             {!! trans('HCCore::core.dev_env') !!}
         </div>
     @endif
@@ -24,13 +24,6 @@
     @include('HCCore::admin.partials.sidebar')
 
     <div class="content-wrapper">
-        <section class="content-header">
-            <h1>
-                @yield('content-header')
-                <small>@yield('content-description')</small>
-            </h1>
-        </section>
-
         <section class="content">
 
             @yield('content')
