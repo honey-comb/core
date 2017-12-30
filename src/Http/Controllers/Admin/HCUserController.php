@@ -77,13 +77,11 @@ class HCUserController extends HCBaseController
         //TODO renew configuration
         $config = [
             'title' => trans('HCCore::user.page_title'),
-            'listURL' => route('admin.api.user'),
-            'newFormUrl' => route('admin.api.form-manager', ['user-new']),
-            'editFormUrl' => route('admin.api.form-manager', ['user-edit']),
+            'url' => route('admin.api.user'),
+            'form' => route('admin.api.form-manager', ['user']),
             'headers' => $this->getTableColumns(),
+            'actions' => $this->getActions('interactivesolutions_honeycomb_user'),
         ];
-
-        $config['actions'] = $this->getActions('interactivesolutions_honeycomb_user');
 
         return view('HCCore::admin.service.index', ['config' => $config]);
     }
