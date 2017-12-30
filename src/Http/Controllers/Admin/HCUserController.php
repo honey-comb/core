@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Admin;
 
+use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
@@ -39,6 +40,7 @@ use HoneyComb\Core\Services\HCUserService;
 
 class HCUserController extends HCBaseController
 {
+    use HCAdminListHeaders;
     /**
      * @var Connection
      */
@@ -74,7 +76,6 @@ class HCUserController extends HCBaseController
      */
     public function index(): View
     {
-        //TODO renew configuration
         $config = [
             'title' => trans('HCCore::user.page_title'),
             'url' => route('admin.api.user'),
@@ -94,22 +95,10 @@ class HCUserController extends HCBaseController
     public function getTableColumns(): array
     {
         $columns = [
-            'email' => [
-                'type' => 'text',
-                'label' => trans('HCCore::user.email'),
-            ],
-            'last_login' => [
-                'type' => 'text',
-                'label' => trans('HCCore::user.last_login'),
-            ],
-            'last_activity' => [
-                'type' => 'text',
-                'label' => trans('HCCore::user.last_activity'),
-            ],
-            'activated_at' => [
-                'type' => 'text',
-                'label' => trans('HCCore::user.activation.activated_at'),
-            ],
+            'email' => $this->headerText(trans('HCCore::user.email')),
+            'last_login' => $this->headerText(trans('HCCore::user.last_login')),
+            'last_activity' => $this->headerText(trans('HCCore::user.last_activity')),
+            'activated_at' => $this->headerText(trans('HCCore::user.activated_at')),
         ];
 
         return $columns;
