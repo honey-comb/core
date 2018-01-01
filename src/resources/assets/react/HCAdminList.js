@@ -14,21 +14,28 @@ require('../../js/bootstrap');
 
 require('./shared/HCHelpers');
 
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
-import HCBaseComponent from './shared/HCBaseComponent';
 import Actions from './hc-admin-list/Actions';
 import Settings from './hc-admin-list/Settings';
 
 import fontAwesome from '@fortawesome/fontawesome'
 import FAProRegularIcons from '@fortawesome/fontawesome-pro-regular'
 
-class HCAdminListView extends HCBaseComponent {
+class HCAdminListView extends Component {
 
-    constructor ()
+    constructor (props)
     {
-        super();
+        super(props);
+
+        this.state = {
+            onlyTrashed: false,
+            _title: this.props.config.title
+        };
+
+        this.handleTrashedEvent = this.handleTrashedEvent.bind(this);
+
         fontAwesome.library.add(FAProRegularIcons);
     }
 
@@ -36,17 +43,32 @@ class HCAdminListView extends HCBaseComponent {
 
         return <div className="box">
             <div className="box-header">
-                <h3 className="box-title">{this.props.config.title}</h3>
-                <Settings onPress={this.toggleView}/>
+                <h3 className="box-title">{this.state._title}</h3>
+                <Settings onChange={this.handleTrashedEvent}/>
             </div>
             <div className="box-body">
                 <Actions
                     url={this.props.config.url}
                     forms={this.props.config.forms}
                     actions={this.props.config.actions}
+                    onlyTrashed={this.state.onlyTrashed}
                 />
             </div>
         </div>
+    }
+
+    handleTrashedEvent (value)
+    {
+        let options = {
+            onlyTrashed : value,
+        };
+
+        if (value)
+            options._title = this.props.config.title + ' (Trashed)';
+        else
+            options._title = this.props.config.title;
+
+        this.setState(options);
     }
 }
 

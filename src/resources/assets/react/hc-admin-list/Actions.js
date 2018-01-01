@@ -3,16 +3,23 @@ import FAButton from '../hc-form/buttons/FAButton';
 
 export default class Actions extends Component {
 
+    constructor ()
+    {
+        super ();
+
+        this.getNewButton = this.getNewButton.bind(this);
+    }
+
     render() {
         return <div>
             <div id="actions">
                 {this.getNewButton()}
                 {this.getDeleteButton()}
+                {this.getRestoreButton()}
+                {this.getForceDeleteButton()}
                 {this.getSearchField()}
                 {this.getMergeButton()}
                 {this.getCloneButton()}
-                {this.getRestoreButton()}
-                {this.getForceDeleteButton()}
             </div>
         </div>;
     }
@@ -47,7 +54,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('new') === -1)
             return '';
 
-        return <FAButton type={HCHelpers.buttonClass("success")} icon={HCHelpers.faIcon("plus")}/>;
+        return <FAButton display={this.props.onlyTrashed ? 'hidden' : ''} type={HCHelpers.buttonClass("success")} icon={HCHelpers.faIcon("plus")}/>;
     }
 
     /**
@@ -59,7 +66,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('delete') === -1)
             return '';
 
-        return <FAButton type={HCHelpers.buttonClass("coral")} icon={HCHelpers.faIcon("trash")}/>;
+        return <FAButton display={this.props.onlyTrashed ? 'hidden' : ''} type={HCHelpers.buttonClass("coral")} icon={HCHelpers.faIcon("trash")}/>;
     }
 
     /**
@@ -71,7 +78,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('merge') === -1)
             return '';
 
-        return <FAButton type={HCHelpers.buttonClass("clean")} icon={HCHelpers.faIcon("code-merge")}/>;
+        return <FAButton display={this.props.onlyTrashed ? 'hidden' : ''} type={HCHelpers.buttonClass("clean")} icon={HCHelpers.faIcon("code-merge")}/>;
     }
 
     /**
@@ -83,7 +90,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('clone') === -1)
             return '';
 
-        return <FAButton type={HCHelpers.buttonClass("info")} icon={HCHelpers.faIcon("clone")}/>;
+        return <FAButton display={this.props.onlyTrashed ? 'hidden' : ''} type={HCHelpers.buttonClass("info")} icon={HCHelpers.faIcon("clone")}/>;
     }
 
     /**
@@ -95,7 +102,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('restore') === -1)
             return '';
 
-        return <FAButton type={HCHelpers.buttonClass("success")} icon={HCHelpers.faIcon("arrow-circle-up")}/>;
+        return <FAButton display={this.props.onlyTrashed ? '' : 'hidden'} type={HCHelpers.buttonClass("success")} icon={HCHelpers.faIcon("arrow-circle-up")}/>;
     }
 
     /**
@@ -107,6 +114,6 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('forceDelete') === -1)
             return '';
 
-        return <FAButton type={HCHelpers.buttonClass("danger")} icon={HCHelpers.faIcon("minus-octagon")}/>;
+        return <FAButton display={this.props.onlyTrashed ? '' : 'hidden'} type={HCHelpers.buttonClass("danger")} icon={HCHelpers.faIcon("minus-octagon")}/>;
     }
 }

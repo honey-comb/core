@@ -8,7 +8,7 @@ export default class OnOffButton extends Component {
 
         this.state = {
             type: this.props.on ? this.props.typeOn : this.props.typeOff,
-            current: false
+            on: false
         };
 
         this.toggleState = this.toggleState.bind(this);
@@ -23,13 +23,14 @@ export default class OnOffButton extends Component {
 
     toggleState() {
 
-        if (this.state.current) {
+        if (this.state.on) {
             this.setState({type: this.props.typeOff});
         }
         else {
             this.setState({type: this.props.typeOn});
         }
 
-        this.state.current = !this.state.current;
+        this.state.on = !this.state.on;
+        this.props.onChange(this.state.on);
     }
 }
