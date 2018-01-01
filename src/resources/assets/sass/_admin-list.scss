@@ -1,3 +1,6 @@
+body {
+  min-width: 320px;
+}
 #dev-env {
   position: absolute;
   z-index: 1050;
@@ -20,6 +23,10 @@
       border-radius: 0;
       display: flex;
       align-items: center;
+
+      h3 {
+        white-space: nowrap;
+      }
     }
 
     #settings
@@ -36,6 +43,10 @@
         div, button {
           margin: 0 3px 0 3px;
         }
+      }
+
+      #list {
+        margin-top:20px;
       }
     }
   }

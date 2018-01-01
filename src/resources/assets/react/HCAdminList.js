@@ -3,6 +3,7 @@
  * includes React and other helpers. It's a great starting point while
  * building robust, powerful web applications using React + Laravel.
  */
+import List from "./hc-admin-list/List";
 
 require('../../js/bootstrap');
 
@@ -52,6 +53,11 @@ class HCAdminListView extends Component {
                     forms={this.props.config.forms}
                     actions={this.props.config.actions}
                     onlyTrashed={this.state.onlyTrashed}
+                />
+                <List
+                    url={this.props.config.url}
+                    headers={this.props.config.headers}
+                    perPage={this.props.config.perPage}
                 />
             </div>
         </div>
