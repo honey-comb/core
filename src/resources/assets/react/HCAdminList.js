@@ -32,10 +32,12 @@ class HCAdminListView extends Component {
 
         this.state = {
             onlyTrashed: false,
-            _title: this.props.config.title
+            _title: this.props.config.title,
+            hideCheckBox: this.getCheckBoxConfiguration(false)
         };
 
         this.handleTrashedEvent = this.handleTrashedEvent.bind(this);
+        this.getCheckBoxConfiguration = this.getCheckBoxConfiguration.bind(this);
 
         fontAwesome.library.add(FAProRegularIcons);
     }
@@ -45,7 +47,7 @@ class HCAdminListView extends Component {
         return <div className="box">
             <div className="box-header">
                 <h3 className="box-title">{this.state._title}</h3>
-                <Settings onChange={this.handleTrashedEvent}/>
+                <Settings onChange={this.handleTrashedEvent} trashHidden={this.getCheckBoxConfiguration(true)}/>
             </div>
             <div className="box-body">
                 <Actions
@@ -58,6 +60,7 @@ class HCAdminListView extends Component {
                     url={this.props.config.url}
                     headers={this.props.config.headers}
                     perPage={this.props.config.perPage}
+                    hideCheckBox={this.state.hideCheckBox}
                 />
             </div>
         </div>
@@ -70,11 +73,25 @@ class HCAdminListView extends Component {
         };
 
         if (value)
+        {
             options._title = this.props.config.title + ' (Trashed)';
+            options.hideCheckBox = this.getCheckBoxConfiguration(true);
+        }
         else
+        {
             options._title = this.props.config.title;
+            options.hideCheckBox = this.getCheckBoxConfiguration(false);
+        }
 
         this.setState(options);
+    }
+
+    getCheckBoxConfiguration (trashed)
+    {
+        if (trashed)
+            return (this.props.config.actions.indexOf('forceDelete') === -1 && this.props.config.actions.indexOf('restore') === -1);
+        else
+            return (this.props.config.actions.indexOf('delete') === -1 && this.props.config.actions.indexOf('merge') === -1 && this.props.config.actions.indexOf('clone') === -1);
     }
 }
 
