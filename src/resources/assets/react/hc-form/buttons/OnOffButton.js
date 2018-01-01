@@ -17,7 +17,7 @@ export default class OnOffButton extends Component {
 
     render() {
 
-        return <FAButton type={this.state.type} icon={this.props.icon} label={this.props.label}
+        return <FAButton display={this.props.display} type={this.state.type} icon={this.props.icon} label={this.props.label}
                                onPress={this.toggleState}/>;
     }
 
