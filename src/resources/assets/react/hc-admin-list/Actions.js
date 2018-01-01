@@ -11,8 +11,7 @@ export default class Actions extends Component {
     }
 
     render() {
-        return <div>
-            <div id="actions">
+        return <div id="actions">
                 {this.getNewButton()}
                 {this.getDeleteButton()}
                 {this.getRestoreButton()}
@@ -20,7 +19,6 @@ export default class Actions extends Component {
                 {this.getSearchField()}
                 {this.getMergeButton()}
                 {this.getCloneButton()}
-            </div>
         </div>;
     }
 
