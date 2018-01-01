@@ -52,7 +52,17 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('new') === -1)
             return '';
 
-        return <FAButton display={this.props.onlyTrashed ? 'hidden' : ''} type={HCHelpers.buttonClass("success")} icon={HCHelpers.faIcon("plus")}/>;
+        return <FAButton display={this.props.onlyTrashed ? 'hidden' : ''} type={HCHelpers.buttonClass("success")} icon={HCHelpers.faIcon("plus")} onPress={newButtonAction}/>;
+    }
+
+    newButtonAction() {
+        HCService.PopUp.Pop({
+            label: 'New Record',
+            type: 'form',
+            config: {
+                structureURL: this.props.form + "-new"
+            }
+        });
     }
 
     /**

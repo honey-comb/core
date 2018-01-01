@@ -50,7 +50,7 @@ class HCAdminListView extends Component {
             <div className="box-body">
                 <Actions
                     url={this.props.config.url}
-                    forms={this.props.config.forms}
+                    form={this.props.config.form}
                     actions={this.props.config.actions}
                     onlyTrashed={this.state.onlyTrashed}
                 />
