@@ -7,6 +7,7 @@ export default class Actions extends Component {
         super();
 
         this.getNewButton = this.getNewButton.bind(this);
+        this.newButtonAction = this.newButtonAction.bind(this);
     }
 
     render() {
@@ -58,17 +59,11 @@ export default class Actions extends Component {
         return <FAButton display={this.props.onlyTrashed}
                          type={HCHelpers.buttonClass("success")}
                          icon={HCHelpers.faIcon("plus")}
-                         onPress={newButtonAction}/>;
+                         onPress={this.newButtonAction}/>;
     }
 
     newButtonAction() {
-        HCService.PopUp.Pop({
-            label: 'New Record',
-            type: 'form',
-            config: {
-                structureURL: this.props.form + "-new"
-            }
-        });
+        console.log(this.props.form + "-new");
     }
 
     /**
