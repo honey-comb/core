@@ -55,7 +55,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('new') === -1)
             return '';
 
-        return <FAButton display={this.props.onlyTrashed ? 'hidden' : ''}
+        return <FAButton display={this.props.onlyTrashed}
                          type={HCHelpers.buttonClass("success")}
                          icon={HCHelpers.faIcon("plus")}
                          onPress={newButtonAction}/>;
@@ -80,7 +80,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('delete') === -1)
             return '';
 
-        return <FAButton display={this.props.onlyTrashed ? 'hidden' : ''}
+        return <FAButton display={this.props.onlyTrashed}
                          type={HCHelpers.buttonClass("coral")}
                          icon={HCHelpers.faIcon("trash")}/>;
     }
@@ -94,7 +94,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('merge') === -1)
             return '';
 
-        return <FAButton display={this.props.onlyTrashed ? 'hidden' : ''}
+        return <FAButton display={this.props.onlyTrashed}
                          type={HCHelpers.buttonClass("clean")}
                          icon={HCHelpers.faIcon("code-merge")}/>;
     }
@@ -108,7 +108,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('clone') === -1)
             return '';
 
-        return <FAButton display={this.props.onlyTrashed ? 'hidden' : ''}
+        return <FAButton display={this.props.onlyTrashed}
                          type={HCHelpers.buttonClass("info")}
                          icon={HCHelpers.faIcon("clone")}/>;
     }
@@ -122,7 +122,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('restore') === -1)
             return '';
 
-        return <FAButton display={this.props.onlyTrashed ? '' : 'hidden'}
+        return <FAButton display={!this.props.onlyTrashed}
                          type={HCHelpers.buttonClass("success")}
                          icon={HCHelpers.faIcon("arrow-circle-up")}/>;
     }
@@ -136,7 +136,7 @@ export default class Actions extends Component {
         if (this.props.actions.indexOf('forceDelete') === -1)
             return '';
 
-        return <FAButton display={this.props.onlyTrashed ? '' : 'hidden'}
+        return <FAButton display={!this.props.onlyTrashed}
                          type={HCHelpers.buttonClass("danger")}
                          icon={HCHelpers.faIcon("minus-octagon")}/>;
     }
