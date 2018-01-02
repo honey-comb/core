@@ -50,7 +50,7 @@ trait HCQueryBuilderTrait
             });
 
         // check if soft deleted records must be shown
-        $builder = $this->checkForDeleted($builder, $request);
+        $builder = $this->checkForTrashed($builder, $request);
 
         // search through items
         $builder = $this->search($builder, $request);
@@ -168,15 +168,15 @@ trait HCQueryBuilderTrait
     }
 
     /**
-     * Check for deleted records option
+     * Check for trashed records option
      *
      * @param Builder $query
      * @param Request $request
      * @return mixed
      */
-    protected function checkForDeleted(Builder $query, Request $request): Builder
+    protected function checkForTrashed(Builder $query, Request $request): Builder
     {
-        if ($request->filled('deleted') && $request->input('deleted') === '1') {
+        if ($request->filled('trashed') && $request->input('trashed') === '1') {
             $query->onlyTrashed();
         }
 
