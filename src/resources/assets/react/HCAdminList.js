@@ -83,7 +83,7 @@ class HCAdminListView extends Component {
             },
         };
 
-        let params = {params:{page:3}};
+        let params = {};
 
         if (value) {
             options._title = this.props.config.title + ' (Trashed)';
