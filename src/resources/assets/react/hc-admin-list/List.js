@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+import Row from "./list/Row";
 
 const uuid = require('uuid/v4');
 
@@ -8,33 +8,51 @@ export default class List extends Component {
         super(props);
 
         this.state = {
-            records: {
-                data: []
-            },
             listId: uuid(),
-            headers: {}
+            globalSelection: false,
+            allSelected: false,
+            headers: {},
+            selected: []
         };
 
-        this.getDataRowField = this.getDataRowField.bind(this);
+        this.invertAll = this.invertAll.bind(this);
+        this.getRows = this.getRows.bind(this);
+        this.updateMainCheckBox = this.updateMainCheckBox.bind(this);
     }
 
-    componentDidMount() {
-        axios.get(this.props.url)
-            .then(res => {
+    invertAll() {
 
-                const data = res.data;
-                this.setState({
-                    records: data
-                });
-            });
+        let selectAll = !this.state.allSelected;
+        let options = {
+            globalSelection: selectAll,
+            allSelected: selectAll,
+        };
+
+        if (!selectAll)
+            options.selected = [];
+        else
+            this.props.records.data.map((item, i) => (
+                this.updateMainCheckBox(item.id, true, true)
+            ));
+
+        this.setState(options)
+    }
+
+    singleBoxClick(record, value) {
+        this.state.selections[record.id] = value;
+        this.setState({selections: this.state.selections});
     }
 
     render() {
+
         return <div id="list">
             <table id={this.state.listId} className="table table-hover table-bordered dataTable" role="grid">
                 <thead>
                 <tr role="row">
-                    <th hidden={this.props.hideCheckBox} className="main-checkbox"><input type="checkbox"/></th>
+                    <th hidden={this.props.hideCheckBox} className="main-checkbox"><input type="checkbox"
+                                                                                          checked={this.state.allSelected}
+                                                                                          onChange={this.invertAll}/>
+                    </th>
                     {Object.keys(this.props.headers).map((item, i) => (
                             <th tabIndex="0"
                                 aria-controls={this.state.listId}
@@ -45,39 +63,41 @@ export default class List extends Component {
                 </tr>
                 </thead>
                 <tbody>
-
-                {this.state.records.data.map((item, i) => (
-                    this.getDataRow(item, i)
-                ))}
+                {this.getRows()}
                 </tbody>
                 <tfoot></tfoot>
             </table>
         </div>;
     }
 
-    getDataRow(record, key) {
+    getRows() {
 
-        return <tr id={record.id} key={key}>
-            <td hidden={this.props.hideCheckBox}><input type="checkbox"/></td>
-            {Object.keys(this.props.headers).map((item, i) => (
-                    this.getDataRowField(item, record[item], i)
-            ))}
-        </tr>
+        this.state.rows = [];
+
+        this.props.records.data.map((item, i) => (
+            this.state.rows.push(<Row key={i} record={item} headers={this.props.headers}
+                                      globalSelection={this.state.globalSelection} onChange={this.updateMainCheckBox}/>)
+        ));
+
+        return this.state.rows;
     }
 
-    getDataRowField(id, value, key)
-    {
-        if (id === 'id')
-            return <td key={key}
-                       hidden={true}>{value}</td>;
+    updateMainCheckBox(id, select, skipMainStateUpdate) {
 
-        switch (this.props.headers[id].type)
-        {
-            case 'text' :
-
-                break;
+        if (select) {
+            if (this.state.selected.indexOf(id) === -1)
+                this.state.selected.push(id);
+        }
+        else {
+            this.state.selected.splice(this.state.selected.indexOf(id), 1)
         }
 
-        return <td key={key}>{value}</td>;
+        if (!skipMainStateUpdate) {
+            if (this.state.selected.length === this.props.records.to - this.props.records.from + 1)
+                this.setState({allSelected: true, globalSelection: true});
+            else
+                if (this.state.allSelected)
+                    this.setState({allSelected: false});
+        }
     }
 }
