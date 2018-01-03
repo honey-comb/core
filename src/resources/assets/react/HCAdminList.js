@@ -23,23 +23,31 @@ import Settings from './hc-admin-list/Settings';
 
 import fontAwesome from '@fortawesome/fontawesome'
 import FAProRegularIcons from '@fortawesome/fontawesome-pro-regular'
+import axios from "axios/index";
 
 class HCAdminListView extends Component {
 
-    constructor (props)
-    {
+    constructor(props) {
         super(props);
 
         this.state = {
-            onlyTrashed: false,
             _title: this.props.config.title,
-            hideCheckBox: this.getCheckBoxConfiguration(false)
+            records: {
+                data: []
+            },
+            onlyTrashed: false,
+            hideCheckBox: this.getCheckBoxConfiguration(false),
         };
 
         this.handleTrashedEvent = this.handleTrashedEvent.bind(this);
         this.getCheckBoxConfiguration = this.getCheckBoxConfiguration.bind(this);
 
         fontAwesome.library.add(FAProRegularIcons);
+    }
+
+    componentDidMount ()
+    {
+        this.handleTrashedEvent(false);
     }
 
     render() {
@@ -57,37 +65,52 @@ class HCAdminListView extends Component {
                     onlyTrashed={this.state.onlyTrashed}
                 />
                 <List
-                    url={this.props.config.url}
                     headers={this.props.config.headers}
                     perPage={this.props.config.perPage}
                     hideCheckBox={this.state.hideCheckBox}
+                    records={this.state.records}
+                    onSelect={this.handleRowSelection}
                 />
             </div>
         </div>
     }
 
-    handleTrashedEvent (value)
-    {
+    handleTrashedEvent(value) {
         let options = {
-            onlyTrashed : value,
+            onlyTrashed: value,
+            records: {
+                data: []
+            },
         };
 
-        if (value)
-        {
+        let params = {params:{page:3}};
+
+        if (value) {
             options._title = this.props.config.title + ' (Trashed)';
             options.hideCheckBox = this.getCheckBoxConfiguration(true);
+
+            params = {params:{trashed:1}};
         }
-        else
-        {
+        else {
             options._title = this.props.config.title;
             options.hideCheckBox = this.getCheckBoxConfiguration(false);
         }
 
         this.setState(options);
+
+        axios.get(this.props.config.url, params)
+            .then(res => {
+
+                options.records = res.data;
+                this.setState(options);
+            });
     }
 
-    getCheckBoxConfiguration (trashed)
-    {
+    handleRowSelection(value, select) {
+        console.log(value, select);
+    }
+
+    getCheckBoxConfiguration(trashed) {
         if (trashed)
             return (this.props.config.actions.indexOf('forceDelete') === -1 && this.props.config.actions.indexOf('restore') === -1);
         else
