@@ -39,11 +39,11 @@ class HCAdminListView extends Component {
             selected: [],
             hideCheckBox: this.getCheckBoxConfiguration(false),
             actionsDisabled: {
-                delete:true,
-                merge:true,
-                clone:true,
-                forceDelete:true,
-                restore:true,
+                delete: true,
+                merge: true,
+                clone: true,
+                forceDelete: true,
+                restore: true,
             },
         };
 
@@ -54,8 +54,7 @@ class HCAdminListView extends Component {
         fontAwesome.library.add(FAProRegularIcons);
     }
 
-    componentDidMount ()
-    {
+    componentDidMount() {
         this.handleTrashedEvent(false);
     }
 
@@ -87,20 +86,17 @@ class HCAdminListView extends Component {
         </div>
     }
 
-    selectionUpdated(selected)
-    {
+    selectionUpdated(selected) {
         let actionsDisabled = {
-            delete:true,
-            merge:true,
-            clone:true,
-            forceDelete:true,
-            restore:true,
+            delete: true,
+            merge: true,
+            clone: true,
+            forceDelete: true,
+            restore: true,
         };
 
-        if (selected.length > 0)
-        {
+        if (selected.length > 0) {
             actionsDisabled.delete = false;
-            actionsDisabled.clone = false;
             actionsDisabled.forceDelete = false;
             actionsDisabled.restore = false;
 
@@ -111,7 +107,7 @@ class HCAdminListView extends Component {
 
         this.setState(
             {
-                selected:selected,
+                selected: selected,
                 actionsDisabled: actionsDisabled
             })
     }
@@ -130,7 +126,7 @@ class HCAdminListView extends Component {
             options.title = this.props.config.title + ' (Trashed)';
             options.hideCheckBox = this.getCheckBoxConfiguration(true);
 
-            params = {params:{trashed:1}};
+            params = {params: {trashed: 1}};
         }
         else {
             options.title = this.props.config.title;
