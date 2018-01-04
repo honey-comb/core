@@ -48,6 +48,12 @@ body {
       #list {
         margin-top:20px;
 
+        tr.selected
+        {
+          background-color: lightslategray;
+          color: white;
+        }
+
         .main-checkbox
         {
           width: 30px;
