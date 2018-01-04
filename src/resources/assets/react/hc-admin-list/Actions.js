@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import FAButton from '../hc-form/buttons/FAButton';
+import axios from "axios/index";
 
 export default class Actions extends Component {
 
@@ -7,7 +8,10 @@ export default class Actions extends Component {
         super();
 
         this.getNewButton = this.getNewButton.bind(this);
-        this.newButtonAction = this.newButtonAction.bind(this);
+        this.newAction = this.newAction.bind(this);
+        this.deleteAction = this.deleteAction.bind(this);
+        this.forceDeleteAction = this.forceDeleteAction.bind(this);
+        this.restoreAction = this.restoreAction.bind(this);
     }
 
     render() {
@@ -59,11 +63,7 @@ export default class Actions extends Component {
         return <FAButton display={this.props.onlyTrashed}
                          type={HCHelpers.buttonClass("success")}
                          icon={HCHelpers.faIcon("plus")}
-                         onPress={this.newButtonAction}/>;
-    }
-
-    newButtonAction() {
-        console.log(this.props.form + "-new");
+                         onPress={this.newAction}/>;
     }
 
     /**
@@ -80,7 +80,8 @@ export default class Actions extends Component {
                          type={HCHelpers.buttonClass("danger")}
                          icon={HCHelpers.faIcon("trash")}
                          showCounter={true}
-                         count={this.props.selected.length}/>;
+                         count={this.props.selected.length}
+                         onPress={this.deleteAction}/>;
     }
 
     /**
@@ -113,6 +114,7 @@ export default class Actions extends Component {
                          disabled={this.props.actionsDisabled.clone}
                          type={HCHelpers.buttonClass("info")}
                          icon={HCHelpers.faIcon("clone")}
+                         showCounter={true}
                          count={this.props.selected.length}/>;
     }
 
@@ -130,7 +132,8 @@ export default class Actions extends Component {
                          type={HCHelpers.buttonClass("success")}
                          icon={HCHelpers.faIcon("arrow-circle-up")}
                          showCounter={true}
-                         count={this.props.selected.length}/>;
+                         count={this.props.selected.length}
+                         onPress={this.restoreAction}/>;
     }
 
     /**
@@ -147,6 +150,44 @@ export default class Actions extends Component {
                          type={HCHelpers.buttonClass("danger")}
                          icon={HCHelpers.faIcon("minus-octagon")}
                          showCounter={true}
-                         count={this.props.selected.length}/>;
+                         count={this.props.selected.length}
+                         onPress={this.forceDeleteAction}/>;
+    }
+
+    newAction() {
+        console.log(this.props.form + "-new");
+    }
+
+    deleteAction() {
+
+        let params = {data: {list: this.props.selected}};
+
+        axios.delete(this.props.url, params)
+            .then(res => {
+
+                this.props.reload();
+            });
+    }
+
+    forceDeleteAction() {
+
+        let params = {data: {list: this.props.selected}};
+
+        axios.delete(this.props.url + '/force', params)
+            .then(res => {
+
+                this.props.reload();
+            });
+    }
+
+    restoreAction ()
+    {
+        let params = {list: this.props.selected};
+
+        axios.post(this.props.url+ '/restore', params)
+            .then(res => {
+
+                this.props.reload();
+            });
     }
 }

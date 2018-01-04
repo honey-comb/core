@@ -50,6 +50,8 @@ class HCAdminListView extends Component {
         this.handleTrashedEvent = this.handleTrashedEvent.bind(this);
         this.getCheckBoxConfiguration = this.getCheckBoxConfiguration.bind(this);
         this.selectionUpdated = this.selectionUpdated.bind(this);
+        this.loadList = this.loadList.bind(this);
+        this.reload = this.reload.bind(this);
 
         fontAwesome.library.add(FAProRegularIcons);
     }
@@ -73,6 +75,7 @@ class HCAdminListView extends Component {
                     onlyTrashed={this.state.onlyTrashed}
                     actionsDisabled={this.state.actionsDisabled}
                     selected={this.state.selected}
+                    reload={this.reload}
                 />
                 <List
                     headers={this.props.config.headers}
@@ -115,33 +118,51 @@ class HCAdminListView extends Component {
     }
 
     handleTrashedEvent(value) {
-        let options = {
-            onlyTrashed: value,
-            records: {
-                data: []
-            },
+        this.state.onlyTrashed = value;
+        this.state.records = {
+            data: []
         };
 
-        let params = {};
-
         if (value) {
-            options.title = this.props.config.title + ' (Trashed)';
-            options.hideCheckBox = this.getCheckBoxConfiguration(true);
+            this.state.title = this.props.config.title + ' (Trashed)';
+            this.state.hideCheckBox = this.getCheckBoxConfiguration(true);
 
-            params = {params: {trashed: 1}};
+            this.state.params = {params: {trashed: 1}};
         }
         else {
-            options.title = this.props.config.title;
-            options.hideCheckBox = this.getCheckBoxConfiguration(false);
+            this.state.title = this.props.config.title;
+            this.state.hideCheckBox = this.getCheckBoxConfiguration(false);
+            this.state.params = {};
         }
 
-        this.setState(options);
+        this.setState(this.state);
 
-        axios.get(this.props.config.url, params)
+        this.loadList();
+    }
+
+    loadList ()
+    {
+        this.setState({selected:[]});
+
+        axios.get(this.props.config.url, this.state.params)
             .then(res => {
 
-                options.records = res.data;
-                this.setState(options);
+                this.setState({
+                    records:res.data,
+                });
+            });
+    }
+
+    reload ()
+    {
+        this.setState({selected:[]});
+
+        axios.get(this.props.config.url, this.state.params)
+            .then(res => {
+
+                this.setState({
+                    records:res.data,
+                });
             });
     }
 
@@ -157,6 +178,3 @@ class HCAdminListView extends Component {
 window.RenderAdminList = function (data) {
     ReactDOM.render(<HCAdminListView config={data}/>, document.getElementById('admin-list'))
 };
-
-
-

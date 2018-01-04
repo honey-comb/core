@@ -42,11 +42,21 @@ export default class List extends Component {
 
         //checking if trashed changes
         if (this.props.onlyTrashed !== nextProps.onlyTrashed)
+        {
+            nextState.allSelected = false;
+            nextState.globalSelection = false;
+            nextState.selected = [];
             return true;
+        }
 
         //checking if records has changed
         if (this.props.records.data.toString() !== nextProps.records.data.toString())
-                return true;
+        {
+            nextState.allSelected = false;
+            nextState.globalSelection = false;
+            nextState.selected = [];
+            return true;
+        }
 
         this.state.internalUpdate = false;
 
