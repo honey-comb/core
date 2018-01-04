@@ -76,6 +76,7 @@ export default class Actions extends Component {
             return '';
 
         return <FAButton display={this.props.onlyTrashed}
+                         disabled={this.props.actionsDisabled.delete}
                          type={HCHelpers.buttonClass("coral")}
                          icon={HCHelpers.faIcon("trash")}/>;
     }
@@ -90,6 +91,7 @@ export default class Actions extends Component {
             return '';
 
         return <FAButton display={this.props.onlyTrashed}
+                         disabled={this.props.actionsDisabled.merge}
                          type={HCHelpers.buttonClass("clean")}
                          icon={HCHelpers.faIcon("code-merge")}/>;
     }
@@ -104,6 +106,7 @@ export default class Actions extends Component {
             return '';
 
         return <FAButton display={this.props.onlyTrashed}
+                         disabled={this.props.actionsDisabled.clone}
                          type={HCHelpers.buttonClass("info")}
                          icon={HCHelpers.faIcon("clone")}/>;
     }
@@ -118,6 +121,7 @@ export default class Actions extends Component {
             return '';
 
         return <FAButton display={!this.props.onlyTrashed}
+                         disabled={this.props.actionsDisabled.restore}
                          type={HCHelpers.buttonClass("success")}
                          icon={HCHelpers.faIcon("arrow-circle-up")}/>;
     }
@@ -132,6 +136,7 @@ export default class Actions extends Component {
             return '';
 
         return <FAButton display={!this.props.onlyTrashed}
+                         disabled={this.props.actionsDisabled.forceDelete}
                          type={HCHelpers.buttonClass("danger")}
                          icon={HCHelpers.faIcon("minus-octagon")}/>;
     }

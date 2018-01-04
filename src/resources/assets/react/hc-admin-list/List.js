@@ -11,6 +11,7 @@ export default class List extends Component {
             listId: uuid(),
             globalSelection: false,
             allSelected: false,
+            onlyTrashed: false,
             headers: {},
             selected: []
         };
@@ -18,6 +19,21 @@ export default class List extends Component {
         this.invertAll = this.invertAll.bind(this);
         this.getRows = this.getRows.bind(this);
         this.updateMainCheckBox = this.updateMainCheckBox.bind(this);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (typeof(this.state.internalUpdate) === 'undefined')
+            return true;
+
+        if (this.state.globalSelection !== nextState.globalSelection)
+            return true;
+
+        if (this.state.onlyTrashed !== nextState.onlyTrashed)
+            return true;
+
+        this.state.internalUpdate = false;
+
+        return this.state.internalUpdate;
     }
 
     invertAll() {
@@ -35,7 +51,10 @@ export default class List extends Component {
                 this.updateMainCheckBox(item.id, true, true)
             ));
 
-        this.setState(options)
+        this.setState(options);
+
+        if (!selectAll)
+            this.initialiseMainCheckBoxUpdate(options.selected);
     }
 
     singleBoxClick(record, value) {
@@ -83,7 +102,6 @@ export default class List extends Component {
     }
 
     updateMainCheckBox(id, select, skipMainStateUpdate) {
-
         if (select) {
             if (this.state.selected.indexOf(id) === -1)
                 this.state.selected.push(id);
@@ -95,9 +113,15 @@ export default class List extends Component {
         if (!skipMainStateUpdate) {
             if (this.state.selected.length === this.props.records.to - this.props.records.from + 1)
                 this.setState({allSelected: true, globalSelection: true});
-            else
-                if (this.state.allSelected)
-                    this.setState({allSelected: false});
+            else if (this.state.allSelected)
+                this.setState({allSelected: false});
         }
+
+        this.initialiseMainCheckBoxUpdate(this.state.selected);
+    }
+
+    initialiseMainCheckBoxUpdate(selected) {
+        this.state.internalUpdate = true;
+        this.props.selectionUpdated(selected);
     }
 }

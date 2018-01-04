@@ -37,6 +37,13 @@ class HCAdminListView extends Component {
             },
             onlyTrashed: false,
             hideCheckBox: this.getCheckBoxConfiguration(false),
+            actionsEnable: {
+                delete:false,
+                merge:false,
+                clone:false,
+                forceDelete:false,
+                restore:false,
+            }
         };
 
         this.handleTrashedEvent = this.handleTrashedEvent.bind(this);
@@ -63,6 +70,7 @@ class HCAdminListView extends Component {
                     form={this.props.config.form}
                     actions={this.props.config.actions}
                     onlyTrashed={this.state.onlyTrashed}
+                    actionsEnable={this.state.actionsEnable}
                 />
                 <List
                     headers={this.props.config.headers}
