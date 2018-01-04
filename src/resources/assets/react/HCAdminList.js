@@ -69,7 +69,6 @@ class HCAdminListView extends Component {
                     perPage={this.props.config.perPage}
                     hideCheckBox={this.state.hideCheckBox}
                     records={this.state.records}
-                    onSelect={this.handleRowSelection}
                 />
             </div>
         </div>
@@ -104,10 +103,6 @@ class HCAdminListView extends Component {
                 options.records = res.data;
                 this.setState(options);
             });
-    }
-
-    handleRowSelection(value, select) {
-        console.log(value, select);
     }
 
     getCheckBoxConfiguration(trashed) {
