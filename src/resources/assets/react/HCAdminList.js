@@ -36,18 +36,20 @@ class HCAdminListView extends Component {
                 data: []
             },
             onlyTrashed: false,
+            selected: [],
             hideCheckBox: this.getCheckBoxConfiguration(false),
-            actionsEnable: {
-                delete:false,
-                merge:false,
-                clone:false,
-                forceDelete:false,
-                restore:false,
-            }
+            actionsDisabled: {
+                delete:true,
+                merge:true,
+                clone:true,
+                forceDelete:true,
+                restore:true,
+            },
         };
 
         this.handleTrashedEvent = this.handleTrashedEvent.bind(this);
         this.getCheckBoxConfiguration = this.getCheckBoxConfiguration.bind(this);
+        this.selectionUpdated = this.selectionUpdated.bind(this);
 
         fontAwesome.library.add(FAProRegularIcons);
     }
@@ -70,16 +72,48 @@ class HCAdminListView extends Component {
                     form={this.props.config.form}
                     actions={this.props.config.actions}
                     onlyTrashed={this.state.onlyTrashed}
-                    actionsEnable={this.state.actionsEnable}
+                    actionsDisabled={this.state.actionsDisabled}
+                    selected={this.state.selected}
                 />
                 <List
                     headers={this.props.config.headers}
                     perPage={this.props.config.perPage}
                     hideCheckBox={this.state.hideCheckBox}
+                    onlyTrashed={this.state.onlyTrashed}
                     records={this.state.records}
+                    selectionUpdated={this.selectionUpdated}
                 />
             </div>
         </div>
+    }
+
+    selectionUpdated(selected)
+    {
+        let actionsDisabled = {
+            delete:true,
+            merge:true,
+            clone:true,
+            forceDelete:true,
+            restore:true,
+        };
+
+        if (selected.length > 0)
+        {
+            actionsDisabled.delete = false;
+            actionsDisabled.clone = false;
+            actionsDisabled.forceDelete = false;
+            actionsDisabled.restore = false;
+
+            if (selected.length > 1)
+                actionsDisabled.merge = false;
+        }
+
+
+        this.setState(
+            {
+                selected:selected,
+                actionsDisabled: actionsDisabled
+            })
     }
 
     handleTrashedEvent(value) {
@@ -114,6 +148,7 @@ class HCAdminListView extends Component {
     }
 
     getCheckBoxConfiguration(trashed) {
+
         if (trashed)
             return (this.props.config.actions.indexOf('forceDelete') === -1 && this.props.config.actions.indexOf('restore') === -1);
         else
