@@ -4,6 +4,11 @@ import Row from "./list/Row";
 const uuid = require('uuid/v4');
 
 export default class List extends Component {
+
+    /**
+     * initializing component
+     * @param props
+     */
     constructor(props) {
         super(props);
 
@@ -11,31 +16,46 @@ export default class List extends Component {
             listId: uuid(),
             globalSelection: false,
             allSelected: false,
-            onlyTrashed: false,
-            headers: {},
             selected: []
         };
 
         this.invertAll = this.invertAll.bind(this);
         this.getRows = this.getRows.bind(this);
-        this.updateMainCheckBox = this.updateMainCheckBox.bind(this);
+        this.singleRowSelect = this.singleRowSelect.bind(this);
     }
 
+    /**
+     * Checking if component needs to be re-rendered
+     * @param nextProps
+     * @param nextState
+     * @returns {boolean}
+     */
     shouldComponentUpdate(nextProps, nextState) {
+
+        //checking if internal Update
         if (typeof(this.state.internalUpdate) === 'undefined')
             return true;
 
+        //checking if mainCheckBox was clicked
         if (this.state.globalSelection !== nextState.globalSelection)
             return true;
 
-        if (this.state.onlyTrashed !== nextState.onlyTrashed)
+        //checking if trashed changes
+        if (this.props.onlyTrashed !== nextProps.onlyTrashed)
             return true;
+
+        //checking if records has changed
+        if (this.props.records.data.toString() !== nextProps.records.data.toString())
+                return true;
 
         this.state.internalUpdate = false;
 
         return this.state.internalUpdate;
     }
 
+    /**
+     * Inverting list selection when mainCheckbox has been clicked
+     */
     invertAll() {
 
         let selectAll = !this.state.allSelected;
@@ -48,7 +68,7 @@ export default class List extends Component {
             options.selected = [];
         else
             this.props.records.data.map((item, i) => (
-                this.updateMainCheckBox(item.id, true, true)
+                this.singleRowSelect(item.id, true, true)
             ));
 
         this.setState(options);
@@ -57,11 +77,20 @@ export default class List extends Component {
             this.initialiseMainCheckBoxUpdate(options.selected);
     }
 
+    /**
+     * Single row selection update
+     * @param record
+     * @param value
+     */
     singleBoxClick(record, value) {
         this.state.selections[record.id] = value;
         this.setState({selections: this.state.selections});
     }
 
+    /**
+     * Rendering view
+     * @returns {*}
+     */
     render() {
 
         return <div id="list">
@@ -89,19 +118,29 @@ export default class List extends Component {
         </div>;
     }
 
+    /**
+     * Getting rows for a list
+     */
     getRows() {
 
         this.state.rows = [];
 
         this.props.records.data.map((item, i) => (
             this.state.rows.push(<Row key={i} record={item} headers={this.props.headers}
-                                      globalSelection={this.state.globalSelection} onChange={this.updateMainCheckBox}/>)
+                                      globalSelection={this.state.globalSelection} onChange={this.singleRowSelect}/>)
         ));
 
         return this.state.rows;
     }
 
-    updateMainCheckBox(id, select, skipMainStateUpdate) {
+    /**
+     * Updating selected list
+     *
+     * @param id
+     * @param select
+     * @param skipMainStateUpdate
+     */
+    singleRowSelect(id, select, skipMainStateUpdate) {
         if (select) {
             if (this.state.selected.indexOf(id) === -1)
                 this.state.selected.push(id);
@@ -117,10 +156,15 @@ export default class List extends Component {
                 this.setState({allSelected: false});
         }
 
-        this.initialiseMainCheckBoxUpdate(this.state.selected);
+        this.updateActions(this.state.selected);
     }
 
-    initialiseMainCheckBoxUpdate(selected) {
+    /**
+     * Updating updateActions
+     *
+     * @param selected
+     */
+    updateActions(selected) {
         this.state.internalUpdate = true;
         this.props.selectionUpdated(selected);
     }
