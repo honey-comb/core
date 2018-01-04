@@ -7,13 +7,28 @@ export default class FAButton extends Component {
 
     render() {
 
-        let classes = classNames (this.props.type, {
+        let divClasses = classNames (this.props.type, {
             "hidden": this.props.display,
             "disabled": this.props.disabled
         });
 
-        return <div className={classes} onMouseUp={this.props.onPress}>
+        let hideCounter = !this.props.showCounter;
+
+        if (this.props.disabled)
+            hideCounter = true;
+
+        if (this.props.count === 0)
+            hideCounter = true;
+
+        let counterClasses = classNames (
+          "counter", "fa-layers-counter", {
+              "hidden": hideCounter
+            }
+        );
+
+        return <div className={divClasses} onMouseUp={this.props.onPress}>
             <FontAwesomeIcon icon={this.props.icon}/>
+            <span className={counterClasses}>{this.props.count}</span>
         </div>;
     }
 }

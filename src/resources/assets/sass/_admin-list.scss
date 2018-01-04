@@ -69,6 +69,19 @@ body {
   align-items: center;
 }
 
+.btn
+{
+  span.fa-layers-counter {
+    font-size: 40px;
+    margin-top: -7px;
+    right: -5px;
+    box-shadow: 0 0 16px darkgrey;
+    border: 4px solid white;
+    padding-top: 7px;
+  }
+  position: relative;
+}
+
 .btn-forestgreen
 {
   background-color: forestgreen;
