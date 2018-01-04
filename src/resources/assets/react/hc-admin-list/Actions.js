@@ -77,7 +77,7 @@ export default class Actions extends Component {
 
         return <FAButton display={this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.delete}
-                         type={HCHelpers.buttonClass("coral")}
+                         type={HCHelpers.buttonClass("danger")}
                          icon={HCHelpers.faIcon("trash")}/>;
     }
 
