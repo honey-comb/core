@@ -31,7 +31,7 @@ class HCAdminListView extends Component {
         super(props);
 
         this.state = {
-            _title: this.props.config.title,
+            title: this.props.config.title,
             records: {
                 data: []
             },
@@ -54,7 +54,7 @@ class HCAdminListView extends Component {
 
         return <div className="box">
             <div className="box-header">
-                <h3 className="box-title">{this.state._title}</h3>
+                <h3 className="box-title">{this.state.title}</h3>
                 <Settings onChange={this.handleTrashedEvent} trashHidden={this.getCheckBoxConfiguration(true)}/>
             </div>
             <div className="box-body">
@@ -86,13 +86,13 @@ class HCAdminListView extends Component {
         let params = {};
 
         if (value) {
-            options._title = this.props.config.title + ' (Trashed)';
+            options.title = this.props.config.title + ' (Trashed)';
             options.hideCheckBox = this.getCheckBoxConfiguration(true);
 
             params = {params:{trashed:1}};
         }
         else {
-            options._title = this.props.config.title;
+            options.title = this.props.config.title;
             options.hideCheckBox = this.getCheckBoxConfiguration(false);
         }
 
