@@ -78,7 +78,9 @@ export default class Actions extends Component {
         return <FAButton display={this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.delete}
                          type={HCHelpers.buttonClass("danger")}
-                         icon={HCHelpers.faIcon("trash")}/>;
+                         icon={HCHelpers.faIcon("trash")}
+                         showCounter={true}
+                         count={this.props.selected.length}/>;
     }
 
     /**
@@ -93,7 +95,9 @@ export default class Actions extends Component {
         return <FAButton display={this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.merge}
                          type={HCHelpers.buttonClass("clean")}
-                         icon={HCHelpers.faIcon("code-merge")}/>;
+                         icon={HCHelpers.faIcon("code-merge")}
+                         showCounter={true}
+                         count={this.props.selected.length}/>;
     }
 
     /**
@@ -108,7 +112,8 @@ export default class Actions extends Component {
         return <FAButton display={this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.clone}
                          type={HCHelpers.buttonClass("info")}
-                         icon={HCHelpers.faIcon("clone")}/>;
+                         icon={HCHelpers.faIcon("clone")}
+                         count={this.props.selected.length}/>;
     }
 
     /**
@@ -123,7 +128,9 @@ export default class Actions extends Component {
         return <FAButton display={!this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.restore}
                          type={HCHelpers.buttonClass("success")}
-                         icon={HCHelpers.faIcon("arrow-circle-up")}/>;
+                         icon={HCHelpers.faIcon("arrow-circle-up")}
+                         showCounter={true}
+                         count={this.props.selected.length}/>;
     }
 
     /**
@@ -138,6 +145,8 @@ export default class Actions extends Component {
         return <FAButton display={!this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.forceDelete}
                          type={HCHelpers.buttonClass("danger")}
-                         icon={HCHelpers.faIcon("minus-octagon")}/>;
+                         icon={HCHelpers.faIcon("minus-octagon")}
+                         showCounter={true}
+                         count={this.props.selected.length}/>;
     }
 }
