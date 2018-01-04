@@ -74,7 +74,7 @@ export default class List extends Component {
         this.setState(options);
 
         if (!selectAll)
-            this.initialiseMainCheckBoxUpdate(options.selected);
+            this.updateActions(options.selected);
     }
 
     /**
