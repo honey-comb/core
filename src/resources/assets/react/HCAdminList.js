@@ -102,6 +102,8 @@ class HCAdminListView extends Component {
 
             if (selected.length > 1)
                 actionsDisabled.merge = false;
+            else
+                actionsDisabled.clone = false;
         }
 
 
