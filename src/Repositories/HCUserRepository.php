@@ -127,6 +127,10 @@ class HCUserRepository extends HCBaseRepository
         int $perPage = self::DEFAULT_PER_PAGE,
         array $columns = ['*']
     ): LengthAwarePaginator {
+
+        if ($request->has('per_page'))
+            $perPage = $request->get('per_page');
+
         return $this->createBuilderQuery($request)->paginate($perPage, $columns)->appends($request->all());
     }
 }
