@@ -105,7 +105,7 @@ trait HCQueryBuilderTrait
      */
     protected function getRequestParameters(Request $request): array
     {
-        return $request->except(['page', 'q', 'deleted', 'sort_by', 'sort_order']);
+        return $request->except(['page', 'q', 'trashed', 'sort_by', 'sort_order']);
     }
 
     /**
