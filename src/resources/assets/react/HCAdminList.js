@@ -17,6 +17,7 @@ require('./shared/HCHelpers');
 
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import Pagination from "rc-pagination";
 
 import Actions from './hc-admin-list/Actions';
 import Settings from './hc-admin-list/Settings';
@@ -24,6 +25,10 @@ import Settings from './hc-admin-list/Settings';
 import fontAwesome from '@fortawesome/fontawesome'
 import FAProRegularIcons from '@fortawesome/fontawesome-pro-regular'
 import axios from "axios/index";
+import Select from 'rc-select';
+
+import 'rc-pagination/assets/index.css';
+import 'rc-select/assets/index.css';
 
 class HCAdminListView extends Component {
 
@@ -33,7 +38,18 @@ class HCAdminListView extends Component {
         this.state = {
             title: this.props.config.title,
             records: {
-                data: []
+                current_page: 0,
+                data: [],
+                first_page_url: "",
+                from: 0,
+                last_page: 0,
+                last_page_url: "",
+                next_page_url: "",
+                path: "",
+                per_page: this.props.config.perPage,
+                prev_page_url: "",
+                to: 0,
+                total: 0
             },
             onlyTrashed: false,
             selected: [],
@@ -52,6 +68,7 @@ class HCAdminListView extends Component {
         this.selectionUpdated = this.selectionUpdated.bind(this);
         this.loadList = this.loadList.bind(this);
         this.reload = this.reload.bind(this);
+        this.onShowSizeChange = this.onShowSizeChange.bind(this);
 
         fontAwesome.library.add(FAProRegularIcons);
     }
@@ -85,8 +102,27 @@ class HCAdminListView extends Component {
                     records={this.state.records}
                     selectionUpdated={this.selectionUpdated}
                 />
+                <Pagination selectComponentClass={Select}
+                            showSizeChanger
+                            showTotal={(total, range) => `${range[0]} - ${range[1]} of ${total} items`}
+                            onShowSizeChange={this.onShowSizeChange}
+                            defaultCurrent={1}
+                            total={this.state.records.total}
+                            current={this.state.records.current_page}
+                            pageSize={this.state.records.per_page}
+                            onChange={this.onShowSizeChange}/>
             </div>
         </div>
+    }
+
+    onShowSizeChange (current, pageSize)
+    {
+        this.state.params.params.page = current;
+
+        if (pageSize)
+            this.state.params.params.per_page = pageSize;
+
+        this.reload ();
     }
 
     selectionUpdated(selected) {
@@ -120,7 +156,18 @@ class HCAdminListView extends Component {
     handleTrashedEvent(value) {
         this.state.onlyTrashed = value;
         this.state.records = {
-            data: []
+            current_page: 0,
+            data: [],
+            first_page_url: "",
+            from: 0,
+            last_page: 0,
+            last_page_url: "",
+            next_page_url: "",
+            path: "",
+            per_page: this.props.config.perPage,
+            prev_page_url: "",
+            to: 0,
+            total: 0
         };
 
         if (value) {
@@ -132,7 +179,7 @@ class HCAdminListView extends Component {
         else {
             this.state.title = this.props.config.title;
             this.state.hideCheckBox = this.getCheckBoxConfiguration(false);
-            this.state.params = {};
+            this.state.params = {params: {}};
         }
 
         this.setState(this.state);
@@ -140,30 +187,34 @@ class HCAdminListView extends Component {
         this.loadList();
     }
 
-    loadList ()
-    {
-        this.setState({selected:[]});
+    loadList() {
+        this.setState({selected: []});
 
         axios.get(this.props.config.url, this.state.params)
             .then(res => {
 
                 this.setState({
-                    records:res.data,
+                    records: res.data,
                 });
             });
     }
 
-    reload ()
-    {
-        this.setState({selected:[]});
+    reload(data) {
+        this.setState({selected: []});
 
-        axios.get(this.props.config.url, this.state.params)
-            .then(res => {
-
-                this.setState({
-                    records:res.data,
-                });
+        if (data) {
+            this.setState({
+                records: data.data
             });
+        }
+        else
+            axios.get(this.props.config.url, this.state.params)
+                .then(res => {
+
+                    this.setState({
+                        records: res.data,
+                    });
+                });
     }
 
     getCheckBoxConfiguration(trashed) {
