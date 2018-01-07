@@ -32,6 +32,11 @@ import 'rc-select/assets/index.css';
 
 class HCAdminListView extends Component {
 
+    /**
+     * Initializing component
+     *
+     * @param props
+     */
     constructor(props) {
         super(props);
 
@@ -52,6 +57,7 @@ class HCAdminListView extends Component {
                 total: 0
             },
             onlyTrashed: false,
+            pageSizeOptions: [25,50,100,500],
             selected: [],
             hideCheckBox: this.getCheckBoxConfiguration(false),
             actionsDisabled: {
@@ -63,6 +69,9 @@ class HCAdminListView extends Component {
             },
         };
 
+        if (this.props.config.pageSizeOptions)
+            this.state.pageSizeOptions = this.props.config.pageSizeOptions;
+
         this.handleTrashedEvent = this.handleTrashedEvent.bind(this);
         this.getCheckBoxConfiguration = this.getCheckBoxConfiguration.bind(this);
         this.selectionUpdated = this.selectionUpdated.bind(this);
@@ -73,10 +82,18 @@ class HCAdminListView extends Component {
         fontAwesome.library.add(FAProRegularIcons);
     }
 
+    /**
+     * When mounted, load data
+     */
     componentDidMount() {
         this.handleTrashedEvent(false);
     }
 
+    /**
+     * Rendering view
+     *
+     * @returns {*}
+     */
     render() {
 
         return <div className="box">
@@ -110,11 +127,17 @@ class HCAdminListView extends Component {
                             total={this.state.records.total}
                             current={this.state.records.current_page}
                             pageSize={this.state.records.per_page}
+                            pageSizeOptions={this.state.pageSizeOptions}
                             onChange={this.onShowSizeChange}/>
             </div>
         </div>
     }
 
+    /**
+     * On showSizeChange or pagination change reload content
+     * @param current
+     * @param pageSize
+     */
     onShowSizeChange (current, pageSize)
     {
         this.state.params.params.page = current;
@@ -125,6 +148,11 @@ class HCAdminListView extends Component {
         this.reload ();
     }
 
+    /**
+     * Selected items checking
+     *
+     * @param selected
+     */
     selectionUpdated(selected) {
         let actionsDisabled = {
             delete: true,
@@ -153,6 +181,11 @@ class HCAdminListView extends Component {
             })
     }
 
+    /**
+     * Switch between trashed and live items
+     *
+     * @param value
+     */
     handleTrashedEvent(value) {
         this.state.onlyTrashed = value;
         this.state.records = {
@@ -184,21 +217,14 @@ class HCAdminListView extends Component {
 
         this.setState(this.state);
 
-        this.loadList();
+        this.reload();
     }
 
-    loadList() {
-        this.setState({selected: []});
-
-        axios.get(this.props.config.url, this.state.params)
-            .then(res => {
-
-                this.setState({
-                    records: res.data,
-                });
-            });
-    }
-
+    /**
+     * Reload page with data or without it.
+     *
+     * @param data
+     */
     reload(data) {
         this.setState({selected: []});
 
@@ -217,6 +243,12 @@ class HCAdminListView extends Component {
                 });
     }
 
+    /**
+     * Get mainCheckBox configuration
+     * 
+     * @param trashed
+     * @returns {boolean}
+     */
     getCheckBoxConfiguration(trashed) {
 
         if (trashed)
