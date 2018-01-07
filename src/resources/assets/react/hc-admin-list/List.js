@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Row from "./list/Row";
+import THRow from "./list/THRow";
 
 const uuid = require('uuid/v4');
 
@@ -16,7 +17,8 @@ export default class List extends Component {
             listId: uuid(),
             globalSelection: false,
             allSelected: false,
-            selected: []
+            selected: [],
+            sortBy: {}
         };
 
         this.invertAll = this.invertAll.bind(this);
@@ -106,19 +108,11 @@ export default class List extends Component {
         return <div id="list">
             <table id={this.state.listId} className="table table-hover table-bordered dataTable" role="grid">
                 <thead>
-                <tr role="row">
-                    <th hidden={this.props.hideCheckBox} className="main-checkbox"><input type="checkbox"
-                                                                                          checked={this.state.allSelected}
-                                                                                          onChange={this.invertAll}/>
-                    </th>
-                    {Object.keys(this.props.headers).map((item, i) => (
-                            <th tabIndex="0"
-                                aria-controls={this.state.listId}
-                                key={i}
-                                className="sorting">{this.props.headers[item].label}</th>
-                        )
-                    )}
-                </tr>
+                <THRow hidden={this.props.hideCheckBox}
+                       headers={this.props.headers}
+                       invertAll={this.invertAll}
+                       checked={this.state.allSelected}
+                       onSortOrderUpdate={this.props.onSortOrderUpdate}/>
                 </thead>
                 <tbody>
                 {this.getRows()}

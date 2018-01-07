@@ -57,7 +57,7 @@ class HCAdminListView extends Component {
                 total: 0
             },
             onlyTrashed: false,
-            pageSizeOptions: [25,50,100,500],
+            pageSizeOptions: ["25","50","100","500"],
             selected: [],
             hideCheckBox: this.getCheckBoxConfiguration(false),
             actionsDisabled: {
@@ -75,9 +75,9 @@ class HCAdminListView extends Component {
         this.handleTrashedEvent = this.handleTrashedEvent.bind(this);
         this.getCheckBoxConfiguration = this.getCheckBoxConfiguration.bind(this);
         this.selectionUpdated = this.selectionUpdated.bind(this);
-        this.loadList = this.loadList.bind(this);
         this.reload = this.reload.bind(this);
         this.onShowSizeChange = this.onShowSizeChange.bind(this);
+        this.onSortOrderUpdate = this.onSortOrderUpdate.bind(this);
 
         fontAwesome.library.add(FAProRegularIcons);
     }
@@ -118,6 +118,7 @@ class HCAdminListView extends Component {
                     onlyTrashed={this.state.onlyTrashed}
                     records={this.state.records}
                     selectionUpdated={this.selectionUpdated}
+                    onSortOrderUpdate={this.onSortOrderUpdate}
                 />
                 <Pagination selectComponentClass={Select}
                             showSizeChanger
@@ -131,6 +132,16 @@ class HCAdminListView extends Component {
                             onChange={this.onShowSizeChange}/>
             </div>
         </div>
+    }
+
+    onSortOrderUpdate (key, order)
+    {
+        this.state.params.params.page = 1;
+        this.state.params.params.sort_by = key;
+        this.state.params.params.sort_order = order;
+
+        this.reload ();
+
     }
 
     /**
@@ -245,7 +256,7 @@ class HCAdminListView extends Component {
 
     /**
      * Get mainCheckBox configuration
-     * 
+     *
      * @param trashed
      * @returns {boolean}
      */

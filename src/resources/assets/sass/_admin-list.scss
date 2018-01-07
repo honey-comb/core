@@ -54,6 +54,24 @@ body {
           color: white;
         }
 
+        tr th
+        {
+          position: relative;
+        }
+
+        tr th .sorting
+        {
+          opacity: 0.5;
+          position: absolute;
+          right: 10px;
+          cursor: pointer;
+        }
+
+        tr th .active
+        {
+          opacity: 1;
+        }
+
         .main-checkbox
         {
           width: 30px;
