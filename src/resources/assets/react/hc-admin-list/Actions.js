@@ -12,6 +12,7 @@ export default class Actions extends Component {
         this.deleteAction = this.deleteAction.bind(this);
         this.forceDeleteAction = this.forceDeleteAction.bind(this);
         this.restoreAction = this.restoreAction.bind(this);
+        this.filterAction = this.filterAction.bind(this);
     }
 
     render() {
@@ -33,22 +34,10 @@ export default class Actions extends Component {
      */
     getSearchField() {
 
-        let filter = <div key="first">
+        return <div key="first">
             <input className="form-control input-bg"
-                   placeholder="Search"/>
+                   placeholder="Search" onKeyUp={this.filterAction}/>
         </div>;
-
-        if (this.props.actions.indexOf('search') === -1)
-            return filter;
-
-        return [
-            filter,
-            <FAButton key="second"
-                      type={HCHelpers.buttonClass("warning")}
-                      icon={HCHelpers.faIcon("search")}>
-                <div>{filter}</div>
-            </FAButton>
-        ];
     }
 
     /**
@@ -189,5 +178,14 @@ export default class Actions extends Component {
 
                 this.props.reload();
             });
+    }
+
+    filterAction (e)
+    {
+        if (e.target.value.length > 2 || e.target.value.length === 0)
+            axios.get(this.props.url, {params:{q:e.target.value}})
+                .then(res => {
+                    this.props.reload(res);
+                });
     }
 }
