@@ -1,36 +1,17 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes React and other helpers. It's a great starting point while
- * building robust, powerful web applications using React + Laravel.
- */
-import List from "./hc-admin-list/List";
+import React, {Component} from "react";
 
-require('../../js/bootstrap');
-
-/**
- * Next, we will create a fresh React component instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-require('./shared/HCHelpers');
-
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import Pagination from "rc-pagination";
 
-import Actions from './hc-admin-list/Actions';
-import Settings from './hc-admin-list/Settings';
+import Actions from './../hc-admin-list/Actions';
+import Settings from './../hc-admin-list/Settings';
+import List from './../hc-admin-list/List';
 
 import fontAwesome from '@fortawesome/fontawesome'
 import FAProRegularIcons from '@fortawesome/fontawesome-pro-regular'
 import axios from "axios/index";
 import Select from 'rc-select';
 
-import 'rc-pagination/assets/index.css';
-import 'rc-select/assets/index.css';
-
-class HCAdminListView extends Component {
+export default class HCAdminListView extends Component {
 
     /**
      * Initializing component
@@ -41,6 +22,7 @@ class HCAdminListView extends Component {
         super(props);
 
         this.state = {
+            id: HCHelpers.uuid(),
             title: this.props.config.title,
             records: {
                 current_page: 0,
@@ -57,7 +39,7 @@ class HCAdminListView extends Component {
                 total: 0
             },
             onlyTrashed: false,
-            pageSizeOptions: ["25","50","100","500"],
+            pageSizeOptions: ["25", "50", "100", "500"],
             selected: [],
             hideCheckBox: this.getCheckBoxConfiguration(false),
             actionsDisabled: {
@@ -96,7 +78,7 @@ class HCAdminListView extends Component {
      */
     render() {
 
-        return <div className="box">
+        return <div className="box" id={this.id}>
             <div className="box-header">
                 <h3 className="box-title">{this.state.title}</h3>
                 <Settings onChange={this.handleTrashedEvent} trashHidden={this.getCheckBoxConfiguration(true)}/>
@@ -134,13 +116,12 @@ class HCAdminListView extends Component {
         </div>
     }
 
-    onSortOrderUpdate (key, order)
-    {
+    onSortOrderUpdate(key, order) {
         this.state.params.params.page = 1;
         this.state.params.params.sort_by = key;
         this.state.params.params.sort_order = order;
 
-        this.reload ();
+        this.reload();
 
     }
 
@@ -149,14 +130,13 @@ class HCAdminListView extends Component {
      * @param current
      * @param pageSize
      */
-    onShowSizeChange (current, pageSize)
-    {
+    onShowSizeChange(current, pageSize) {
         this.state.params.params.page = current;
 
         if (pageSize)
             this.state.params.params.per_page = pageSize;
 
-        this.reload ();
+        this.reload();
     }
 
     /**
@@ -268,7 +248,3 @@ class HCAdminListView extends Component {
             return (this.props.config.actions.indexOf('delete') === -1 && this.props.config.actions.indexOf('merge') === -1 && this.props.config.actions.indexOf('clone') === -1);
     }
 }
-
-window.RenderAdminList = function (data) {
-    ReactDOM.render(<HCAdminListView config={data}/>, document.getElementById('admin-list'))
-};

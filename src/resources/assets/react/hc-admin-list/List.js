@@ -43,17 +43,16 @@ export default class List extends Component {
             return true;
 
         //checking if trashed changes
-        if (this.props.onlyTrashed !== nextProps.onlyTrashed)
-        {
+        if (this.props.onlyTrashed !== nextProps.onlyTrashed) {
             nextState.allSelected = false;
             nextState.globalSelection = false;
             nextState.selected = [];
+
             return true;
         }
 
         //checking if records has changed
-        if (!HCHelpers.arraysEqual(this.props.records, nextProps.records))
-        {
+        if (!HCHelpers.arraysEqual(this.props.records, nextProps.records)) {
             nextState.allSelected = false;
             nextState.globalSelection = false;
             nextState.selected = [];
@@ -117,7 +116,6 @@ export default class List extends Component {
                 <tbody>
                 {this.getRows()}
                 </tbody>
-                <tfoot></tfoot>
             </table>
         </div>;
     }

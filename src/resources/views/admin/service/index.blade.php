@@ -7,6 +7,7 @@
 @section('content')
 
     <div id="admin-list" data-hc="parameters"></div>
+    <div id="admin-form"></div>
 
 @endsection
 
@@ -15,10 +16,10 @@
     <script src="{{mix('js/hc-form.js')}}"></script>
 
     {{-- admin list --}}
-    <script src="{{mix('js/HCAdminList.js')}}"></script>
+    <script src="{{mix('js/app.js')}}"></script>
 
     <script>
-        window.RenderAdminList({!! json_encode($config) !!});
+        HCHelpers.RenderAdminList({!! json_encode($config) !!});
     </script>
 
     {{--<script>
