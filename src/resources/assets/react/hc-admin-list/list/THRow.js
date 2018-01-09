@@ -23,7 +23,7 @@ export default class THRow extends Component {
                 className="main-checkbox">
 
                 <input type="checkbox"
-                       checked={this.props.allSelected}
+                       checked={this.props.checked}
                        onChange={this.props.invertAll}/>
             </th>
             {Object.keys(this.props.headers).map((item, i) => (
