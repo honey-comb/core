@@ -69,6 +69,8 @@ class HCSocialiteAuthController extends Controller
             $this->service->createOrUpdateUserProvider($user, $request->segment(3))
         );
 
+        auth()->user()->updateLastLogin();
+
         return redirect(session('url.intended', url('/')));
     }
 
