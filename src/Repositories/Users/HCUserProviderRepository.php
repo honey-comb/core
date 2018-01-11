@@ -27,22 +27,39 @@
 
 declare(strict_types = 1);
 
-Route::prefix('auth')->namespace('Frontend')->middleware('web')->group(function () {
-    Route::get('login', 'HCAuthController@showLoginForm')->name('auth.index')->middleware('guest');
-    Route::post('login', 'HCAuthController@login')->name('auth.login');
+namespace HoneyComb\Core\Repositories\Users;
 
-    Route::get('register', 'HCAuthController@showRegister')->name('auth.register')->middleware('guest');
-    Route::post('register', 'HCAuthController@register');
+use HoneyComb\Core\Models\Users\HCUserProvider;
+use HoneyComb\Core\Repositories\HCBaseRepository;
 
-    Route::get('activation/{token}', 'HCAuthController@showActivation')->name('auth.activation')->middleware('guest');
-    Route::post('activation', 'HCAuthController@activate')->name('auth.activation.post');
+class HCUserProviderRepository extends HCBaseRepository
+{
+    /**
+     * @return string
+     */
+    public function model(): string
+    {
+        return HCUserProvider::class;
+    }
 
-    Route::get('logout', 'HCAuthController@logout')->name('auth.logout')->middleware('auth');
-
-    Route::get('login/{provider}', 'HCSocialiteAuthController@redirectToProvider')
-        ->name('login.socialite')
-        ->where('provider', '(facebook|twitter|github|linkedin|bitbucket|google)');
-
-    Route::get('login/{provider}/callback', 'HCSocialiteAuthController@handleProviderCallback')
-        ->where('provider', '(facebook|twitter|github|linkedin|bitbucket|google)');
-});
+    /**
+     * @param string $userId
+     * @param string $providerUserId
+     * @param string $provider
+     * @param string $providerData
+     * @return mixed
+     */
+    public function createProvider(
+        string $userId,
+        string $providerUserId,
+        string $provider,
+        string $providerData
+    ): HCUserProvider {
+        return $this->makeQuery()->create([
+            'user_id' => $userId,
+            'user_provider_id' => $providerUserId,
+            'provider' => $provider,
+            'response' => $providerData,
+        ]);
+    }
+}

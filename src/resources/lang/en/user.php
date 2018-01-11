@@ -109,7 +109,14 @@ return [
         ],
     ],
 
-    'connect_with_fb' => 'Connect with <strong>Facebook</strong>',
+    'socialite' => [
+        'facebook' => 'Connect with <strong>Facebook</strong>',
+        'google' => 'Connect with <strong>Google</strong>',
+        'bitbucket' => 'Connect with <strong>Bitbucket</strong>',
+        'linkedin' => 'Connect with <strong>LinkedIn</strong>',
+        'twitter' => 'Connect with <strong>Twitter</strong>',
+        'github' => 'Connect with <strong>Github</strong>',
+    ],
 
     'facebook' => [
         'title' => 'Facebook',

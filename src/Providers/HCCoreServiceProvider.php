@@ -134,6 +134,10 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
             $this->packagePath('config/hc.php'), 'hc'
         );
 
+        $this->mergeConfigFrom(
+            $this->packagePath('config/services.php'), 'services'
+        );
+
         $this->registerRepositories();
 
         $this->registerServices();

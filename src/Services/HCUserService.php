@@ -29,9 +29,14 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Services;
 
+use Carbon\Carbon;
 use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Models\Users\HCUserProvider;
+use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCPersonalInfoRepository;
+use HoneyComb\Core\Repositories\Users\HCUserProviderRepository;
+use Laravel\Socialite\Two\User;
 
 /**
  * Class HCUserService
@@ -50,14 +55,32 @@ class HCUserService
     private $personalInfoRepository;
 
     /**
+     * @var HCRoleRepository
+     */
+    private $roleRepository;
+
+    /**
+     * @var HCUserProviderRepository
+     */
+    private $userProviderRepository;
+
+    /**
      * HCUserService constructor.
      * @param HCUserRepository $repository
      * @param HCPersonalInfoRepository $personalRepository
+     * @param HCRoleRepository $roleRepository
+     * @param HCUserProviderRepository $userProviderRepository
      */
-    public function __construct(HCUserRepository $repository, HCPersonalInfoRepository $personalRepository)
-    {
+    public function __construct(
+        HCUserRepository $repository,
+        HCPersonalInfoRepository $personalRepository,
+        HCRoleRepository $roleRepository,
+        HCUserProviderRepository $userProviderRepository
+    ) {
         $this->repository = $repository;
         $this->personalInfoRepository = $personalRepository;
+        $this->roleRepository = $roleRepository;
+        $this->userProviderRepository = $userProviderRepository;
     }
 
     /**
@@ -80,8 +103,8 @@ class HCUserService
         array $userData,
         array $roles,
         array $personalData = [],
-        $sendWelcomeEmail,
-        $sendPassword
+        bool $sendWelcomeEmail = true,
+        bool $sendPassword = true
     ): HCUser {
         $password = $userData['password'];
 
@@ -142,8 +165,51 @@ class HCUserService
         /** @var HCUser $user */
         $user = $this->repository->find($userId);
 
-        if ($user->isNotActivated()){
+        if ($user->isNotActivated()) {
             $user->activate();
+        }
+    }
+
+    /**
+     * @param User $providerUser
+     * @param $provider
+     * @return HCUser
+     */
+    public function createOrUpdateUserProvider(User $providerUser, $provider): HCUser
+    {
+        /** @var HCUserProvider $userProvider */
+        $userProvider = $this->userProviderRepository->findOneBy([
+            'provider' => $provider,
+            'user_provider_id' => (string)$providerUser->getId(),
+        ]);
+
+        if ($userProvider) {
+            $this->userProviderRepository->update([
+                'response' => json_encode($providerUser->getRaw()),
+            ], $userProvider->id);
+
+            return $userProvider->user;
+        } else {
+            $user = $this->repository->findOneBy(['email' => $providerUser->getEmail()]);
+
+            if (is_null($user)) {
+                $userData = [
+                    'email' => $providerUser->getEmail(),
+                    'password' => str_random(10),
+                    'activated_at' => Carbon::now()->toDateTimeString(),
+                ];
+
+                $user = $this->createUser($userData, [$this->roleRepository->getRoleUserId()]);
+            }
+
+            $this->userProviderRepository->createProvider(
+                $user->id,
+                (string)$providerUser->getId(),
+                $provider,
+                json_encode($providerUser->getRaw())
+            );
+
+            return $user;
         }
     }
 }
