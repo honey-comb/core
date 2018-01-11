@@ -28,6 +28,16 @@ class HCUserRequest extends FormRequest
     }
 
     /**
+     * Get ids to delete, force delete or restore
+     *
+     * @return array
+     */
+    public function getListIds(): array
+    {
+        return $this->input('list', []);
+    }
+
+    /**
      * @return array
      */
     public function getRoles(): array
@@ -73,9 +83,14 @@ class HCUserRequest extends FormRequest
      */
     public function rules(): array
     {
-
         switch ($this->method()) {
             case 'POST':
+                if ($this->segment(4) == 'restore') {
+                    return [
+                        'list' => 'required|array',
+                    ];
+                }
+
                 return [
                     'email' => 'required|email|unique:hc_users,email|min:5',
                     'password' => 'required|min:5',

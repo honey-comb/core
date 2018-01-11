@@ -69,12 +69,37 @@ class HCUserRepository extends HCBaseRepository
         return $this->makeQuery()->with('personal')->where('id', '=', $userId)->firstOrFail();
     }
 
-    public function deleteSoft()
+    /**
+     * Soft delete users
+     *
+     * @param array $userIds
+     * @return mixed
+     */
+    public function deleteSoft(array $userIds)
     {
+        return $this->makeQuery()->whereIn('id', $userIds)->delete();
     }
 
-    public function deleteForce()
+    /**
+     * Restore soft deleted users
+     *
+     * @param array $userIds
+     * @return mixed
+     */
+    public function restore(array $userIds)
     {
+        return $this->makeQuery()->whereIn('id', $userIds)->restore();
+    }
+
+    /**
+     * Force delete users by given id
+     *
+     * @param array $userIds
+     * @return mixed
+     */
+    public function deleteForce(array $userIds)
+    {
+        return $this->makeQuery()->whereIn('id', $userIds)->forceDelete();
     }
 
     /**
@@ -128,8 +153,9 @@ class HCUserRepository extends HCBaseRepository
         array $columns = ['*']
     ): LengthAwarePaginator {
 
-        if ($request->has('per_page'))
+        if ($request->has('per_page')) {
             $perPage = $request->get('per_page');
+        }
 
         return $this->createBuilderQuery($request)->paginate($perPage, $columns)->appends($request->all());
     }
