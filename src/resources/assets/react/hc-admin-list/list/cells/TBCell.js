@@ -10,7 +10,7 @@ export default class TBCell extends Component {
         super(props);
 
         this.state = {
-            value: false, //this.props.value
+            value: this.props.value, //this.props.value
             url: this.props.url + '/' + this.props.id
         };
 
