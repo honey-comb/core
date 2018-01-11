@@ -36,9 +36,22 @@ class HCBaseController extends Controller
             $actions[] = 'delete';
         }
 
-        //TODO: add force delete
-        //TODO: add merge
-        //TODO: add duplicate
+        if (auth()->user()->can($prefix . '_delete')) {
+            $actions[] = 'delete';
+            $actions[] = 'restore';
+        }
+
+        if (auth()->user()->can($prefix . '_force_delete')) {
+            $actions[] = 'forceDelete';
+        }
+
+        if (auth()->user()->can($prefix . '_merge')) {
+            $actions[] = 'merge';
+        }
+
+        if (auth()->user()->can($prefix . '_clone')) {
+            $actions[] = 'clone';
+        }
 
         return $actions;
     }
