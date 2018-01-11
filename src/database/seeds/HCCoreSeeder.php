@@ -41,5 +41,6 @@ class HCCoreSeeder extends Seeder
     public function run()
     {
         $this->call(HCUserRolesSeed::class);
+        $this->call(HCLanguageSeed::class);
     }
 }

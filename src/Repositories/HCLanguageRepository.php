@@ -25,37 +25,45 @@
  * http://www.interactivesolutions.lt
  */
 
-declare(strict_types = 1);
+namespace HoneyComb\Core\Repositories;
 
-namespace HoneyComb\Core\Http\Controllers\Traits;
+use HoneyComb\Core\Models\HCLanguage;;
+use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-trait HCAdminListHeaders
+/**
+ * Class HCLanguageRepository
+ * @package HoneyComb\Core\Repositories
+ */
+class HCLanguageRepository extends HCBaseRepository
 {
+    use HCQueryBuilderTrait;
+
     /**
-     * Admin header text type
-     *
-     * @param string $label
-     * @return array
+     * @return string
      */
-    protected function headerText(string $label): array
+    public function model(): string
     {
-        return [
-            'type' => 'text',
-            'label' => $label,
-        ];
+        return HCLanguage::class;
     }
 
     /**
-     * Admin header checkBox type
-     *
-     * @param string $label
-     * @return array
+     * @param Request $request
+     * @param int $perPage
+     * @param array $columns
+     * @return LengthAwarePaginator
      */
-    protected function headerCheckBox(string $label): array
-    {
-        return [
-            'type' => 'checkBox',
-            'label' => $label,
-        ];
+    public function getListPaginate(
+        Request $request,
+        int $perPage = self::DEFAULT_PER_PAGE,
+        array $columns = ['*']
+    ): LengthAwarePaginator {
+
+        if ($request->has('per_page')) {
+            $perPage = $request->get('per_page');
+        }
+
+        return $this->createBuilderQuery($request)->paginate($perPage, $columns)->appends($request->all());
     }
 }

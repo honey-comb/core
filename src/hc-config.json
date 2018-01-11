@@ -17,14 +17,21 @@
             "parent": "admin.index",
             "translation": "HCCore::user.page_title",
             "icon": "fa-user",
-            "aclPermission": "interactivesolutions_honeycomb_user_list"
+            "aclPermission": "honey_comb_core_user_list"
         },
         {
             "route": "admin.acl.role.index",
             "parent": "admin.user.index",
             "translation": "HCCore::acl_roles.page_title",
             "icon": "fa-user-md",
-            "aclPermission": "interactivesolutions_honeycomb_acl_role_list"
+            "aclPermission": "honey_comb_core_acl_role_list"
+        },
+        {
+            "route": "admin.language.index",
+            "parent": "admin.index",
+            "translation": "HCCore::language.page_title",
+            "icon": "fa-language",
+            "aclPermission": "honey_comb_core_language_list"
         }
     ],
     "seeder": "HoneyComb\\Core\\Database\\Seeds\\HCCoreSeeder",
@@ -35,10 +42,12 @@
         "Routes/Admin/routes.logs.php",
         "Routes/Admin/routes.roles.php",
         "Routes/Admin/routes.users.php",
+        "Routes/Admin/routes.languages.php",
 
         "Routes/Frontend/routes.welcome.php",
         "Routes/Frontend/routes.auth.php",
-        "Routes/Frontend/routes.password.php"
+        "Routes/Frontend/routes.password.php",
+        "Routes/Frontend/routes.languages.php"
     ],
     "acl": {
         "permissions": [
@@ -46,22 +55,30 @@
                 "name": "admin.acl.role",
                 "controller": "HoneyComb\\Core\\Http\\Controllers\\Admin\\Acl\\HCRoleController",
                 "actions": [
-                    "interactivesolutions_honeycomb_acl_role_list",
-                    "interactivesolutions_honeycomb_acl_role_create",
-                    "interactivesolutions_honeycomb_acl_role_update",
-                    "interactivesolutions_honeycomb_acl_role_delete",
-                    "interactivesolutions_honeycomb_acl_role_force_delete"
+                    "honey_comb_core_acl_role_list",
+                    "honey_comb_core_acl_role_create",
+                    "honey_comb_core_acl_role_update",
+                    "honey_comb_core_acl_role_delete",
+                    "honey_comb_core_acl_role_force_delete"
                 ]
             },
             {
                 "name": "admin.user",
                 "controller": "HoneyComb\\Core\\Http\\Controllers\\Admin\\HCUserController",
                 "actions": [
-                    "interactivesolutions_honeycomb_user_list",
-                    "interactivesolutions_honeycomb_user_create",
-                    "interactivesolutions_honeycomb_user_update",
-                    "interactivesolutions_honeycomb_user_delete",
-                    "interactivesolutions_honeycomb_user_force_delete"
+                    "honey_comb_core_user_list",
+                    "honey_comb_core_user_create",
+                    "honey_comb_core_user_update",
+                    "honey_comb_core_user_delete",
+                    "honey_comb_core_user_force_delete"
+                ]
+            },
+            {
+                "name": "admin.languages",
+                "controller": "HoneyComb\\Core\\Http\\Controllers\\Admin\\HCLanguageController",
+                "actions": [
+                    "honey_comb_core_language_list",
+                    "honey_comb_core_language_update"
                 ]
             }
         ]

@@ -27,35 +27,32 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Controllers\Traits;
+namespace HoneyComb\Core\Models;
 
-trait HCAdminListHeaders
+class HCLanguage extends HCUuidModel
 {
     /**
-     * Admin header text type
+     * The database table used by the model.
      *
-     * @param string $label
-     * @return array
+     * @var string
      */
-    protected function headerText(string $label): array
-    {
-        return [
-            'type' => 'text',
-            'label' => $label,
-        ];
-    }
+    protected $table = 'hc_languages';
 
     /**
-     * Admin header checkBox type
+     * The attributes that are mass assignable.
      *
-     * @param string $label
-     * @return array
+     * @var array
      */
-    protected function headerCheckBox(string $label): array
-    {
-        return [
-            'type' => 'checkBox',
-            'label' => $label,
-        ];
-    }
+    protected $fillable = [
+        'id',
+        'language_family',
+        'language',
+        'native_name',
+        'iso_639_1',
+        'iso_639_2',
+        'front_end',
+        'back_end',
+        'content',
+    ];
+
 }

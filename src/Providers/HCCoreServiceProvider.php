@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Providers;
 
+use HoneyComb\Core\Repositories\HCLanguageRepository;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Carbon;
@@ -217,6 +218,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         $this->app->singleton(HCPermissionRepository::class);
         $this->app->singleton(HCPersonalInfoRepository::class);
         $this->app->singleton(HCUserActivationRepository::class);
+        $this->app->singleton(HCLanguageRepository::class);
     }
 
     /**

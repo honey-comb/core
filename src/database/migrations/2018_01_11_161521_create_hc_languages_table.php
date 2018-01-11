@@ -27,35 +27,46 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Controllers\Traits;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-trait HCAdminListHeaders
+class CreateHcLanguagesTable extends Migration
 {
     /**
-     * Admin header text type
+     * Run the migrations.
      *
-     * @param string $label
-     * @return array
+     * @return void
      */
-    protected function headerText(string $label): array
+    public function up()
     {
-        return [
-            'type' => 'text',
-            'label' => $label,
-        ];
+        Schema::create('hc_languages', function (Blueprint $table) {
+            $table->increments('count');
+            $table->uuid('id')->unique();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->softDeletes();
+
+            $table->string('language_family');
+            $table->string('language');
+            $table->string('native_name');
+            $table->string('iso_639_1')->index();
+            $table->string('iso_639_2');
+
+            $table->boolean('front_end')->default(0);
+            $table->boolean('back_end')->default(0);
+            $table->boolean('content')->default(0);
+        });
     }
 
+
     /**
-     * Admin header checkBox type
+     * Reverse the migrations.
      *
-     * @param string $label
-     * @return array
+     * @return void
      */
-    protected function headerCheckBox(string $label): array
+    public function down()
     {
-        return [
-            'type' => 'checkBox',
-            'label' => $label,
-        ];
+        Schema::drop('hc_languages');
     }
+
 }

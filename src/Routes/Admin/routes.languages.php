@@ -27,35 +27,19 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Controllers\Traits;
+Route::prefix(config('hc.admin_url'))
+    ->namespace('Admin')
+    ->middleware(['web', 'auth'])
+    ->group(function () {
+        Route::get('languages', 'HCLanguageController@index')
+            ->name('admin.language.index')
+            ->middleware('acl:honey_comb_core_language_list');
 
-trait HCAdminListHeaders
-{
-    /**
-     * Admin header text type
-     *
-     * @param string $label
-     * @return array
-     */
-    protected function headerText(string $label): array
-    {
-        return [
-            'type' => 'text',
-            'label' => $label,
-        ];
-    }
+        Route::get('api/languages', 'HCLanguageController@getListPaginate')
+            ->name('admin.api.language')
+            ->middleware('acl:honey_comb_core_language_list');
 
-    /**
-     * Admin header checkBox type
-     *
-     * @param string $label
-     * @return array
-     */
-    protected function headerCheckBox(string $label): array
-    {
-        return [
-            'type' => 'checkBox',
-            'label' => $label,
-        ];
-    }
-}
+        Route::patch('api/languages/{id}/strict', 'HCLanguageController@updateStrict')
+            ->name('admin.api.language.update.strict')
+            ->middleware('acl:honey_comb_core_language_update');
+    });
