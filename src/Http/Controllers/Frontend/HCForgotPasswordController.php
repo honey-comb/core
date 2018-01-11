@@ -37,7 +37,7 @@ use HoneyComb\Core\Http\Controllers\HCBaseController;
 
 /**
  * Class HCForgotPasswordController
- * @package InteractiveSolutions\HoneycombAcl\Http\Controllers
+ * @package HoneyComb\Core\Http\Controllers\Frontend
  */
 class HCForgotPasswordController extends HCBaseController
 {

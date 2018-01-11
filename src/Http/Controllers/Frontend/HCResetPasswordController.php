@@ -38,7 +38,7 @@ use HoneyComb\Core\Http\Controllers\HCBaseController;
 
 /**
  * Class HCResetPasswordController
- * @package InteractiveSolutions\HoneycombAcl\Http\Controllers
+ * @package HoneyComb\Core\Http\Controllers\Frontend
  */
 class HCResetPasswordController extends HCBaseController
 {
