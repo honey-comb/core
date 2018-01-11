@@ -2,7 +2,7 @@
     "general": {
         "packageName": "HCCore",
         "sequence": 0,
-        "namespace": "InteractiveSolutions\\HoneycombCore"
+        "namespace": "HoneyComb\\Core"
     },
     "formData": {
         "user": "HoneyComb\\Core\\Forms\\HCUserForm",
