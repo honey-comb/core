@@ -31,13 +31,13 @@
     <div class="row">
         <div class="col-md-3">
             <div class="input-group" style="padding-bottom: 20px;">
-                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <span class="input-group-addon"><i class="fas fa-search"></i></span>
                 <input id="searchInput" type="text" class="form-control" placeholder="Type To Filter">
             </div>
         </div>
 
         @if($config['permissions'] == '[]')
-            {{ trans('HCCore::acl_access.no_roles') }}
+            {{ trans('HCCore::core.no_roles') }}
         @else
             <div class="col-md-12">
                 <div id="roleList"></div>
@@ -54,7 +54,7 @@
         var updateUrl = "{{ $config['updateUrl'] }}";
         var permissions = {!!  $config['permissions'] !!};
         var currentRolesArray = {!! json_encode(auth()->user()->currentRolesArray()) !!};
-        var permissionsHeader = '{{ trans('HCCore::acl_access.permissions') }}'
+        var permissionsHeader = '{{ trans('HCCore::core.permissions') }}'
 
         jQuery(function () {
 
