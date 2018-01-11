@@ -18,7 +18,9 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
 
-                @include('HCCore::admin.user')
+                @include('HCCore::admin.partials.language')
+
+                @include('HCCore::admin.partials.user')
 
                 <li>
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>

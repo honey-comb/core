@@ -29,6 +29,7 @@ namespace HoneyComb\Core\Repositories;
 
 use HoneyComb\Core\Models\HCLanguage;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -65,6 +66,16 @@ class HCLanguageRepository extends HCBaseRepository
         }
 
         return $this->createBuilderQuery($request)->paginate($perPage, $columns)->appends($request->all());
+    }
+
+    /**
+     * Get all available admin languages
+     *
+     * @return Collection
+     */
+    public function getAdminActiveLanguages(): Collection
+    {
+        return $this->makeQuery()->where('back_end', '1')->get();
     }
 
     /**
