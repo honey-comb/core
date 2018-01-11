@@ -44,7 +44,7 @@ window.HCHelpers = {
     RenderAdminList: function (data) {
         ReactDOM.render(<HCAdminListView config={data}/>, document.getElementById('admin-list'))
     },
-    OpenPopUp: function (data) {
+    OpenHCPopUp: function (data) {
 
         let id = "hc-pop-up";
 

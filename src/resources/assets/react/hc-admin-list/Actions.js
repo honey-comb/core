@@ -145,7 +145,7 @@ export default class Actions extends Component {
 
     newAction() {
 
-        HCHelpers.OpenPopUp({url: this.props.form + "-form"});
+        HCHelpers.OpenHCPopUp({url: this.props.form + "-form"});
     }
 
     deleteAction() {
