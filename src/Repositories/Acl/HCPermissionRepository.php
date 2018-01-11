@@ -44,4 +44,20 @@ class HCPermissionRepository extends HCBaseRepository
     {
         return HCAclPermission::class;
     }
+
+    /**
+     * Deleting permission with and remove it from role_permission connection
+     *
+     * @param string $action
+     * @throws \Exception
+     */
+    public function deletePermission(string $action): void
+    {
+        /** @var HCAclPermission $permission */
+        $permission = $this->findOneBy(['action' => $action]);
+
+        $permission->roles()->detach();
+
+        $permission->forceDelete();
+    }
 }

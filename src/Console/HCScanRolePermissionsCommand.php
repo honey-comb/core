@@ -29,9 +29,10 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Console;
 
+use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
+use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use Illuminate\Console\Command;
 use HoneyComb\Core\Helpers\HCConfigParseHelper;
-use HoneyComb\Core\Models\Acl\HCAclPermission;
 use HoneyComb\Core\Models\Acl\HCAclRole;
 
 /**
@@ -70,7 +71,7 @@ class HCScanRolePermissionsCommand extends Command
     private $aclData;
 
     /**
-     * HCAclRole list holder
+     * Role list holder
      *
      * @var array
      */
@@ -82,14 +83,31 @@ class HCScanRolePermissionsCommand extends Command
     private $helper;
 
     /**
+     * @var HCPermissionRepository
+     */
+    private $permissionRepository;
+
+    /**
+     * @var HCRoleRepository
+     */
+    private $roleRepository;
+
+    /**
      * HCScanRolePermissionsCommand constructor.
      * @param HCConfigParseHelper $helper
+     * @param HCPermissionRepository $permissionRepository
+     * @param HCRoleRepository $roleRepository
      */
-    public function __construct(HCConfigParseHelper $helper)
-    {
+    public function __construct(
+        HCConfigParseHelper $helper,
+        HCPermissionRepository $permissionRepository,
+        HCRoleRepository $roleRepository
+    ) {
         parent::__construct();
 
         $this->helper = $helper;
+        $this->permissionRepository = $permissionRepository;
+        $this->roleRepository = $roleRepository;
     }
 
     /**
@@ -169,7 +187,7 @@ class HCScanRolePermissionsCommand extends Command
                 $this->removeDeletedPermissions($permission);
 
                 foreach ($permission['actions'] as $action) {
-                    $permissionId = HCAclPermission::firstOrCreate([
+                    $permissionId = $this->permissionRepository->makeQuery()->firstOrCreate([
                         'name' => $permission['name'],
                         'controller' => $permission['controller'],
                         'action' => $action,
@@ -192,13 +210,13 @@ class HCScanRolePermissionsCommand extends Command
     {
         $configActions = collect($permission['actions']);
 
-        $actions = HCAclPermission::where('name', $permission['name'])->pluck('action');
+        $actions = $this->permissionRepository->makeQuery()->where('name', $permission['name'])->pluck('action');
 
         $removedActions = $actions->diff($configActions);
 
-        if (!$removedActions->isEmpty()) {
+        if ($removedActions->isNotEmpty()) {
             foreach ($removedActions as $action) {
-                HCAclPermission::deletePermission($action);
+                $this->permissionRepository->deletePermission($action);
             }
         }
     }
@@ -212,7 +230,7 @@ class HCScanRolePermissionsCommand extends Command
     {
         if (array_key_exists('rolesActions', $aclData)) {
             foreach ($aclData['rolesActions'] as $role => $actions) {
-                $roleRecord = HCAclRole::firstOrCreate([
+                $roleRecord = $this->roleRepository->makeQuery()->firstOrCreate([
                     'slug' => $role,
                     'name' => ucfirst(str_replace(['-', '_'], ' ', $role)),
                 ]);
@@ -238,6 +256,7 @@ class HCScanRolePermissionsCommand extends Command
             $roleRecord->load('permissions');
 
             // get current role permissions
+            /** @var HCAclRole $roleRecord */
             $currentRolePermissions = $roleRecord->permissions->pluck('action')->toArray();
 
             // if role already has permissions
@@ -256,7 +275,9 @@ class HCScanRolePermissionsCommand extends Command
             // if role doesn't have any permissions than create it
 
             // get all permissions
-            $permissions = HCAclPermission::whereIn('action', $allRolesActions[$roleRecord->slug])->get();
+            $permissions = $this->permissionRepository->makeQuery()
+                ->whereIn('action', $allRolesActions[$roleRecord->slug])
+                ->get();
 
             // sync permissions
             $roleRecord->permissions()->sync($permissions->pluck('id'));
