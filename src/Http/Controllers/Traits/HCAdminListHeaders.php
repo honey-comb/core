@@ -44,4 +44,18 @@ trait HCAdminListHeaders
             'label' => $label,
         ];
     }
+
+    /**
+     * Admin header checkBox type
+     *
+     * @param string $label
+     * @return array
+     */
+    protected function headerCheckBox (string $label)
+    {
+        return [
+            'type' => 'checkBox',
+            'label' => $label
+        ];
+    }
 }
