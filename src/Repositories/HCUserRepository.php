@@ -73,9 +73,9 @@ class HCUserRepository extends HCBaseRepository
      * Soft delete users
      *
      * @param array $userIds
-     * @return mixed
+     * @return int
      */
-    public function deleteSoft(array $userIds)
+    public function deleteSoft(array $userIds): int
     {
         return $this->makeQuery()->whereIn('id', $userIds)->delete();
     }
@@ -84,9 +84,9 @@ class HCUserRepository extends HCBaseRepository
      * Restore soft deleted users
      *
      * @param array $userIds
-     * @return mixed
+     * @return int
      */
-    public function restore(array $userIds)
+    public function restore(array $userIds): int
     {
         return $this->makeQuery()->whereIn('id', $userIds)->restore();
     }
@@ -95,9 +95,9 @@ class HCUserRepository extends HCBaseRepository
      * Force delete users by given id
      *
      * @param array $userIds
-     * @return mixed
+     * @return int
      */
-    public function deleteForce(array $userIds)
+    public function deleteForce(array $userIds): int
     {
         return $this->makeQuery()->whereIn('id', $userIds)->forceDelete();
     }
