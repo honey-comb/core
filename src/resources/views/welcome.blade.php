@@ -67,6 +67,10 @@
 <body>
 <div class="flex-center position-ref full-height">
     <div class="top-right links">
+        @if(session()->has('front-end'))
+            <a href="#">{{ session('front-end') }}</a>
+        @endif
+
         @if (Auth::check())
             <a href="{{ url(config('hc.admin_url')) }}">Admin</a>
             <a href="{{ route('auth.logout') }}">Logout</a>
