@@ -53,6 +53,7 @@ return [
     'last_activity' => 'Paskutinis aktyvumas',
     'roles' => 'Rolės',
     'activity' => 'Veikla',
+    'activated_at' => 'Aktyvuotas',
 
     'tabs' => [
         'main' => 'Pagrindinis',

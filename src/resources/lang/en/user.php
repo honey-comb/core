@@ -43,7 +43,7 @@ return [
     'companyName' => 'Company Name',
     'companyCode' => 'Company Code',
     'companyVat' => 'Company VAT',
-    'role_groups' => 'HCAclRole',
+    'role_groups' => 'Role groups',
     'male' => 'Male',
     'female' => 'Female',
     'provider' => 'Provider',
@@ -51,8 +51,9 @@ return [
     'active_true' => 'Yes',
     'last_login' => 'Last login',
     'last_activity' => 'Last activity',
-    'roles' => 'HCAclRole',
+    'roles' => 'Roles',
     'activity' => 'Activity',
+    'activated_at' => 'Activated',
 
     'tabs' => [
         'main' => 'Main',
