@@ -33,9 +33,9 @@ Route::prefix(config('hc.admin_url'))
     ->group(function () {
         Route::get('users/roles', 'HCRoleController@index')
             ->name('admin.acl.role.index')
-            ->middleware('acl:interactivesolutions_honeycomb_acl_role_list');
+            ->middleware('acl:honey_comb_core_acl_role_list');
 
         Route::put('api/users/roles/permissions', 'HCRoleController@updatePermissions')
             ->name('admin.acl.role.update.permissions')
-            ->middleware('acl:interactivesolutions_honeycomb_acl_role_update');
+            ->middleware('acl:honey_comb_core_acl_role_update');
     });

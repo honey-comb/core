@@ -41,6 +41,7 @@ use HoneyComb\Core\Services\HCUserService;
 class HCUserController extends HCBaseController
 {
     use HCAdminListHeaders;
+
     /**
      * @var Connection
      */
@@ -81,7 +82,7 @@ class HCUserController extends HCBaseController
             'url' => route('admin.api.user'),
             'form' => route('admin.api.form-manager', ['user']),
             'headers' => $this->getTableColumns(),
-            'actions' => $this->getActions('interactivesolutions_honeycomb_user'),
+            'actions' => $this->getActions('honey_comb_core_user'),
         ];
 
         return view('HCCore::admin.service.index', ['config' => $config]);

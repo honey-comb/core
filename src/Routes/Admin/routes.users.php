@@ -34,45 +34,45 @@ Route::prefix(config('hc.admin_url'))
 
         Route::get('users', 'HCUserController@index')
             ->name('admin.user.index')
-            ->middleware('acl:interactivesolutions_honeycomb_user_list');
+            ->middleware('acl:honey_comb_core_user_list');
 
         Route::prefix('api/user')->group(function () {
 
             Route::get('/', 'HCUserController@getListPaginate')
                 ->name('admin.api.user')
-                ->middleware('acl:interactivesolutions_honeycomb_user_list');
+                ->middleware('acl:honey_comb_core_user_list');
 
             Route::post('/', 'HCUserController@store')
-                ->middleware('acl:interactivesolutions_honeycomb_user_create');
+                ->middleware('acl:honey_comb_core_user_create');
 
             Route::get('list', 'HCUserController@getList')
                 ->name('admin.api.user.list')
-                ->middleware('acl:interactivesolutions_honeycomb_user_list');
+                ->middleware('acl:honey_comb_core_user_list');
 
             Route::delete('/', 'HCUserController@deleteSoft')
                 ->name('admin.api.user')
-                ->middleware('acl:interactivesolutions_honeycomb_user_delete');
+                ->middleware('acl:honey_comb_core_user_delete');
 
             Route::post('restore', 'HCUserController@restore')
                 ->name('admin.api.user.restore')
-                ->middleware('acl:interactivesolutions_honeycomb_user_update');
+                ->middleware('acl:honey_comb_core_user_update');
 
             Route::delete('force', 'HCUserController@deleteForce')
                 ->name('admin.api.user.destroy.force')
-                ->middleware('acl:interactivesolutions_honeycomb_user_force_delete');
+                ->middleware('acl:honey_comb_core_user_force_delete');
 
             Route::prefix('{id}')->group(function () {
                 Route::get('/', 'HCUserController@getById')
                     ->name('admin.api.user.single')
-                    ->middleware('acl:interactivesolutions_honeycomb_user_list');
+                    ->middleware('acl:honey_comb_core_user_list');
 
                 Route::put('/', 'HCUserController@update')
                     ->name('admin.api.user.update')
-                    ->middleware('acl:interactivesolutions_honeycomb_user_update');
+                    ->middleware('acl:honey_comb_core_user_update');
 
                 Route::patch('strict', 'HCUserController@patch')
                     ->name('admin.api.user.patch')
-                    ->middleware('acl:interactivesolutions_honeycomb_user_update');
+                    ->middleware('acl:honey_comb_core_user_update');
             });
         });
     });
