@@ -10,12 +10,25 @@ export default class TBCell extends Component {
         super(props);
 
         this.state = {
-            value: false, //this.props.value
-            url: this.props.url + '/' + this.props.id
+            url: this.props.url + '/' + this.props.id,
+            internalUpdate: false,
+            value: this.props.value
         };
 
         this.getCheckBox = this.getCheckBox.bind(this);
         this.updateStrict = this.updateStrict.bind(this);
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+
+        if (this.state.internalUpdate) {
+            this.state.internalUpdate = false;
+            this.state.value = nextProps.value;
+        }
+        else {
+            this.state.url = this.props.url + '/' + nextProps.id;
+            this.state.value = nextProps.value;
+        }
     }
 
     render() {
@@ -26,7 +39,7 @@ export default class TBCell extends Component {
         switch (this.props.config.type) {
             case "text" :
 
-                return this.props.value;
+                return this.state.value;
 
             case "checkBox" :
 
@@ -44,6 +57,8 @@ export default class TBCell extends Component {
         let value = !this.state.value;
         let params = {};
         params[this.props.fieldKey] = value;
+
+        this.state.internalUpdate = true;
 
         axios.patch(this.state.url, params)
             .then(res => {
