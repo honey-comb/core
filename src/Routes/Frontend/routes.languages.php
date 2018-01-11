@@ -28,5 +28,8 @@
 declare(strict_types = 1);
 
 Route::namespace('Frontend')->middleware('web')->group(function () {
-    Route::get('language/change/{location}/{lang}', 'HCLanguageController@change')->name('language.change');
+    Route::get('language/change/{location}/{lang}', 'HCLanguageController@change')
+        ->name('language.change')
+        ->where('location', '(front-end|back-end|content)')
+        ->where('lang', '^[a-z]{2}$');
 });

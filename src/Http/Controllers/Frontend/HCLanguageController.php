@@ -33,6 +33,8 @@ use HoneyComb\Core\Repositories\HCLanguageRepository;
 use Illuminate\Database\Connection;
 use HoneyComb\Core\Helpers\HCFrontendResponse;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class HCLanguageController extends HCBaseController
 {
@@ -57,46 +59,75 @@ class HCLanguageController extends HCBaseController
      * @param HCLanguageRepository $languageRepository
      * @param HCFrontendResponse $response
      */
-    public function __construct(Connection $connection, HCLanguageRepository $languageRepository, HCFrontendResponse $response)
-    {
+    public function __construct(
+        Connection $connection,
+        HCLanguageRepository $languageRepository,
+        HCFrontendResponse $response
+    ) {
         $this->connection = $connection;
         $this->response = $response;
         $this->languageRepository = $languageRepository;
     }
 
-    public function changeLanguage(string $location, string $lang)
+    /**
+     * Change language
+     *
+     * @param Request $request
+     * @param string $location
+     * @param string $lang
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Container\EntryNotFoundException
+     */
+    public function change(Request $request, string $location, string $lang)
     {
         switch ($location) {
             case 'front-end' :
+                if (!$this->languageRepository->isAvailableForChange($lang, 'front_end')) {
+                    if ($request->wantsJson()) {
+                        return $this->response->error(trans('HCCore::core.language_not_found'));
+                    }
 
-                if (in_array($lang, getHCFrontEndLanguages())) {
-                    session('front-end', $lang);
-                    session('content', $lang);
-                } else {
-                    return $this->response->error(trans('HCCore::core.language_not_found'));
+                    return redirect()->back()->withErrors(trans('HCCore::core.language_not_found'));
                 }
+
+                session()->put('front-end', $lang);
+                session()->put('content', $lang);
 
                 break;
 
             case 'back-end' :
+                if (!$this->languageRepository->isAvailableForChange($lang, 'back_end')) {
+                    if ($request->wantsJson()) {
+                        return $this->response->error(trans('HCCore::core.language_not_found'));
+                    }
 
-                if (in_array($lang, getHCBackEndLanguages())) {
-                    session()->put('back-end', $lang);
-                } else {
-                    return $this->response->error(trans('HCCore::core.language_not_found'));
+                    return redirect()->back()->withErrors(trans('HCCore::core.language_not_found'));
                 }
+
+                session()->put('back-end', $lang);
 
                 break;
 
             case 'content' :
+                if (!$this->languageRepository->isAvailableForChange($lang, 'content')) {
+                    if ($request->wantsJson()) {
+                        return $this->response->error(trans('HCCore::core.language_not_found'));
+                    }
 
-                if (in_array($lang, getHCContentLanguages())) {
-                    session()->put('content', $lang);
-                } else {
-                    return $this->response->error(trans('HCCore::core.language_not_found'));
+                    return redirect()->back()->withErrors(trans('HCCore::core.language_not_found'));
                 }
 
+                session()->put('content', $lang);
                 break;
+
+            default:
+                return $this->response->error(trans('HCCore::core.language_not_found'));
         }
+
+        if ($request->wantsJson()) {
+            return $this->response->success('Language changed');
+        }
+
+        return redirect()->back();
     }
 }

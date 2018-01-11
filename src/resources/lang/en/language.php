@@ -12,4 +12,5 @@ return [
     'front_end' => 'Front end',
     'back_end' => 'Back end',
     'content' => 'Content',
+    'select_language' => 'Select language',
 ];

@@ -27,37 +27,55 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Repositories\Acl;
+namespace HoneyComb\Core\Http\Controllers\Traits;
 
-use HoneyComb\Core\Models\Acl\HCAclPermission;
-use HoneyComb\Core\Repositories\HCBaseRepository;
-use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
+use Illuminate\Cache\RateLimiter;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use HCLog;
 
-class HCPermissionRepository extends HCBaseRepository
+/**
+ * Trait HCUserThrottle
+ * @package HoneyComb\Core\Http\Controllers\Traits
+ */
+trait HCUserThrottle
 {
-    use HCQueryBuilderTrait;
-    
+
+    use ThrottlesLogins;
+
     /**
-     * @return string
+     * Redirect the user after determining they are locked out.
+     *
+     * @param  Request $request
+     * @return JsonResponse
      */
-    public function model(): string
+    protected function sendLockoutResponse(Request $request): JsonResponse
     {
-        return HCAclPermission::class;
+        $seconds = app(RateLimiter::class)->availableIn(
+            $this->getThrottleKey($request)
+        );
+
+        return HCLog::error('AUTH-003', trans('HCCore::user.errors.to_many_attempts', ['seconds' => $seconds]));
     }
 
     /**
-     * Deleting permission with and remove it from role_permission connection
+     * Determine if the class is using the ThrottlesLogins trait.
      *
-     * @param string $action
-     * @throws \Exception
+     * @return bool
      */
-    public function deletePermission(string $action): void
+    protected function isUsingThrottlesLoginTrait(): bool
     {
-        /** @var HCAclPermission $permission */
-        $permission = $this->findOneBy(['action' => $action]);
+        return in_array(ThrottlesLogins::class, class_uses_recursive(get_class($this)));
+    }
 
-        $permission->roles()->detach();
-
-        $permission->forceDelete();
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function loginUsername(): string
+    {
+        return property_exists($this, 'username') ? auth()->username : 'email';
     }
 }

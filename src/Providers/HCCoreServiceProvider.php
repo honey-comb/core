@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Providers;
 
+use HoneyComb\Core\Http\Middleware\HCCheckSelectedLanguage;
 use HoneyComb\Core\Repositories\HCLanguageRepository;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Routing\Router;
@@ -130,8 +131,14 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
             $this->app->register(LaravelLogViewerServiceProvider::class);
         }
 
+        $this->app->register(HCComposerServiceProvider::class);
+
         $this->mergeConfigFrom(
             $this->packagePath('config/hc.php'), 'hc'
+        );
+
+        $this->mergeConfigFrom(
+            $this->packagePath('config/services.php'), 'services'
         );
 
         $this->registerRepositories();
@@ -174,6 +181,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
 
         $router->pushMiddleWareToGroup('web', HCACLAdminMenu::class);
         $router->pushMiddleWareToGroup('web', HCLogLastActivity::class);
+        $router->pushMiddleWareToGroup('web', HCCheckSelectedLanguage::class);
     }
 
 

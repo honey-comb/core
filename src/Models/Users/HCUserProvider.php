@@ -27,55 +27,39 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Controllers\Traits;
+namespace HoneyComb\Core\Models\Users;
 
-use Illuminate\Cache\RateLimiter;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use HCLog;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Models\HCUuidModel;
 
-/**
- * Trait HCUsersThrottle
- * @package HoneyComb\Core\Http\Controllers\Traits
- */
-trait HCUsersThrottle
+class HCUserProvider extends HCUuidModel
 {
-
-    use ThrottlesLogins;
+    /**
+     * Table name
+     *
+     * @var string
+     */
+    protected $table = 'hc_user_providers';
 
     /**
-     * Redirect the user after determining they are locked out.
+     * Fillable fields
      *
-     * @param  Request $request
-     * @return JsonResponse
+     * @var array
      */
-    protected function sendLockoutResponse(Request $request): JsonResponse
-    {
-        $seconds = app(RateLimiter::class)->availableIn(
-            $this->getThrottleKey($request)
-        );
-
-        return HCLog::error('AUTH-003', trans('HCCore::user.errors.to_many_attempts', ['seconds' => $seconds]));
-    }
+    protected $fillable = [
+        'id',
+        'user_id',
+        'user_provider_id',
+        'provider',
+        'response',
+    ];
 
     /**
-     * Determine if the class is using the ThrottlesLogins trait.
-     *
-     * @return bool
+     * @return BelongsTo
      */
-    protected function isUsingThrottlesLoginTrait(): bool
+    public function user(): BelongsTo
     {
-        return in_array(ThrottlesLogins::class, class_uses_recursive(get_class($this)));
-    }
-
-    /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
-    public function loginUsername(): string
-    {
-        return property_exists($this, 'username') ? auth()->username : 'email';
+        return $this->belongsTo(HCUser::class, 'user_id', 'id');
     }
 }

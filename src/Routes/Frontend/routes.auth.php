@@ -38,4 +38,11 @@ Route::prefix('auth')->namespace('Frontend')->middleware('web')->group(function 
     Route::post('activation', 'HCAuthController@activate')->name('auth.activation.post');
 
     Route::get('logout', 'HCAuthController@logout')->name('auth.logout')->middleware('auth');
+
+    Route::get('login/{provider}', 'HCSocialiteAuthController@redirectToProvider')
+        ->name('login.socialite')
+        ->where('provider', '(facebook|twitter|github|linkedin|bitbucket|google)');
+
+    Route::get('login/{provider}/callback', 'HCSocialiteAuthController@handleProviderCallback')
+        ->where('provider', '(facebook|twitter|github|linkedin|bitbucket|google)');
 });

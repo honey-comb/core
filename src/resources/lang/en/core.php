@@ -57,6 +57,8 @@ return [
     'phone' => 'Phone',
     'fax' => 'Fax',
     'birthday' => 'Birthday',
+    'permissions' => 'Permissions',
+    'no_roles' => 'No roles found',
 
     'buttons' => [
         'submit' => 'Submit',

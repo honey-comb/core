@@ -43,7 +43,7 @@ return [
     'companyName' => 'Company Name',
     'companyCode' => 'Company Code',
     'companyVat' => 'Company VAT',
-    'role_groups' => 'HCAclRole',
+    'role_groups' => 'Role groups',
     'male' => 'Male',
     'female' => 'Female',
     'provider' => 'Provider',
@@ -51,8 +51,9 @@ return [
     'active_true' => 'Yes',
     'last_login' => 'Last login',
     'last_activity' => 'Last activity',
-    'roles' => 'HCAclRole',
+    'roles' => 'Roles',
     'activity' => 'Activity',
+    'activated_at' => 'Activated',
 
     'tabs' => [
         'main' => 'Main',
@@ -109,7 +110,14 @@ return [
         ],
     ],
 
-    'connect_with_fb' => 'Connect with <strong>Facebook</strong>',
+    'socialite' => [
+        'facebook' => 'Connect with <strong>Facebook</strong>',
+        'google' => 'Connect with <strong>Google</strong>',
+        'bitbucket' => 'Connect with <strong>Bitbucket</strong>',
+        'linkedin' => 'Connect with <strong>LinkedIn</strong>',
+        'twitter' => 'Connect with <strong>Twitter</strong>',
+        'github' => 'Connect with <strong>Github</strong>',
+    ],
 
     'facebook' => [
         'title' => 'Facebook',

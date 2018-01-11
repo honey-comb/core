@@ -27,8 +27,9 @@
 
 namespace HoneyComb\Core\Repositories;
 
-use HoneyComb\Core\Models\HCLanguage;;
+use HoneyComb\Core\Models\HCLanguage;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -65,5 +66,27 @@ class HCLanguageRepository extends HCBaseRepository
         }
 
         return $this->createBuilderQuery($request)->paginate($perPage, $columns)->appends($request->all());
+    }
+
+    /**
+     * Get all available admin languages
+     *
+     * @return Collection
+     */
+    public function getAdminActiveLanguages(): Collection
+    {
+        return $this->makeQuery()->where('back_end', '1')->get();
+    }
+
+    /**
+     * Check if given language is available to access
+     *
+     * @param string $lang
+     * @param string $location
+     * @return bool
+     */
+    public function isAvailableForChange(string $lang, string $location): bool
+    {
+        return $this->makeQuery()->where(['iso_639_1' => $lang, $location => 1])->exists();
     }
 }

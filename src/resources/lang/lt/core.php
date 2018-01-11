@@ -50,6 +50,8 @@ return [
     'neutral' => 'Neutralus',
     'countries' => 'Šalys',
     'regions' => 'Regionai',
+    'permissions' => 'Leidimai',
+    'no_roles' => 'Nerasta rolių',
 
     'buttons' => [
         'submit' => 'Pateikti',

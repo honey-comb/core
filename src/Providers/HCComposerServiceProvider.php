@@ -27,37 +27,23 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Repositories\Acl;
+namespace HoneyComb\Core\Providers;
 
-use HoneyComb\Core\Models\Acl\HCAclPermission;
-use HoneyComb\Core\Repositories\HCBaseRepository;
-use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
+use HoneyComb\Core\Repositories\HCLanguageRepository;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\View\View;
 
-class HCPermissionRepository extends HCBaseRepository
+/**
+ * Class HCViewComposer
+ * @package HoneyComb\Core\Providers
+ */
+class HCComposerServiceProvider extends ServiceProvider
 {
-    use HCQueryBuilderTrait;
-    
-    /**
-     * @return string
-     */
-    public function model(): string
+    public function boot()
     {
-        return HCAclPermission::class;
-    }
-
-    /**
-     * Deleting permission with and remove it from role_permission connection
-     *
-     * @param string $action
-     * @throws \Exception
-     */
-    public function deletePermission(string $action): void
-    {
-        /** @var HCAclPermission $permission */
-        $permission = $this->findOneBy(['action' => $action]);
-
-        $permission->roles()->detach();
-
-        $permission->forceDelete();
+        // Using Closure based composers...
+        view()->composer('admin.partials.language', function (View $view) {
+            $view->with('adminLanguages', $this->app->make(HCLanguageRepository::class)->getAdminActiveLanguages());
+        });
     }
 }

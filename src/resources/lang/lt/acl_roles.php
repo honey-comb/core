@@ -26,6 +26,7 @@
  */
 
 return [
+    'page_title' => 'Rolės',
     'id' => 'Id',
     'count' => 'Numeris',
     'created_at' => 'Sukurta',
@@ -35,5 +36,4 @@ return [
     'slug' => 'Slug',
     'role_id' => 'Rolės id',
     'permission_id' => 'Leidimo id',
-    'page_title' => 'Rolės',
 ];

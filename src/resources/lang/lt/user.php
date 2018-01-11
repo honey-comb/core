@@ -53,6 +53,7 @@ return [
     'last_activity' => 'Paskutinis aktyvumas',
     'roles' => 'Rolės',
     'activity' => 'Veikla',
+    'activated_at' => 'Aktyvuotas',
 
     'tabs' => [
         'main' => 'Pagrindinis',
@@ -109,7 +110,14 @@ return [
         ],
     ],
 
-    'connect_with_fb' => 'Prisijungti su <strong>Facebook</strong>',
+    'socialite' => [
+        'facebook' => 'Prisijungti su <strong>Facebook</strong>',
+        'google' => 'Prisijungti su <strong>Google</strong>',
+        'bitbucket' => 'Prisijungti su <strong>Bitbucket</strong>',
+        'linkedin' => 'Prisijungti su <strong>LinkedIn</strong>',
+        'twitter' => 'Prisijungti su <strong>Twitter</strong>',
+        'github' => 'Prisijungti su <strong>Github</strong>',
+    ],
 
     'facebook' => [
         'title' => 'Facebook',

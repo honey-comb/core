@@ -80,19 +80,6 @@ class HCAclPermission extends HCUuidModel
     ];
 
     /**
-     * Deleting permission
-     *
-     * @param string $action
-     * @throws \Exception
-     */
-    public static function deletePermission(string $action): void
-    {
-        $permission = HCAclPermission::where('action', $action)->first();
-        RolesPermissionsConnections::where('permission_id', $permission->id)->forceDelete();
-        $permission->forceDelete();
-    }
-
-    /**
      * A permission can be applied to roles.
      *
      * @return BelongsToMany

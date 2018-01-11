@@ -26,14 +26,14 @@
  */
 
 return [
+    'page_title' => 'Roles',
     'id' => 'Id',
     'count' => 'Count',
-    'created_at' => 'Created at',
-    'updated_at' => 'Updated at',
-    'deleted_at' => 'Deleted at',
+    'created_at' => 'Created',
+    'updated_at' => 'Updated',
+    'deleted_at' => 'Deleted',
     'name' => 'Name',
     'slug' => 'Slug',
-    'role_id' => 'Role id',
-    'permission_id' => 'Permission id',
-    'page_title' => 'HCAclRole',
+    'role_id' => 'Role',
+    'permission_id' => 'Permission',
 ];

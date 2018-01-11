@@ -29,8 +29,6 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
-use DB;
-use HCLog;
 use Illuminate\Database\Connection;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;

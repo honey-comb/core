@@ -27,37 +27,32 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Repositories\Acl;
+namespace HoneyComb\Core\Http\Middleware;
 
-use HoneyComb\Core\Models\Acl\HCAclPermission;
-use HoneyComb\Core\Repositories\HCBaseRepository;
-use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
+use Closure;
+use Illuminate\Http\Request;
 
-class HCPermissionRepository extends HCBaseRepository
+/**
+ * Class HCCheckSelectedLanguage
+ * @package HoneyComb\Core\Http\Middleware
+ */
+class HCCheckSelectedLanguage
 {
-    use HCQueryBuilderTrait;
-    
     /**
-     * @return string
+     * @param Request $request
+     * @param Closure $next
+     * @return mixed
+     * @throws \Illuminate\Container\EntryNotFoundException
      */
-    public function model(): string
+    public function handle(Request $request, Closure $next)
     {
-        return HCAclPermission::class;
-    }
+        if ($request->segment(1) == 'admin') {
+            app()->setLocale(session()->get('back-end', app()->getLocale()));
+        } else {
+            // TODO handle front end language
+            app()->setLocale(session()->get('font-end', app()->getLocale()));
+        }
 
-    /**
-     * Deleting permission with and remove it from role_permission connection
-     *
-     * @param string $action
-     * @throws \Exception
-     */
-    public function deletePermission(string $action): void
-    {
-        /** @var HCAclPermission $permission */
-        $permission = $this->findOneBy(['action' => $action]);
-
-        $permission->roles()->detach();
-
-        $permission->forceDelete();
+        return $next($request);
     }
 }

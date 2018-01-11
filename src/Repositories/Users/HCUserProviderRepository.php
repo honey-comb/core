@@ -27,37 +27,39 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Repositories\Acl;
+namespace HoneyComb\Core\Repositories\Users;
 
-use HoneyComb\Core\Models\Acl\HCAclPermission;
+use HoneyComb\Core\Models\Users\HCUserProvider;
 use HoneyComb\Core\Repositories\HCBaseRepository;
-use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 
-class HCPermissionRepository extends HCBaseRepository
+class HCUserProviderRepository extends HCBaseRepository
 {
-    use HCQueryBuilderTrait;
-    
     /**
      * @return string
      */
     public function model(): string
     {
-        return HCAclPermission::class;
+        return HCUserProvider::class;
     }
 
     /**
-     * Deleting permission with and remove it from role_permission connection
-     *
-     * @param string $action
-     * @throws \Exception
+     * @param string $userId
+     * @param string $providerUserId
+     * @param string $provider
+     * @param string $providerData
+     * @return mixed
      */
-    public function deletePermission(string $action): void
-    {
-        /** @var HCAclPermission $permission */
-        $permission = $this->findOneBy(['action' => $action]);
-
-        $permission->roles()->detach();
-
-        $permission->forceDelete();
+    public function createProvider(
+        string $userId,
+        string $providerUserId,
+        string $provider,
+        string $providerData
+    ): HCUserProvider {
+        return $this->makeQuery()->create([
+            'user_id' => $userId,
+            'user_provider_id' => $providerUserId,
+            'provider' => $provider,
+            'response' => $providerData,
+        ]);
     }
 }

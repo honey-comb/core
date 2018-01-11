@@ -36,6 +36,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\DatabaseNotification;
@@ -48,6 +49,7 @@ use HoneyComb\Core\Models\Traits\HCUserRoles;
 use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
 use HoneyComb\Core\Notifications\HCAdminWelcomeEmail;
 use HoneyComb\Core\Notifications\HCResetPassword;
+use HoneyComb\Core\Models\Users\HCUserProvider;
 
 /**
  * Class HCUser
@@ -145,7 +147,7 @@ class HCUser extends HCUuidModel implements AuthenticatableContract, Authorizabl
     public function updateLastLogin(string $time = null): void
     {
         $this->timestamps = false;
-        $this->last_login = $time ? $time : $this->freshTimestamp();
+        $this->last_login = is_null($time) ? $this->freshTimestamp() : $time;
         $this->save();
 
         $this->updateLastActivity();
@@ -159,7 +161,7 @@ class HCUser extends HCUuidModel implements AuthenticatableContract, Authorizabl
     public function updateLastActivity(string $time = null): void
     {
         $this->timestamps = false;
-        $this->last_activity = $time ? $time : $this->freshTimestamp();
+        $this->last_activity = is_null($time) ? $this->freshTimestamp() : $time;
         $this->save();
     }
 
@@ -200,5 +202,15 @@ class HCUser extends HCUuidModel implements AuthenticatableContract, Authorizabl
     public function personal(): HasOne
     {
         return $this->hasOne(HCUserPersonalInfo::class, 'user_id', 'id');
+    }
+
+    /**
+     * Has many providers
+     *
+     * @return HasMany
+     */
+    public function providers(): HasMany
+    {
+        return $this->hasMany(HCUserProvider::class, 'user_id', 'id');
     }
 }
