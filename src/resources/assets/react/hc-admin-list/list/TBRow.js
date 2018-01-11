@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import TBCell from "./cells/TBCell";
 
-export default class Row extends Component {
+export default class TBRow extends Component {
 
     constructor(props) {
         super(props);
@@ -20,7 +21,7 @@ export default class Row extends Component {
 
         let selectedClass = this.state.selected ? "selected" : "";
 
-        return <tr id={this.props.record.id} className={selectedClass} key={this.props.key}>
+        return <tr id={this.props.record.id} className={selectedClass}>
             <td hidden={this.props.hideCheckBox}
                 onClick={this.handleRowCheckBoxClick}>
                 <input type="checkbox"
@@ -28,23 +29,14 @@ export default class Row extends Component {
             </td>
 
             {Object.keys(this.props.headers).map((item, i) => (
-                this.getDataRowField(item, this.props.record[item], i)
+                <TBCell config={this.props.headers[item]}
+                        value={this.props.record[item]}
+                        key={i}
+                        fieldKey={item}
+                        id={this.props.record.id}
+                        url={this.props.url}/>
             ))}
         </tr>
-    }
-
-    getDataRowField(id, value, key) {
-        if (id === 'id')
-            return <td key={key}
-                       hidden={true}>{value}</td>;
-
-        switch (this.props.headers[id].type) {
-            case 'text' :
-
-                break;
-        }
-
-        return <td key={key}>{value}</td>;
     }
 
     handleRowCheckBoxClick() {

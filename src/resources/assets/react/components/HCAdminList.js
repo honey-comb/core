@@ -94,6 +94,7 @@ export default class HCAdminListView extends Component {
                     reload={this.reload}
                 />
                 <List
+                    url={this.props.config.url}
                     headers={this.props.config.headers}
                     perPage={this.props.config.perPage}
                     hideCheckBox={this.state.hideCheckBox}

@@ -3,7 +3,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 let classNames = require('classnames');
 
-export default class THField extends Component {
+export default class THCell extends Component {
 
     constructor(props) {
         super(props);
@@ -23,9 +23,7 @@ export default class THField extends Component {
     }
 
     render() {
-        return <th tabIndex="0"
-                   key={this.props.theKey}
-        >
+        return <th tabIndex="0">
             <div className={this.state.className}>
                 <FontAwesomeIcon onClick={(e) => {
                     if (this.state.flip === undefined)
@@ -33,7 +31,7 @@ export default class THField extends Component {
                     else
                         this.state.flip = undefined;
 
-                    this.props.onSortOrderChange(this.props.theKey);
+                    this.props.onSortOrderChange(this.props.field);
                 }}
                                  icon={HCHelpers.faIcon("sort-amount-down" )} flip={this.state.flip}/>
             </div>

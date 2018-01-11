@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Row from "./list/Row";
+import TDRow from "./list/TBRow";
 import THRow from "./list/THRow";
 
 const uuid = require('uuid/v4');
@@ -128,8 +128,12 @@ export default class List extends Component {
         this.state.rows = [];
 
         this.props.records.data.map((item, i) => (
-            this.state.rows.push(<Row key={i} record={item} headers={this.props.headers}
-                                      globalSelection={this.state.globalSelection} onChange={this.singleRowSelect}/>)
+            this.state.rows.push(<TDRow key={i}
+                                        url={this.props.url}
+                                        record={item}
+                                        headers={this.props.headers}
+                                        globalSelection={this.state.globalSelection}
+                                        onChange={this.singleRowSelect}/>)
         ));
 
         return this.state.rows;

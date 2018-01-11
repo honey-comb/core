@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import THField from "./ht-row/THField";
+import THCell from "./cells/THCell";
 
 export default class THRow extends Component {
 
@@ -27,17 +27,20 @@ export default class THRow extends Component {
                        onChange={this.props.invertAll}/>
             </th>
             {Object.keys(this.props.headers).map((item, i) => (
-                    this.getTHField(item)
+                <THCell label={this.props.headers[item].label}
+                        key={item}
+                        field={item}
+                        active={this.state.thFields[item]}
+                        onSortOrderChange={this.onSortOrderChange}/>
                 )
             )}
         </tr>
     }
 
-    getTHField(key)
-    {
-        return <THField label={this.props.headers[key].label} key={key} active={this.state.thFields[key]} theKey={key} onSortOrderChange={this.onSortOrderChange}/>;
-    }
-
+    /**
+     * sorting order update
+     * @param key
+     */
     onSortOrderChange (key)
     {
         this.state.thFields[this.state.sort_by] = false;
