@@ -147,7 +147,7 @@ class HCUser extends HCUuidModel implements AuthenticatableContract, Authorizabl
     public function updateLastLogin(string $time = null): void
     {
         $this->timestamps = false;
-        $this->last_login = $time ? $time : $this->freshTimestamp();
+        $this->last_login = is_null($time) ? $this->freshTimestamp() : $time;
         $this->save();
 
         $this->updateLastActivity();
@@ -161,7 +161,7 @@ class HCUser extends HCUuidModel implements AuthenticatableContract, Authorizabl
     public function updateLastActivity(string $time = null): void
     {
         $this->timestamps = false;
-        $this->last_activity = $time ? $time : $this->freshTimestamp();
+        $this->last_activity = is_null($time) ? $this->freshTimestamp() : $time;
         $this->save();
     }
 
