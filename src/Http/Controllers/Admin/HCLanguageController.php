@@ -64,8 +64,11 @@ class HCLanguageController extends HCBaseController
      * @param HCLanguageRepository $languageRepository
      * @param HCFrontendResponse $response
      */
-    public function __construct(Connection $connection, HCLanguageRepository $languageRepository, HCFrontendResponse $response)
-    {
+    public function __construct(
+        Connection $connection,
+        HCLanguageRepository $languageRepository,
+        HCFrontendResponse $response
+    ) {
         $this->connection = $connection;
         $this->response = $response;
         $this->languageRepository = $languageRepository;
@@ -134,41 +137,5 @@ class HCLanguageController extends HCBaseController
         $this->languageRepository->update($request->getStrictUpdateValues(), $languageId);
 
         return $this->response->success('Updated');
-    }
-
-    public function changeLanguage(string $location, string $lang)
-    {
-        switch ($location) {
-            case 'front-end' :
-
-                if (in_array($lang, getHCFrontEndLanguages())) {
-                    session('front-end', $lang);
-                    session('content', $lang);
-                } else {
-                    return HCLog::error('L-001', trans('HCTranslations::core.language_not_found'));
-                }
-
-                break;
-
-            case 'back-end' :
-
-                if (in_array($lang, getHCBackEndLanguages())) {
-                    Session::set('back-end', $lang);
-                } else {
-                    return HCLog::error('L-002', trans('HCTranslations::core.language_not_found'));
-                }
-
-                break;
-
-            case 'content' :
-
-                if (in_array($lang, getHCContentLanguages())) {
-                    Session::set('content', $lang);
-                } else {
-                    return HCLog::error('L-003', trans('HCTranslations::core.language_not_found'));
-                }
-
-                break;
-        }
     }
 }
