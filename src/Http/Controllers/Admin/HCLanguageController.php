@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Controllers\Admin;
 
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
+use HoneyComb\Core\Http\Requests\HCLanguageRequest;
 use HoneyComb\Core\Repositories\HCLanguageRepository;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
@@ -56,13 +57,6 @@ class HCLanguageController extends HCBaseController
      * @var HCLanguageRepository
      */
     private $languageRepository;
-
-    /**
-     * List of available keys for strict update
-     *
-     * @var array
-     */
-    protected $strictUpdateKeys = ['content', 'front_end', 'back_end'];
 
     /**
      * HCUsersController constructor.
@@ -131,14 +125,15 @@ class HCLanguageController extends HCBaseController
     /**
      * Updates existing specific items based on ID
      *
-     * @param string $id
+     * @param HCLanguageRequest $request
+     * @param string $languageId
      * @return mixed
      */
-    public function updateStrict(string $id)
+    public function updateStrict(HCLanguageRequest $request, string $languageId)
     {
-        HCLanguages::where('id', $id)->update($this->getStrictRequestParameters());
+        $this->languageRepository->update($request->getStrictUpdateValues(), $languageId);
 
-        return $this->apiShow($id);
+        return $this->response->success('Updated');
     }
 
     public function changeLanguage(string $location, string $lang)
