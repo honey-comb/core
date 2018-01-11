@@ -115,7 +115,7 @@ class HCBaseServiceProvider extends ServiceProvider
     {
         $this->publishes([
             $this->packagePath('resources/assets') => resource_path('assets/honey-comb'),
-        ], 'development');
+        ], 'hc-assets');
 
         $this->publishes([
             $this->packagePath('resources/public') => public_path('honey-comb'),
