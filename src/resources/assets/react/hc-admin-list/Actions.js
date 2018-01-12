@@ -183,8 +183,15 @@ export default class Actions extends Component {
 
     filterAction (e)
     {
+        let params = {
+            q:e.target.value
+        };
+
+        if (this.props.onlyTrashed)
+            params.trashed = 1;
+
         if (e.target.value.length > 2 || e.target.value.length === 0)
-            axios.get(this.props.url, {params:{q:e.target.value}})
+            axios.get(this.props.url, {params:params})
                 .then(res => {
                     this.props.reload(res);
                 });
