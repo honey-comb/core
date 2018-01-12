@@ -12,7 +12,8 @@ export default class TBCell extends Component {
         this.state = {
             url: this.props.url + '/' + this.props.id,
             internalUpdate: false,
-            value: this.props.value
+            value: this.props.value,
+            disabled: false
         };
 
         this.getCheckBox = this.getCheckBox.bind(this);
@@ -50,13 +51,15 @@ export default class TBCell extends Component {
     }
 
     getCheckBox() {
-        return <input type="checkbox" checked={this.state.value} onChange={this.updateStrict}/>
+        return <input type="checkbox" disabled={this.state.disabled} checked={this.state.value} onChange={this.updateStrict}/>
     }
 
     updateStrict() {
         let value = !this.state.value;
         let params = {};
         params[this.props.fieldKey] = value;
+
+        this.setState({disabled: true});
 
         this.state.internalUpdate = true;
 
@@ -65,10 +68,12 @@ export default class TBCell extends Component {
 
                 this.setState({
                     value: value,
+                    disabled: false,
                 });
             }).catch(error => {
             this.setState({
                 value: !value,
+                disabled: false,
             });
         });
     }
