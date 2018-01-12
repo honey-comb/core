@@ -48,7 +48,6 @@ export default class Actions extends Component {
 
         return <div key="first">
             <input className="form-control input-bg"
-                   placeholder="Search" onKeyUp={this.filterAction}/>
                    placeholder="Search" ref="hcAdminFilter" onKeyUp={this.filterAction}/>
         </div>;
     }
