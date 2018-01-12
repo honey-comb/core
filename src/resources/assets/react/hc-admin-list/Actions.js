@@ -7,12 +7,24 @@ export default class Actions extends Component {
     constructor() {
         super();
 
+        this.refs = {
+            hcAdminFilter: {
+                value: ""
+            }
+        };
+
         this.getNewButton = this.getNewButton.bind(this);
         this.newAction = this.newAction.bind(this);
         this.deleteAction = this.deleteAction.bind(this);
         this.forceDeleteAction = this.forceDeleteAction.bind(this);
         this.restoreAction = this.restoreAction.bind(this);
         this.filterAction = this.filterAction.bind(this);
+    }
+
+    componentWillUpdate (nextProps)
+    {
+        if (this.props.onlyTrashed !== nextProps.onlyTrashed)
+            this.refs.hcAdminFilter.value = "";
     }
 
     render() {
@@ -37,6 +49,7 @@ export default class Actions extends Component {
         return <div key="first">
             <input className="form-control input-bg"
                    placeholder="Search" onKeyUp={this.filterAction}/>
+                   placeholder="Search" ref="hcAdminFilter" onKeyUp={this.filterAction}/>
         </div>;
     }
 
