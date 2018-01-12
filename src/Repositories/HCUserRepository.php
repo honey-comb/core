@@ -73,33 +73,57 @@ class HCUserRepository extends HCBaseRepository
      * Soft delete users
      *
      * @param array $userIds
-     * @return int
+     * @return void
      */
-    public function deleteSoft(array $userIds): int
+    public function deleteSoft(array $userIds): void
     {
-        return $this->makeQuery()->whereIn('id', $userIds)->delete();
+        $users =  $this->makeQuery()->whereIn('id', $userIds)->get();
+
+        foreach ($users as $user) {
+            /** @var HCUser $user */
+            $user->providers()->delete();
+            $user->personal()->delete();
+            $user->delete();
+        }
     }
 
     /**
      * Restore soft deleted users
      *
      * @param array $userIds
-     * @return int
+     * @return void
      */
-    public function restore(array $userIds): int
+    public function restore(array $userIds): void
     {
-        return $this->makeQuery()->whereIn('id', $userIds)->restore();
+        $users =  $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->get();
+
+        foreach ($users as $user) {
+            /** @var HCUser $user */
+            $user->providers()->restore();
+            $user->personal()->restore();
+            $user->restore();
+        }
     }
 
     /**
      * Force delete users by given id
      *
      * @param array $userIds
-     * @return int
+     * @return void
+     * @throws \Exception
      */
-    public function deleteForce(array $userIds): int
+    public function deleteForce(array $userIds): void
     {
-        return $this->makeQuery()->whereIn('id', $userIds)->forceDelete();
+        $users =  $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->get();
+
+        foreach ($users as $user) {
+            /** @var HCUser $user */
+            $user->providers()->forceDelete();
+            $user->personal()->forceDelete();
+            $user->roles()->detach();
+            $user->activation()->delete();
+            $user->forceDelete();
+        }
     }
 
     /**

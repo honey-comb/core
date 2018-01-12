@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Models;
 
 use Carbon\Carbon;
+use HoneyComb\Core\Models\Users\HCUserActivation;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -194,6 +195,16 @@ class HCUser extends HCUuidModel implements AuthenticatableContract, Authorizabl
         $this->notify(
             (new HCAdminWelcomeEmail())->withPassword($password)
         );
+    }
+
+    /**
+     * Relation to user activation table
+     *
+     * @return HasOne
+     */
+    public function activation(): HasOne
+    {
+        return $this->hasOne(HCUserActivation::class, 'user_id', 'id');
     }
 
     /**
