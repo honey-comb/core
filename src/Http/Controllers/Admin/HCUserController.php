@@ -240,7 +240,7 @@ class HCUserController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $list = $this->service->getRepository()->deleteForce($request->getListIds());
+            $this->service->getRepository()->deleteForce($request->getListIds());
 
             $this->connection->commit();
         } catch (\Exception $exception) {
@@ -249,7 +249,7 @@ class HCUserController extends HCBaseController
             return $this->response->error($exception->getMessage());
         }
 
-        return $this->response->success('Successfully deleted', $list);
+        return $this->response->success('Successfully deleted');
     }
 
     /**
@@ -262,7 +262,7 @@ class HCUserController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $list = $this->service->getRepository()->restore($request->getListIds());
+            $this->service->getRepository()->restore($request->getListIds());
 
             $this->connection->commit();
         } catch (\Exception $exception) {
@@ -271,6 +271,6 @@ class HCUserController extends HCBaseController
             return $this->response->error($exception->getMessage());
         }
 
-        return $this->response->success('Successfully restored', $list);
+        return $this->response->success('Successfully restored');
     }
 }
