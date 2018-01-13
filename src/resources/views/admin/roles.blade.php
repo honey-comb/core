@@ -31,7 +31,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="input-group" style="padding-bottom: 20px;">
-                <span class="input-group-addon"><i class="fas fa-search"></i></span>
+                <span class="input-group-addon">{!! fontAwesomeIcon('search') !!}</span>
                 <input id="searchInput" type="text" class="form-control" placeholder="Type To Filter">
             </div>
         </div>
@@ -51,8 +51,12 @@
 @section('scripts')
     {{-- admin list --}}
     <script src="{{mix('js/jquery.min.js')}}"></script>
+    <script src="{{mix('js/hc-full.js')}}"></script>
 
     <script>
+
+        HC.react.enableFaIcons();
+
         let roles = {!! $config['roles'] !!};
         let updateUrl = "{{ $config['updateUrl'] }}";
         let permissions = {!!  $config['permissions'] !!};

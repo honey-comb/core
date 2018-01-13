@@ -4,6 +4,7 @@
 
     <nav class="navbar navbar-static-top">
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            {!! fontAwesomeIcon('bars') !!}
             <span class="sr-only">Toggle navigation</span>
         </a>
 
