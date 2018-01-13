@@ -9,6 +9,33 @@ body {
 
 }
 
+#hc-pop-up {
+  .hc-pop-up {
+    .hc-form {
+      width: 50%;
+      height: 100%;
+      background-color: white;
+      padding: 20px;
+
+      .header {
+
+        display: flex;
+        align-items: center;
+        border-bottom: 3px solid rgba(0, 0, 0, 0.5);
+        padding-bottom: 15px;
+
+        .label {
+          font-weight: 600;
+          font-size: 20px;
+          margin-left: 20px;
+          color: black;
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+
 #dev-env {
   position: absolute;
   z-index: 1050;

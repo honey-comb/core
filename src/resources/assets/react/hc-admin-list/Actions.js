@@ -8,7 +8,7 @@ export default class Actions extends Component {
         super();
 
         this.state = {
-            searchValue : ""
+            searchValue: ""
         };
 
         this.refs = {
@@ -25,8 +25,7 @@ export default class Actions extends Component {
         this.filterAction = this.filterAction.bind(this);
     }
 
-    componentWillUpdate (nextProps)
-    {
+    componentWillUpdate(nextProps) {
         if (this.props.onlyTrashed !== nextProps.onlyTrashed)
             this.refs.hcAdminFilter.value = "";
     }
@@ -161,7 +160,7 @@ export default class Actions extends Component {
 
     newAction() {
 
-        HC.OpenHCPopUp({url: this.props.form + "-form"});
+        HC.react.popUp({url: this.props.form + "-form", type: "form"});
     }
 
     deleteAction() {
@@ -186,28 +185,26 @@ export default class Actions extends Component {
             });
     }
 
-    restoreAction ()
-    {
+    restoreAction() {
         let params = {list: this.props.selected};
 
-        axios.post(this.props.url+ '/restore', params)
+        axios.post(this.props.url + '/restore', params)
             .then(res => {
 
                 this.props.reload();
             });
     }
 
-    filterAction (e)
-    {
+    filterAction(e) {
         let params = {
-            q:e.target.value
+            q: e.target.value
         };
 
         if (this.props.onlyTrashed)
             params.trashed = 1;
 
         if (e.target.value.length > 2 || e.target.value.length === 0)
-            axios.get(this.props.url, {params:params})
+            axios.get(this.props.url, {params: params})
                 .then(res => {
                     this.props.reload(res);
                 });

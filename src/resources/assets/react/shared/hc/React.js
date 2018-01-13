@@ -47,6 +47,11 @@ HC.react = new function () {
         ReactDOM.render(<HCPopUp config={data}/>, existing);
     };
 
+    this.popUpRemove = function (id)
+    {
+        ReactDOM.unmountComponentAtNode(document.getElementById(id));
+    };
+
     /**
      * enable font awesome icons
      */
