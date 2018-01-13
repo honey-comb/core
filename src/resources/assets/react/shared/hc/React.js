@@ -7,6 +7,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 HC.react = new function () {
 
     let scope = this;
+    let popUpCount = 0;
 
     /**
      * showing admin list
@@ -45,12 +46,31 @@ HC.react = new function () {
         data.parent = id;
 
         ReactDOM.render(<HCPopUp config={data}/>, existing);
+
+        popUpCount++;
+        toggleBody();
     };
 
     this.popUpRemove = function (id)
     {
         ReactDOM.unmountComponentAtNode(document.getElementById(id));
+
+        popUpCount--;
+        toggleBody();
     };
+
+    function toggleBody ()
+    {
+        if (popUpCount > 0)
+        {
+            document.body.classList.add('disabled');
+        }
+        else
+        {
+            document.body.classList.remove('disabled');
+        }
+
+    }
 
     /**
      * enable font awesome icons
