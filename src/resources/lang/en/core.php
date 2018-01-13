@@ -62,6 +62,7 @@ return [
 
     'buttons' => [
         'submit' => 'Submit',
+        'create' => 'Create',
         'register' => 'Register',
         'cancel' => 'Cancel',
         'login' => 'Login',

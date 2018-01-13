@@ -62,11 +62,9 @@ class HCUserForm extends HCBaseForm
         $form = [
             'storageURL' => route('admin.api.user'),
             'buttons' => [
-                [
-                    'class' => 'col-centered',
-                    'label' => trans('HCCore::core.buttons.submit'),
-                    'type' => 'submit',
-                ],
+                'submit' => [
+                    'label' => trans('HCCore::core.buttons.create'),
+                ]
             ],
             'structure' => $this->getStructure($edit),
         ];
