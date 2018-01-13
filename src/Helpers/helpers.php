@@ -344,6 +344,6 @@ if (!function_exists('fontAwesomeIcon'))
      */
     function fontAwesomeIcon(string $icon, string $prefix = "", string $class = "")
     {
-        return "<div class=\"fa-icon\" data-icon=\"$icon\" data-prefix=\"$prefix\" class=\"$class\"></div>";
+        return "<div class=\"fa-icon $class\" data-icon=\"$icon\" data-prefix=\"$prefix\"></div>";
     }
 }
