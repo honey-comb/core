@@ -40,19 +40,6 @@
 {{-- js include --}}
 @include('HCCore::admin.assets.js')
 
-<script>
-    {{-- TODO read from cache --}}
-        HCService.FRONTENDLanguage = HCService.CONTENTLanguage = '{{ app()->getLocale() }}';
-</script>
-
-<script>
-    jQuery.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-</script>
-
 @yield('scripts')
 
 @include('HCCore::admin.partials.sidebar-filter-js')

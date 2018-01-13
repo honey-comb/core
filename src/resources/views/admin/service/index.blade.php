@@ -12,8 +12,6 @@
 @endsection
 
 @section('scripts')
-    {{-- form --}}
-    <script src="{{mix('js/hc-form.js')}}"></script>
 
     {{-- admin list --}}
     <script src="{{mix('js/app.js')}}"></script>
