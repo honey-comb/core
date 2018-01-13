@@ -7,4 +7,4 @@ mix.sass(
 
     "public/css/hc-admin-panel.css").version();
 
-mix.react('resources/assets/honey-comb/react/app.js', 'public/js').version();
+mix.react('resources/assets/honey-comb/react/full.js', 'public/js/hc-full.js').version();

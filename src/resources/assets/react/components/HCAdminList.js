@@ -22,7 +22,7 @@ export default class HCAdminListView extends Component {
         super(props);
 
         this.state = {
-            id: HCHelpers.uuid(),
+            id: HC.helpers.uuid(),
             title: this.props.config.title,
             records: {
                 current_page: 0,

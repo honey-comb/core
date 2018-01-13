@@ -14,10 +14,10 @@
 @section('scripts')
 
     {{-- admin list --}}
-    <script src="{{mix('js/app.js')}}"></script>
+    <script src="{{mix('js/hc-full.js')}}"></script>
 
     <script>
-        HCHelpers.RenderAdminList({!! json_encode($config) !!});
+        HC.react.adminList({!! json_encode($config) !!});
     </script>
 
     {{--<script>

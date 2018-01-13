@@ -52,7 +52,7 @@ export default class List extends Component {
         }
 
         //checking if records has changed
-        if (!HCHelpers.arraysEqual(this.props.records, nextProps.records)) {
+        if (!HC.helpers.arraysEqual(this.props.records, nextProps.records)) {
             nextState.allSelected = false;
             nextState.globalSelection = false;
             nextState.selected = [];

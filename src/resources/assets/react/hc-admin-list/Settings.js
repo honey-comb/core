@@ -12,7 +12,7 @@ export default class Settings extends Component {
 
     render() {
         return <div id="settings">
-            <OnOffButton display={this.props.trashHidden} onChange={this.handleChange} icon={HCHelpers.faIcon("trash")} on={false} typeOff={HCHelpers.buttonClass()} typeOn={HCHelpers.buttonClass("forestgreen")}/>
+            <OnOffButton display={this.props.trashHidden} onChange={this.handleChange} icon={HC.helpers.faIcon("trash")} on={false} typeOff={HC.helpers.buttonClass()} typeOn={HC.helpers.buttonClass("forestgreen")}/>
         </div>;
     }
 

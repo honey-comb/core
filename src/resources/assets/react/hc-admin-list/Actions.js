@@ -7,6 +7,10 @@ export default class Actions extends Component {
     constructor() {
         super();
 
+        this.state = {
+            searchValue : ""
+        };
+
         this.refs = {
             hcAdminFilter: {
                 value: ""
@@ -62,8 +66,8 @@ export default class Actions extends Component {
             return '';
 
         return <FAButton display={this.props.onlyTrashed}
-                         type={HCHelpers.buttonClass("success")}
-                         icon={HCHelpers.faIcon("plus")}
+                         type={HC.helpers.buttonClass("success")}
+                         icon={HC.helpers.faIcon("plus")}
                          onPress={this.newAction}/>;
     }
 
@@ -78,8 +82,8 @@ export default class Actions extends Component {
 
         return <FAButton display={this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.delete}
-                         type={HCHelpers.buttonClass("danger")}
-                         icon={HCHelpers.faIcon("trash")}
+                         type={HC.helpers.buttonClass("danger")}
+                         icon={HC.helpers.faIcon("trash")}
                          showCounter={true}
                          count={this.props.selected.length}
                          onPress={this.deleteAction}/>;
@@ -96,8 +100,8 @@ export default class Actions extends Component {
 
         return <FAButton display={this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.merge}
-                         type={HCHelpers.buttonClass("clean")}
-                         icon={HCHelpers.faIcon("code-merge")}
+                         type={HC.helpers.buttonClass("clean")}
+                         icon={HC.helpers.faIcon("code-merge")}
                          showCounter={true}
                          count={this.props.selected.length}/>;
     }
@@ -113,8 +117,8 @@ export default class Actions extends Component {
 
         return <FAButton display={this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.clone}
-                         type={HCHelpers.buttonClass("info")}
-                         icon={HCHelpers.faIcon("clone")}
+                         type={HC.helpers.buttonClass("info")}
+                         icon={HC.helpers.faIcon("clone")}
                          showCounter={true}
                          count={this.props.selected.length}/>;
     }
@@ -130,8 +134,8 @@ export default class Actions extends Component {
 
         return <FAButton display={!this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.restore}
-                         type={HCHelpers.buttonClass("success")}
-                         icon={HCHelpers.faIcon("arrow-circle-up")}
+                         type={HC.helpers.buttonClass("success")}
+                         icon={HC.helpers.faIcon("arrow-circle-up")}
                          showCounter={true}
                          count={this.props.selected.length}
                          onPress={this.restoreAction}/>;
@@ -148,8 +152,8 @@ export default class Actions extends Component {
 
         return <FAButton display={!this.props.onlyTrashed}
                          disabled={this.props.actionsDisabled.forceDelete}
-                         type={HCHelpers.buttonClass("danger")}
-                         icon={HCHelpers.faIcon("minus-octagon")}
+                         type={HC.helpers.buttonClass("danger")}
+                         icon={HC.helpers.faIcon("minus-octagon")}
                          showCounter={true}
                          count={this.props.selected.length}
                          onPress={this.forceDeleteAction}/>;
@@ -157,7 +161,7 @@ export default class Actions extends Component {
 
     newAction() {
 
-        HCHelpers.OpenHCPopUp({url: this.props.form + "-form"});
+        HC.OpenHCPopUp({url: this.props.form + "-form"});
     }
 
     deleteAction() {

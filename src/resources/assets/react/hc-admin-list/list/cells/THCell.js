@@ -33,7 +33,7 @@ export default class THCell extends Component {
 
                     this.props.onSortOrderChange(this.props.field);
                 }}
-                                 icon={HCHelpers.faIcon("sort-amount-down" )} flip={this.state.flip}/>
+                                 icon={HC.helpers.faIcon("sort-amount-down" )} flip={this.state.flip}/>
             </div>
             <div>{this.props.label}</div>
         </th>
