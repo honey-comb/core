@@ -16,21 +16,21 @@
             "route": "admin.user.index",
             "parent": "admin.index",
             "translation": "HCCore::user.page_title",
-            "icon": "fa-user",
+            "icon": "user",
             "aclPermission": "honey_comb_core_user_list"
         },
         {
             "route": "admin.acl.role.index",
             "parent": "admin.user.index",
             "translation": "HCCore::acl_roles.page_title",
-            "icon": "fa-user-md",
+            "icon": "user-md",
             "aclPermission": "honey_comb_core_acl_role_list"
         },
         {
             "route": "admin.language.index",
             "parent": "admin.index",
             "translation": "HCCore::language.page_title",
-            "icon": "fa-language",
+            "icon": "language",
             "aclPermission": "honey_comb_core_language_list"
         }
     ],
