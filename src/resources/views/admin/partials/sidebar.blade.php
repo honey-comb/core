@@ -1,6 +1,6 @@
 <aside class="main-sidebar">
 
-    <section class="sidebar">
+    <section class="sidebar" style="height: auto;">
 
         <div class="sidebar-form">
             <div class="input-group">
