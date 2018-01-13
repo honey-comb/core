@@ -24,7 +24,9 @@
                 @include('HCCore::admin.partials.user')
 
                 <li>
-                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                    <a href="#" data-toggle="control-sidebar">
+                        {!! fontAwesomeIcon('cogs') !!}
+                    </a>
                 </li>
             </ul>
         </div>
