@@ -3,6 +3,11 @@ body {
   font-family: "Open sans";
 }
 
+body.disabled
+{
+  overflow: hidden;
+}
+
 .main-header {
   .sidebar-toggle:before {
     content: none;
