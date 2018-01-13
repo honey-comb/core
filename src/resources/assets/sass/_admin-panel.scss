@@ -17,18 +17,18 @@ body.disabled
 
 #hc-pop-up {
   .hc-pop-up {
+
     .hc-form {
       width: 50%;
       height: 100%;
       background-color: white;
       padding: 20px;
+      overflow-y: auto;
 
       .header {
 
         display: flex;
         align-items: center;
-        border-bottom: 3px solid rgba(0, 0, 0, 0.5);
-        padding-bottom: 15px;
 
         .label {
           font-weight: 600;
@@ -37,6 +37,21 @@ body.disabled
           color: black;
           padding: 0;
         }
+      }
+
+      .form-structure
+      {
+        background-color: whitesmoke;
+        height: calc(100% - 85px);
+        border-bottom: 3px solid rgba(0, 0, 0, 0.5);
+        border-top: 3px solid rgba(0, 0, 0, 0.5);
+        margin: 15px;
+        min-height: 250px;
+        overflow-y: auto;
+      }
+      
+      .footer {
+        text-align: center;
       }
     }
   }
