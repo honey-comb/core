@@ -331,3 +331,19 @@ if (!function_exists('formManagerSeo')) {
         );
     }
 }
+
+if (!function_exists('fontAwesomeIcon'))
+{
+    /**
+     * creating a html tag for font awesome icon
+     *
+     * @param string $icon
+     * @param string $prefix
+     * @param string $class
+     * @return string
+     */
+    function fontAwesomeIcon(string $icon, string $prefix = "", string $class = "")
+    {
+        return "<div class=\"fa-icon\" data-icon=\"$icon\" data-prefix=\"$prefix\" class=\"$class\"></div>";
+    }
+}
