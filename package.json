@@ -32,6 +32,7 @@
     "@fortawesome/fontawesome-pro-solid": "^5.0.2",
     "@fortawesome/react-fontawesome": "0.0.17",
     "classnames": "^2.2.5",
+    "gsap": "^1.20.3",
     "rc-pagination": "^1.14.0",
     "rc-select": "^7.5.0",
     "sweetalert2": "^7.3.5",
