@@ -17,6 +17,7 @@
     <script src="{{mix('js/hc-full.js')}}"></script>
 
     <script>
+        HC.react.enableFaIcons();
         HC.react.adminList({!! json_encode($config) !!});
     </script>
 

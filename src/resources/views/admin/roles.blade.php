@@ -49,23 +49,26 @@
 @endsection
 
 @section('scripts')
+    {{-- admin list --}}
+    <script src="{{mix('js/jquery.min.js')}}"></script>
+
     <script>
-        var roles = {!! $config['roles'] !!};
-        var updateUrl = "{{ $config['updateUrl'] }}";
-        var permissions = {!!  $config['permissions'] !!};
-        var currentRolesArray = {!! json_encode(auth()->user()->currentRolesArray()) !!};
-        var permissionsHeader = '{{ trans('HCCore::core.permissions') }}'
+        let roles = {!! $config['roles'] !!};
+        let updateUrl = "{{ $config['updateUrl'] }}";
+        let permissions = {!!  $config['permissions'] !!};
+        let currentRolesArray = {!! json_encode(auth()->user()->currentRolesArray()) !!};
+        let permissionsHeader = '{{ trans('HCCore::core.permissions') }}';
 
         jQuery(function () {
 
-            var boxes = [];
+            let boxes = [];
 
             $.each(permissions, function (permissionName, permissionsArray) {
 
-                var headerHtml = getHeaderPart(permissionName);
-                var tableHeaderHtml = getThPart(roles);
-                var tableBodyHtml = getTdPart(permissionsArray, roles);
-                var footerHtml = getFooterPart();
+                let headerHtml = getHeaderPart(permissionName);
+                let tableHeaderHtml = getThPart(roles);
+                let tableBodyHtml = getTdPart(permissionsArray, roles);
+                let footerHtml = getFooterPart();
 
                 boxes.push(headerHtml + tableHeaderHtml + tableBodyHtml + footerHtml);
             });
@@ -94,11 +97,11 @@
                 },
                 success: function (value) {
                     if (value.success) {
-                        if (value.message == 'created') {
+                        if (value.message === 'created') {
                             item.prop('checked', true);
                             item.parent().css('background', 'rgba(51, 153, 88, 0.52)').delay(1000).animate({backgroundColor: 'transparent'}, 'slow');
                         }
-                        else if (value.message == 'deleted') {
+                        else if (value.message === 'deleted') {
                             item.prop('checked', false);
                             item.parent().css('background', 'rgba(255, 165, 0, 0.52)').delay(1000).animate({backgroundColor: 'transparent'}, 'slow');
                         }
@@ -134,7 +137,7 @@
 
         function getThPart(roles) {
 
-            var html = '<tr>' +
+            let html = '<tr>' +
                 '<th>' + permissionsHeader + '</th>';
 
             $.each(roles, function (i, v) {
@@ -146,17 +149,17 @@
 
         function getTdPart(permissionsArray, roles) {
 
-            var html = '';
+            let html = '';
 
             $.each(permissionsArray, function (key, permission) {
 
-                var actionName = permission.action.indexOf('_list') !== -1 ? '<td style="text-decoration: underline">' + permission.action + '</td>' : '<td>' + permission.action + '</td>';
+                let actionName = permission.action.indexOf('_list') !== -1 ? '<td style="text-decoration: underline">' + permission.action + '</td>' : '<td>' + permission.action + '</td>';
 
                 html += '<tr>' +
                     actionName;
 
                 $.each(roles, function (roleKey, roles) {
-                    var checked = "";
+                    let checked = "";
 
                     $.each(roles.permissions, function (key2, rPermissionId) {
                         if (permission.id === rPermissionId) {
@@ -184,12 +187,12 @@
 
         function filterPermissionsList() {
             //split the current value of searchInput
-            var data = this.value.split(" ");
+            let data = this.value.split(" ");
 
             //create a jquery object of the rows
-            var box = $("#roleList").find(".box");
+            let box = $("#roleList").find(".box");
 
-            if (this.value == "") {
+            if (this.value === "") {
                 box.show();
                 return;
             }
@@ -199,8 +202,8 @@
 
             //Recusively filter the jquery object to get results.
             box.filter(function (i, v) {
-                var $t = $(this);
-                for (var d = 0; d < data.length; ++d) {
+                let $t = $(this);
+                for (let d = 0; d < data.length; ++d) {
                     if ($t.is(":contains('" + data[d] + "')")) {
                         return true;
                     }
@@ -208,8 +211,7 @@
                 return false;
             }).show();
 
-        };
-
+        }
 
     </script>
 @endsection

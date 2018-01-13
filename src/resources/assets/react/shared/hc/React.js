@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import HCPopUp from "../../components/HCPopUp";
 import HCAdminListView from "../../components/HCAdminList";
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 HC.react = new function () {
 
@@ -45,4 +46,17 @@ HC.react = new function () {
 
         ReactDOM.render(<HCPopUp config={data}/>, existing);
     };
+
+    /**
+     * enable font awesome icons
+     */
+    this.enableFaIcons = function () {
+        let list = document.getElementsByClassName('fa-icon');
+
+        for (let i = 0; i < list.length; i++) {
+            let icon = list[i].dataset;
+
+            ReactDOM.render(<FontAwesomeIcon icon={HC.helpers.faIcon(icon.icon)}/>, list[i]);
+        }
+    }
 };

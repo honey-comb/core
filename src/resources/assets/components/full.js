@@ -3,10 +3,10 @@
  * includes React and other helpers. It's a great starting point while
  * building robust, powerful web applications using React + Laravel.
  */
-import List from "./hc-admin-list/List";
+import List from "../react/hc-admin-list/List";
 
 require('../../js/bootstrap');
-//require('admin-lte');
+require('admin-lte');
 
 /**
  * Next, we will create a fresh React component instance and attach it to
@@ -14,5 +14,5 @@ require('../../js/bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./shared/HC');
+require('../react/shared/HC');
 
