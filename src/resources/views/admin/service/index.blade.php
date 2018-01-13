@@ -21,18 +21,4 @@
         HC.react.adminList({!! json_encode($config) !!});
     </script>
 
-    {{--<script>
-        $(document).ready(function () {
-            new HCService.List.SimpleList({
-                div: '#here-comes-list',
-
-                @include('HCCore::admin.partials.list-settings')
-            });
-        });
-    </script>
-
-    @if(config('hc.google_map_api_key'))
-        <script src="https://maps.googleapis.com/maps/api/js?key={{ config('hc.google_map_api_key') }}&libraries=places"></script>
-    @endif--}}
-
 @endsection
