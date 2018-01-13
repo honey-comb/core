@@ -6,8 +6,6 @@ import Actions from './../hc-admin-list/Actions';
 import Settings from './../hc-admin-list/Settings';
 import List from './../hc-admin-list/List';
 
-import fontAwesome from '@fortawesome/fontawesome'
-import FAProRegularIcons from '@fortawesome/fontawesome-pro-regular'
 import axios from "axios/index";
 import Select from 'rc-select';
 
@@ -60,8 +58,6 @@ export default class HCAdminListView extends Component {
         this.reload = this.reload.bind(this);
         this.onShowSizeChange = this.onShowSizeChange.bind(this);
         this.onSortOrderUpdate = this.onSortOrderUpdate.bind(this);
-
-        fontAwesome.library.add(FAProRegularIcons);
     }
 
     /**

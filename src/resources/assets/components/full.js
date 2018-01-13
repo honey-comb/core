@@ -14,5 +14,6 @@ require('admin-lte');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+require('./font-awesome');
 require('../react/shared/HC');
 
