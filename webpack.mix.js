@@ -8,5 +8,6 @@ mix.sass(
     "public/css/hc-admin-panel.css").version();
 
 mix.react('resources/assets/honey-comb/components/full.js', 'public/js/hc-full.js').version();
+mix.react('resources/assets/honey-comb/components/font-awesome.js', 'public/js/font-awesome.js').version();
 
 mix.copy('node_modules/jquery/dist/jquery.min.js', 'public/js/jquery.min.js').version();
