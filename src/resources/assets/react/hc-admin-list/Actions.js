@@ -160,7 +160,7 @@ export default class Actions extends Component {
 
     newAction() {
 
-        HC.react.popUp({url: this.props.form + "-form", type: "form"});
+        HC.react.popUp({url: this.props.form + "-new", type: "form"});
     }
 
     deleteAction() {
