@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Providers;
 
+use HoneyComb\Core\Console\HCProjectSize;
 use HoneyComb\Core\Http\Middleware\HCCheckSelectedAdminLanguage;
 use HoneyComb\Core\Http\Middleware\HCCheckSelectedFrontEndLanguage;
 use HoneyComb\Core\Repositories\HCLanguageRepository;
@@ -74,6 +75,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         HCGenerateFormsCommand::class,
         HCCreateSuperAdminCommand::class,
         HCSeedCommand::class,
+        HCProjectSize::class,
     ];
 
     /**
