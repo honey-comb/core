@@ -99,35 +99,41 @@ export default class HCForm extends Component {
         if (!structure)
             return this.finalStructure;
 
-        structure.map((data, i) => (
-            this.finalStructure.push(this.getField(data, i))
+        Object.keys(structure).map((key, i) => (
+            this.finalStructure[key] = this.getField(structure[key], key, i)
         ));
 
-        return this.finalStructure;
+        let finalArray = [];
+
+        Object.keys(this.finalStructure).map((key, i) => finalArray.push(this.finalStructure[key]));
+
+        return finalArray;
     }
 
     /**
      * Getting single field
      *
      * @param data
+     * @param ref
      * @param i
      * @returns {*}
      */
-    getField(data, i) {
+    getField(data, ref, i) {
+
         data.updateFormData = this.updateFormData;
 
         switch (data.type) {
             case "email" :
 
-                return <Email key={i} config={data} ref={data.fieldId}/>;
+                return <Email key={i} config={data} ref={ref} id={ref}/>;
 
             case "password" :
 
-                return <Password key={i} config={data} ref={data.fieldId}/>;
+                return <Password key={i} config={data} ref={ref} id={ref}/>;
 
             case "checkBoxList" :
 
-                return <CheckBoxList key={i} config={data} ref={data.fieldId}/>;
+                return <CheckBoxList key={i} config={data} ref={ref} id={ref}/>;
         }
 
         return "";
@@ -188,9 +194,9 @@ export default class HCForm extends Component {
     {
         let valid = true;
 
-        this.finalStructure.map((item, i) => {
+        Object.keys(this.finalStructure).map((key, i) => {
 
-            if (!this.refs[item.props.config.fieldId].validate())
+            if (!this.refs[key].validate())
                 valid = false;
         });
 
@@ -202,7 +208,6 @@ export default class HCForm extends Component {
         axios.post(this.state.formData.storageUrl, this.record)
             .then(
                 () =>
-
                     this.animateForm(false)
             );
     }

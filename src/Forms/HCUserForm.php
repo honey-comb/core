@@ -85,47 +85,47 @@ class HCUserForm extends HCBaseForm
     public function getStructureNew(string $prefix): array
     {
         return [
-            [
-                'type' => 'email',
-                'fieldId' => $prefix . 'email',
-                'tabID' => trans('HCCore::core.general'),
-                'label' => trans('HCCore::user.email'),
-                'required' => 1,
-                'requiredVisible' => 1,
-            ],
-            [
-                'type' => 'password',
-                'fieldId' => $prefix . 'password',
-                'tabID' => trans('HCCore::core.general'),
-                'label' => trans('HCCore::user.register.password'),
-                'required' => 1,
-                'requiredVisible' => 1,
-            ],
-            [
-                'type' => 'checkBoxList',
-                'fieldId' => $prefix . 'is_active',
-                'tabID' => trans('HCCore::core.general'),
-                'options' => [
-                    ['id' => '1', 'label' => trans('HCCore::user.active')],
+            $prefix . 'email' =>
+                [
+                    'type' => 'email',
+                    'tabID' => trans('HCCore::core.general'),
+                    'label' => trans('HCCore::user.email'),
+                    'required' => 1,
+                    'requiredVisible' => 1,
                 ],
-            ],
-            [
-                'type' => 'checkBoxList',
-                'fieldId' => $prefix . 'send_welcome_email',
-                'tabID' => trans('HCCore::core.general'),
-                'options' => [
-                    ['id' => '1', 'label' => trans('HCCore::user.send_welcome_email')],
+            $prefix . 'password' =>
+                [
+                    'type' => 'password',
+                    'tabID' => trans('HCCore::core.general'),
+                    'label' => trans('HCCore::user.register.password'),
+                    'required' => 1,
+                    'requiredVisible' => 1,
                 ],
-            ],
-            [
-                'type' => 'checkBoxList',
-                'fieldId' => $prefix . 'send_password',
-                'tabID' => trans('HCCore::core.general'),
-                'options' => [
-                    ['id' => '1', 'label' => trans('HCCore::user.send_password')],
+            $prefix . 'is_active' =>
+                [
+                    'type' => 'checkBoxList',
+                    'tabID' => trans('HCCore::core.general'),
+                    'options' => [
+                        ['id' => '1', 'label' => trans('HCCore::user.active')],
+                    ],
                 ],
-            ],
-            $this->roles($prefix),
+            $prefix . 'send_welcome_email' =>
+                [
+                    'type' => 'checkBoxList',
+                    'tabID' => trans('HCCore::core.general'),
+                    'options' => [
+                        ['id' => '1', 'label' => trans('HCCore::user.send_welcome_email')],
+                    ],
+                ],
+            $prefix . 'send_password' =>
+                [
+                    'type' => 'checkBoxList',
+                    'tabID' => trans('HCCore::core.general'),
+                    'options' => [
+                        ['id' => '1', 'label' => trans('HCCore::user.send_password')],
+                    ],
+                ],
+            $prefix . 'roles' => $this->roles(),
         ];
     }
 
@@ -136,86 +136,84 @@ class HCUserForm extends HCBaseForm
     public function getStructureEdit(string $prefix): array
     {
         return [
-            [
-                'type' => 'singleLine',
-                'fieldId' => $prefix . 'first_name',
-                'tabID' => trans('HCCore::core.general'),
-                'label' => trans('HCCore::user.firstname'),
-            ],
-            [
-                'type' => 'singleLine',
-                'fieldId' => $prefix . 'last_name',
-                'tabID' => trans('HCCore::core.general'),
-                'label' => trans('HCCore::user.lastname'),
-            ],
-            [
-                'type' => 'email',
-                'fieldId' => $prefix . 'email',
-                'tabID' => trans('HCCore::core.general'),
-                'label' => trans('HCCore::user.email'),
-                'required' => 1,
-                'requiredVisible' => 1,
-            ],
-            [
-                'type' => 'password',
-                'fieldId' => $prefix . 'password',
-                'tabID' => trans('HCCore::core.general'),
-                'label' => trans('HCCore::user.passwords.new'),
-                'properties' => [
-                    'strength' => '1' // case 0: much, case 1: 4 symbols, case 2: 6 symbols
+            $prefix . 'first_name' =>
+                [
+                    'type' => 'singleLine',
+                    'tabID' => trans('HCCore::core.general'),
+                    'label' => trans('HCCore::user.firstname'),
                 ],
-            ],
-            [
-                'type' => 'password',
-                'fieldId' => $prefix . 'password_confirmation',
-                'tabID' => trans('HCCore::core.general'),
-                'label' => trans('HCCore::user.passwords.new_again'),
-                'properties' => [
-                    'strength' => '1' // case 0: much, case 1: 4 symbols, case 2: 6 symbols
+            $prefix . 'last_name' =>
+                [
+                    'type' => 'singleLine',
+                    'tabID' => trans('HCCore::core.general'),
+                    'label' => trans('HCCore::user.lastname'),
                 ],
-            ],
-            [
-                'tabID' => trans('HCCore::core.general'),
-                'type' => 'checkBoxList',
-                'fieldId' => $prefix . 'is_active',
-                'options' => [
-                    ['id' => '1', 'label' => trans('HCCore::user.is_active')],
+            $prefix . 'email' =>
+                [
+                    'type' => 'email',
+                    'tabID' => trans('HCCore::core.general'),
+                    'label' => trans('HCCore::user.email'),
+                    'required' => 1,
+                    'requiredVisible' => 1,
                 ],
-            ],
-            $this->roles($prefix),
-            [
-                'type' => 'singleLine',
-                'fieldId' => $prefix . 'last_login',
-                'tabID' => trans('HCCore::user.activity'),
-                'label' => trans('HCCore::user.last_login'),
-                'readonly' => 1,
-            ],
-            [
-                'type' => 'singleLine',
-                'fieldId' => $prefix . 'last_activity',
-                'tabID' => trans('HCCore::user.activity'),
-                'label' => trans('HCCore::user.last_activity'),
-                'readonly' => 1,
-            ],
-            [
-                'type' => 'singleLine',
-                'fieldId' => $prefix . 'activated_at',
-                'tabID' => trans('HCCore::user.activity'),
-                'label' => trans('HCCore::user.activation.activated_at'),
-                'readonly' => 1,
-            ],
+            $prefix . 'password' =>
+                [
+                    'type' => 'password',
+                    'tabID' => trans('HCCore::core.general'),
+                    'label' => trans('HCCore::user.passwords.new'),
+                    'properties' => [
+                        'strength' => '1' // case 0: much, case 1: 4 symbols, case 2: 6 symbols
+                    ],
+                ],
+            $prefix . 'password_confirmation' =>
+                [
+                    'type' => 'password',
+                    'tabID' => trans('HCCore::core.general'),
+                    'label' => trans('HCCore::user.passwords.new_again'),
+                    'properties' => [
+                        'strength' => '1' // case 0: much, case 1: 4 symbols, case 2: 6 symbols
+                    ],
+                ],
+            $prefix . 'is_active' =>
+                [
+                    'tabID' => trans('HCCore::core.general'),
+                    'type' => 'checkBoxList',
+                    'options' => [
+                        ['id' => '1', 'label' => trans('HCCore::user.is_active')],
+                    ],
+                ],
+            $prefix . 'roles' => $this->roles(),
+            $prefix . 'last_login' =>
+                [
+                    'type' => 'singleLine',
+                    'tabID' => trans('HCCore::user.activity'),
+                    'label' => trans('HCCore::user.last_login'),
+                    'readonly' => 1,
+                ],
+            $prefix . 'last_activity' =>
+                [
+                    'type' => 'singleLine',
+                    'tabID' => trans('HCCore::user.activity'),
+                    'label' => trans('HCCore::user.last_activity'),
+                    'readonly' => 1,
+                ],
+            $prefix . 'activated_at' =>
+                [
+                    'type' => 'singleLine',
+                    'tabID' => trans('HCCore::user.activity'),
+                    'label' => trans('HCCore::user.activation.activated_at'),
+                    'readonly' => 1,
+                ],
         ];
     }
 
     /**
-     * @param string $prefix
      * @return array
      */
-    private function roles(string $prefix): array
+    private function roles(): array
     {
         return [
             'type' => 'checkBoxList',
-            'fieldId' => $prefix . 'roles',
             'tabID' => trans('HCCore::user.roles'),
             'label' => trans('HCCore::user.role_groups'),
             'options' => $this->roleRepository->getRolesForUserCreation(),

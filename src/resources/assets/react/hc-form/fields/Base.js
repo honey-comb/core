@@ -44,7 +44,7 @@ export default class BaseField extends Component {
         if (!this.props.config.label)
             return "";
 
-        return <label htmlFor={this.props.config.fieldId}>{this.props.config.label} {this.getRequired()}</label>;
+        return <label htmlFor={this.props.id}>{this.props.config.label} {this.getRequired()}</label>;
     }
 
     /**
@@ -133,7 +133,7 @@ export default class BaseField extends Component {
      * If data is valid trigger change
      */
     triggerChange() {
-        this.props.config.updateFormData(this.props.config.fieldId, this.getValue());
+        this.props.config.updateFormData(this.props.id, this.getValue());
     }
 
     /**
