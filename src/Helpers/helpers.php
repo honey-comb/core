@@ -388,18 +388,34 @@ if (!function_exists('formatSize')) {
     }
 }
 
-if (!function_exists('getProjectSize')) {
+if (!function_exists('getProjectFileSize')) {
     /**
      *
      * Getting project size
      *
      */
-    function getProjectSize()
+    function getProjectFileSize()
     {
-        if (!cache()->has('project-size')) {
+        if (!cache()->has('project-size-files')) {
             \Illuminate\Support\Facades\Artisan::call('hc:project-size');
         }
 
-        return cache()->get('project-size');
+        return cache()->get('project-size-files');
+    }
+}
+
+if (!function_exists('getProjectDbSize')) {
+    /**
+     *
+     * Getting project size
+     *
+     */
+    function getProjectDbSize()
+    {
+        if (!cache()->has('project-size-db')) {
+            \Illuminate\Support\Facades\Artisan::call('hc:project-size');
+        }
+
+        return cache()->get('project-size-db');
     }
 }

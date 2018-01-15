@@ -21,7 +21,17 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">{{ trans('HCCore::core.size') }}</span>
-                    <span class="info-box-number">{{ getProjectSize() }}</span>
+                    <span class="info-box-number">{{ getProjectFileSize() }}</span>
+                </div>
+            </div>
+            <div class="info-box">
+                <span class="info-box-icon bg-light-blue">
+                    {!! fontAwesomeIcon('database') !!}
+                </span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">{{ trans('HCCore::core.size') }}</span>
+                    <span class="info-box-number">{{ getProjectDbSize() }}</span>
                 </div>
             </div>
         </div>
