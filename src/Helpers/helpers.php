@@ -307,14 +307,14 @@ if (!function_exists('formManagerSeo')) {
             [
                 [
                     'type' => 'singleLine',
-                    'fieldID' => 'translations.seo_title',
+                    'fieldId' => 'translations.seo_title',
                     'label' => trans('HCCore::core.seo_title'),
                     'tabID' => trans('HCCore::core.seo'),
                     'multiLanguage' => $multiLanguage,
                 ],
                 [
                     'type' => 'textArea',
-                    'fieldID' => 'translations.seo_description',
+                    'fieldId' => 'translations.seo_description',
                     'label' => trans('HCCore::core.seo_description'),
                     'tabID' => trans('HCCore::core.seo'),
                     'multiLanguage' => $multiLanguage,
@@ -322,7 +322,7 @@ if (!function_exists('formManagerSeo')) {
                 ],
                 [
                     'type' => 'singleLine',
-                    'fieldID' => 'translations.seo_keywords',
+                    'fieldId' => 'translations.seo_keywords',
                     'label' => trans('HCCore::core.seo_keywords'),
                     'tabID' => trans('HCCore::core.seo'),
                     'multiLanguage' => $multiLanguage,

@@ -44,7 +44,7 @@ class HCPasswordResetForm extends HCBaseForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            "storageURL" => route('users.password.reset.post'),
+            "storageUrl" => route('users.password.reset.post'),
             "buttons" => [
                 [
                     "class" => "col-centered",
@@ -77,7 +77,7 @@ class HCPasswordResetForm extends HCBaseForm
         return [
             [
                 "type" => "email",
-                "fieldID" => "email",
+                "fieldId" => "email",
                 "label" => trans('HCCore::user.login.email'),
                 "required" => 1,
                 "requiredVisible" => 1,
@@ -85,7 +85,7 @@ class HCPasswordResetForm extends HCBaseForm
             ],
             [
                 "type" => "password",
-                "fieldID" => "password",
+                "fieldId" => "password",
                 "label" => trans('HCCore::user.passwords.new'),
                 "required" => 1,
                 "requiredVisible" => 1,
@@ -93,7 +93,7 @@ class HCPasswordResetForm extends HCBaseForm
             ],
             [
                 "type" => "password",
-                "fieldID" => "password_confirmation",
+                "fieldId" => "password_confirmation",
                 "label" => trans('HCCore::user.passwords.new_again'),
                 "required" => 1,
                 "requiredVisible" => 1,
@@ -101,7 +101,7 @@ class HCPasswordResetForm extends HCBaseForm
             ],
             [
                 "type" => "singleLine",
-                "fieldID" => "token",
+                "fieldId" => "token",
                 "hidden" => 1,
                 "required" => 1,
                 "requiredVisible" => 1,

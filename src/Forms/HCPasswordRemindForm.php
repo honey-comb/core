@@ -45,7 +45,7 @@ class HCPasswordRemindForm extends HCBaseForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            "storageURL" => route('users.password.remind.post'),
+            "storageUrl" => route('users.password.remind.post'),
             "buttons" => [
                 [
                     "class" => "col-centered",
@@ -78,7 +78,7 @@ class HCPasswordRemindForm extends HCBaseForm
         return [
             [
                 "type" => "email",
-                "fieldID" => "email",
+                "fieldId" => "email",
                 "label" => trans('HCCore::user.login.email'),
                 "editType" => 0,
                 "required" => 1,

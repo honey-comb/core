@@ -44,7 +44,7 @@ class HCUserRegisterForm extends HCBaseForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            'storageURL' => route('auth.register'),
+            'storageUrl' => route('auth.register'),
             'buttons' => [
                 [
                     "class" => "col-centered",
@@ -55,14 +55,14 @@ class HCUserRegisterForm extends HCBaseForm
             'structure' => [
                 [
                     "type" => "singleLine",
-                    "fieldID" => "email",
+                    "fieldId" => "email",
                     "label" => trans("HCCore::user.email"),
                     "required" => 1,
                     "requiredVisible" => 1,
                 ],
                 [
                     "type" => "password",
-                    "fieldID" => "password",
+                    "fieldId" => "password",
                     "label" => trans("HCCore::user.register.password"),
                     "required" => 1,
                     "requiredVisible" => 1,

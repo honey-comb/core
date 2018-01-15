@@ -44,7 +44,7 @@ class HCUserLoginForm extends HCBaseForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            'storageURL' => route('auth.login'),
+            'storageUrl' => route('auth.login'),
             'buttons' => [
                 [
                     "class" => "col-centered btn btn-primary",
@@ -80,19 +80,19 @@ class HCUserLoginForm extends HCBaseForm
         return [
             [
                 "type" => "singleLine",
-                "fieldID" => "email",
+                "fieldId" => "email",
                 "label" => trans("HCCore::user.login.email"),
                 "required" => 1,
             ],
             [
                 "type" => "password",
-                "fieldID" => "password",
+                "fieldId" => "password",
                 "label" => trans("HCCore::user.login.password"),
                 "required" => 1,
             ],
             [
                 "type" => "checkBoxList",
-                "fieldID" => 'remember',
+                "fieldId" => 'remember',
                 "label" => ' ',
                 "required" => 0,
                 "requiredVisible" => 0,
