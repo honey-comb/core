@@ -42,7 +42,7 @@ class HCComposerServiceProvider extends ServiceProvider
     public function boot()
     {
         // Using Closure based composers...
-        view()->composer('admin.partials.language', function (View $view) {
+        view()->composer('HCCore::admin.partials.language', function (View $view) {
             $view->with('adminLanguages', $this->app->make(HCLanguageRepository::class)->getAdminActiveLanguages());
         });
     }
