@@ -107,7 +107,7 @@ HCService.FormManager.HCForm = function (data, availableFields)
     /**
      * Where to the data should be submitted
      */
-    var storageURL;
+    var storageUrl;
 
     /**
      * Initializing FORM
@@ -178,7 +178,7 @@ HCService.FormManager.HCForm = function (data, availableFields)
      */
     function createForm ()
     {
-        storageURL = formConfiguration.storageURL;
+        storageUrl = formConfiguration.storageUrl;
 
         createFormDiv ();
         createFormFields (formConfiguration.structure);
@@ -199,7 +199,7 @@ HCService.FormManager.HCForm = function (data, availableFields)
         var loader;
         loader = new HCLoader.BasicLoader ();
         loader.dataTypeJSON ();
-        loader.load (contentLoaded, handleError, this, storageURL + '/' + data.contentID);
+        loader.load (contentLoaded, handleError, this, storageUrl + '/' + data.contentID);
     }
 
     /**
@@ -590,7 +590,7 @@ HCService.FormManager.HCForm = function (data, availableFields)
         });
 
         var headers = 'new';
-        var url     = storageURL;
+        var url     = storageUrl;
 
         if (data.contentID)
         {

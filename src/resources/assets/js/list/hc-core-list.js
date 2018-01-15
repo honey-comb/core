@@ -386,10 +386,10 @@ HCService.List.Core = function ()
      */
     function createFilterDropDown(data)
     {
-        filterListItems[data.fieldID] = new HCService.FormManager.Objects.DropDownList();
-        filterListItems[data.fieldID].setFieldData(data);
+        filterListItems[data.fieldId] = new HCService.FormManager.Objects.DropDownList();
+        filterListItems[data.fieldId].setFieldData(data);
         
-        return filterListItems[data.fieldID];
+        return filterListItems[data.fieldId];
     }
     
     
@@ -400,10 +400,10 @@ HCService.List.Core = function ()
      */
     function createFilterDateTimePicker(data)
     {
-        filterListItems[data.fieldID] = new HCService.FormManager.Objects.DateTimePicker();
-        filterListItems[data.fieldID].setFieldData(data);
+        filterListItems[data.fieldId] = new HCService.FormManager.Objects.DateTimePicker();
+        filterListItems[data.fieldId].setFieldData(data);
         
-        return filterListItems[data.fieldID];
+        return filterListItems[data.fieldId];
     }
     
     /**

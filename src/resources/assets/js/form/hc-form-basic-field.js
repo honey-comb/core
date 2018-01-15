@@ -136,7 +136,7 @@ HCService.FormManager.Objects.BasicField = function ()
      */
     this.getFieldID = function ()
     {
-        return fieldData.fieldID;
+        return fieldData.fieldId;
     };
 
     /**
