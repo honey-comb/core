@@ -86,4 +86,16 @@ HC.helpers = new function () {
 
         return "btn btn-" + name + disabled;
     };
+
+    /**
+     * Validating email address
+     * @method validateEmail
+     * @param {string} email address
+     */
+    this.validateEmail = function (email)
+    {
+        let emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{1,10})?$/;
+
+        return emailReg.test (email);
+    };
 };
