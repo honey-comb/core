@@ -41,13 +41,12 @@ body.disabled
 
       .form-structure
       {
-        background-color: whitesmoke;
+        background-color: rgba(0, 0, 0, 0.02);
         height: calc(100% - 85px);
-        border-bottom: 3px solid rgba(0, 0, 0, 0.5);
-        border-top: 3px solid rgba(0, 0, 0, 0.5);
-        margin: 15px;
+        margin: 15px 0;
         min-height: 250px;
         overflow-y: auto;
+        padding: 15px;
       }
       
       .footer {
