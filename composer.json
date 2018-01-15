@@ -1,7 +1,7 @@
 {
-  "name": "interactivesolutions/honeycomb-core",
+  "name": "honey-comb/core",
   "description": "HoneyComb CMS package for backend elements",
-  "keywords": ["honeycomb", "honey", "laravel"],
+  "keywords": ["honeycomb", "honey", "laravel", "cms"],
   "homepage": "https://github.com/interactivesolutions/honeycomb-core/",
   "license": "MIT",
   "authors": [
