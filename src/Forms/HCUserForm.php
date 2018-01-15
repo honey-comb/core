@@ -64,7 +64,7 @@ class HCUserForm extends HCBaseForm
             'buttons' => [
                 'submit' => [
                     'label' => trans('HCCore::core.buttons.create'),
-                ]
+                ],
             ],
             'structure' => $this->getStructure($edit),
         ];
@@ -72,6 +72,7 @@ class HCUserForm extends HCBaseForm
         if ($this->multiLanguage) {
             $form['availableLanguages'] = [];
         }
+
         //TOTO implement honeycomb-languages package getAvailableLanguages
 
         return $form;
@@ -83,16 +84,6 @@ class HCUserForm extends HCBaseForm
      */
     public function getStructureNew(string $prefix): array
     {
-        $rolesStructure = [
-            'type' => 'checkBoxList',
-            'fieldId' => $prefix . 'roles',
-            'tabID' => trans('HCCore::user.roles'),
-            'label' => trans('HCCore::user.role_groups'),
-            'required' => 1,
-            'requiredVisible' => 1,
-            'options' => $this->roleRepository->getRolesForUserCreation(),
-        ];
-
         return [
             [
                 'type' => 'email',
@@ -134,22 +125,16 @@ class HCUserForm extends HCBaseForm
                     ['id' => '1', 'label' => trans('HCCore::user.send_password')],
                 ],
             ],
-            $rolesStructure,
+            $this->roles($prefix),
         ];
     }
 
+    /**
+     * @param string $prefix
+     * @return array
+     */
     public function getStructureEdit(string $prefix): array
     {
-        $rolesStructure = [
-            'type' => 'checkBoxList',
-            'fieldId' => $prefix . 'roles',
-            'tabID' => trans('HCCore::user.roles'),
-            'label' => trans('HCCore::user.role_groups'),
-            'required' => 1,
-            'requiredVisible' => 1,
-            'options' => $this->roleRepository->getRolesForUserCreation(),
-        ];
-
         return [
             [
                 'type' => 'singleLine',
@@ -197,7 +182,7 @@ class HCUserForm extends HCBaseForm
                     ['id' => '1', 'label' => trans('HCCore::user.is_active')],
                 ],
             ],
-            $rolesStructure,
+            $this->roles($prefix),
             [
                 'type' => 'singleLine',
                 'fieldId' => $prefix . 'last_login',
@@ -219,6 +204,21 @@ class HCUserForm extends HCBaseForm
                 'label' => trans('HCCore::user.activation.activated_at'),
                 'readonly' => 1,
             ],
+        ];
+    }
+
+    /**
+     * @param string $prefix
+     * @return array
+     */
+    private function roles(string $prefix): array
+    {
+        return [
+            'type' => 'checkBoxList',
+            'fieldId' => $prefix . 'roles',
+            'tabID' => trans('HCCore::user.roles'),
+            'label' => trans('HCCore::user.role_groups'),
+            'options' => $this->roleRepository->getRolesForUserCreation(),
         ];
     }
 }
