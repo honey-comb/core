@@ -1,5 +1,3 @@
-@inject('languageRepository', 'HoneyComb\Core\Repositories\HCLanguageRepository')
-
 <li class="dropdown languages tasks-menu">
 
     @if(in_array(app()->getLocale(), array_pluck($adminLanguages, 'iso_639_1')))
