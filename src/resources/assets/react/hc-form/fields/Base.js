@@ -22,7 +22,8 @@ export default class BaseField extends Component {
     render() {
         let fieldClasses = classNames(
             "form-group", {
-                "has-error": this.state.hasError
+                "has-error": this.state.hasError,
+                hidden: this.props.config.hidden,
             }
         );
 
@@ -43,7 +44,7 @@ export default class BaseField extends Component {
         if (!this.props.config.label)
             return "";
 
-        return <label htmlFor={this.props.config.fieldId}>{this.props.config.label}</label>;
+        return <label htmlFor={this.props.config.fieldId}>{this.props.config.label} {this.getRequired()}</label>;
     }
 
     /**
@@ -58,12 +59,13 @@ export default class BaseField extends Component {
                       placeholder={this.props.config.label}
                       className="form-control"
                       required
+                      readOnly={this.props.config.readonly}
+                      disabled={this.props.config.disabled}
                       onChange={this.contentChange}/>;
 
         return <div className="input-group">
             {this.getInputAddon(true)}
-            <input type={this.props.config.type} ref="inputFielde" className="form-control"
-                   placeholder={this.props.config.label} onChange={this.contentChange}/>
+            "INPUT"
             {this.getInputAddon(false)}
         </div>
     }
@@ -78,6 +80,14 @@ export default class BaseField extends Component {
         return "";
 
         return <div className="input-group-addon">$</div>;
+    }
+
+    getRequired ()
+    {
+        if (!this.props.config.required)
+            return "";
+
+        return <span className="required">*</span>
     }
 
     /**
@@ -108,16 +118,15 @@ export default class BaseField extends Component {
      * Validating input field
      */
     validate() {
-        let isError = false;
+        let isValid = this.isValid();
 
-        if (this.isValid()) {
+        if (isValid) {
             this.triggerChange();
         }
-        else {
-            isError = true;
-        }
 
-        this.setState({hasError: isError});
+        this.setState({hasError: !isValid});
+
+        return isValid;
     }
 
     /**
