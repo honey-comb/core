@@ -351,14 +351,23 @@ if (!function_exists('folderSize')) {
     /**
      * Scanning folder size
      *
-     * @param $dir
+     * @param string $dir
+     * @param array $ignore
      * @return int
      */
-    function folderSize($dir)
+    function folderSize(string $dir, array $ignore): int
     {
+        foreach ($ignore as $key => $value) {
+            if (strpos($dir, $value) !== false) {
+                return 0;
+            }
+        }
+
+        print_r($dir . "\r\n");
+
         $size = 0;
         foreach (glob(rtrim($dir, '/') . '/*') as $each) {
-            $size += is_file($each) ? filesize($each) : folderSize($each);
+            $size += is_file($each) ? filesize($each) : folderSize($each, $ignore);
         }
 
         return $size;
@@ -366,7 +375,7 @@ if (!function_exists('folderSize')) {
 }
 
 if (!function_exists('formatSize')) {
-    function formatSize($bytes)
+    function formatSize(int $bytes): string
     {
         $kb = 1024;
         $mb = $kb * 1024;

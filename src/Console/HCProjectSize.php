@@ -42,12 +42,10 @@ class HCProjectSize extends Command
      */
     private function calculateDisk(): void
     {
-        $time = microtime(true);
-
-        cache()->put('project-size-files', formatSize(folderSize(app_path('/../'))), 1500);
+        //adding node_modules and vendor directories sizes
+        cache()->put('project-size-files', formatSize((200 + 36) * 1024 * 1024 + folderSize(app_path('../'), ['../node_modules', '../vendor'])), 1500);
 
         $this->info(cache()->get('project-size-files'));
-        $this->info(microtime(true) - $time);
     }
 
     /**
@@ -71,5 +69,7 @@ class HCProjectSize extends Command
         }
 
         cache()->put('project-size-db', formatSize($size), 1500);
+
+        $this->info(cache()->get('project-size-db'));
     }
 }
