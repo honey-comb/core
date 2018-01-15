@@ -11,19 +11,19 @@ export default class HCForm extends Component {
     constructor(props) {
         super(props);
 
-        this.refs = {
-            formHolder: ""
-        };
+        this.finalStructure = [];
 
         this.record = {};
 
         this.state = {
             id: HC.helpers.uuid(),
-            formData: {}
+            formData: {},
+            formDisabled:false
         };
 
         this.opacity = 0;
 
+        this.getFields = this.getFields.bind(this);
         this.updateFormData = this.updateFormData.bind(this);
         this.submitData = this.submitData.bind(this);
     }
@@ -94,16 +94,16 @@ export default class HCForm extends Component {
      */
     getFields() {
         let structure = this.state.formData.structure;
-        let finalStructure = [];
+        this.finalStructure = [];
 
         if (!structure)
-            return finalStructure;
+            return this.finalStructure;
 
         structure.map((data, i) => (
-            finalStructure.push(this.getField(data, i))
+            this.finalStructure.push(this.getField(data, i))
         ));
 
-        return finalStructure;
+        return this.finalStructure;
     }
 
     /**
@@ -119,15 +119,15 @@ export default class HCForm extends Component {
         switch (data.type) {
             case "email" :
 
-                return <Email key={i} config={data}/>;
+                return <Email key={i} config={data} ref={data.fieldId}/>;
 
             case "password" :
 
-                return <Password key={i} config={data}/>;
+                return <Password key={i} config={data} ref={data.fieldId}/>;
 
             case "checkBoxList" :
 
-                return <CheckBoxList key={i} config={data}/>;
+                return <CheckBoxList key={i} config={data} ref={data.fieldId}/>;
         }
 
         return "";
@@ -177,7 +177,7 @@ export default class HCForm extends Component {
         switch (type) {
             case "submit" :
 
-                return <div key={i} className={HC.helpers.buttonClass('primary')} onClick={this.submitData}>{data.label}</div>;
+                return <button disabled={this.state.formDisabled} key={i} className={HC.helpers.buttonClass('primary')} onClick={this.submitData}>{data.label}</button>;
         }
     }
 
@@ -186,8 +186,25 @@ export default class HCForm extends Component {
      */
     submitData ()
     {
+        let valid = true;
+
+        this.finalStructure.map((item, i) => {
+
+            if (!this.refs[item.props.config.fieldId].validate())
+                valid = false;
+        });
+
+        if (!valid)
+            return;
+
+        this.setState({formDisabled:true});
+
         axios.post(this.state.formData.storageUrl, this.record)
-            .then(() => this.animateForm(false));
+            .then(
+                () =>
+
+                    this.animateForm(false)
+            );
     }
 
 }
