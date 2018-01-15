@@ -8,7 +8,9 @@ export default class HCPopUp extends Component {
 
         this.state = {
             id: HC.helpers.uuid()
-        }
+        };
+
+        this.handlePopUpClose = this.handlePopUpClose.bind(this);
     }
 
     render() {
@@ -16,10 +18,19 @@ export default class HCPopUp extends Component {
             case "form" :
 
                 return <div id={this.state.id} className="hc-pop-up">
-                    <HCForm config={this.props.config} formClosed={() => HC.react.popUpRemove(this.props.config.parent)}/>
+                    <HCForm config={this.props.config} formClosed={this.handlePopUpClose}/>
                 </div>
         }
 
         return "";
+    }
+
+    handlePopUpClose() {
+
+        if (this.props.config.callBack) {
+            this.props.config.callBack.call(this.props.config.scope);
+        }
+
+        HC.react.popUpRemove(this.props.config.parent);
     }
 }
