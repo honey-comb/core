@@ -30,14 +30,29 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Middleware;
 
 use Closure;
+use HoneyComb\Core\Repositories\HCLanguageRepository;
 use Illuminate\Http\Request;
 
 /**
- * Class HCCheckSelectedLanguage
+ * Class HCCheckSelectedAdminLanguage
  * @package HoneyComb\Core\Http\Middleware
  */
-class HCCheckSelectedLanguage
+class HCCheckSelectedAdminLanguage
 {
+    /**
+     * @var HCLanguageRepository
+     */
+    private $languageRepository;
+
+    /**
+     * HCCheckSelectedAdminLanguage constructor.
+     * @param HCLanguageRepository $languageRepository
+     */
+    public function __construct(HCLanguageRepository $languageRepository)
+    {
+        $this->languageRepository = $languageRepository;
+    }
+
     /**
      * @param Request $request
      * @param Closure $next
@@ -46,11 +61,17 @@ class HCCheckSelectedLanguage
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->segment(1) == 'admin') {
-            app()->setLocale(session()->get('back-end', app()->getLocale()));
-        } else {
-            // TODO handle front end language
-            app()->setLocale(session()->get('font-end', app()->getLocale()));
+        if ($request->segment(1) == config('hc.admin_url')) {
+
+            $enabled = $this->languageRepository->getAdminActiveLanguages();
+
+            $locale = session()->get('back-end');
+
+            if (! $enabled->contains('iso_639_1', $locale)) {
+                $locale = config('app.locale');
+            }
+
+            app()->setLocale($locale);
         }
 
         return $next($request);
