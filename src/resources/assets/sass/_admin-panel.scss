@@ -3,8 +3,7 @@ body {
   font-family: "Open sans";
 }
 
-body.disabled
-{
+body.disabled {
   overflow: hidden;
 }
 
@@ -39,16 +38,22 @@ body.disabled
         }
       }
 
-      .form-structure
-      {
+      .form-structure {
         background-color: rgba(0, 0, 0, 0.02);
         height: calc(100% - 85px);
         margin: 15px 0;
         min-height: 250px;
         overflow-y: auto;
         padding: 15px;
+
+        .form-group {
+          label .required {
+            color: crimson;
+            font-size: 20px;
+          }
+        }
       }
-      
+
       .footer {
         text-align: center;
       }
