@@ -63,9 +63,11 @@ class HCCheckSelectedFrontEndLanguage
     {
         $languageCode = $request->segment(1);
 
+        $appLocale = config()->get('app.locale');
+
         if (is_null($languageCode)) {
-            // get cookie language or set default app locale
-            $locale = $request->cookie('lang-front-end', app()->getLocale());
+            // get cookie language or get default app locale
+            $locale = $request->cookie('lang-front-end', $appLocale);
 
             return redirect()->to(
                 $this->getRedirectUrl($request, $locale)
@@ -102,9 +104,7 @@ class HCCheckSelectedFrontEndLanguage
 
         // if cookie locale and language code from url is not valid than redirect to default locale
         // and also remove cookie
-        $appLocale = config()->get('app.locale');
 
-        // delete cookie
         cookie()->queue(
             cookie()->make('lang-front-end', '', -1)
         );
