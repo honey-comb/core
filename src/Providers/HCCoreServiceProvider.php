@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Providers;
 
 use HoneyComb\Core\Http\Middleware\HCCheckSelectedAdminLanguage;
+use HoneyComb\Core\Http\Middleware\HCCheckSelectedFrontEndLanguage;
 use HoneyComb\Core\Repositories\HCLanguageRepository;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Routing\Router;
@@ -178,6 +179,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
     {
         $router->aliasMiddleware('acl', HCACLPermissionsMiddleware::class);
         $router->aliasMiddleware('auth', HCACLAuthenticate::class);
+        $router->aliasMiddleware('multiLang', HCCheckSelectedFrontEndLanguage::class);
 
         $router->pushMiddleWareToGroup('web', HCACLAdminMenu::class);
         $router->pushMiddleWareToGroup('web', HCLogLastActivity::class);

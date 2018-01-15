@@ -79,6 +79,16 @@ class HCLanguageRepository extends HCBaseRepository
     }
 
     /**
+     * Get all available admin languages
+     *
+     * @return Collection
+     */
+    public function getFrontEndActiveLanguages(): Collection
+    {
+        return $this->makeQuery()->where('back_end', '1')->get();
+    }
+
+    /**
      * Check if given language is available to access
      *
      * @param string $lang
