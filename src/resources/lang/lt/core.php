@@ -52,6 +52,7 @@ return [
     'regions' => 'Regionai',
     'permissions' => 'Leidimai',
     'no_roles' => 'Nerasta rolių',
+    'size' => 'Dydis',
 
     'buttons' => [
         'submit' => 'Pateikti',

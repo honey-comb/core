@@ -59,6 +59,7 @@ return [
     'birthday' => 'Birthday',
     'permissions' => 'Permissions',
     'no_roles' => 'No roles found',
+    'size' => 'Size',
 
     'buttons' => [
         'submit' => 'Submit',
