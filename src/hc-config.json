@@ -16,7 +16,7 @@
             "route": "admin.user.index",
             "parent": "admin.index",
             "translation": "HCCore::user.page_title",
-            "icon": "user",
+            "icon": "users",
             "aclPermission": "honey_comb_core_user_list"
         },
         {
