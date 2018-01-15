@@ -86,7 +86,7 @@ class HCLanguageController extends HCBaseController
             'url' => route('admin.api.language'),
             'form' => route('admin.api.form-manager', ['language']),
             'headers' => $this->getTableColumns(),
-            'actions' => $this->getActions('honey_comb_core_language'),
+            'actions' => [],
         ];
 
         return view('HCCore::admin.service.index', ['config' => $config]);
