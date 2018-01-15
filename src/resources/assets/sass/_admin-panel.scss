@@ -1,6 +1,25 @@
 body {
   min-width: 320px;
   font-family: "Open sans";
+
+  .wrapper
+  {
+    .content-wrapper
+    {
+      .content
+      {
+        .row
+        {
+          display: flex;
+
+          .info-box
+          {
+            margin: 0 15px 0 15px;
+          }
+        }
+      }
+    }
+  }
 }
 
 body.disabled {
