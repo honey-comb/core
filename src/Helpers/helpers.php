@@ -332,8 +332,7 @@ if (!function_exists('formManagerSeo')) {
     }
 }
 
-if (!function_exists('fontAwesomeIcon'))
-{
+if (!function_exists('fontAwesomeIcon')) {
     /**
      * creating a html tag for font awesome icon
      *
@@ -345,5 +344,62 @@ if (!function_exists('fontAwesomeIcon'))
     function fontAwesomeIcon(string $icon, string $prefix = "", string $class = "")
     {
         return "<div class=\"fa-icon $class\" data-icon=\"$icon\" data-prefix=\"$prefix\"></div>";
+    }
+}
+if (!function_exists('folderSize')) {
+
+    /**
+     * Scanning folder size
+     *
+     * @param $dir
+     * @return int
+     */
+    function folderSize($dir)
+    {
+        $size = 0;
+        foreach (glob(rtrim($dir, '/') . '/*') as $each) {
+            $size += is_file($each) ? filesize($each) : folderSize($each);
+        }
+
+        return $size;
+    }
+}
+
+if (!function_exists('formatSize')) {
+    function formatSize($bytes)
+    {
+        $kb = 1024;
+        $mb = $kb * 1024;
+        $gb = $mb * 1024;
+        $tb = $gb * 1024;
+        if (($bytes >= 0) && ($bytes < $kb)) {
+            return $bytes . ' B';
+        } elseif (($bytes >= $kb) && ($bytes < $mb)) {
+            return ceil($bytes / $kb) . ' KB';
+        } elseif (($bytes >= $mb) && ($bytes < $gb)) {
+            return ceil($bytes / $mb) . ' MB';
+        } elseif (($bytes >= $gb) && ($bytes < $tb)) {
+            return ceil($bytes / $gb) . ' GB';
+        } elseif ($bytes >= $tb) {
+            return ceil($bytes / $tb) . ' TB';
+        } else {
+            return $bytes . ' B';
+        }
+    }
+}
+
+if (!function_exists('getProjectSize')) {
+    /**
+     *
+     * Getting project size
+     *
+     */
+    function getProjectSize()
+    {
+        if (!cache()->has('project-size')) {
+            \Illuminate\Support\Facades\Artisan::call('hc:project-size');
+        }
+
+        return cache()->get('project-size');
     }
 }
