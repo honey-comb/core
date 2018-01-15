@@ -114,8 +114,6 @@ class HCUserForm extends HCBaseForm
                 'type' => 'checkBoxList',
                 'fieldId' => $prefix . 'is_active',
                 'tabID' => trans('HCCore::core.general'),
-                'required' => 0,
-                'requiredVisible' => 0,
                 'options' => [
                     ['id' => '1', 'label' => trans('HCCore::user.active')],
                 ],
@@ -124,8 +122,6 @@ class HCUserForm extends HCBaseForm
                 'type' => 'checkBoxList',
                 'fieldId' => $prefix . 'send_welcome_email',
                 'tabID' => trans('HCCore::core.general'),
-                'required' => 0,
-                'requiredVisible' => 0,
                 'options' => [
                     ['id' => '1', 'label' => trans('HCCore::user.send_welcome_email')],
                 ],
@@ -134,8 +130,6 @@ class HCUserForm extends HCBaseForm
                 'type' => 'checkBoxList',
                 'fieldId' => $prefix . 'send_password',
                 'tabID' => trans('HCCore::core.general'),
-                'required' => 0,
-                'requiredVisible' => 0,
                 'options' => [
                     ['id' => '1', 'label' => trans('HCCore::user.send_password')],
                 ],
@@ -162,18 +156,12 @@ class HCUserForm extends HCBaseForm
                 'fieldId' => $prefix . 'first_name',
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.firstname'),
-                'required' => 0,
-                'requiredVisible' => 0,
-                'readonly' => 0,
             ],
             [
                 'type' => 'singleLine',
                 'fieldId' => $prefix . 'last_name',
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.lastname'),
-                'required' => 0,
-                'requiredVisible' => 0,
-                'readonly' => 0,
             ],
             [
                 'type' => 'email',
@@ -188,9 +176,6 @@ class HCUserForm extends HCBaseForm
                 'fieldId' => $prefix . 'password',
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.passwords.new'),
-                'editType' => 0,
-                'required' => 0,
-                'requiredVisible' => 0,
                 'properties' => [
                     'strength' => '1' // case 0: much, case 1: 4 symbols, case 2: 6 symbols
                 ],
@@ -200,9 +185,6 @@ class HCUserForm extends HCBaseForm
                 'fieldId' => $prefix . 'password_confirmation',
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.passwords.new_again'),
-                'editType' => 0,
-                'required' => 0,
-                'requiredVisible' => 0,
                 'properties' => [
                     'strength' => '1' // case 0: much, case 1: 4 symbols, case 2: 6 symbols
                 ],
@@ -211,8 +193,6 @@ class HCUserForm extends HCBaseForm
                 'tabID' => trans('HCCore::core.general'),
                 'type' => 'checkBoxList',
                 'fieldId' => $prefix . 'is_active',
-                'required' => 0,
-                'requiredVisible' => 0,
                 'options' => [
                     ['id' => '1', 'label' => trans('HCCore::user.is_active')],
                 ],
@@ -223,8 +203,6 @@ class HCUserForm extends HCBaseForm
                 'fieldId' => $prefix . 'last_login',
                 'tabID' => trans('HCCore::user.activity'),
                 'label' => trans('HCCore::user.last_login'),
-                'required' => 0,
-                'requiredVisible' => 0,
                 'readonly' => 1,
             ],
             [
@@ -232,8 +210,6 @@ class HCUserForm extends HCBaseForm
                 'fieldId' => $prefix . 'last_activity',
                 'tabID' => trans('HCCore::user.activity'),
                 'label' => trans('HCCore::user.last_activity'),
-                'required' => 0,
-                'requiredVisible' => 0,
                 'readonly' => 1,
             ],
             [
@@ -241,8 +217,6 @@ class HCUserForm extends HCBaseForm
                 'fieldId' => $prefix . 'activated_at',
                 'tabID' => trans('HCCore::user.activity'),
                 'label' => trans('HCCore::user.activation.activated_at'),
-                'required' => 0,
-                'requiredVisible' => 0,
                 'readonly' => 1,
             ],
         ];
