@@ -5,10 +5,11 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Console;
 
 use Illuminate\Console\Command;
-use HoneyComb\Core\Helpers\HCConfigParseHelper;
-use Illuminate\Support\Facades\DB;
-use mysqli;
 
+/**
+ * Class HCProjectSize
+ * @package HoneyComb\Core\Console
+ */
 class HCProjectSize extends Command
 {
     /**
@@ -30,13 +31,16 @@ class HCProjectSize extends Command
      * Execute the console command.
      * @throws \Exception
      */
-    public function handle()
+    public function handle(): void
     {
         $this->calculateDisk();
         $this->calculateDB();
     }
 
-    private function calculateDisk()
+    /**
+     * @throws \Exception
+     */
+    private function calculateDisk(): void
     {
         $time = microtime(true);
 
@@ -46,25 +50,24 @@ class HCProjectSize extends Command
         $this->info(microtime(true) - $time);
     }
 
-    private function calculateDB()
+    /**
+     * @throws \Exception
+     * @throws \Illuminate\Container\EntryNotFoundException
+     */
+    private function calculateDB(): void
     {
-        $mysqli = new mysqli(env("DB_HOST"), env("DB_USERNAME"), env("DB_PASSWORD"), env("DB_DATABASE"));
-        $query = 'SELECT TABLE_NAME AS `Table`, (DATA_LENGTH + INDEX_LENGTH)
+        $result = \DB::select('SELECT TABLE_NAME AS `Table`, (DATA_LENGTH + INDEX_LENGTH)
                   AS `size`
                   FROM information_schema.TABLES
-                  WHERE TABLE_SCHEMA = "' . env('DB_DATABASE') . '"
-                  ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC;';
+                  WHERE TABLE_SCHEMA = "' . config('database.connections.mysql.database') . '"
+                  ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC;');
 
         $size = 0;
 
-        /* If we have to retrieve large amount of data we use MYSQLI_USE_RESULT */
-        if ($result = $mysqli->query($query)) {
-
+        if ($result) {
             foreach ($result as $item) {
-                $size += $item['size'];
+                $size += $item->size;
             };
-
-            $result->close();
         }
 
         cache()->put('project-size-db', formatSize($size), 1500);
