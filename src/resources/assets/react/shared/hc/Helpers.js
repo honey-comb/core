@@ -96,6 +96,9 @@ HC.helpers = new function () {
     {
         let emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{1,10})?$/;
 
+        if (!email || email === "")
+            return false;
+
         return emailReg.test (email);
     };
 };
