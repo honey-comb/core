@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import HCPopUp from "../../components/HCPopUp";
 import HCAdminListView from "../../components/HCAdminList";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import HCForm from "../../components/HCForm";
 
 HC.react = new function () {
 
@@ -71,6 +72,11 @@ HC.react = new function () {
         }
 
     }
+
+    this.hcForm = function (config)
+    {
+        ReactDOM.render(<HCForm config={config} formClosed={this.handlePopUpClose}/>, document.getElementById(config.divId));
+    };
 
     /**
      * enable font awesome icons

@@ -33,9 +33,7 @@ export default class HCForm extends Component {
 
         return <div ref="formHolder" id={this.state.id} className="hc-form" style={{opacity: this.opacity}}>
             <div className="header">
-                <div className="close" style={{float: "left"}} onClick={() => this.animateForm(false)}>
-                    <FontAwesomeIcon icon={HC.helpers.faIcon('times-circle')}/>
-                </div>
+                {this.getCloseButton()}
                 <div className="label">{this.props.contentID ? "Edit record" : "New record"}</div>
             </div>
             <div className="form-structure">
@@ -64,6 +62,15 @@ export default class HCForm extends Component {
                 this.refs[key].setValue(value);
             });
         }
+    }
+
+    getCloseButton() {
+        if (this.props.config.parent)
+            return <div className="close" style={{float: "left"}} onClick={() => this.animateForm(false)}>
+                <FontAwesomeIcon icon={HC.helpers.faIcon('times-circle')}/>
+            </div>;
+
+        return "";
     }
 
     /**
@@ -104,6 +111,7 @@ export default class HCForm extends Component {
      * @param forward
      */
     animateForm(forward) {
+
         if (forward) {
             TweenMax.to(this, 0.5, {
                 opacity: 1,
@@ -111,6 +119,9 @@ export default class HCForm extends Component {
             });
         }
         else {
+
+            if (!this.props.config.parent)
+                return;
 
             TweenMax.to(this, 0.5, {
                 opacity: 0,
@@ -152,7 +163,6 @@ export default class HCForm extends Component {
      * @returns {*}
      */
     getField(data, ref, i) {
-
 
         data.updateFormData = this.updateFormData;
 
@@ -247,15 +257,24 @@ export default class HCForm extends Component {
 
         if (this.props.config.recordId)
             axios.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, this.record).then(
-                () =>
-                    this.animateForm(false)
+                (res) =>
+                    this.handleSubmitComplete(res.data)
             );
         else
             axios.post(this.state.formData.storageUrl, this.record)
                 .then(
-                    () =>
-                        this.animateForm(false)
+                    (res) => this.handleSubmitComplete(res.data)
                 );
     }
 
+    handleSubmitComplete(r) {
+
+        if (r.success) {
+            if (r.redirectUrl)
+                document.location.href = r.redirectUrl;
+
+            this.animateForm(false);
+
+        }
+    }
 }
