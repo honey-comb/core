@@ -34,6 +34,7 @@ use DB;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
+use HoneyComb\Core\Services\HCUserService;
 use Illuminate\Console\Command;
 use Illuminate\Database\Connection;
 use Validator;
@@ -79,18 +80,26 @@ class HCCreateSuperAdminCommand extends Command
      * @var Connection
      */
     private $connection;
+    /**
+     * @var HCUserService
+     */
+    private $userService;
 
     /**
      * HCCreateSuperAdminCommand constructor.
      * @param Connection $connection
      * @param HCUserRepository $userRepository
+     * @param HCUserService $userService
+     * @throws \InvalidArgumentException
+     * @throws \Symfony\Component\Console\Exception\LogicException
      */
-    public function __construct(Connection $connection, HCUserRepository $userRepository)
+    public function __construct(Connection $connection, HCUserRepository $userRepository, HCUserService $userService)
     {
         parent::__construct();
 
         $this->userRepository = $userRepository;
         $this->connection = $connection;
+        $this->userService = $userService;
     }
 
     /**
@@ -206,12 +215,17 @@ class HCCreateSuperAdminCommand extends Command
         $this->connection->beginTransaction();
 
         try {
-            // create super-admin user
-            $user = $this->userRepository->create([
-                'email' => $this->email,
-                'password' => $this->password,
-                'activated_at' => Carbon::now()->toDateTimeString(),
-            ]);
+            $user = $this->userService->createUser (
+                [
+                    'email' => $this->email,
+                    'password' => $this->password,
+                    'activated_at' => Carbon::now()->toDateTimeString(),
+                ], [], [
+                    'first_name' => "Super",
+                    'last_name' => "Admin"
+                ],false, false
+            );
+
             // add sa role
             $user->assignRoleBySlug(HCRoleRepository::ROLE_SA);
 
