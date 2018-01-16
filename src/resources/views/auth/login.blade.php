@@ -64,13 +64,14 @@
 @stop
 
 @section('scripts')
+    {{-- admin list --}}
+    <script src="{{mix('js/hc-full.js')}}"></script>
+
     <script>
-        $(document).ready(function () {
-            HCService.FormManager.initialize();
-            var form = HCService.FormManager.createForm({
-                'structureURL': '{{  route('frontend.api.form-manager', 'user-login-new')}}',
-                'divID': '#login-form'
-            });
-        });
+        HC.react.enableFaIcons();
+        HC.react.hcForm({
+            url: '{{route('frontend.api.form-manager', 'user-login-new')}}',
+            divId: 'login-form'
+        })
     </script>
 @endsection
