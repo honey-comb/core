@@ -1,5 +1,5 @@
 import React from 'react'
-import Base from "./Base";
+import Base from "./BaseField";
 
 export default class CheckBoxList extends Base {
 
