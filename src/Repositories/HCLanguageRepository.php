@@ -85,7 +85,7 @@ class HCLanguageRepository extends HCBaseRepository
      */
     public function getFrontEndActiveLanguages(): Collection
     {
-        return $this->makeQuery()->where('back_end', '1')->get();
+        return $this->makeQuery()->where('front_end', '1')->get();
     }
 
     /**
