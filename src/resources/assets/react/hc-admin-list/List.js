@@ -17,6 +17,7 @@ export default class List extends Component {
             listId: uuid(),
             globalSelection: false,
             allSelected: false,
+            update: this.props.actions.indexOf('update') !== -1 ? 1 : 0,
             selected: [],
             sortBy: {}
         };
@@ -47,6 +48,11 @@ export default class List extends Component {
             nextState.allSelected = false;
             nextState.globalSelection = false;
             nextState.selected = [];
+
+            if (nextProps.onlyTrashed)
+                nextState.update = false;
+            else
+                nextState.update = this.props.actions.indexOf('update') !== -1 ? 1 : 0;
 
             return true;
         }
@@ -131,9 +137,12 @@ export default class List extends Component {
             this.state.rows.push(<TDRow key={i}
                                         url={this.props.url}
                                         record={item}
+                                        update={this.state.update}
                                         headers={this.props.headers}
                                         globalSelection={this.state.globalSelection}
-                                        onChange={this.singleRowSelect}/>)
+                                        onChange={this.singleRowSelect}
+                                        form={this.props.form}
+                                        reload={this.props.reload}/>)
         ));
 
         return this.state.rows;

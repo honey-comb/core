@@ -30,7 +30,9 @@ export default class THRow extends Component {
                 <THCell label={this.props.headers[item].label}
                         key={item}
                         field={item}
+                        update={this.props.update}
                         active={this.state.thFields[item]}
+
                         onSortOrderChange={this.onSortOrderChange}/>
                 )
             )}

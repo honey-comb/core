@@ -93,11 +93,14 @@ export default class HCAdminListView extends Component {
                     url={this.props.config.url}
                     headers={this.props.config.headers}
                     perPage={this.props.config.perPage}
+                    form={this.props.config.form}
                     hideCheckBox={this.state.hideCheckBox}
                     onlyTrashed={this.state.onlyTrashed}
+                    actions={this.props.config.actions}
                     records={this.state.records}
                     selectionUpdated={this.selectionUpdated}
                     onSortOrderUpdate={this.onSortOrderUpdate}
+                    reload={this.reload}
                 />
                 <Pagination selectComponentClass={Select}
                             showSizeChanger

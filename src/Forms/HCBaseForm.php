@@ -87,7 +87,7 @@ abstract class HCBaseForm implements HCFormContract
 
     /**
      * Getting submit button label
-     * 
+     *
      * @param bool $edit
      * @return string
      */
