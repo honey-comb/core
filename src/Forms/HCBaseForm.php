@@ -76,12 +76,23 @@ abstract class HCBaseForm implements HCFormContract
      * @param array $only
      * @return array
      */
-    public function getStructure(bool $edit, string $prefix = '', array $only = [])
+    public function getStructure(bool $edit, string $prefix = '', array $only = []): array
     {
         //TODO if $prefix not null add . at the end
         if ($edit)
             return $this->getStructureEdit($prefix);
         else
             return $this->getStructureNew($prefix);
+    }
+
+    /**
+     * Getting submit button label
+     * 
+     * @param bool $edit
+     * @return string
+     */
+    protected function getSubmitLabel(bool $edit): string
+    {
+        return $edit ? trans('HCCore::core.buttons.update') : trans('HCCore::core.buttons.create');
     }
 }
