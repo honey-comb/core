@@ -5,6 +5,7 @@ import axios from "axios/index";
 import Email from "../hc-form/fields/Email";
 import Password from "../hc-form/fields/Password";
 import CheckBoxList from "../hc-form/fields/CheckBoxList";
+import BaseField from "../hc-form/fields/BaseField";
 
 export default class HCForm extends Component {
 
@@ -154,6 +155,10 @@ export default class HCForm extends Component {
             case "checkBoxList" :
 
                 return <CheckBoxList key={i} config={data} ref={ref} id={ref}/>;
+
+            case "singleLine" :
+
+                return <BaseField key={i} config={data} ref={ref} id={ref}/>;
         }
 
         return "";
