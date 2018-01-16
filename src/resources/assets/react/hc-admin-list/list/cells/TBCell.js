@@ -18,6 +18,7 @@ export default class TBCell extends Component {
 
         this.getCheckBox = this.getCheckBox.bind(this);
         this.updateStrict = this.updateStrict.bind(this);
+        this.editRecord = this.editRecord.bind(this);
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -33,7 +34,26 @@ export default class TBCell extends Component {
     }
 
     render() {
-        return <td>{this.getContent()}</td>;
+
+        let tdClass = classNames({
+            update: this.props.update
+        });
+
+        return <td className={tdClass} onClick={this.editRecord}>{this.getContent()}</td>;
+    }
+
+    editRecord() {
+        HC.react.popUp({
+            url: this.props.form + "-edit",
+            type: "form",
+            recordId: this.props.id,
+            callBack: this.recordUpdated,
+            scope: this
+        });
+    }
+
+    recordUpdated() {
+        this.props.reload();
     }
 
     getContent() {
@@ -51,7 +71,10 @@ export default class TBCell extends Component {
     }
 
     getCheckBox() {
-        return <input type="checkbox" disabled={this.state.disabled} checked={this.state.value} onChange={this.updateStrict}/>
+        return <input type="checkbox"
+                      disabled={this.state.disabled}
+                      checked={this.state.value}
+                      onChange={this.updateStrict}/>
     }
 
     updateStrict() {
