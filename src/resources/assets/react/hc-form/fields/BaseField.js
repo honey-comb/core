@@ -10,7 +10,8 @@ export default class BaseField extends Component {
         this.validationTimeOut = undefined;
 
         this.state = {
-            hasError: false
+            hasError: false,
+            value: undefined
         };
 
         this.contentChange = this.contentChange.bind(this);
@@ -58,7 +59,6 @@ export default class BaseField extends Component {
                       ref="inputField"
                       placeholder={this.props.config.label}
                       className="form-control"
-                      required
                       readOnly={this.props.config.readonly}
                       disabled={this.props.config.disabled}
                       onChange={this.contentChange}/>;
@@ -150,5 +150,15 @@ export default class BaseField extends Component {
      */
     getValue() {
         return this.refs.inputField.value;
+    }
+
+    /**
+     * Setting value
+     *
+     * @param value
+     */
+    setValue (value) {
+        this.refs.inputField.value = value;
+        this.validate();
     }
 }

@@ -23,7 +23,7 @@ export default class CheckBoxList extends Base {
 
         return <div className="checkbox" key={key}>
             <label>
-                <input type="checkbox" value={data.id} onChange={this.handleCheckBoxChange}/> {data.label}
+                <input type="checkbox" ref={data.id} value={data.id} onChange={this.handleCheckBoxChange}/> {data.label}
             </label>
         </div>
     }
@@ -51,5 +51,28 @@ export default class CheckBoxList extends Base {
         }
         else
             return this.options;
+    }
+
+    setValue(value) {
+
+        this.options = [];
+
+        if (this.props.config.options.length === 1) {
+            if (this.refs[value])
+            {
+                this.refs[value].checked = 1;
+                this.options.push(value);
+            }
+        }
+        else
+            value.map((item, key) => {
+                if (this.refs[item])
+                {
+                    this.refs[item].checked = 1;
+                    this.options.push(item);
+                }
+            });
+
+        this.validate();
     }
 }
