@@ -179,7 +179,7 @@ class HCUserForm extends HCBaseForm
                     'tabID' => trans('HCCore::core.general'),
                     'type' => 'checkBoxList',
                     'options' => [
-                        ['id' => '1', 'label' => trans('HCCore::user.is_active')],
+                        ['id' => '1', 'label' => trans('HCCore::user.active')],
                     ],
                 ],
             $prefix . 'roles' => $this->roles(),

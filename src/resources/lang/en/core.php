@@ -64,6 +64,7 @@ return [
     'buttons' => [
         'submit' => 'Submit',
         'create' => 'Create',
+        'update' => 'Update',
         'register' => 'Register',
         'cancel' => 'Cancel',
         'login' => 'Login',

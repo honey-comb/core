@@ -57,6 +57,7 @@ return [
     'buttons' => [
         'submit' => 'Pateikti',
         'create' => 'Sukurti',
+        'update' => 'Atnaujinti',
         'register' => 'Registruotis',
         'cancel' => 'Atšaukti',
         'login' => 'Prisijungti',
