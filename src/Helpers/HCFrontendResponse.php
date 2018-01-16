@@ -24,7 +24,7 @@ class HCFrontendResponse
             'success' => true,
             'message' => $message,
             'data' => $data,
-            'redirectURL' => $redirectUrl,
+            'redirectUrl' => $redirectUrl,
         ], JsonResponse::HTTP_OK);
     }
 

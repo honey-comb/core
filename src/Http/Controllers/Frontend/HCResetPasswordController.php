@@ -107,7 +107,7 @@ class HCResetPasswordController extends HCBaseController
         return response()->json([
             'success' => true,
             'message' => trans($response),
-            'redirectURL' => session('url.intended', url('/')),
+            'redirectUrl' => session('url.intended', url('/')),
         ]);
     }
 

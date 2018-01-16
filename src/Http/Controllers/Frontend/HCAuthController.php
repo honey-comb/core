@@ -215,9 +215,9 @@ class HCAuthController extends HCBaseController
         session(['activation_message' => trans('HCCore::user.activation.activate_account')]);
 
         if ($this->redirectUrl) {
-            return response(['success' => true, 'redirectURL' => $this->redirectUrl]);
+            return response(['success' => true, 'redirectUrl' => $this->redirectUrl]);
         } else {
-            return response(['success' => true, 'redirectURL' => route('auth.login')]);
+            return response(['success' => true, 'redirectUrl' => route('auth.login')]);
         }
     }
 
