@@ -63,7 +63,7 @@ class HCUserForm extends HCBaseForm
             'storageUrl' => route('admin.api.user'),
             'buttons' => [
                 'submit' => [
-                    'label' => trans('HCCore::core.buttons.create'),
+                    'label' => $this->getSubmitLabel($edit),
                 ],
             ],
             'structure' => $this->getStructure($edit),
