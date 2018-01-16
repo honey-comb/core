@@ -29,6 +29,7 @@ export default class HCForm extends Component {
     }
 
     render() {
+
         return <div ref="formHolder" id={this.state.id} className="hc-form" style={{opacity: this.opacity}}>
             <div className="header">
                 <div className="close" style={{float: "left"}} onClick={() => this.animateForm(false)}>
@@ -55,13 +56,32 @@ export default class HCForm extends Component {
      */
     loadFormData() {
         let url = this.props.config.url;
+        let formData;
 
         axios.get(url)
             .then(res => {
 
-                this.setState({
-                    formData: res.data,
-                });
+                formData = res.data;
+
+                if(this.props.config.recordId)
+                {
+                    axios.get(formData.storageUrl + '/' + this.props.config.recordId).then (
+                        res => {
+
+                            this.record = res;
+
+                            this.setState({
+                                formData: formData,
+                            });
+                        }
+                    )
+                }
+                else
+                {
+                    this.setState({
+                        formData: formData,
+                    });
+                }
             });
     }
 
