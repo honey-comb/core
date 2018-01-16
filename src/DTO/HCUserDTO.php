@@ -85,7 +85,7 @@ class HCUserDTO extends HCBaseDTO
         $this->lastActivity = $lastActivity;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->roles = $roles;
+        $this->roles = $roles->pluck('id');
     }
 
     /**
@@ -121,19 +121,15 @@ class HCUserDTO extends HCBaseDTO
     }
 
     /**
-     * @return array
+     * @return int
      */
-    public function getActivated(): array
+    public function getActivated(): int
     {
         if ($this->activatedAt) {
-            return [
-                ['id' => 1],
-            ];
+            return 1;
         }
 
-        return [
-            ['id' => 0],
-        ];
+        return 0;
     }
 
     /**
