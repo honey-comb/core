@@ -145,6 +145,10 @@ body.disabled {
           opacity: 1;
         }
 
+        tr td.update {
+          cursor: pointer;
+        }
+
         .main-checkbox {
           width: 30px;
         }
