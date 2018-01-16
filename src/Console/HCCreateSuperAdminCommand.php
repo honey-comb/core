@@ -31,11 +31,11 @@ namespace HoneyComb\Core\Console;
 
 use Carbon\Carbon;
 use DB;
-use HoneyComb\Core\Models\Traits\HCUserRoles;
-use Illuminate\Console\Command;
-use Illuminate\Database\Connection;
+use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
+use Illuminate\Console\Command;
+use Illuminate\Database\Connection;
 use Validator;
 
 /**
@@ -255,7 +255,7 @@ class HCCreateSuperAdminCommand extends Command
      * @param $adminExists
      * @throws \Exception
      */
-    private function checkIfHaveSuperAdminRole(HCUserRoles $adminExists): void
+    private function checkIfHaveSuperAdminRole(HCUser $adminExists): void
     {
         $hasRole = $adminExists->hasRole(HCRoleRepository::ROLE_SA);
 
