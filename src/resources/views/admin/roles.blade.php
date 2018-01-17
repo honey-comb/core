@@ -54,6 +54,11 @@
     <script src="{{mix('js/hc-full.js')}}"></script>
 
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         HC.react.enableFaIcons();
 
