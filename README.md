@@ -93,6 +93,11 @@ Build Front End application
 
     npm run dev
     
+Remove default Laravel user migrations (if it is a clean project)
+
+    2014_10_12_000000_create_users_table.php
+    2014_10_12_100000_create_password_resets_table.php
+    
 Run Artisan commands
 
     php artisan migrate
