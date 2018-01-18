@@ -61,6 +61,14 @@ We recomend to use `utf8mb4_unicode_520_ci` collation, so you can update it in `
 
 ### Commands
 
+Install npm modules
+
+    npm install
+
+Make Laravel project react friendly
+
+    php artisan preset react
+    
 Publishing assets only once
 
     php artisan vendor:publish --tag=hc-config --force
@@ -80,14 +88,6 @@ Inside `package.json` file remove:
 Inside `resources/assets/honey-comb/react/shared/hc/Globals.js` file change the FontAwesome5 prefix
 
 ----
-
-Install npm modules
-
-    npm install
-
-Make Laravel project react friendly
-
-    php artisan preset react
     
 Build Front End application
 
