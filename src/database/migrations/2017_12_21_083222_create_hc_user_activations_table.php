@@ -45,7 +45,7 @@ class CreateHcUserActivationsTable extends Migration
     {
         Schema::create('hc_user_activations', function (Blueprint $table) {
             $table->integer('count', true);
-            $table->timestamp('created_at')->useCurrent();
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->string('user_id', 36);
             $table->string('token')->index();

@@ -45,8 +45,8 @@ class CreateHcUserRolesTable extends Migration
     {
         Schema::create('hc_user_roles', function (Blueprint $table) {
             $table->integer('count', true);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->string('user_id', 36);
             $table->string('role_id', 36);

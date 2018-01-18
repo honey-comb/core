@@ -42,8 +42,8 @@ class CreateHcLanguagesTable extends Migration
         Schema::create('hc_languages', function (Blueprint $table) {
             $table->increments('count');
             $table->uuid('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->softDeletes();
 
             $table->string('language_family');

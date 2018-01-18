@@ -46,16 +46,16 @@ class CreateHcUsersTable extends Migration
         Schema::create('hc_users', function (Blueprint $table) {
             $table->increments('count');
             $table->uuid('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->softDeletes();
 
             $table->string('email', 100)->unique();
             $table->string('password', 60);
             $table->string('remember_token', 100)->nullable();
-            $table->timestamp('activated_at')->nullable();
-            $table->timestamp('last_login')->nullable();
-            $table->timestamp('last_activity')->nullable();
+            $table->datetime('activated_at')->nullable();
+            $table->datetime('last_login')->nullable();
+            $table->datetime('last_activity')->nullable();
         });
     }
 

@@ -45,8 +45,8 @@ class CreateHcAclRolePermissionsTable extends Migration
     {
         Schema::create('hc_acl_role_permissions', function (Blueprint $table) {
             $table->integer('count', true);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->string('role_id', 36);
             $table->string('permission_id', 36);

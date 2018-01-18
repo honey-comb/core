@@ -16,8 +16,8 @@ class CreateHcUserProviders extends Migration
         Schema::create('hc_user_providers', function (Blueprint $table) {
             $table->increments('count');
             $table->string('id', 36)->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('updated_at')->useCurrent();
             $table->softDeletes();
 
             $table->string('user_id', 36);
