@@ -97,19 +97,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
      *
      * @var array
      */
-    protected $routes = [
-        // core
-        'Routes/routes.form-manager.php',
-        'Routes/routes.logs.php',
-        'Routes/routes.welcome.php',
-
-        'Routes/Admin/routes.admin.php',
-        'Routes/Admin/routes.roles.php',
-        'Routes/Admin/routes.users.php',
-
-        'Routes/Frontend/routes.auth.php',
-        'Routes/Frontend/routes.password.php',
-    ];
+    protected $routes = [];
 
     /**
      * @param Router $router
@@ -122,6 +110,15 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         $this->registerGateItems(app()->make(Gate::class));
 
         $this->registerMiddleware($router);
+    }
+
+    protected function registerPublishes(): void
+    {
+        parent::registerPublishes();
+
+        $this->publishes([
+            $this->packagePath('./configp') => './',
+        ], 'hc-config');
     }
 
     /**
@@ -157,7 +154,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
      */
     private function registerGateItems(Gate $gate): void
     {
-        $gate->before(function (HCUser $user) {
+        $gate->before(function(HCUser $user) {
             if ($user->isSuperAdmin()) {
                 return true;
             }
@@ -167,7 +164,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
 
         if (!is_null($permissions)) {
             foreach ($permissions as $permission) {
-                $gate->define($permission->action, function (HCUser $user) use ($permission) {
+                $gate->define($permission->action, function(HCUser $user) use ($permission) {
                     return $user->hasPermission($permission);
                 });
             }
