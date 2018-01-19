@@ -6,6 +6,7 @@ import Email from "../hc-form/fields/Email";
 import Password from "../hc-form/fields/Password";
 import CheckBoxList from "../hc-form/fields/CheckBoxList";
 import BaseField from "../hc-form/fields/BaseField";
+import DropDownList from "../hc-form/fields/DropDownList";
 
 export default class HCForm extends Component {
 
@@ -45,25 +46,35 @@ export default class HCForm extends Component {
         </div>;
     }
 
+    /**
+     * When component has mounted, load form data
+     */
     componentDidMount() {
         this.animateForm(true);
         this.loadFormData();
     }
 
+    /**
+     * When form has been completely loaded
+     * Fill in the information which is available
+     */
     componentDidUpdate() {
         if (Object.keys(this.record).length > 0) {
             Object.keys(this.finalStructure).map((key, i) => {
 
                 let value = this.record[key];
 
-                if (!value)
-                    value = "";
-
-                this.refs[key].setValue(value);
+                if (value)
+                    this.refs[key].setValue(value);
             });
         }
     }
 
+    /**
+     * Getting close button
+     * TODO:Move button to PopUp
+     * @returns {*}
+     */
     getCloseButton() {
         if (this.props.config.parent)
             return <div className="close" style={{float: "left"}} onClick={() => this.animateForm(false)}>
@@ -182,6 +193,10 @@ export default class HCForm extends Component {
             case "singleLine" :
 
                 return <BaseField key={i} config={data} ref={ref} id={ref}/>;
+
+            case "dropDownList" :
+
+                return <DropDownList key={i} config={data} ref={ref} id={ref}/>;
         }
 
         return "";
@@ -267,6 +282,10 @@ export default class HCForm extends Component {
                 );
     }
 
+    /**
+     * After submit completed redirect
+     * @param r
+     */
     handleSubmitComplete(r) {
 
         if (r.success) {

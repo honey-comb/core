@@ -58,20 +58,20 @@ export default class CheckBoxList extends Base {
         this.options = [];
 
         if (this.props.config.options.length === 1) {
-            if (this.refs[value])
-            {
+            if (this.refs[value]) {
                 this.refs[value].checked = 1;
                 this.options.push(value);
             }
         }
-        else
+        else {
+
             value.map((item, key) => {
-                if (this.refs[item])
-                {
+                if (this.refs[item]) {
                     this.refs[item].checked = 1;
                     this.options.push(item);
                 }
             });
+        }
 
         this.validate();
     }
