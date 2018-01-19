@@ -43,6 +43,10 @@ export default class TBCell extends Component {
     }
 
     editRecord() {
+
+        if (!this.props.update)
+            return;
+
         HC.react.popUp({
             url: this.props.form + "-edit",
             type: "form",
