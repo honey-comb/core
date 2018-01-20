@@ -16,6 +16,11 @@ use Illuminate\Support\ServiceProvider;
 class HCBaseServiceProvider extends ServiceProvider
 {
     /**
+     * @var string
+     */
+    protected $homeDirectory;
+
+    /**
      * List of artisan console commands to register
      *
      * @var array
@@ -134,7 +139,7 @@ class HCBaseServiceProvider extends ServiceProvider
      */
     protected function packagePath(string $path): string
     {
-        return __DIR__ . '/../' . $path;
+        return $this->homeDirectory . '/../' . $path;
     }
 
     /**

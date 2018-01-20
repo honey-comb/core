@@ -67,6 +67,11 @@ use Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider;
 class HCCoreServiceProvider extends HCBaseServiceProvider
 {
     /**
+     * @var string
+     */
+    protected $homeDirectory = __DIR__;
+
+    /**
      * @var array
      */
     protected $commands = [
