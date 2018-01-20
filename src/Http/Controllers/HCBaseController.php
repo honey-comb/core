@@ -29,15 +29,13 @@ class HCBaseController extends Controller
 
         if (auth()->user()->can($prefix . '_update')) {
             $actions[] = 'update';
-            $actions[] = 'restore';
         }
 
         if (auth()->user()->can($prefix . '_delete')) {
             $actions[] = 'delete';
         }
 
-        if (auth()->user()->can($prefix . '_delete')) {
-            $actions[] = 'delete';
+        if (auth()->user()->can($prefix . '_restore')) {
             $actions[] = 'restore';
         }
 
