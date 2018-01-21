@@ -18,7 +18,7 @@ class CreateHcUserProviders extends Migration
             $table->string('id', 36)->unique();
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('updated_at')->useCurrent();
-            $table->softDeletes();
+            $table->datetime('deleted_at')->nullable();
 
             $table->string('user_id', 36);
             $table->string('user_provider_id')->nullable();

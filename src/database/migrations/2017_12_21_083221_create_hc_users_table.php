@@ -48,7 +48,7 @@ class CreateHcUsersTable extends Migration
             $table->uuid('id')->unique();
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-            $table->softDeletes();
+            $table->datetime('deleted_at')->nullable();
 
             $table->string('email', 100)->unique();
             $table->string('password', 60);
