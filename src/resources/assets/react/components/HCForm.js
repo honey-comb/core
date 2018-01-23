@@ -274,12 +274,12 @@ export default class HCForm extends Component {
             axios.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, this.record).then(
                 (res) =>
                     this.handleSubmitComplete(res.data)
-            ).catch(error => {this.handleSubmitError(error)})
+            ).catch(error => {this.handleSubmitError(error)});
         else
             axios.post(this.state.formData.storageUrl, this.record)
                 .then(
                     (res) => this.handleSubmitComplete(res.data)
-                ).catch(error => {this.handleSubmitError(error)})
+                ).catch(error => {this.handleSubmitError(error)});
     }
 
     /**
