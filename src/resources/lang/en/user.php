@@ -42,6 +42,7 @@ return [
     'roles' => 'Roles',
     'activity' => 'Activity',
     'activated_at' => 'Activated',
+    'role_groups' => 'Roles',
 
     'tabs' => [
         'main' => 'Main',
