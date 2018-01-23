@@ -49,8 +49,8 @@ class CreateHcLanguagesTable extends Migration
             $table->string('language_family');
             $table->string('language');
             $table->string('native_name');
-            $table->string('iso_639_1')->index();
-            $table->string('iso_639_2');
+            $table->string('iso_639_1', 2)->index();
+            $table->string('iso_639_2', 3);
 
             $table->boolean('front_end')->default(0);
             $table->boolean('back_end')->default(0);
