@@ -42,6 +42,7 @@ return [
     'roles' => 'Rolės',
     'activity' => 'Veikla',
     'activated_at' => 'Aktyvuotas',
+    'role_groups' => 'Rolės',
 
     'tabs' => [
         'main' => 'Pagrindinis',
