@@ -30,22 +30,10 @@ return [
     'title' => 'Vartotojai',
     'name' => 'Vartotojai',
     'email' => 'El. paštas',
-    'firstname' => 'Vardas',
-    'lastname' => 'Pavardė',
-    'sex' => 'Lytis',
-    'birthdate' => 'Gimimo metai',
-    'street' => 'Gatvė',
-    'house' => 'Namas',
-    'apartment' => 'Butas',
-    'postcode' => 'Pašto kodas',
-    'city' => 'Miestas',
-    'municipality' => 'Savivaldybė',
-    'companyName' => 'Įmonės pavadinimas',
-    'companyCode' => 'Įmonės kodas',
-    'companyVat' => 'PVM kodas',
-    'role_groups' => 'Rolės',
-    'male' => 'Vyras',
-    'female' => 'Moteris',
+    'first_name' => 'Vardas',
+    'last_name' => 'Pavardė',
+    'description' => 'Aprašymas',
+    'photo' => 'Nuotrauka',
     'provider' => 'Teikėjas',
     'active' => 'Ar aktyvus?',
     'active_true' => 'Taip',
@@ -60,16 +48,6 @@ return [
         'personal' => 'Asmeninė',
         'info' => 'Informacija',
     ],
-
-    /*
-     * Personal data
-     */
-    'photo' => 'Nuotrauka',
-    'nickname' => 'Slapyvardis',
-    'full_name' => 'Vardas ir pavadė',
-    'gender' => 'Lytis',
-    'phone' => 'Tel. numeris',
-    'avatar' => 'Avataras',
 
     'login' => [
         'title' => 'Prisijungimas',

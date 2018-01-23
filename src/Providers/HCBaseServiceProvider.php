@@ -42,16 +42,10 @@ class HCBaseServiceProvider extends ServiceProvider
     protected $packageName;
 
     /**
-     * List of route paths to load
-     *
-     * @var array
-     */
-    protected $routes = [];
-
-    /**
      * Bootstrap the application services.
      *
      * @param Router $router
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function boot(Router $router)
     {

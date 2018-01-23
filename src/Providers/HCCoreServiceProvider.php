@@ -98,13 +98,6 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
     protected $packageName = 'HCCore';
 
     /**
-     * List of route paths to load
-     *
-     * @var array
-     */
-    protected $routes = [];
-
-    /**
      * @param Router $router
      * @throws \Exception
      */
@@ -117,6 +110,9 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         $this->registerMiddleware($router);
     }
 
+    /**
+     *
+     */
     protected function registerPublishes(): void
     {
         parent::registerPublishes();

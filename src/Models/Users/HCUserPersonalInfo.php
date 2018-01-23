@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Models\Users;
 
+use HoneyComb\Resources\Models\HCResource;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Models\HCUuidModel;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class HCUserPersonalInfo
@@ -53,7 +55,8 @@ class HCUserPersonalInfo extends HCUuidModel
         'user_id',
         'first_name',
         'last_name',
-        'last_name',
+        'photo_id',
+        'description'
     ];
 
     /**
@@ -71,5 +74,15 @@ class HCUserPersonalInfo extends HCUuidModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(HCUser::class, 'user_id', 'id');
+    }
+
+    /**
+     * User has photo
+     *
+     * @return HasOne
+     */
+    public function photo(): HasOne
+    {
+        return $this->hasOne(HCResource::class,'id', 'photo_id');
     }
 }

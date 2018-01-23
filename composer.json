@@ -25,7 +25,8 @@
     "ramsey/uuid": "^3.7",
     "rap2hpoutre/laravel-log-viewer": "^0.10",
     "spatie/laravel-cookie-consent": "^2.1",
-    "laravel/socialite": "^3.0"
+    "laravel/socialite": "^3.0",
+    "honey-comb/resources": "^0.1.0"
   },
   "require-dev": {
     "brianium/paratest": "^1.0",
