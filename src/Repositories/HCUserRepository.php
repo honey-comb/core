@@ -27,13 +27,13 @@
 
 namespace HoneyComb\Core\Repositories;
 
+use HoneyComb\Core\DTO\HCUserDTO;
+use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use HoneyComb\Core\DTO\HCUserDTO;
-use HoneyComb\Core\Models\HCUser;
-use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 
 /**
  * Class HCUserRepository
@@ -77,7 +77,7 @@ class HCUserRepository extends HCBaseRepository
      */
     public function deleteSoft(array $userIds): void
     {
-        $users =  $this->makeQuery()->whereIn('id', $userIds)->get();
+        $users = $this->makeQuery()->whereIn('id', $userIds)->get();
 
         foreach ($users as $user) {
             /** @var HCUser $user */
@@ -95,7 +95,7 @@ class HCUserRepository extends HCBaseRepository
      */
     public function restore(array $userIds): void
     {
-        $users =  $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->get();
+        $users = $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->get();
 
         foreach ($users as $user) {
             /** @var HCUser $user */
@@ -114,7 +114,7 @@ class HCUserRepository extends HCBaseRepository
      */
     public function deleteForce(array $userIds): void
     {
-        $users =  $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->get();
+        $users = $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->get();
 
         foreach ($users as $user) {
             /** @var HCUser $user */
@@ -139,7 +139,7 @@ class HCUserRepository extends HCBaseRepository
                 $query->select('id', 'name as label');
             },
             'personal' => function ($query) {
-                $query->select('user_id', 'first_name', 'last_name');
+                $query->select('user_id', 'first_name', 'last_name', 'photo_id', 'description');
             },
         ]);
 
@@ -150,8 +150,10 @@ class HCUserRepository extends HCBaseRepository
             $record->last_login,
             $record->last_visited,
             $record->last_activity,
-            $record->personal->first_name,
-            $record->personal->last_name,
+            optional($record->personal)->first_name,
+            optional($record->personal)->last_name,
+            optional($record->personal)->photo_id,
+            optional($record->personal)->description,
             $record->roles
         );
     }

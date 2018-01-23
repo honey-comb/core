@@ -3,8 +3,8 @@
 namespace HoneyComb\Core\DTO;
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use HoneyComb\Core\Models\Acl\HCAclRole;
+use Illuminate\Support\Collection;
 
 class HCUserDTO extends HCBaseDTO
 {
@@ -54,6 +54,16 @@ class HCUserDTO extends HCBaseDTO
     private $lastName;
 
     /**
+     * @var null|string
+     */
+    private $description;
+
+    /**
+     * @var null|string
+     */
+    private $photoId;
+
+    /**
      * HCUserDTO constructor.
      *
      * @param string $userId
@@ -64,6 +74,8 @@ class HCUserDTO extends HCBaseDTO
      * @param Carbon|null $lastActivity
      * @param string|null $firstName
      * @param string|null $lastName
+     * @param string|null $photoId
+     * @param string|null $description
      * @param Collection|null $roles
      */
     public function __construct(
@@ -75,6 +87,8 @@ class HCUserDTO extends HCBaseDTO
         Carbon $lastActivity = null,
         string $firstName = null,
         string $lastName = null,
+        string $photoId = null,
+        string $description = null,
         Collection $roles = null
     ) {
         $this->userId = $userId;
@@ -85,7 +99,37 @@ class HCUserDTO extends HCBaseDTO
         $this->lastActivity = $lastActivity;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        $this->photoId = $photoId;
+        $this->description = $description;
         $this->roles = $roles->pluck('id');
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDescription(): ? string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPhotoId(): ? string
+    {
+        return $this->photoId;
+    }
+
+    /**
+     * @return null|string
+     */
+    private function getPhoto(): ? string
+    {
+        if ($this->getPhotoId()) {
+            return route('resource.get', $this->getPhotoId());
+        }
+
+        return $this->photoId;
     }
 
     /**
@@ -203,6 +247,8 @@ class HCUserDTO extends HCBaseDTO
             'is_active' => $this->getActivated(),
             'first_name' => $this->getFirstName(),
             'last_name' => $this->getLastName(),
+            'photo' => $this->getPhoto(),
+            'description' => $this->getDescription(),
             'roles' => $this->getRoles(),
         ];
 
