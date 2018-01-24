@@ -51,6 +51,15 @@ abstract class HCBaseRepository implements HCRepositoryContract
     }
 
     /**
+     * Getting fillable items from model (if model extends Model)
+     * @return array
+     */
+    public function getFillable (): array
+    {
+        return $this->makeModel()->getFillableFields();
+    }
+
+    /**
      * @param string $column
      * @return mixed
      */
