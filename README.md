@@ -61,10 +61,6 @@ We recomend to use `utf8mb4_unicode_520_ci` collation, so you can update it in `
 
 ### Commands
 
-Install npm modules
-
-    npm install
-
 Make Laravel project react friendly
 
     php artisan preset react
@@ -73,6 +69,10 @@ Publishing assets only once
 
     php artisan vendor:publish --tag=hc-config --force
     php artisan vendor:publish --tag=hc-assets
+    
+Install npm modules
+
+    npm install
 
 ----
 ```diff
