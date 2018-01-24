@@ -33,6 +33,7 @@ use HoneyComb\Core\Console\HCProjectSize;
 use HoneyComb\Core\Http\Middleware\HCCheckSelectedAdminLanguage;
 use HoneyComb\Core\Http\Middleware\HCCheckSelectedFrontEndLanguage;
 use HoneyComb\Core\Repositories\HCLanguageRepository;
+use HoneyComb\Resources\Providers\HCResourceServiceProvider;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Carbon;
@@ -133,6 +134,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         }
 
         $this->app->register(HCComposerServiceProvider::class);
+        $this->app->register(HCResourceServiceProvider::class);
 
         $this->mergeConfigFrom(
             $this->packagePath('config/hc.php'), 'hc'
