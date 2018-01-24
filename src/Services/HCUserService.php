@@ -36,6 +36,7 @@ use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCPersonalInfoRepository;
 use HoneyComb\Core\Repositories\Users\HCUserProviderRepository;
+use HoneyComb\Resources\Services\HCResourceService;
 use Laravel\Socialite\Two\User;
 
 /**
@@ -65,13 +66,20 @@ class HCUserService
     private $userProviderRepository;
 
     /**
+     * @var HCResourceService
+     */
+    private $resourceService;
+
+    /**
      * HCUserService constructor.
+     * @param HCResourceService $resourceService
      * @param HCUserRepository $repository
      * @param HCPersonalInfoRepository $personalRepository
      * @param HCRoleRepository $roleRepository
      * @param HCUserProviderRepository $userProviderRepository
      */
     public function __construct(
+        HCResourceService $resourceService,
         HCUserRepository $repository,
         HCPersonalInfoRepository $personalRepository,
         HCRoleRepository $roleRepository,
@@ -81,6 +89,7 @@ class HCUserService
         $this->personalInfoRepository = $personalRepository;
         $this->roleRepository = $roleRepository;
         $this->userProviderRepository = $userProviderRepository;
+        $this->resourceService = $resourceService;
     }
 
     /**
@@ -114,7 +123,7 @@ class HCUserService
         $user = $this->repository->create($userData);
         $personalData['user_id'] = $user->id;
 
-        $this->personalInfoRepository->updateOrCreate(['user_id' => $user->id], $personalData);
+        $user->personal()->create($personalData);
 
         $user->assignRoles($roles);
 
@@ -172,10 +181,11 @@ class HCUserService
 
     /**
      * @param User $providerUser
-     * @param $provider
+     * @param string $provider
      * @return HCUser
+     * @throws \Exception
      */
-    public function createOrUpdateUserProvider(User $providerUser, $provider): HCUser
+    public function createOrUpdateUserProvider(User $providerUser, string $provider): HCUser
     {
         /** @var HCUserProvider $userProvider */
         $userProvider = $this->userProviderRepository->findOneBy([
@@ -199,7 +209,10 @@ class HCUserService
                     'activated_at' => Carbon::now()->toDateTimeString(),
                 ];
 
-                $user = $this->createUser($userData, [$this->roleRepository->getRoleUserId()]);
+                $personalData = $this->parseNameFromSocialite($providerUser);
+                $personalData = $this->getPhoto($providerUser, $personalData, $provider);
+
+                $user = $this->createUser($userData, [$this->roleRepository->getRoleUserId()], $personalData);
             }
 
             $this->userProviderRepository->createProvider(
@@ -211,5 +224,74 @@ class HCUserService
 
             return $user;
         }
+    }
+
+    /**
+     * Get first name and last late from socialite
+     *
+     * @param User $providerUser
+     * @return array
+     */
+    private function parseNameFromSocialite(User $providerUser): array
+    {
+        if ($providerUser->name) {
+            $name = explode(' ', $providerUser->name);
+
+            $firstName = array_get($name, '0');
+            $lastName = array_get($name, '1');
+        } else {
+            $firstName = $lastName = $providerUser->nickname;
+        }
+
+        return ['first_name' => $firstName, 'last_name' => $lastName];
+    }
+
+    /**
+     * @param User $providerUser
+     * @param array $personalData
+     * @param string $provider
+     * @return array
+     * @throws \Exception
+     */
+    private function getPhoto(User $providerUser, array $personalData, string $provider): array
+    {
+        $avatarUrl = null;
+
+        switch ($provider) {
+            case 'facebook':
+                $avatarUrl = $providerUser->avatar_original;
+                break;
+
+            case 'bitbucket':
+                $avatarUrl = $providerUser->avatar;
+
+                if ($avatarUrl) {
+                    $avatarUrl = str_replace('32', '500', $avatarUrl);
+                }
+                break;
+
+            case 'linkedin':
+                $avatarUrl = $providerUser->avatar_original;
+                break;
+
+            case 'github':
+                $avatarUrl = $providerUser->avatar;
+                break;
+
+            case 'google':
+                $avatarUrl = $providerUser->avatar_original;
+                break;
+
+            case 'twitter':
+                $avatarUrl = $providerUser->avatar;
+                break;
+        }
+
+        if ($avatarUrl) {
+            $photo = $this->resourceService->download($avatarUrl);
+            $personalData['photo_id'] = array_get($photo, 'id');
+        }
+
+        return $personalData;
     }
 }
