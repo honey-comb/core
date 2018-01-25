@@ -13,6 +13,8 @@ This is part core package HoneyComb CMS package.
 
  - php: `^7.1`
  - laravel: `^5.5`
+ - composer
+ - npm
  
  ## Installation
 
