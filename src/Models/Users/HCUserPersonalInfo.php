@@ -56,7 +56,7 @@ class HCUserPersonalInfo extends HCUuidModel
         'first_name',
         'last_name',
         'photo_id',
-        'description'
+        'description',
     ];
 
     /**
