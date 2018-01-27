@@ -183,7 +183,16 @@ class HCScanRolePermissionsCommand extends Command
     private function createPermissions(array $aclData): void
     {
         if (array_key_exists('permissions', $aclData)) {
+
+            if (sizeof($aclData['permissions']) == 0 )
+                return;
+
+            if (!isset($aclData['permissions'][0])) {
+                $aclData['permissions'] = [$aclData['permissions']];
+            }
+
             foreach ($aclData['permissions'] as $permission) {
+
                 $this->removeDeletedPermissions($permission);
 
                 foreach ($permission['actions'] as $action) {
