@@ -147,7 +147,7 @@ class HCUserForm extends HCBaseForm
                 'label' => trans('HCCore::user.photo'),
             ],
             $prefix . 'description' => [
-                'type' => 'singleLine',
+                'type' => 'textArea',
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.description'),
             ],
