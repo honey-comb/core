@@ -55,7 +55,7 @@ class HCUserRequest extends FormRequest
         return [
             'first_name' => $this->input('first_name'),
             'last_name' => $this->input('last_name'),
-            'photo_id' => $this->input('photo'),
+            'photo_id' => $this->input('photo_id'),
             'description' => $this->input('description'),
         ];
     }
