@@ -141,10 +141,14 @@ class HCUserForm extends HCBaseForm
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.last_name'),
             ],
-            $prefix . 'photo' => [
-                'type' => 'singleLine',
+            $prefix . 'photo_id' => [
+                'type' => 'media',
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.photo'),
+                'uploadUrl' => route('resource.upload'),
+                'viewUrl' => route('resource.get', '/'),
+                'count' => 1,
+                'accept' => ['image/jpeg', 'image/png']
             ],
             $prefix . 'description' => [
                 'type' => 'textArea',
