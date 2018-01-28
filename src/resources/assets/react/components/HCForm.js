@@ -7,6 +7,7 @@ import Password from "../hc-form/fields/Password";
 import CheckBoxList from "../hc-form/fields/CheckBoxList";
 import BaseField from "../hc-form/fields/BaseField";
 import DropDownList from "../hc-form/fields/DropDownList";
+import TextArea from "../hc-form/fields/TextArea";
 
 export default class HCForm extends Component {
 
@@ -197,6 +198,10 @@ export default class HCForm extends Component {
             case "dropDownList" :
 
                 return <DropDownList key={i} config={data} ref={ref} id={ref}/>;
+
+            case "textArea" :
+
+                return <TextArea key={i} config={data} ref={ref} id={ref}/>;
         }
 
         return "";
