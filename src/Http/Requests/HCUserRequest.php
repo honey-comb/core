@@ -107,7 +107,7 @@ class HCUserRequest extends FormRequest
                 return [
                     'email' => 'required|email|min:5|unique:hc_users,email,' . $userId,
                     'roles' => 'required|exists:hc_acl_roles,id',
-                    'photo' => 'nullable|exists:hc_resources,id',
+                    'photo_id' => 'nullable|exists:hc_resources,id',
                     'password' => 'nullable|min:5|confirmed',
                     'password_confirmation' => 'required_with:password|nullable|min:5',
                 ];
