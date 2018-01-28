@@ -2,18 +2,13 @@ body {
   min-width: 320px;
   font-family: "Open sans";
 
-  .wrapper
-  {
-    .content-wrapper
-    {
-      .content
-      {
-        .row
-        {
+  .wrapper {
+    .content-wrapper {
+      .content {
+        .row {
           display: flex;
 
-          .info-box
-          {
+          .info-box {
             margin: 0 15px 0 15px;
           }
         }
@@ -69,6 +64,25 @@ body.disabled {
           label .required {
             color: crimson;
             font-size: 20px;
+          }
+
+          .thumbnails {
+            display: flex;
+            flex-flow: wrap;
+          }
+
+          .hc-media
+          {
+            .thumbnail
+            {
+              background: white center no-repeat;
+              width: 90px;
+              height: 90px;
+              background-size: contain;
+              box-shadow: 0 0 10px #ccc;
+              border: none;
+              border-radius: 0;
+            }
           }
         }
       }
@@ -160,6 +174,58 @@ body.disabled {
 .form-group.one-line {
   display: flex;
   align-items: center;
+}
+
+.hc-media-uploader, .hc-media {
+
+  width: 90px;
+  height: 90px;
+  text-align: center;
+  margin: 10px;
+  background: cadetblue;
+  color: white;
+
+  input[type=file] {
+    display: none;
+    margin: 10px;
+  }
+
+  label {
+    width: 100%;
+    height: 100%;
+    border: 3px rgba(255, 255, 255, 0.5) dashed;
+    cursor: pointer;
+
+    span {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  label:hover {
+    border: 3px rgba(255, 255, 255, .75) dashed;
+    box-shadow: 0 0 5px #888888;
+  }
+}
+
+.hc-media {
+  text-align: center;
+  position: relative;
+
+  .percentage {
+    width: 100%;
+    height: 100%;
+    padding-top: 35px;
+  }
+
+  .spinner {
+    position: absolute;
+    font-size: 74px;
+    left: 9px;
+    top: -9px;
+  }
 }
 
 .btn {
