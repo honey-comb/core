@@ -195,6 +195,7 @@ class HCUserService
 
         if ($userProvider) {
             $this->userProviderRepository->update([
+                'profile_url' => $this->getProviderProfileUrl($providerUser, $provider),
                 'response' => json_encode($providerUser->getRaw()),
             ], $userProvider->id);
 
@@ -219,6 +220,7 @@ class HCUserService
                 $user->id,
                 (string)$providerUser->getId(),
                 $provider,
+                $this->getProviderProfileUrl($providerUser, $provider),
                 json_encode($providerUser->getRaw())
             );
 
@@ -293,5 +295,44 @@ class HCUserService
         }
 
         return $personalData;
+    }
+
+    /**
+     * @param User $providerUser
+     * @param $provider
+     * @return null|string
+     * @throws \Exception
+     */
+    private function getProviderProfileUrl(User $providerUser, $provider): ? string
+    {
+        $profileUrl = null;
+
+        switch ($provider) {
+            case 'facebook':
+                $profileUrl = $providerUser->profileUrl;
+                break;
+
+            case 'bitbucket':
+                $profileUrl = array_get($providerUser->user, 'links.html.href');
+                break;
+
+            case 'linkedin':
+                $profileUrl = array_get($providerUser->user, 'publicProfileUrl');
+                break;
+
+            case 'github':
+                $profileUrl = array_get($providerUser->user, 'html_url');
+                break;
+
+            case 'google':
+                $profileUrl = array_get($providerUser->user, 'url');
+                break;
+
+            case 'twitter':
+                $profileUrl = null;
+                break;
+        }
+
+        return $profileUrl;
     }
 }

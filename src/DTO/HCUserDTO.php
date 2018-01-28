@@ -248,6 +248,7 @@ class HCUserDTO extends HCBaseDTO
             'first_name' => $this->getFirstName(),
             'last_name' => $this->getLastName(),
             'photo' => $this->getPhoto(),
+            'photo_id' => $this->getPhotoId(),
             'description' => $this->getDescription(),
             'roles' => $this->getRoles(),
         ];

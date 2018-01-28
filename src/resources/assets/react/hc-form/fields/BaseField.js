@@ -142,6 +142,13 @@ export default class BaseField extends Component {
      * @returns {boolean}
      */
     isValid() {
+
+        if (this.props.config.required)
+        {
+            if (this.getValue() == null || this.getValue() === "")
+                return false;
+        }
+
         return true;
     }
 
