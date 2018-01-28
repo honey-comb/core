@@ -11,8 +11,12 @@ export default class Thumbnail extends Component {
 
         this.state = {
             progress: 0,
-            mediaId: this.props.mediaId
+            mediaId: this.props.mediaId,
+            abandoned: false
         };
+
+        this.remove = this.remove.bind(this);
+        this.edit = this.edit.bind(this);
     }
 
     /**
@@ -20,8 +24,18 @@ export default class Thumbnail extends Component {
      * @returns {*}
      */
     render() {
+
+        if (this.state.abandoned)
+            return null;
+
         return <div className="hc-media">
             {this.getView()}
+            <button onClick={this.remove} className="btn btn-danger remove">
+                <FontAwesomeIcon icon={HC.helpers.faIcon('trash-alt')}/>
+            </button>
+            <button onClick={this.edit} className="btn btn-warning edit" disabled={true}>
+                <FontAwesomeIcon icon={HC.helpers.faIcon('edit')}/>
+            </button>
         </div>;
     }
 
@@ -98,5 +112,14 @@ export default class Thumbnail extends Component {
     remove ()
     {
         this.props.onChange({action:"remove", id:this.state.mediaId});
+        this.setState({abandoned:true});
+    }
+
+    /**
+     * Editing image meta
+     */
+    edit ()
+    {
+        console.log(this.state.mediaId);
     }
 }

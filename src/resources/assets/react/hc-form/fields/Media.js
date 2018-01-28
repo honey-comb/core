@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Base from "./BaseField";
 import Thumbnail from "./media/Thumbnail";
 
@@ -60,6 +60,7 @@ export default class Media extends Base {
      */
     createThumbnailFromMedia (media, i)
     {
+        this.mediaList.push(media);
         this.createThumbnail(null, media, i);
     }
 
@@ -76,7 +77,7 @@ export default class Media extends Base {
 
         this.thumbnails.push(<Thumbnail file={file}
                                         mediaId={mediaId}
-                                        key={i}
+                                        key={HC.helpers.uuid()}
                                         uploadUrl={this.props.config.uploadUrl}
                                         viewUrl={this.props.config.viewUrl}
                                         onChange={this.thumbnailUpdated}/>);
@@ -132,9 +133,12 @@ export default class Media extends Base {
                 this.mediaList.push(config.id);
                 break;
 
-            case "removed":
+            case "remove":
 
-                this.mediaList.push(config.id);
+                this.mediaList.splice(this.mediaList.indexOf(config.id), 1);
+
+                this.state.count--;
+                this.setState({count: this.state.count});
                 break;
         }
 
@@ -147,6 +151,9 @@ export default class Media extends Base {
      */
     setValue (data)
     {
+        if (this.mediaList.indexOf(data) !== -1)
+            return;
+
         if(this.count === 1)
             if (!Array.isArray(data))
                 this.createThumbnailFromMedia(data, 0);

@@ -71,10 +71,26 @@ body.disabled {
             flex-flow: wrap;
           }
 
-          .hc-media
-          {
-            .thumbnail
-            {
+          .hc-media {
+
+            text-align: center;
+            position: relative;
+
+            .percentage {
+              width: 100%;
+              height: 100%;
+              padding-top: 35px;
+              position: absolute;
+            }
+
+            .spinner {
+              position: absolute;
+              font-size: 74px;
+              left: 9px;
+              top: -9px;
+            }
+
+            .thumbnail {
               background: white center no-repeat;
               width: 90px;
               height: 90px;
@@ -82,6 +98,27 @@ body.disabled {
               box-shadow: 0 0 10px #ccc;
               border: none;
               border-radius: 0;
+              position: absolute;
+            }
+
+            .remove, .edit {
+              position: absolute;
+              width: 45px;
+              height: 20px;
+              text-align: center;
+              bottom: -10px;
+              padding: 0;
+              margin: 0;
+              border-radius: 0;
+              border: 0;
+            }
+
+            .remove {
+              left: 0;
+            }
+
+            .edit {
+              left: 45px;
             }
           }
         }
@@ -207,24 +244,6 @@ body.disabled {
   label:hover {
     border: 3px rgba(255, 255, 255, .75) dashed;
     box-shadow: 0 0 5px #888888;
-  }
-}
-
-.hc-media {
-  text-align: center;
-  position: relative;
-
-  .percentage {
-    width: 100%;
-    height: 100%;
-    padding-top: 35px;
-  }
-
-  .spinner {
-    position: absolute;
-    font-size: 74px;
-    left: 9px;
-    top: -9px;
   }
 }
 
