@@ -70,8 +70,6 @@ if (!function_exists('folderSize')) {
             }
         }
 
-        print_r($dir . "\r\n");
-
         $size = 0;
         foreach (glob(rtrim($dir, '/') . '/*') as $each) {
             $size += is_file($each) ? filesize($each) : folderSize($each, $ignore);
