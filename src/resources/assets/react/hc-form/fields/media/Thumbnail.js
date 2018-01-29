@@ -17,6 +17,8 @@ export default class Thumbnail extends Component {
 
         this.remove = this.remove.bind(this);
         this.edit = this.edit.bind(this);
+        this.showButtons = this.showButtons.bind(this);
+        this.hideButtons = this.hideButtons.bind(this);
     }
 
     /**
@@ -28,12 +30,12 @@ export default class Thumbnail extends Component {
         if (this.state.abandoned)
             return null;
 
-        return <div className="hc-media">
+        return <div className="hc-media" onMouseOver={this.showButtons} onMouseOut={this.hideButtons}>
             {this.getView()}
-            <button onClick={this.remove} className="btn btn-danger remove">
+            <button ref="remove" onClick={this.remove} className="btn btn-danger remove">
                 <FontAwesomeIcon icon={HC.helpers.faIcon('trash-alt')}/>
             </button>
-            <button onClick={this.edit} className="btn btn-warning edit" disabled={true}>
+            <button ref="edit" onClick={this.edit} className="btn btn-warning edit" disabled={true}>
                 <FontAwesomeIcon icon={HC.helpers.faIcon('edit')}/>
             </button>
         </div>;
@@ -93,7 +95,7 @@ export default class Thumbnail extends Component {
             }
         }).then((res) => {
 
-            this.props.onChange({action:"uploaded", id:res.data.data.id});
+            this.props.onChange({action: "uploaded", id: res.data.data.id});
             this.setState({mediaId: res.data.data.id});
         });
     }
@@ -103,23 +105,32 @@ export default class Thumbnail extends Component {
      * @returns {*}
      */
     thumbnailView() {
-        return <div className="thumbnail" style={{backgroundImage: "url(" + this.props.viewUrl + "/" + this.state.mediaId + "/90/90)"}}> </div>
+        return <div className="thumbnail"
+                    style={{backgroundImage: "url(" + this.props.viewUrl + "/" + this.state.mediaId + "/90/90)"}}></div>
     }
 
     /**
      * Removing component
      */
-    remove ()
-    {
-        this.props.onChange({action:"remove", id:this.state.mediaId});
-        this.setState({abandoned:true});
+    remove() {
+        this.props.onChange({action: "remove", id: this.state.mediaId});
+        this.setState({abandoned: true});
     }
 
     /**
      * Editing image meta
      */
-    edit ()
-    {
+    edit() {
         console.log(this.state.mediaId);
+    }
+
+    showButtons() {
+        this.refs.remove.style.opacity = 1;
+        this.refs.edit.style.opacity = 1;
+    }
+
+    hideButtons() {
+        this.refs.remove.style.opacity = 0.1;
+        this.refs.edit.style.opacity = 0.1;
     }
 }
