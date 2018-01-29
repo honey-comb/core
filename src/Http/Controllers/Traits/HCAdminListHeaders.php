@@ -58,4 +58,20 @@ trait HCAdminListHeaders
             'label' => $label,
         ];
     }
+
+    /**
+     * @param string $label
+     * @param int $width
+     * @param int $height
+     * @return array
+     */
+    protected function headerImage(string $label, int $width = 100, int $height = 100): array
+    {
+        return [
+            'type' => 'image',
+            'label' => $label,
+            'width' => $width,
+            'height' => $height,
+        ];
+    }
 }
