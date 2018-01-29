@@ -7,11 +7,18 @@ namespace HoneyComb\Core\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class HCBaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * @var
+     */
+    protected $service;
 
     /**
      * Getting allowed actions for admin view
@@ -52,5 +59,30 @@ class HCBaseController extends Controller
         }
 
         return $actions;
+    }
+
+    /**
+     * Getting a list records for API call
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getList(Request $request): JsonResponse
+    {
+        return response()->json(
+            $this->service->getRepository()->getList($request)
+        );
+    }
+
+    /**
+     * Creating data list
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getListPaginate(Request $request): JsonResponse
+    {
+        return response()->json(
+            $this->service->getRepository()->getListPaginate($request)
+        );
     }
 }

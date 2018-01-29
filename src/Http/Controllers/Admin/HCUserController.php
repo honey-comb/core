@@ -50,7 +50,7 @@ class HCUserController extends HCBaseController
     /**
      * @var HCUserService
      */
-    private $service;
+    protected $service;
 
     /**
      * @var HCFrontendResponse
@@ -103,31 +103,6 @@ class HCUserController extends HCBaseController
         ];
 
         return $columns;
-    }
-
-    /**
-     * Getting a list records for API call
-     *
-     * @param HCUserRequest $request
-     * @return JsonResponse
-     */
-    public function getList(HCUserRequest $request): JsonResponse
-    {
-        return response()->json(
-            $this->service->getRepository()->getList($request)
-        );
-    }
-
-    /**
-     * Creating data list
-     * @param HCUserRequest $request
-     * @return JsonResponse
-     */
-    public function getListPaginate(HCUserRequest $request): JsonResponse
-    {
-        return response()->json(
-            $this->service->getRepository()->getListPaginate($request)
-        );
     }
 
     /**
