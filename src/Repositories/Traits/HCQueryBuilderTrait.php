@@ -6,6 +6,8 @@ namespace HoneyComb\Core\Repositories\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 /**
  * Trait HCQueryBuilderTrait
@@ -203,5 +205,33 @@ trait HCQueryBuilderTrait
 
             return $query;
         });
+    }
+
+    /**
+     * @param Request $request
+     * @return Collection
+     */
+    public function getList(Request $request): Collection
+    {
+        return $this->createBuilderQuery($request)->get();
+    }
+
+    /**
+     * @param Request $request
+     * @param int $perPage
+     * @param array $columns
+     * @return LengthAwarePaginator
+     */
+    public function getListPaginate(
+        Request $request,
+        int $perPage = self::DEFAULT_PER_PAGE,
+        array $columns = ['*']
+    ): LengthAwarePaginator {
+
+        if ($request->has('per_page')) {
+            $perPage = $request->get('per_page');
+        }
+
+        return $this->createBuilderQuery($request)->paginate($perPage, $columns)->appends($request->all());
     }
 }
