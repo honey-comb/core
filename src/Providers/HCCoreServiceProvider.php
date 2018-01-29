@@ -35,6 +35,7 @@ use HoneyComb\Core\Console\HCGenerateFormsCommand;
 use HoneyComb\Core\Console\HCProjectSize;
 use HoneyComb\Core\Console\HCScanRolePermissionsCommand;
 use HoneyComb\Core\Console\HCSeedCommand;
+use HoneyComb\Core\Console\HCUpdate;
 use HoneyComb\Core\Http\Middleware\HCAclAdminMenu;
 use HoneyComb\Core\Http\Middleware\HCAclAuthenticate;
 use HoneyComb\Core\Http\Middleware\HCAclPermissionsMiddleware;
@@ -83,6 +84,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         HCCreateSuperAdminCommand::class,
         HCSeedCommand::class,
         HCProjectSize::class,
+        HCUpdate::class,
     ];
 
     /**
