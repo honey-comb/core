@@ -29,9 +29,9 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Models\Users;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use HoneyComb\Core\Models\HCUser;
-use HoneyComb\Core\Models\HCUuidModel;
+use HoneyComb\Starter\Models\HCUuidModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HCUserProvider extends HCUuidModel
 {

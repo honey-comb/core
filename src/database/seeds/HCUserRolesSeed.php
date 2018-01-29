@@ -29,8 +29,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Database\Seeds;
 
-use Illuminate\Database\Seeder;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
+use Illuminate\Database\Seeder;
 
 /**
  * Class HCUserRolesSeed

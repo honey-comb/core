@@ -29,6 +29,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Forms;
 
+use HoneyComb\Starter\Forms\HCBaseForm;
+
 /**
  * Class HCUserRegisterForm
  * @package HoneyComb\Core\Forms
@@ -71,5 +73,27 @@ class HCUserRegisterForm extends HCBaseForm
         ];
 
         return $form;
+    }
+
+    /**
+     * Get Edit structure
+     *
+     * @param string $prefix
+     * @return array
+     */
+    public function getStructureEdit(string $prefix): array
+    {
+        // TODO: Implement getStructureEdit() method.
+    }
+
+    /**
+     * Get new structure
+     *
+     * @param string $prefix
+     * @return array
+     */
+    public function getStructureNew(string $prefix): array
+    {
+        // TODO: Implement getStructureNew() method.
     }
 }

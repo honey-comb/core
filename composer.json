@@ -21,19 +21,17 @@
   "require": {
     "php": ">=7.1",
     "laravel/framework": "5.5.*",
-    "guzzlehttp/guzzle": "^6.3",
-    "ramsey/uuid": "^3.7",
     "rap2hpoutre/laravel-log-viewer": "^0.10",
     "spatie/laravel-cookie-consent": "^2.1",
     "laravel/socialite": "^3.0",
+    "honey-comb/starter": "^0.1.0",
     "honey-comb/resources": "^0.1.0"
   },
   "require-dev": {
     "brianium/paratest": "^1.0",
     "mockery/mockery": "^1.0",
     "orchestra/testbench-browser-kit": "^3.5",
-    "phpunit/phpunit": "^6.4",
-    "honey-comb/resources": "^0.1.0"
+    "phpunit/phpunit": "^6.4"
   },
   "autoload": {
     "psr-4": {
@@ -46,6 +44,13 @@
   "autoload-dev": {
     "psr-4": {
       "Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "HoneyComb\\Core\\Providers\\HCCoreServiceProvider"
+      ]
     }
   },
   "scripts": {

@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
 use GuzzleHttp\Client;
+use HoneyComb\Core\Services\HCUserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use HoneyComb\Core\Services\HCUserService;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
 

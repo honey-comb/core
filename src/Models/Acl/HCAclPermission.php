@@ -30,10 +30,10 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Models\Acl;
 
 use Carbon\Carbon;
+use HoneyComb\Starter\Models\HCUuidModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
-use HoneyComb\Core\Models\HCUuidModel;
 
 /**
  * Class HCAclPermission

@@ -26,7 +26,7 @@ if (!function_exists('get_translation_name')) {
 
         if (is_null($name)) {
             if (is_null($customNotFoundText)) {
-                $name = trans('HCCore::core.no_translation');
+                $name = trans('HCStarter::core.no_translation');
             } else {
                 $name = $customNotFoundText;
             }
@@ -37,147 +37,105 @@ if (!function_exists('get_translation_name')) {
 }
 
 
-if (!function_exists('uuid4')) {
+if (!function_exists('fontAwesomeIcon')) {
     /**
-     * Generates uuid4 id
+     * creating a html tag for font awesome icon
      *
-     * @param bool $toString
-     * @return \Ramsey\Uuid\UuidInterface|string
-     */
-    function uuid4(bool $toString = false)
-    {
-        $uuid4 = Ramsey\Uuid\Uuid::uuid4();
-
-        if ($toString) {
-            $uuid4 = $uuid4->toString();
-        }
-
-        return $uuid4;
-    }
-}
-
-
-if (!function_exists('pluralizeLT')) {
-    /**
-     * Returns the correct lithuanian word form for given count.
-     *
-     * @param array $words [žodis, žodžiai, žodžių]
-     * @param int $number
-     *
-     * @throws \InvalidArgumentException
+     * @param string $icon
+     * @param string $prefix
+     * @param string $class
      * @return string
      */
-    function pluralizeLT(array $words, int $number): string
+    function fontAwesomeIcon(string $icon, string $prefix = "", string $class = "")
     {
-        if (count($words) != 3) {
-            throw new \InvalidArgumentException('Words array must contain 3 values!');
+        return "<div class=\"fa-icon $class\" data-icon=\"$icon\" data-prefix=\"$prefix\"></div>";
+    }
+}
+
+
+if (!function_exists('folderSize')) {
+
+    /**
+     * Scanning folder size
+     *
+     * @param string $dir
+     * @param array $ignore
+     * @return int
+     */
+    function folderSize(string $dir, array $ignore): int
+    {
+        foreach ($ignore as $key => $value) {
+            if (strpos($dir, $value) !== false) {
+                return 0;
+            }
         }
 
-        if (!is_int($number)) {
-            throw new \InvalidArgumentException('number must be an integer!');
+        print_r($dir . "\r\n");
+
+        $size = 0;
+        foreach (glob(rtrim($dir, '/') . '/*') as $each) {
+            $size += is_file($each) ? filesize($each) : folderSize($each, $ignore);
         }
 
-        if ($number % 10 == 0 || floor($number / 10) == 1) {
-            return $words[2];
-        } elseif ($number % 10 == 1) {
-            return $words[0];
+        return $size;
+    }
+}
+
+
+if (!function_exists('formatSize')) {
+    function formatSize(int $bytes): string
+    {
+        $kb = 1024;
+        $mb = $kb * 1024;
+        $gb = $mb * 1024;
+        $tb = $gb * 1024;
+        if (($bytes >= 0) && ($bytes < $kb)) {
+            return $bytes . ' B';
+        } elseif (($bytes >= $kb) && ($bytes < $mb)) {
+            return ceil($bytes / $kb) . ' KB';
+        } elseif (($bytes >= $mb) && ($bytes < $gb)) {
+            return ceil($bytes / $mb) . ' MB';
+        } elseif (($bytes >= $gb) && ($bytes < $tb)) {
+            return ceil($bytes / $gb) . ' GB';
+        } elseif ($bytes >= $tb) {
+            return ceil($bytes / $tb) . ' TB';
         } else {
-            return $words[1];
+            return $bytes . ' B';
         }
     }
 }
 
 
-if (!function_exists('isPackageEnabled')) {
+if (!function_exists('getProjectFileSize')) {
     /**
-     * Check if package is registered at config/app.php file
      *
-     * @param $provider
-     * @return bool
+     * Getting project size
+     *
      */
-    function isPackageEnabled($provider)
+    function getProjectFileSize()
     {
-        $registeredProviders = array_keys(app()->getLoadedProviders());
+        if (!cache()->has('project-size-files')) {
+            \Illuminate\Support\Facades\Artisan::call('hc:project-size');
+        }
 
-        return in_array($provider, $registeredProviders);
+        return cache()->get('project-size-files');
     }
 }
 
 
-if (!function_exists('settings')) {
-    //TODO create settings service
-    function settings($key)
-    {
-        return $key;
-    }
-}
-
-
-if (!function_exists('sanitizeString')) {
-
+if (!function_exists('getProjectDbSize')) {
     /**
-     * Returns a sanitized string, typically for URLs.
-     * http://stackoverflow.com/questions/2668854/sanitizing-strings-to-make-them-url-and-filename-safe
      *
-     * @param string $string - The string to sanitize.
-     * @param bool $forceLowerCase - Force the string to lowercase?
-     * @param bool $onlyLetter - If set to *true*, will remove all non-alphanumeric characters.
+     * Getting project size
      *
-     * @return mixed|string
      */
-    function sanitizeString(string $string, bool $forceLowerCase = false, bool $onlyLetter = false)
+    function getProjectDbSize()
     {
-        $strip = [
-            '~',
-            '`',
-            '!',
-            '@',
-            '#',
-            '$',
-            '%',
-            '^',
-            '&',
-            '*',
-            '(',
-            ')',
-            '_',
-            '=',
-            '+',
-            '[',
-            '{',
-            ']',
-            '}',
-            '\\',
-            '|',
-            ';',
-            ':',
-            '"',
-            '\'',
-            '&#8216;',
-            '&#8217;',
-            '&#8220;',
-            '&#8221;',
-            '&#8211;',
-            '&#8212;',
-            'â€”',
-            'â€“',
-            ',',
-            '<',
-            '.',
-            '>',
-            '/',
-            '?',
-        ];
+        if (!cache()->has('project-size-db')) {
+            \Illuminate\Support\Facades\Artisan::call('hc:project-size');
+        }
 
-        $clean = trim(str_replace($strip, '', strip_tags($string)));
-        $clean = preg_replace('/\s+/', '-', $clean);
-        $clean = ($onlyLetter) ? preg_replace('/[^a-zA-Z0-9]/', '', $clean) : $clean;
-
-        return ($forceLowerCase) ?
-            (function_exists('mb_strtolower')) ?
-                mb_strtolower($clean, 'UTF-8') :
-                strtolower($clean) :
-            $clean;
+        return cache()->get('project-size-db');
     }
 }
 
@@ -194,7 +152,7 @@ if (!function_exists('addAllOptionToDropDownList')) {
     {
         array_unshift(
             $fieldData['options'],
-            ['id' => '', $fieldData['showNodes'][0] => trans('HCCore::core.all')]
+            ['id' => '', $fieldData['showNodes'][0] => trans('HCStarter::core.all')]
         );
 
         return $fieldData;
@@ -248,21 +206,44 @@ if (!function_exists('checkActiveMenuItems')) {
 }
 
 
-if (!function_exists('stringToDouble')) {
+if (!function_exists('formManagerSeo')) {
 
     /**
-     * Formatting 0,15 to 0.15 and etc
+     * Adding seo fields (title, description, keywords
+     * used by Form-Managers
      *
-     * @param string $value
-     * @return mixed
+     * @param array $list
+     * @param bool $multiLanguage
      */
-    function stringToDouble($value)
+    function formManagerSeo(array &$list, bool $multiLanguage = true): void
     {
-        if (!$value) {
-            $value = '0.0';
-        }
-
-        return str_replace(',', '.', $value);
+        $list['structure'] = array_merge(
+            $list['structure'],
+            [
+                [
+                    'type' => 'singleLine',
+                    'fieldId' => 'translations.seo_title',
+                    'label' => trans('HCStarter::core.seo_title'),
+                    'tabID' => trans('HCStarter::core.seo'),
+                    'multiLanguage' => $multiLanguage,
+                ],
+                [
+                    'type' => 'textArea',
+                    'fieldId' => 'translations.seo_description',
+                    'label' => trans('HCStarter::core.seo_description'),
+                    'tabID' => trans('HCStarter::core.seo'),
+                    'multiLanguage' => $multiLanguage,
+                    'rows' => 5,
+                ],
+                [
+                    'type' => 'singleLine',
+                    'fieldId' => 'translations.seo_keywords',
+                    'label' => trans('HCStarter::core.seo_keywords'),
+                    'tabID' => trans('HCStarter::core.seo'),
+                    'multiLanguage' => $multiLanguage,
+                ],
+            ]
+        );
     }
 }
 
@@ -287,144 +268,5 @@ if (!function_exists('removeRecordsWithNoTranslation')) {
         }
 
         return $contentList;
-    }
-}
-
-
-if (!function_exists('formManagerSeo')) {
-
-    /**
-     * Adding seo fields (title, description, keywords
-     * used by Form-Managers
-     *
-     * @param array $list
-     * @param bool $multiLanguage
-     */
-    function formManagerSeo(array &$list, bool $multiLanguage = true): void
-    {
-        $list['structure'] = array_merge(
-            $list['structure'],
-            [
-                [
-                    'type' => 'singleLine',
-                    'fieldId' => 'translations.seo_title',
-                    'label' => trans('HCCore::core.seo_title'),
-                    'tabID' => trans('HCCore::core.seo'),
-                    'multiLanguage' => $multiLanguage,
-                ],
-                [
-                    'type' => 'textArea',
-                    'fieldId' => 'translations.seo_description',
-                    'label' => trans('HCCore::core.seo_description'),
-                    'tabID' => trans('HCCore::core.seo'),
-                    'multiLanguage' => $multiLanguage,
-                    'rows' => 5,
-                ],
-                [
-                    'type' => 'singleLine',
-                    'fieldId' => 'translations.seo_keywords',
-                    'label' => trans('HCCore::core.seo_keywords'),
-                    'tabID' => trans('HCCore::core.seo'),
-                    'multiLanguage' => $multiLanguage,
-                ],
-            ]
-        );
-    }
-}
-
-if (!function_exists('fontAwesomeIcon')) {
-    /**
-     * creating a html tag for font awesome icon
-     *
-     * @param string $icon
-     * @param string $prefix
-     * @param string $class
-     * @return string
-     */
-    function fontAwesomeIcon(string $icon, string $prefix = "", string $class = "")
-    {
-        return "<div class=\"fa-icon $class\" data-icon=\"$icon\" data-prefix=\"$prefix\"></div>";
-    }
-}
-if (!function_exists('folderSize')) {
-
-    /**
-     * Scanning folder size
-     *
-     * @param string $dir
-     * @param array $ignore
-     * @return int
-     */
-    function folderSize(string $dir, array $ignore): int
-    {
-        foreach ($ignore as $key => $value) {
-            if (strpos($dir, $value) !== false) {
-                return 0;
-            }
-        }
-
-        print_r($dir . "\r\n");
-
-        $size = 0;
-        foreach (glob(rtrim($dir, '/') . '/*') as $each) {
-            $size += is_file($each) ? filesize($each) : folderSize($each, $ignore);
-        }
-
-        return $size;
-    }
-}
-
-if (!function_exists('formatSize')) {
-    function formatSize(int $bytes): string
-    {
-        $kb = 1024;
-        $mb = $kb * 1024;
-        $gb = $mb * 1024;
-        $tb = $gb * 1024;
-        if (($bytes >= 0) && ($bytes < $kb)) {
-            return $bytes . ' B';
-        } elseif (($bytes >= $kb) && ($bytes < $mb)) {
-            return ceil($bytes / $kb) . ' KB';
-        } elseif (($bytes >= $mb) && ($bytes < $gb)) {
-            return ceil($bytes / $mb) . ' MB';
-        } elseif (($bytes >= $gb) && ($bytes < $tb)) {
-            return ceil($bytes / $gb) . ' GB';
-        } elseif ($bytes >= $tb) {
-            return ceil($bytes / $tb) . ' TB';
-        } else {
-            return $bytes . ' B';
-        }
-    }
-}
-
-if (!function_exists('getProjectFileSize')) {
-    /**
-     *
-     * Getting project size
-     *
-     */
-    function getProjectFileSize()
-    {
-        if (!cache()->has('project-size-files')) {
-            \Illuminate\Support\Facades\Artisan::call('hc:project-size');
-        }
-
-        return cache()->get('project-size-files');
-    }
-}
-
-if (!function_exists('getProjectDbSize')) {
-    /**
-     *
-     * Getting project size
-     *
-     */
-    function getProjectDbSize()
-    {
-        if (!cache()->has('project-size-db')) {
-            \Illuminate\Support\Facades\Artisan::call('hc:project-size');
-        }
-
-        return cache()->get('project-size-db');
     }
 }

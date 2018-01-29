@@ -43,7 +43,8 @@ class HCProjectSize extends Command
     private function calculateDisk(): void
     {
         //adding node_modules and vendor directories sizes
-        cache()->put('project-size-files', formatSize((200 + 36) * 1024 * 1024 + folderSize(app_path('../'), ['../node_modules', '../vendor'])), 1500);
+        cache()->put('project-size-files',
+            formatSize((200 + 36) * 1024 * 1024 + folderSize(app_path('../'), ['../node_modules', '../vendor'])), 1500);
 
         $this->info(cache()->get('project-size-files'));
     }

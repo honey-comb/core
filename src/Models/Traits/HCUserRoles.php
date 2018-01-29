@@ -29,10 +29,10 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Models\Traits;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use HoneyComb\Core\Models\Acl\HCAclPermission;
 use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HCUserRoles
 {

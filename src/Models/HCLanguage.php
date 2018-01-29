@@ -29,6 +29,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Models;
 
+use HoneyComb\Starter\Models\HCUuidModel;
+
 class HCLanguage extends HCUuidModel
 {
     /**

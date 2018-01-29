@@ -29,10 +29,10 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Services\Acl;
 
-use Illuminate\Support\Collection;
 use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
+use Illuminate\Support\Collection;
 
 /**
  * Class HCRoleService

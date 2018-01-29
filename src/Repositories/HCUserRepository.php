@@ -30,6 +30,7 @@ namespace HoneyComb\Core\Repositories;
 use HoneyComb\Core\DTO\HCUserDTO;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
+use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;

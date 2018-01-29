@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Admin;
 
-use Illuminate\View\View;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
+use Illuminate\View\View;
 
 /**
  * Class HCAdminController

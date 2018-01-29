@@ -31,7 +31,7 @@ namespace HoneyComb\Core\Repositories\Acl;
 
 use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Models\HCUser;
-use HoneyComb\Core\Repositories\HCBaseRepository;
+use HoneyComb\Starter\Repositories\HCBaseRepository;
 
 class HCRoleRepository extends HCBaseRepository
 {

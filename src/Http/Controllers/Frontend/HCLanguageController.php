@@ -29,11 +29,10 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
-use HoneyComb\Core\Repositories\HCLanguageRepository;
-use Illuminate\Database\Connection;
-use HoneyComb\Core\Helpers\HCFrontendResponse;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
-use Illuminate\Http\JsonResponse;
+use HoneyComb\Core\Repositories\HCLanguageRepository;
+use HoneyComb\Starter\Helpers\HCFrontendResponse;
+use Illuminate\Database\Connection;
 use Illuminate\Http\Request;
 
 class HCLanguageController extends HCBaseController

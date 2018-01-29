@@ -30,7 +30,15 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Models;
 
 use Carbon\Carbon;
+use HoneyComb\Core\Models\Acl\HCAclRole;
+use HoneyComb\Core\Models\Traits\HCActivateUser;
+use HoneyComb\Core\Models\Traits\HCUserRoles;
 use HoneyComb\Core\Models\Users\HCUserActivation;
+use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
+use HoneyComb\Core\Models\Users\HCUserProvider;
+use HoneyComb\Core\Notifications\HCAdminWelcomeEmail;
+use HoneyComb\Core\Notifications\HCResetPassword;
+use HoneyComb\Starter\Models\HCUuidModel;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -44,13 +52,6 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use HoneyComb\Core\Models\Acl\HCAclRole;
-use HoneyComb\Core\Models\Traits\HCActivateUser;
-use HoneyComb\Core\Models\Traits\HCUserRoles;
-use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
-use HoneyComb\Core\Notifications\HCAdminWelcomeEmail;
-use HoneyComb\Core\Notifications\HCResetPassword;
-use HoneyComb\Core\Models\Users\HCUserProvider;
 
 /**
  * Class HCUser

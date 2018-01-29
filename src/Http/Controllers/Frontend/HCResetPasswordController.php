@@ -29,12 +29,12 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
+use HoneyComb\Core\Http\Controllers\HCBaseController;
+use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use HoneyComb\Core\Helpers\HCFrontendResponse;
-use HoneyComb\Core\Http\Controllers\HCBaseController;
 
 /**
  * Class HCResetPasswordController

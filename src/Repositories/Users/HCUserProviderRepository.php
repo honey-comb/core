@@ -30,7 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Repositories\Users;
 
 use HoneyComb\Core\Models\Users\HCUserProvider;
-use HoneyComb\Core\Repositories\HCBaseRepository;
+use HoneyComb\Starter\Repositories\HCBaseRepository;
 
 class HCUserProviderRepository extends HCBaseRepository
 {

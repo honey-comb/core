@@ -67,7 +67,7 @@ class HCCheckSelectedAdminLanguage
 
             $locale = session()->get('back-end');
 
-            if (! $enabled->contains('iso_639_1', $locale)) {
+            if (!$enabled->contains('iso_639_1', $locale)) {
                 $locale = config('app.locale');
             }
 

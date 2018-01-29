@@ -215,15 +215,15 @@ class HCCreateSuperAdminCommand extends Command
         $this->connection->beginTransaction();
 
         try {
-            $user = $this->userService->createUser (
+            $user = $this->userService->createUser(
                 [
                     'email' => $this->email,
                     'password' => $this->password,
                     'activated_at' => Carbon::now()->toDateTimeString(),
                 ], [], [
-                    'first_name' => "Super",
-                    'last_name' => "Admin"
-                ],false, false
+                'first_name' => "Super",
+                'last_name' => "Admin",
+            ], false, false
             );
 
             // add sa role

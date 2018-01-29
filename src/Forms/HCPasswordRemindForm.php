@@ -29,6 +29,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Forms;
 
+use HoneyComb\Starter\Forms\HCBaseForm;
+
 /**
  * Class HCPasswordRemindForm
  * @package HoneyComb\Core\Forms
@@ -40,7 +42,6 @@ class HCPasswordRemindForm extends HCBaseForm
      *
      * @param bool $edit
      * @return array
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function createForm(bool $edit = false): array
     {

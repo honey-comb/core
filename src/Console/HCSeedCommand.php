@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Console;
 
+use HoneyComb\Starter\Helpers\HCConfigParseHelper;
 use Illuminate\Console\Command;
-use HoneyComb\Core\Helpers\HCConfigParseHelper;
 
 class HCSeedCommand extends Command
 {

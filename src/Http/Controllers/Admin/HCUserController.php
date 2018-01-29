@@ -29,14 +29,14 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Admin;
 
+use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
+use HoneyComb\Core\Http\Requests\HCUserRequest;
+use HoneyComb\Core\Services\HCUserService;
+use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
-use HoneyComb\Core\Helpers\HCFrontendResponse;
-use HoneyComb\Core\Http\Controllers\HCBaseController;
-use HoneyComb\Core\Http\Requests\HCUserRequest;
-use HoneyComb\Core\Services\HCUserService;
 
 class HCUserController extends HCBaseController
 {

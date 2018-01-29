@@ -30,7 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Repositories\Users;
 
 use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
-use HoneyComb\Core\Repositories\HCBaseRepository;
+use HoneyComb\Starter\Repositories\HCBaseRepository;
 
 /**
  * Class HCPersonalInfoRepository

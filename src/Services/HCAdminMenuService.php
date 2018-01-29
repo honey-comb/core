@@ -3,8 +3,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Services;
 
-use Illuminate\Http\Request;
 use HoneyComb\Core\Models\HCUser;
+use Illuminate\Http\Request;
 
 /**
  * Class HCAdminMenuService

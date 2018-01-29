@@ -12,7 +12,7 @@ namespace HoneyComb\Core\Models\Traits;
 trait HCTranslation
 {
     private $translationClass;
-    
+
     /**
      * Translations
      *

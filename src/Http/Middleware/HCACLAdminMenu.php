@@ -30,8 +30,8 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use HoneyComb\Core\Services\HCAdminMenuService;
+use Illuminate\Http\Request;
 
 /**
  * Class HCAclAdminMenu

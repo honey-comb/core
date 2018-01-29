@@ -29,36 +29,37 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Providers;
 
-use HoneyComb\Core\Console\HCProjectSize;
-use HoneyComb\Core\Http\Middleware\HCCheckSelectedAdminLanguage;
-use HoneyComb\Core\Http\Middleware\HCCheckSelectedFrontEndLanguage;
-use HoneyComb\Core\Repositories\HCLanguageRepository;
-use HoneyComb\Resources\Providers\HCResourceServiceProvider;
-use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Routing\Router;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Schema;
 use HoneyComb\Core\Console\HCCreateSuperAdminCommand;
 use HoneyComb\Core\Console\HCGenerateAdminMenuCommand;
 use HoneyComb\Core\Console\HCGenerateFormsCommand;
+use HoneyComb\Core\Console\HCProjectSize;
 use HoneyComb\Core\Console\HCScanRolePermissionsCommand;
 use HoneyComb\Core\Console\HCSeedCommand;
 use HoneyComb\Core\Http\Middleware\HCAclAdminMenu;
 use HoneyComb\Core\Http\Middleware\HCAclAuthenticate;
 use HoneyComb\Core\Http\Middleware\HCAclPermissionsMiddleware;
+use HoneyComb\Core\Http\Middleware\HCCheckSelectedAdminLanguage;
+use HoneyComb\Core\Http\Middleware\HCCheckSelectedFrontEndLanguage;
 use HoneyComb\Core\Http\Middleware\HCLogLastActivity;
 use HoneyComb\Core\Models\Acl\HCAclPermission;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCBaseRepository;
+use HoneyComb\Core\Repositories\HCLanguageRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCPersonalInfoRepository;
 use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
 use HoneyComb\Core\Services\Acl\HCRoleService;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
+use HoneyComb\Resources\Providers\HCResourceServiceProvider;
+use HoneyComb\Starter\Providers\HCBaseServiceProvider;
+use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider;
 
 /**
@@ -121,6 +122,14 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         $this->publishes([
             $this->packagePath('./configp') => './',
         ], 'hc-config');
+
+        $this->publishes([
+            $this->packagePath('resources/assets') => resource_path('assets/honey-comb'),
+        ], 'hc-assets');
+
+        $this->publishes([
+            $this->packagePath('resources/public') => public_path('honey-comb'),
+        ], 'public');
     }
 
     /**
@@ -157,7 +166,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
      */
     private function registerGateItems(Gate $gate): void
     {
-        $gate->before(function(HCUser $user) {
+        $gate->before(function (HCUser $user) {
             if ($user->isSuperAdmin()) {
                 return true;
             }
@@ -167,7 +176,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
 
         if (!is_null($permissions)) {
             foreach ($permissions as $permission) {
-                $gate->define($permission->action, function(HCUser $user) use ($permission) {
+                $gate->define($permission->action, function (HCUser $user) use ($permission) {
                     return $user->hasPermission($permission);
                 });
             }

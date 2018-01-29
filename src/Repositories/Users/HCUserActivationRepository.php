@@ -30,9 +30,9 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Repositories\Users;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use HoneyComb\Core\Models\Users\HCUserActivation;
-use HoneyComb\Core\Repositories\HCBaseRepository;
+use HoneyComb\Starter\Repositories\HCBaseRepository;
+use Illuminate\Database\Eloquent\Model;
 
 class HCUserActivationRepository extends HCBaseRepository
 {

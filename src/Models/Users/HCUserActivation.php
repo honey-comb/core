@@ -27,8 +27,8 @@
 
 namespace HoneyComb\Core\Models\Users;
 
+use HoneyComb\Starter\Models\HCModel;
 use Illuminate\Database\Eloquent\Builder;
-use HoneyComb\Core\Models\HCModel;
 
 /**
  * Class HCUserActivation

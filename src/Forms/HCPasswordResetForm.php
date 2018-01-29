@@ -29,6 +29,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Forms;
 
+use HoneyComb\Starter\Forms\HCBaseForm;
+
 /**
  * Class HCPasswordResetForm
  * @package HoneyComb\Core\Forms

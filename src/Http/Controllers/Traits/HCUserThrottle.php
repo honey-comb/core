@@ -29,11 +29,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Traits;
 
+use HCLog;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use HCLog;
 
 /**
  * Trait HCUserThrottle

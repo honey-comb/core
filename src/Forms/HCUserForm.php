@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Forms;
 
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
+use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
  * Class HCUserForm
@@ -125,6 +126,19 @@ class HCUserForm extends HCBaseForm
     }
 
     /**
+     * @return array
+     */
+    private function roles(): array
+    {
+        return [
+            'type' => 'checkBoxList',
+            'tabID' => trans('HCCore::user.roles'),
+            'label' => trans('HCCore::user.role_groups'),
+            'options' => $this->roleRepository->getRolesForUserCreation(),
+        ];
+    }
+
+    /**
      * @param string $prefix
      * @return array
      */
@@ -148,7 +162,7 @@ class HCUserForm extends HCBaseForm
                 'uploadUrl' => route('resource.upload'),
                 'viewUrl' => route('resource.get', '/'),
                 'count' => 1,
-                'accept' => ['image/jpeg', 'image/png']
+                'accept' => ['image/jpeg', 'image/png'],
             ],
             $prefix . 'description' => [
                 'type' => 'textArea',
@@ -204,19 +218,6 @@ class HCUserForm extends HCBaseForm
                 'label' => trans('HCCore::user.activation.activated_at'),
                 'readonly' => 1,
             ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    private function roles(): array
-    {
-        return [
-            'type' => 'checkBoxList',
-            'tabID' => trans('HCCore::user.roles'),
-            'label' => trans('HCCore::user.role_groups'),
-            'options' => $this->roleRepository->getRolesForUserCreation(),
         ];
     }
 }

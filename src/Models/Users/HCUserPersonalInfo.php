@@ -29,10 +29,10 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Models\Users;
 
-use HoneyComb\Resources\Models\HCResource;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use HoneyComb\Core\Models\HCUser;
-use HoneyComb\Core\Models\HCUuidModel;
+use HoneyComb\Resources\Models\HCResource;
+use HoneyComb\Starter\Models\HCUuidModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -83,6 +83,6 @@ class HCUserPersonalInfo extends HCUuidModel
      */
     public function photo(): HasOne
     {
-        return $this->hasOne(HCResource::class,'id', 'photo_id');
+        return $this->hasOne(HCResource::class, 'id', 'photo_id');
     }
 }

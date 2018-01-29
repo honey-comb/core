@@ -30,8 +30,8 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Console;
 
 use Carbon\Carbon;
+use HoneyComb\Starter\Helpers\HCConfigParseHelper;
 use Illuminate\Console\Command;
-use HoneyComb\Core\Helpers\HCConfigParseHelper;
 
 /**
  * Class HCGenerateFormsCommand

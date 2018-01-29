@@ -29,11 +29,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Console;
 
+use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
+use HoneyComb\Starter\Helpers\HCConfigParseHelper;
 use Illuminate\Console\Command;
-use HoneyComb\Core\Helpers\HCConfigParseHelper;
-use HoneyComb\Core\Models\Acl\HCAclRole;
 
 /**
  * Class HCScanRolePermissionsCommand
@@ -184,8 +184,9 @@ class HCScanRolePermissionsCommand extends Command
     {
         if (array_key_exists('permissions', $aclData)) {
 
-            if (sizeof($aclData['permissions']) == 0 )
+            if (sizeof($aclData['permissions']) == 0) {
                 return;
+            }
 
             if (!isset($aclData['permissions'][0])) {
                 $aclData['permissions'] = [$aclData['permissions']];

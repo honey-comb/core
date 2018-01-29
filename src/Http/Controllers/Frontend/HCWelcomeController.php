@@ -29,8 +29,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
-use Illuminate\View\View;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
+use Illuminate\View\View;
 
 /**
  * Class HCWelcomeController

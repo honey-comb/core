@@ -30,8 +30,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Notifications;
 
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 /**
  * Class HCAdminWelcomeEmail

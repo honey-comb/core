@@ -1,13 +1,6 @@
 <link rel="stylesheet" href="{{mix('/css/hc-admin-panel.css')}}">
 
 
-
-
-
-
-
-
-
 {{-- global --}}{{--
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
