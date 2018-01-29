@@ -69,6 +69,10 @@ export default class TBCell extends Component {
             case "checkBox" :
 
                 return this.getCheckBox();
+
+            case "image" :
+
+                return this.getImage();
         }
 
         return "";
@@ -79,6 +83,10 @@ export default class TBCell extends Component {
                       disabled={this.state.disabled}
                       checked={this.state.value}
                       onChange={this.updateStrict}/>
+    }
+
+    getImage() {
+        return <img src={"/resources/" + this.state.value + '/100/100'}/>;
     }
 
     updateStrict() {
