@@ -139,7 +139,7 @@ class HCScanRolePermissionsCommand extends Command
                 } else {
                     $packageName = array_get($config, 'general.packageName');
 
-                    if (is_null($packageName) || $packageName == '') {
+                    if (is_null($packageName)) {
                         $this->error('SKIPPING! Package must have a name! file: ' . $filePath);
                         continue;
                     }
