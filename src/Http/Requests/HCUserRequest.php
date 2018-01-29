@@ -52,10 +52,16 @@ class HCUserRequest extends FormRequest
      */
     public function getPersonalData(): array
     {
+        $photo = $this->input('photo_id');
+
+        if (is_array($photo) && ! $photo) {
+            $photo = null;
+        }
+
         return [
             'first_name' => $this->input('first_name'),
             'last_name' => $this->input('last_name'),
-            'photo_id' => $this->input('photo_id'),
+            'photo_id' => $photo,
             'description' => $this->input('description'),
         ];
     }
