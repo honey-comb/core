@@ -21,7 +21,7 @@ class HCSocialiteAuthController extends Controller
     /**
      * @var HCUserService
      */
-    private $service;
+    protected $service;
 
     /**
      * HCFacebookAuthController constructor.

@@ -45,7 +45,7 @@ class HCRoleController extends HCBaseController
     /**
      * @var HCRoleService
      */
-    private $service;
+    protected $service;
     /**
      * @var HCFrontendResponse
      */
