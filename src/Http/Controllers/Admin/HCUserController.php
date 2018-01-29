@@ -36,6 +36,7 @@ use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class HCUserController extends HCBaseController

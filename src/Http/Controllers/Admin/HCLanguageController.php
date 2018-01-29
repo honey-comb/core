@@ -32,11 +32,9 @@ namespace HoneyComb\Core\Http\Controllers\Admin;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
 use HoneyComb\Core\Http\Requests\HCLanguageRequest;
-use HoneyComb\Core\Repositories\HCLanguageRepository;
+use HoneyComb\Core\Services\HCLanguageService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class HCLanguageController extends HCBaseController
@@ -54,24 +52,25 @@ class HCLanguageController extends HCBaseController
     private $response;
 
     /**
-     * @var HCLanguageRepository
+     * @var HCLanguageService
      */
-    private $languageRepository;
+    protected $service;
 
     /**
      * HCUsersController constructor.
      * @param Connection $connection
-     * @param HCLanguageRepository $languageRepository
      * @param HCFrontendResponse $response
+     * @param HCLanguageService $service
      */
     public function __construct(
         Connection $connection,
-        HCLanguageRepository $languageRepository,
-        HCFrontendResponse $response
+        HCFrontendResponse $response,
+        HCLanguageService $service
     ) {
+
+        $this->service = $service;
         $this->connection = $connection;
         $this->response = $response;
-        $this->languageRepository = $languageRepository;
     }
 
     /**
@@ -122,7 +121,7 @@ class HCLanguageController extends HCBaseController
      */
     public function updateStrict(HCLanguageRequest $request, string $languageId)
     {
-        $this->languageRepository->update($request->getStrictUpdateValues(), $languageId);
+        $this->service->update($request, $languageId);
 
         return $this->response->success('Updated');
     }
