@@ -114,18 +114,6 @@ class HCLanguageController extends HCBaseController
     }
 
     /**
-     * Creating data list
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getListPaginate(Request $request): JsonResponse
-    {
-        return response()->json(
-            $this->languageRepository->getListPaginate($request)
-        );
-    }
-
-    /**
      * Updates existing specific items based on ID
      *
      * @param HCLanguageRequest $request
