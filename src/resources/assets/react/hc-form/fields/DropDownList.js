@@ -48,10 +48,9 @@ export default class DropDownList extends Base {
      *
      * @returns {boolean}
      */
-    isValid ()
-    {
+    isValid() {
         if (this.props.config.required)
-            if (this.props.config.options.indexOf(this.refs.inputField.value) === -1)
+            if (!this.refs.inputField.value)
                 return false;
 
         return true;
