@@ -9,7 +9,6 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HCBaseController extends Controller
 {
@@ -59,30 +58,5 @@ class HCBaseController extends Controller
         }
 
         return $actions;
-    }
-
-    /**
-     * Getting a list records for API call
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getList(Request $request): JsonResponse
-    {
-        return response()->json(
-            $this->service->getRepository()->getList($request)
-        );
-    }
-
-    /**
-     * Creating data list
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getListPaginate(Request $request): JsonResponse
-    {
-        return response()->json(
-            $this->service->getRepository()->getListPaginate($request)
-        );
     }
 }

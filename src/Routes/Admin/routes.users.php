@@ -46,10 +46,6 @@ Route::prefix(config('hc.admin_url'))
                 ->name('admin.api.create')
                 ->middleware('acl:honey_comb_core_user_create');
 
-            Route::get('list', 'HCUserController@getList')
-                ->name('admin.api.user.list')
-                ->middleware('acl:honey_comb_core_user_list');
-
             Route::delete('/', 'HCUserController@deleteSoft')
                 ->name('admin.api.user')
                 ->middleware('acl:honey_comb_core_user_delete');

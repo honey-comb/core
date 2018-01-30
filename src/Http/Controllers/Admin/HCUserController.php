@@ -172,6 +172,18 @@ class HCUserController extends HCBaseController
     }
 
     /**
+     * Creating data list
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getListPaginate(Request $request): JsonResponse
+    {
+        return response()->json(
+            $this->service->getRepository()->getListPaginate($request)
+        );
+    }
+
+    /**
      * Getting single record
      *
      * @param string $recordId
