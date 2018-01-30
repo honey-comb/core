@@ -35,6 +35,8 @@ use HoneyComb\Core\Http\Requests\HCLanguageRequest;
 use HoneyComb\Core\Services\HCLanguageService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class HCLanguageController extends HCBaseController
@@ -110,6 +112,18 @@ class HCLanguageController extends HCBaseController
         ];
 
         return $columns;
+    }
+
+    /**
+     * Creating data list
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getListPaginate(Request $request): JsonResponse
+    {
+        return response()->json(
+            $this->service->getRepository()->getListPaginate($request)
+        );
     }
 
     /**
