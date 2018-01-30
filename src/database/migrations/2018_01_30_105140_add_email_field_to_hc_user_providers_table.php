@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,51 +21,42 @@
  * SOFTWARE.
  *
  * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
+ * E-mail: info@interactivesolutions.lt
  * http://www.interactivesolutions.lt
  */
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Repositories\Users;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use HoneyComb\Core\Models\Users\HCUserProvider;
-use HoneyComb\Starter\Repositories\HCBaseRepository;
-
-class HCUserProviderRepository extends HCBaseRepository
+/**
+ * Class AddEmailFieldToHcUserProvidersTable
+ */
+class AddEmailFieldToHcUserProvidersTable extends Migration
 {
     /**
-     * @return string
+     * Run the migrations.
+     *
+     * @return void
      */
-    public function model(): string
+    public function up(): void
     {
-        return HCUserProvider::class;
+        Schema::table('hc_user_providers', function (Blueprint $table) {
+            $table->string('email')->nullable();
+        });
     }
 
     /**
-     * @param string $userId
-     * @param string $providerUserId
-     * @param string $provider
-     * @param string $email
-     * @param string $profileUrl
-     * @param string $providerData
-     * @return mixed
+     * Reverse the migrations.
+     *
+     * @return void
      */
-    public function createProvider(
-        string $userId,
-        string $providerUserId,
-        string $provider,
-        string $email,
-        string $profileUrl,
-        string $providerData
-    ): HCUserProvider {
-        return $this->makeQuery()->create([
-            'user_id' => $userId,
-            'user_provider_id' => $providerUserId,
-            'provider' => $provider,
-            'email' => $email,
-            'profile_url' => $profileUrl,
-            'response' => $providerData,
-        ]);
+    public function down(): void
+    {
+        Schema::table('hc_user_providers', function (Blueprint $table) {
+            $table->dropColumn('email');
+        });
     }
 }

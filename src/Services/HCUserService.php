@@ -193,33 +193,50 @@ class HCUserService
             'user_provider_id' => (string)$providerUser->getId(),
         ]);
 
+        // user provider exists
         if ($userProvider) {
             $this->userProviderRepository->update([
                 'profile_url' => $this->getProviderProfileUrl($providerUser, $provider),
                 'response' => json_encode($providerUser->getRaw()),
+                'email' => $providerUser->getEmail(),
             ], $userProvider->id);
 
             return $userProvider->user;
         } else {
-            $user = $this->repository->findOneBy(['email' => $providerUser->getEmail()]);
+            // find existing user provider by email
+            $userProvider = $this->userProviderRepository->makeQuery()
+                ->where('email', $providerUser->getEmail())
+                ->where('provider', '!=', $provider)
+                ->first();
 
-            if (is_null($user)) {
-                $userData = [
-                    'email' => $providerUser->getEmail(),
-                    'password' => str_random(10),
-                    'activated_at' => Carbon::now()->toDateTimeString(),
-                ];
+            if (is_null($userProvider)) {
 
-                $personalData = $this->parseNameFromSocialite($providerUser);
-                $personalData = $this->getPhoto($providerUser, $personalData, $provider);
+                // find user or create if nots exists
+                $user = $this->repository->findOneBy(['email' => $providerUser->getEmail()]);
 
-                $user = $this->createUser($userData, [$this->roleRepository->getRoleUserId()], $personalData);
+                if (is_null($user)) {
+
+                    $userData = [
+                        'email' => $providerUser->getEmail(),
+                        'password' => str_random(10),
+                        'activated_at' => Carbon::now()->toDateTimeString(),
+                    ];
+
+                    $personalData = $this->parseNameFromSocialite($providerUser);
+                    $personalData = $this->getPhoto($providerUser, $personalData, $provider);
+                    
+                    $user = $this->createUser($userData, [$this->roleRepository->getRoleUserId()], $personalData);
+                }
+            } else {
+                // set user of found user provider
+                $user = $userProvider->user;
             }
 
             $this->userProviderRepository->createProvider(
                 $user->id,
                 (string)$providerUser->getId(),
                 $provider,
+                $providerUser->getEmail(),
                 $this->getProviderProfileUrl($providerUser, $provider),
                 json_encode($providerUser->getRaw())
             );
