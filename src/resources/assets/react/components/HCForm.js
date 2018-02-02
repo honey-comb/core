@@ -17,6 +17,7 @@ export default class HCForm extends Component {
 
         this.finalFieldStructure = [];
 
+        this.existingRecord = {};
         this.record = {};
 
         this.state = {
@@ -64,19 +65,20 @@ export default class HCForm extends Component {
      * When form has been completely loaded
      * Fill in the information which is available
      */
-    componentDidUpdate() {
-        if (Object.keys(this.record).length > 0) {
+    fillForm() {
+
+        if (Object.keys(this.existingRecord).length > 0) {
             Object.keys(this.finalFieldStructure).map((key, i) => {
 
-                let value = this.record[key];
+                let value = this.existingRecord[key];
 
                 if (key.indexOf('.') !== -1) {
 
                     let keySequence = key.split('.');
                     if (keySequence[0] === 'translations') {
 
-                        if (this.record['translations']) {
-                            this.record[keySequence[0]].map((item, i) => {
+                        if (this.existingRecord['translations']) {
+                            this.existingRecord[keySequence[0]].map((item, i) => {
 
                                 this.refs[key].setMultiLanguageValue(item['language_code'], item[keySequence[1]]);
                             });
@@ -133,9 +135,10 @@ export default class HCForm extends Component {
                     axios.get(formData.storageUrl + '/' + this.props.config.recordId).then(
                         res => {
 
-                            this.record = res.data;
+                            this.existingRecord = res.data;
 
                             this.setState(stateObject);
+                            this.fillForm();
                             this.updateDependencies();
                         }
                     )
@@ -193,8 +196,6 @@ export default class HCForm extends Component {
         let finalArray = [];
 
         Object.keys(this.finalFieldStructure).map((key, i) => finalArray.push(this.finalFieldStructure[key]));
-
-        console.log('Fields on stage');
 
         return finalArray;
     }
@@ -263,10 +264,14 @@ export default class HCForm extends Component {
     updateFormData(fieldId, value) {
 
         this.record[fieldId] = value;
-        this.updateDependencies();
+        this.updateDependencies(fieldId);
     }
 
-    updateDependencies() {
+    /**
+     * Updating dependencies
+     * @param fieldChanged
+     */
+    updateDependencies(fieldChanged = null) {
         if (!this.dependencyFields) {
             this.dependencyFields = {};
             Object.keys(this.state.formData.structure).map((item) => {
@@ -275,6 +280,8 @@ export default class HCForm extends Component {
                 }
             });
         }
+
+        //TODO: check if changed field is in dependencies, if not do not update components
 
         Object.keys(this.dependencyFields).map((key) => {
 
@@ -288,6 +295,7 @@ export default class HCForm extends Component {
 
                     config.values.map((configValue) => {
                         if (HC.helpers.isArray(this.record[targetKey])) {
+                            //TODO: IMPLEMENT ARRAY DEPENDENCY VALIDATION
                             console.log('IMPLEMENT ARRAY DEPENDENCY VALIDATION');
                         }
                         else {

@@ -11,6 +11,7 @@ export default class DropDownList extends Base {
 
 
     getInput() {
+
         return <select className="form-control"
                        ref="inputField"
                        disabled={this.props.config.disabled || this.props.config.readonly}

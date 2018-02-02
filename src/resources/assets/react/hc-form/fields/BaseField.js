@@ -66,6 +66,7 @@ export default class BaseField extends Component {
     }
 
     getHidden() {
+
         return (this.props.config.hidden || this.state.hideDependant);
     }
 
