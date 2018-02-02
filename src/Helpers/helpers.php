@@ -1,5 +1,8 @@
 <?php
 
+use HoneyComb\Core\Models\HCLanguage;
+use Illuminate\Database\Eloquent\Collection;
+
 if (!function_exists('get_translation_name')) {
     /**
      * Get translation name from
@@ -266,5 +269,55 @@ if (!function_exists('removeRecordsWithNoTranslation')) {
         }
 
         return $contentList;
+    }
+}
+
+if (!function_exists('getHCLanguagesOptions')) {
+    /**
+     * Retrieving languages
+     *
+     * @param null|string $type
+     * @param array $columns
+     * @return \Illuminate\Support\Collection
+     * @throws Exception
+     */
+    function getHCLanguagesOptions(string $type = null, array $columns = [])
+    {
+        $columns[] = 'iso_639_1 as id';
+        $columns[] = 'iso_639_1 as label';
+
+        if (!$type) {
+            return HCLanguage::select($columns)->get();
+        }
+
+        $types = ['front_end', 'back_end', 'content'];
+
+        if (!in_array($type, $types)) {
+            throw new \Exception('Incorrect given type');
+        }
+
+        return HCLanguage::where($type, '1')->select($columns)->get();
+    }
+}
+
+if (!function_exists('optimizeTranslationOptions')) {
+    /**
+     * @param Collection|\Illuminate\Support\Collection $list
+     * @return Collection|\Illuminate\Support\Collection
+     */
+    function optimizeTranslationOptions(Collection $list)
+    {
+        return $list->map(function($record) {
+
+            $data['id'] = $record->id;
+
+            if ($record->translation) {
+                $data['label'] = $record->translation->label;
+            } else {
+                $data['label'] = $record->id;
+            }
+
+            return $data;
+        });
     }
 }
