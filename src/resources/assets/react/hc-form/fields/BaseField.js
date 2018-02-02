@@ -10,11 +10,17 @@ export default class BaseField extends Component {
         this.validationTimeOut = undefined;
         this.multiLanguage = false;
         this.multiLanguageValues = {};
+        this.validationTimeOutMiliseconds = 400;
 
         this.state = {
             hasError: false,
-            value: undefined
+            value: undefined,
+            hideDependant: false
         };
+
+        if (this.props.config.dependencies) {
+            this.state.hideDependant = true;
+        }
 
         this.contentChange = this.contentChange.bind(this);
         this.validate = this.validate.bind(this);
@@ -41,7 +47,7 @@ export default class BaseField extends Component {
         let fieldClasses = classNames(
             "form-group", {
                 "has-error": this.state.hasError,
-                hidden: this.props.config.hidden,
+                hidden: this.getHidden(),
             }
         );
 
@@ -53,6 +59,14 @@ export default class BaseField extends Component {
                 {this.getMultiLanguage()}
             </div>
         </div>;
+    }
+
+    toggleDependency(value) {
+        this.setState({hideDependant: value});
+    }
+
+    getHidden() {
+        return (this.props.config.hidden || this.state.hideDependant);
     }
 
     /**
@@ -135,7 +149,7 @@ export default class BaseField extends Component {
         if (this.validationTimeOut)
             clearTimeout(this.validationTimeOut);
 
-        this.validationTimeOut = setTimeout(this.validate, 400);
+        this.validationTimeOut = setTimeout(this.validate, this.validationTimeOutMiliseconds);
     }
 
     /**

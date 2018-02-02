@@ -15,7 +15,7 @@ export default class HCForm extends Component {
     constructor(props) {
         super(props);
 
-        this.finalStructure = [];
+        this.finalFieldStructure = [];
 
         this.record = {};
 
@@ -27,11 +27,13 @@ export default class HCForm extends Component {
         };
 
         this.opacity = 0;
+        this.dependencyFields = null;
 
         this.getFields = this.getFields.bind(this);
         this.updateFormData = this.updateFormData.bind(this);
         this.submitData = this.submitData.bind(this);
         this.languageChange = this.languageChange.bind(this);
+        this.updateDependencies = this.updateDependencies.bind(this);
     }
 
     render() {
@@ -64,7 +66,7 @@ export default class HCForm extends Component {
      */
     componentDidUpdate() {
         if (Object.keys(this.record).length > 0) {
-            Object.keys(this.finalStructure).map((key, i) => {
+            Object.keys(this.finalFieldStructure).map((key, i) => {
 
                 let value = this.record[key];
 
@@ -134,12 +136,14 @@ export default class HCForm extends Component {
                             this.record = res.data;
 
                             this.setState(stateObject);
+                            this.updateDependencies();
                         }
                     )
                 }
                 else {
 
                     this.setState(stateObject);
+                    this.updateDependencies();
                 }
             });
     }
@@ -177,18 +181,20 @@ export default class HCForm extends Component {
      */
     getFields() {
         let structure = this.state.formData.structure;
-        this.finalStructure = [];
+        this.finalFieldStructure = [];
 
         if (!structure)
-            return this.finalStructure;
+            return this.finalFieldStructure;
 
         Object.keys(structure).map((key, i) => (
-            this.finalStructure[key] = this.getField(structure[key], key, i)
+            this.finalFieldStructure[key] = this.getField(structure[key], key, i)
         ));
 
         let finalArray = [];
 
-        Object.keys(this.finalStructure).map((key, i) => finalArray.push(this.finalStructure[key]));
+        Object.keys(this.finalFieldStructure).map((key, i) => finalArray.push(this.finalFieldStructure[key]));
+
+        console.log('Fields on stage');
 
         return finalArray;
     }
@@ -257,6 +263,44 @@ export default class HCForm extends Component {
     updateFormData(fieldId, value) {
 
         this.record[fieldId] = value;
+        this.updateDependencies();
+    }
+
+    updateDependencies() {
+        if (!this.dependencyFields) {
+            this.dependencyFields = {};
+            Object.keys(this.state.formData.structure).map((item) => {
+                if (this.state.formData.structure[item].dependencies) {
+                    this.dependencyFields[item] = (this.state.formData.structure[item]);
+                }
+            });
+        }
+
+        Object.keys(this.dependencyFields).map((key) => {
+
+            if (this.refs[key]) {
+                let dependant = this.dependencyFields[key];
+                let hide = true;
+
+                Object.keys(dependant.dependencies).map((targetKey) => {
+
+                    let config = dependant.dependencies[targetKey];
+
+                    config.values.map((configValue) => {
+                        if (HC.helpers.isArray(this.record[targetKey])) {
+                            console.log('IMPLEMENT ARRAY DEPENDENCY VALIDATION');
+                        }
+                        else {
+
+                            if (this.record[targetKey] === configValue)
+                                hide = false;
+                        }
+                    });
+
+                    this.refs[key].toggleDependency(hide);
+                });
+            }
+        });
     }
 
     /**
@@ -305,7 +349,7 @@ export default class HCForm extends Component {
     submitData() {
         let valid = true;
 
-        Object.keys(this.finalStructure).map((key, i) => {
+        Object.keys(this.finalFieldStructure).map((key, i) => {
 
             if (!this.refs[key].validate())
                 valid = false;

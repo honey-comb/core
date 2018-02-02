@@ -3,6 +3,13 @@ import Base from "./BaseField";
 
 export default class DropDownList extends Base {
 
+    constructor(props) {
+        super(props);
+
+        this.validationTimeOutMiliseconds = 0;
+    }
+
+
     getInput() {
         return <select className="form-control"
                        ref="inputField"
@@ -12,6 +19,14 @@ export default class DropDownList extends Base {
             {this.getOptions()}
 
         </select>
+    }
+
+    /**
+     * If input required validate first option
+     */
+    componentDidMount() {
+        if (this.props.config.required)
+            this.validate();
     }
 
     /**
@@ -37,6 +52,7 @@ export default class DropDownList extends Base {
      * @returns {boolean}
      */
     isValid() {
+
         if (this.props.config.required)
             if (!this.refs.inputField.value)
                 return false;
