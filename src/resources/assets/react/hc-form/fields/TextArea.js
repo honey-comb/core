@@ -1,16 +1,24 @@
 import React from 'react'
 import Base from "./BaseField";
 
+let classNames = require('classnames');
+
 export default class TextArea extends Base {
 
     getInput ()
     {
+        let inputClasses = classNames({
+            "form-control": true,
+            "multi-language": this.props.config.multiLanguage
+        });
+
         return <textarea
                       ref="inputField"
                       placeholder={this.props.config.label}
-                      className="form-control"
+                      className={inputClasses}
                       readOnly={this.props.config.readonly}
                       disabled={this.props.config.disabled}
+                      rows={5}
                       onChange={this.contentChange}/>;
     }
 }
