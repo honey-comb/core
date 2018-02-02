@@ -101,4 +101,27 @@ HC.helpers = new function () {
 
         return emailReg.test (email);
     };
+
+    /**
+     * Finding index of translations array, based on currentLanguage
+     *
+     * @param language
+     * @param translations
+     * @returns {*}
+     */
+    this.getTranslationsLanguageElementIndex = function (language, translations)
+    {
+        let _key = undefined;
+
+        $.each (translations, function (key, value)
+        {
+            if (value.language_code === language)
+                _key = key;
+        });
+
+        if (_key === undefined)
+            _key = Object.keys(translations).length;
+
+        return _key;
+    };
 };

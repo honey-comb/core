@@ -22,7 +22,8 @@ export default class HCForm extends Component {
         this.state = {
             id: HC.helpers.uuid(),
             formData: {},
-            formDisabled: false
+            formDisabled: false,
+            language: null
         };
 
         this.opacity = 0;
@@ -30,6 +31,7 @@ export default class HCForm extends Component {
         this.getFields = this.getFields.bind(this);
         this.updateFormData = this.updateFormData.bind(this);
         this.submitData = this.submitData.bind(this);
+        this.languageChange = this.languageChange.bind(this);
     }
 
     render() {
@@ -66,8 +68,20 @@ export default class HCForm extends Component {
 
                 let value = this.record[key];
 
-                if (value)
+                if (key.indexOf('.') !== -1) {
+
+                    let keySequence = key.split('.');
+                    if (keySequence[0] === 'translations') {
+
+                        this.record[keySequence[0]].map((item, i) => {
+
+                            this.refs[key].setMultiLanguageValue(item['language_code'], item[keySequence[1]]);
+                        });
+                    }
+                }
+                else if (value) {
                     this.refs[key].setValue(value);
+                }
             });
         }
     }
@@ -98,22 +112,28 @@ export default class HCForm extends Component {
 
                 formData = res.data;
 
+                let stateObject = {
+                    formData: formData
+                };
+
+                if (formData.availableLanguages && formData.availableLanguages.length > 0) {
+                    stateObject.language = formData.availableLanguages[0];
+                }
+
+
                 if (this.props.config.recordId) {
                     axios.get(formData.storageUrl + '/' + this.props.config.recordId).then(
                         res => {
 
                             this.record = res.data;
 
-                            this.setState({
-                                formData: formData,
-                            });
+                            this.setState(stateObject);
                         }
                     )
                 }
                 else {
-                    this.setState({
-                        formData: formData,
-                    });
+
+                    this.setState(stateObject);
                 }
             });
     }
@@ -182,7 +202,7 @@ export default class HCForm extends Component {
         switch (data.type) {
             case "email" :
 
-                return <Email key={i} config={data} ref={ref} id={ref}/>;
+                return <Email key={i} config={data} ref={ref} id={ref} language={this.state.language}/>;
 
             case "password" :
 
@@ -190,26 +210,36 @@ export default class HCForm extends Component {
 
             case "checkBoxList" :
 
-                return <CheckBoxList key={i} config={data} ref={ref} id={ref}/>;
+                return <CheckBoxList key={i} config={data} ref={ref} id={ref} language={this.state.language}/>;
 
             case "singleLine" :
 
-                return <BaseField key={i} config={data} ref={ref} id={ref}/>;
+                return <BaseField key={i} config={data} ref={ref} id={ref} language={this.state.language}
+                                  onLanguageChange={this.languageChange}
+                                  availableLanguages={this.state.formData.availableLanguages}/>;
 
             case "dropDownList" :
 
-                return <DropDownList key={i} config={data} ref={ref} id={ref}/>;
+                return <DropDownList key={i} config={data} ref={ref} id={ref} language={this.state.language}
+                                     onLanguageChange={this.languageChange}
+                                     availableLanguages={this.state.formData.availableLanguages}/>;
 
             case "textArea" :
 
-                return <TextArea key={i} config={data} ref={ref} id={ref}/>;
+                return <TextArea key={i} config={data} ref={ref} id={ref} language={this.state.language}
+                                 onLanguageChange={this.languageChange}
+                                 availableLanguages={this.state.formData.availableLanguages}/>;
 
             case "media" :
 
-                return <Media key={i} config={data} ref={ref} id={ref}/>;
+                return <Media key={i} config={data} ref={ref} id={ref} language={this.state.language}/>;
         }
 
         return "";
+    }
+
+    languageChange(language) {
+        this.setState({language: language});
     }
 
     /**
@@ -278,18 +308,64 @@ export default class HCForm extends Component {
         if (!valid)
             return;
 
+        let finalRecordStructure = this.finalizeStructure();
+
         this.setState({formDisabled: true});
 
         if (this.props.config.recordId)
-            axios.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, this.record).then(
+            axios.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, finalRecordStructure).then(
                 (res) =>
                     this.handleSubmitComplete(res.data)
-            ).catch(error => {this.handleSubmitError(error)});
+            ).catch(error => {
+                this.handleSubmitError(error)
+            });
         else
-            axios.post(this.state.formData.storageUrl, this.record)
+            axios.post(this.state.formData.storageUrl, finalRecordStructure)
                 .then(
                     (res) => this.handleSubmitComplete(res.data)
-                ).catch(error => {this.handleSubmitError(error)});
+                ).catch(error => {
+                this.handleSubmitError(error)
+            });
+    }
+
+    /**
+     * Finalizing structure
+     *
+     * @returns {{}}
+     */
+    finalizeStructure() {
+        let structure = {};
+
+        Object.keys(this.record).map((item, i) => {
+
+            if (item.indexOf('.') === -1) {
+                structure[item] = this.record[item];
+            }
+            else {
+                let keys = item.split('.');
+
+                if (keys[0] === 'translations' && keys.length === 2) {
+
+                    let languages = Object.keys(this.record[item]);
+
+                    if (!structure[keys[0]])
+                        structure[keys[0]] = [];
+
+                    languages.map((language, i) => {
+                        let index = HC.helpers.getTranslationsLanguageElementIndex(language, structure[keys[0]]);
+
+                        if (!structure[keys[0]][index]) {
+                            structure[keys[0]][index] = {};
+                            structure[keys[0]][index]['language_code'] = language;
+                        }
+
+                        structure[keys[0]][index][keys[1]] = this.record[item][language];
+                    });
+                }
+            }
+        });
+
+        return structure;
     }
 
     /**
@@ -297,8 +373,7 @@ export default class HCForm extends Component {
      *
      * @param error
      */
-    handleSubmitError (error)
-    {
+    handleSubmitError(error) {
         console.log(error.response);
         this.setState({formDisabled: false});
     }

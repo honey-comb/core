@@ -8,6 +8,8 @@ export default class BaseField extends Component {
         super(props);
 
         this.validationTimeOut = undefined;
+        this.multiLanguage = false;
+        this.multiLanguageValues = {};
 
         this.state = {
             hasError: false,
@@ -17,8 +19,17 @@ export default class BaseField extends Component {
         this.contentChange = this.contentChange.bind(this);
         this.validate = this.validate.bind(this);
         this.getValue = this.getValue.bind(this);
+        this.getMultiLanguage = this.getMultiLanguage.bind(this);
     }
 
+    componentWillUpdate(nextProps, nextState) {
+        if (this.multiLanguage) {
+            if (this.props.language !== nextProps.language) {
+                this.multiLanguageValues[this.props.language] = this.refs.inputField.value;
+                this.contentChange();
+            }
+        }
+    }
 
     render() {
         let fieldClasses = classNames(
@@ -28,10 +39,15 @@ export default class BaseField extends Component {
             }
         );
 
+        console.log('*', this.multiLanguageValues);
+
         return <div className={fieldClasses}>
             {this.getLabel()}
-            {this.getInput()}
-            {this.getNote()}
+            <div>
+                {this.getInput()}
+                {this.getNote()}
+                {this.getMultiLanguage()}
+            </div>
         </div>;
     }
 
@@ -55,10 +71,15 @@ export default class BaseField extends Component {
      */
     getInput() {
 
+        let inputClasses = classNames({
+            "form-control": true,
+            "multi-language": this.props.config.multiLanguage
+        });
+
         return <input type={this.props.config.type}
                       ref="inputField"
                       placeholder={this.props.config.label}
-                      className="form-control"
+                      className={inputClasses}
                       readOnly={this.props.config.readonly}
                       disabled={this.props.config.disabled}
                       onChange={this.contentChange}/>;
@@ -82,8 +103,7 @@ export default class BaseField extends Component {
         return <div className="input-group-addon">$</div>;
     }
 
-    getRequired ()
-    {
+    getRequired() {
         if (!this.props.config.required)
             return "";
 
@@ -143,8 +163,7 @@ export default class BaseField extends Component {
      */
     isValid() {
 
-        if (this.props.config.required)
-        {
+        if (this.props.config.required) {
             if (this.getValue() == null || this.getValue() === "")
                 return false;
         }
@@ -156,7 +175,17 @@ export default class BaseField extends Component {
      * Getting value
      */
     getValue() {
-        return this.refs.inputField.value;
+
+        if (!this.multiLanguage)
+            return this.refs.inputField.value;
+
+        return this.getMultiLanguageValue();
+    }
+
+    getMultiLanguageValue() {
+
+        this.multiLanguageValues[this.props.language] = this.refs.inputField.value;
+        return this.multiLanguageValues;
     }
 
     /**
@@ -164,8 +193,58 @@ export default class BaseField extends Component {
      *
      * @param value
      */
-    setValue (value) {
+    setValue(value) {
+
         this.refs.inputField.value = value;
+
         this.validate();
+    }
+
+    /**
+     * Setting multi language values
+     *
+     * @param language
+     * @param value
+     */
+    setMultiLanguageValue (language, value)
+    {
+        this.multiLanguageValues[language] = value;
+
+        if (this.multiLanguageValues[this.props.language])
+            this.refs.inputField.value = this.multiLanguageValues[this.props.language];
+        else
+            this.refs.inputField.value = "";
+
+        this.validate();
+    }
+
+    /**
+     *
+     */
+    getMultiLanguage() {
+
+        if (!this.props.availableLanguages || !this.props.config.multiLanguage)
+            return "";
+
+        this.multiLanguage = true;
+
+        return [<select key={HC.helpers.uuid()} className="form-control multi" ref="multiLanguage"
+                        onChange={(e) => this.props.onLanguageChange(this.refs.multiLanguage.value)}
+                        value={this.props.language}>
+
+            {this.getMultiLanguageOptions()}
+
+        </select>,
+        <div key={HC.helpers.uuid()} className="clearfix"></div>];
+    }
+
+    getMultiLanguageOptions() {
+        let list = [];
+
+        this.props.availableLanguages.map((item, i) => {
+            list.push(<option key={i} value={item}>{item}</option>);
+        });
+
+        return list;
     }
 }
