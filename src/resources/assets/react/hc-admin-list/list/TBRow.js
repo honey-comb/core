@@ -30,7 +30,7 @@ export default class TBRow extends Component {
 
             {Object.keys(this.props.headers).map((item, i) => (
                 <TBCell config={this.props.headers[item]}
-                        value={this.props.record[item]}
+                        value={HC.helpers.pathIndex(this.props.record, item)}
                         key={i}
                         fieldKey={item}
                         form={this.props.form}

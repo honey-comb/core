@@ -124,4 +124,35 @@ HC.helpers = new function () {
 
         return _key;
     };
+
+    /**
+     * Getting to Array element
+     * obj,['1','2','3'] -> ((obj['1'])['2'])['3']
+     *
+     * @credit http://stackoverflow.com/a/6394168/657451
+     *
+     * @param obj
+     * @param is
+     * @returns {*}
+     */
+    this.multiIndex = function (obj, is)
+    {
+        if (!obj)
+            return false;
+
+        return is.length ? this.multiIndex (obj[is[0]], is.slice (1)) : obj
+    };
+
+    /**
+     * Getting to Array element
+     * obj,'1.2.3' -> multiIndex(obj,['1','2','3'])
+     *
+     * @param obj
+     * @param is
+     * @returns {*}
+     */
+    this.pathIndex = function (obj, is)
+    {
+        return this.multiIndex (obj, is.split ('.'))
+    };
 };
