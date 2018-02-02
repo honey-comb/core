@@ -32,14 +32,6 @@ export default class DropDownList extends Base {
     }
 
     /**
-     * If input required validate first option
-     */
-    componentDidMount() {
-        if (this.props.config.required)
-            this.validate();
-    }
-
-    /**
      * Validating input
      *
      * @returns {boolean}
