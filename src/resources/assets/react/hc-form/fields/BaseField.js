@@ -39,8 +39,6 @@ export default class BaseField extends Component {
             }
         );
 
-        console.log('*', this.multiLanguageValues);
-
         return <div className={fieldClasses}>
             {this.getLabel()}
             <div>
@@ -197,6 +195,11 @@ export default class BaseField extends Component {
 
         this.refs.inputField.value = value;
 
+        if (this.multiLanguageValues[this.props.language])
+            this.refs.inputField.value = this.multiLanguageValues[this.props.language];
+        else
+            this.refs.inputField.value = "";
+
         this.validate();
     }
 
@@ -208,7 +211,7 @@ export default class BaseField extends Component {
      */
     setMultiLanguageValue (language, value)
     {
-        this.multiLanguageValues[language] = value;
+        this.refs.inputField.value = this.multiLanguageValues[language] = value;
 
         if (this.multiLanguageValues[this.props.language])
             this.refs.inputField.value = this.multiLanguageValues[this.props.language];

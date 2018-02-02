@@ -73,10 +73,15 @@ export default class HCForm extends Component {
                     let keySequence = key.split('.');
                     if (keySequence[0] === 'translations') {
 
-                        this.record[keySequence[0]].map((item, i) => {
+                        if (this.record['translations']) {
+                            this.record[keySequence[0]].map((item, i) => {
 
-                            this.refs[key].setMultiLanguageValue(item['language_code'], item[keySequence[1]]);
-                        });
+                                this.refs[key].setMultiLanguageValue(item['language_code'], item[keySequence[1]]);
+                            });
+                        }
+                        else if (value) {
+                            this.refs[key].setValue(value);
+                        }
                     }
                 }
                 else if (value) {
@@ -119,7 +124,6 @@ export default class HCForm extends Component {
                 if (formData.availableLanguages && formData.availableLanguages.length > 0) {
                     stateObject.language = formData.availableLanguages[0];
                 }
-
 
                 if (this.props.config.recordId) {
                     axios.get(formData.storageUrl + '/' + this.props.config.recordId).then(
