@@ -155,4 +155,78 @@ HC.helpers = new function () {
     {
         return this.multiIndex (obj, is.split ('.'))
     };
+
+    /**
+     * Checking if object is Array
+     *
+     * @param object
+     * @returns {boolean}
+     */
+    this.isArray = function (object)
+    {
+        return this.isObjectMyType (object, '[object Array]');
+    };
+
+    /**
+     * Checking if object is Object
+     *
+     * @param object
+     * @returns {boolean}
+     */
+    this.isObject = function (object)
+    {
+        return this.isObjectMyType (object, '[object Object]');
+    };
+
+    /**
+     * Checking if object is String
+     *
+     * @param object
+     * @returns {boolean}
+     */
+    this.isString = function (object)
+    {
+        return this.isObjectMyType (object, '[object String]');
+    };
+
+    /**
+     * Check if given object is a string or json string
+     *
+     * @param object
+     * @returns {boolean}
+     */
+    this.isStringJson = function (object)
+    {
+        try
+        {
+            JSON.parse (object);
+        } catch (e)
+        {
+            return false;
+        }
+        return true;
+    };
+
+    /**
+     * Checking if object is String
+     *
+     * @param object
+     * @returns {boolean}
+     */
+    this.isNumber = function (object)
+    {
+        return this.isObjectMyType (object, '[object Number]');
+    };
+
+    /**
+     * Checking if object is of provided type
+     *
+     * @param object
+     * @param type
+     * @returns {boolean}
+     */
+    this.isObjectMyType = function (object, type)
+    {
+        return type === Object.prototype.toString.call (object);
+    };
 };
