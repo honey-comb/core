@@ -24,14 +24,20 @@ export default class BaseField extends Component {
 
     componentWillUpdate(nextProps, nextState) {
         if (this.multiLanguage) {
+
             if (this.props.language !== nextProps.language) {
                 this.multiLanguageValues[this.props.language] = this.refs.inputField.value;
-                this.contentChange();
+
+                if (this.multiLanguageValues[nextProps.language] !== null && this.multiLanguageValues[nextProps.language] !== undefined)
+                    this.refs.inputField.value = this.multiLanguageValues[nextProps.language];
+                else
+                    this.refs.inputField.value = null;
             }
         }
     }
 
     render() {
+
         let fieldClasses = classNames(
             "form-group", {
                 "has-error": this.state.hasError,
@@ -200,6 +206,7 @@ export default class BaseField extends Component {
                 this.refs.inputField.value = "";
         }
         else {
+
             this.refs.inputField.value = value;
         }
 
@@ -213,6 +220,7 @@ export default class BaseField extends Component {
      * @param value
      */
     setMultiLanguageValue(language, value) {
+
         this.refs.inputField.value = this.multiLanguageValues[language] = value;
 
         if (this.multiLanguageValues[this.props.language])
