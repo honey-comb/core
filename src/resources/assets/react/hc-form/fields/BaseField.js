@@ -193,12 +193,15 @@ export default class BaseField extends Component {
      */
     setValue(value) {
 
-        this.refs.inputField.value = value;
-
-        if (this.multiLanguageValues[this.props.language])
-            this.refs.inputField.value = this.multiLanguageValues[this.props.language];
-        else
-            this.refs.inputField.value = "";
+        if (this.multiLanguage) {
+            if (this.multiLanguageValues[this.props.language])
+                this.refs.inputField.value = this.multiLanguageValues[this.props.language];
+            else
+                this.refs.inputField.value = "";
+        }
+        else {
+            this.refs.inputField.value = value;
+        }
 
         this.validate();
     }
@@ -209,8 +212,7 @@ export default class BaseField extends Component {
      * @param language
      * @param value
      */
-    setMultiLanguageValue (language, value)
-    {
+    setMultiLanguageValue(language, value) {
         this.refs.inputField.value = this.multiLanguageValues[language] = value;
 
         if (this.multiLanguageValues[this.props.language])
@@ -238,7 +240,7 @@ export default class BaseField extends Component {
             {this.getMultiLanguageOptions()}
 
         </select>,
-        <div key={HC.helpers.uuid()} className="clearfix"></div>];
+            <div key={HC.helpers.uuid()} className="clearfix"></div>];
     }
 
     getMultiLanguageOptions() {

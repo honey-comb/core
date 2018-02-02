@@ -80,11 +80,13 @@ export default class HCForm extends Component {
                             });
                         }
                         else if (value) {
+
                             this.refs[key].setValue(value);
                         }
                     }
                 }
                 else if (value) {
+
                     this.refs[key].setValue(value);
                 }
             });
