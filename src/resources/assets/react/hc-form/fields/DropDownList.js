@@ -3,8 +3,7 @@ import Base from "./BaseField";
 
 export default class DropDownList extends Base {
 
-    getInput ()
-    {
+    getInput() {
         return <select className="form-control"
                        ref="inputField"
                        disabled={this.props.config.disabled || this.props.config.readonly}
@@ -20,13 +19,11 @@ export default class DropDownList extends Base {
      *
      * @returns {Array}
      */
-    getOptions ()
-    {
+    getOptions() {
         let list = [];
 
-        if (!this.props.config.required)
-        {
-            list.push (<option key={-1} value="undefined">Please select:</option>)
+        if (!this.props.config.required) {
+            list.push(<option key={-1} value="undefined">Please select:</option>)
         }
 
         this.props.config.options.map((item, i) => list.push(<option key={i} value={item.id}>{item.label}</option>));
@@ -37,9 +34,8 @@ export default class DropDownList extends Base {
     /**
      * If input required validate first option
      */
-    componentDidMount()
-    {
-        if(this.props.config.required)
+    componentDidMount() {
+        if (this.props.config.required)
             this.validate();
     }
 
@@ -58,11 +54,10 @@ export default class DropDownList extends Base {
 
     /**
      * Getting value
-     * 
+     *
      * @returns {undefined}
      */
-    getValue ()
-    {
+    getValue() {
         if (this.refs.inputField.value === "undefined")
             return undefined;
 
