@@ -17,7 +17,7 @@ export default class HCPopUp extends Component {
         switch (this.props.config.type) {
             case "form" :
 
-                return <div id={this.state.id} className="hc-pop-up">
+                return <div id={this.state.id} className="hc-pop-up" style={this.props.config.style}>
                     <HCForm config={this.props.config} formClosed={this.handlePopUpClose}/>
                 </div>
         }
