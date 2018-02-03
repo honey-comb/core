@@ -16,6 +16,8 @@ export default class TBCell extends Component {
             disabled: false
         };
 
+        this.disableUpdate = false;
+
         this.getCheckBox = this.getCheckBox.bind(this);
         this.updateStrict = this.updateStrict.bind(this);
         this.editRecord = this.editRecord.bind(this);
@@ -44,7 +46,7 @@ export default class TBCell extends Component {
 
     editRecord() {
 
-        if (!this.props.update)
+        if (!this.props.update || this.disableUpdate)
             return;
 
         HC.react.popUp({
@@ -68,10 +70,12 @@ export default class TBCell extends Component {
 
             case "checkBox" :
 
+                this.disableUpdate = true;
                 return this.getCheckBox();
 
             case "image" :
 
+                this.disableUpdate = true;
                 return this.getImage();
         }
 
