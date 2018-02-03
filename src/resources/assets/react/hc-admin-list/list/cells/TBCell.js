@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import axios from "axios/index";
+import Thumbnail from "../../../hc-form/fields/media/Thumbnail";
 
 let classNames = require('classnames');
 
@@ -90,7 +91,12 @@ export default class TBCell extends Component {
     }
 
     getImage() {
-        return <img src={"/resources/" + this.state.value + '/100/100'}/>;
+
+        return <Thumbnail mediaId={this.state.value}
+                          key={HC.helpers.uuid()}
+                          hideDelete={true}
+                          hideEdit={true}
+                          viewUrl="/resources"/>
     }
 
     updateStrict() {

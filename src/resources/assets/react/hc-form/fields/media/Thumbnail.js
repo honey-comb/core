@@ -32,10 +32,10 @@ export default class Thumbnail extends Component {
 
         return <div className="hc-media" onMouseOver={this.showButtons} onMouseOut={this.hideButtons}>
             {this.getView()}
-            <button ref="remove" onClick={this.remove} className="btn btn-danger remove">
+            <button ref="remove" onClick={this.remove} className="btn btn-danger remove" hidden={this.props.hideDelete}>
                 <FontAwesomeIcon icon={HC.helpers.faIcon('trash-alt')}/>
             </button>
-            <button ref="edit" onClick={this.edit} className="btn btn-warning edit" disabled={true}>
+            <button ref="edit" onClick={this.edit} className="btn btn-warning edit" disabled={true} hidden={this.props.hideEdit}>
                 <FontAwesomeIcon icon={HC.helpers.faIcon('edit')}/>
             </button>
         </div>;
@@ -51,7 +51,10 @@ export default class Thumbnail extends Component {
             return this.thumbnailView();
         }
 
-        return this.uploadView();
+        if (this.state.file)
+            return this.uploadView();
+
+        return this.nothingView();
     }
 
     /**
@@ -106,7 +109,7 @@ export default class Thumbnail extends Component {
      */
     thumbnailView() {
         return <div className="thumbnail"
-                    style={{backgroundImage: "url(" + this.props.viewUrl + "/" + this.state.mediaId + "/90/90)"}}></div>
+                    style={{backgroundImage: "url(" + this.props.viewUrl + "/" + this.state.mediaId + "/90/90)"}}/>
     }
 
     /**
@@ -124,13 +127,29 @@ export default class Thumbnail extends Component {
         console.log(this.state.mediaId);
     }
 
+    /**
+     * showing buttons
+     */
     showButtons() {
         this.refs.remove.style.opacity = 1;
         this.refs.edit.style.opacity = 1;
     }
 
+    /**
+     * Hiding buttons
+     */
     hideButtons() {
         this.refs.remove.style.opacity = 0.1;
         this.refs.edit.style.opacity = 0.1;
+    }
+
+    /**
+     * Nothing view
+     * @returns {*}
+     */
+    nothingView() {
+        return <div className="thumbnail empty">
+            <FontAwesomeIcon icon={HC.helpers.faIcon('image')}/>
+        </div>;
     }
 }
