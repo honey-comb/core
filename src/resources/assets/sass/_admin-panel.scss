@@ -31,11 +31,12 @@ body.disabled {
   .hc-pop-up {
 
     .hc-form {
-      width: 50%;
+      width: 25%;
       height: 100%;
       background-color: white;
       padding: 20px;
       overflow-y: auto;
+      min-width: 640px;
 
       .header {
 
