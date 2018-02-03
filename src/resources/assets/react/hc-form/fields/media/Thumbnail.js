@@ -12,8 +12,17 @@ export default class Thumbnail extends Component {
         this.state = {
             progress: 0,
             mediaId: this.props.mediaId,
-            abandoned: false
+            abandoned: false,
+            hideDelete: this.props.hideDelete,
+            hideEdit: this.props.hideEdit,
+            disableEdit: true,
         };
+
+        if (!this.state.hideEdit) {
+            if (this.props.editUrl) {
+                this.state.disableEdit = false;
+            }
+        }
 
         this.remove = this.remove.bind(this);
         this.edit = this.edit.bind(this);
@@ -32,10 +41,11 @@ export default class Thumbnail extends Component {
 
         return <div className="hc-media" onMouseOver={this.showButtons} onMouseOut={this.hideButtons}>
             {this.getView()}
-            <button ref="remove" onClick={this.remove} className="btn btn-danger remove" hidden={this.props.hideDelete}>
+            <button ref="remove" onClick={this.remove} className="btn btn-danger remove" hidden={this.state.hideDelete}>
                 <FontAwesomeIcon icon={HC.helpers.faIcon('trash-alt')}/>
             </button>
-            <button ref="edit" onClick={this.edit} className="btn btn-warning edit" disabled={true} hidden={this.props.hideEdit}>
+            <button ref="edit" onClick={this.edit} className="btn btn-warning edit" disabled={this.state.disableEdit}
+                    hidden={this.state.hideEdit}>
                 <FontAwesomeIcon icon={HC.helpers.faIcon('edit')}/>
             </button>
         </div>;
@@ -124,7 +134,11 @@ export default class Thumbnail extends Component {
      * Editing image meta
      */
     edit() {
-        console.log(this.state.mediaId);
+        HC.react.popUp({
+            url: this.props.editUrl,
+            type: "form",
+            recordId: this.props.mediaId,
+        });
     }
 
     /**

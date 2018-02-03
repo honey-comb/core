@@ -78,6 +78,7 @@ export default class Media extends Base {
                                         key={HC.helpers.uuid()}
                                         uploadUrl={this.props.config.uploadUrl}
                                         viewUrl={this.props.config.viewUrl}
+                                        editUrl={this.props.config.editUrl}
                                         onChange={this.thumbnailUpdated}/>);
 
         this.setState({count: this.state.count});

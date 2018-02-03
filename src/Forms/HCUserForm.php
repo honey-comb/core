@@ -161,6 +161,7 @@ class HCUserForm extends HCBaseForm
                 'label' => trans('HCCore::user.photo'),
                 'uploadUrl' => route('resource.upload'),
                 'viewUrl' => route('resource.get', '/'),
+                'editUrl' => route('admin.api.form-manager', ['resource-edit']),
                 'count' => 1,
                 'accept' => ['image/jpeg', 'image/png'],
             ],
