@@ -51,7 +51,7 @@ export default class Thumbnail extends Component {
             return this.thumbnailView();
         }
 
-        if (this.state.file)
+        if (this.props.file)
             return this.uploadView();
 
         return this.nothingView();
