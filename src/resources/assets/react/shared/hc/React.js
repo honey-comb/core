@@ -40,7 +40,8 @@ HC.react = new function () {
             id = HC.helpers.uuid();
             let creating = document.createElement('div');
             creating.id = id;
-            existing.prepend(creating);
+            data.style = {paddingLeft:50 * popUpCount + 1};
+            existing.append(creating);
         }
 
         existing = document.getElementById(id);
@@ -52,30 +53,27 @@ HC.react = new function () {
         toggleBody();
     };
 
-    this.popUpRemove = function (id)
-    {
+    this.popUpRemove = function (id) {
         ReactDOM.unmountComponentAtNode(document.getElementById(id));
+        document.getElementById(id).remove();
 
         popUpCount--;
         toggleBody();
     };
 
-    function toggleBody ()
-    {
-        if (popUpCount > 0)
-        {
+    function toggleBody() {
+        if (popUpCount > 0) {
             document.body.classList.add('disabled');
         }
-        else
-        {
+        else {
             document.body.classList.remove('disabled');
         }
 
     }
 
-    this.hcForm = function (config)
-    {
-        ReactDOM.render(<HCForm config={config} formClosed={this.handlePopUpClose}/>, document.getElementById(config.divId));
+    this.hcForm = function (config) {
+        ReactDOM.render(<HCForm config={config}
+                                formClosed={this.handlePopUpClose}/>, document.getElementById(config.divId));
     };
 
     /**
