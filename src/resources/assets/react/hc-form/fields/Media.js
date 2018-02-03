@@ -36,32 +36,32 @@ export default class Media extends Base {
 
         let files = this.refs.inputField.files;
 
-        Object.keys(files).map((item, i) => this.createThumbnailFromFile(files[item], i));
+        Object.keys(files).map((item, i) => this.createThumbnailFromFile(files[item]));
     }
 
     /**
      * Creating thumbnail from file
      * @param file
-     * @param i
      */
-    createThumbnailFromFile(file, i) {
+    createThumbnailFromFile(file) {
         if (file.size > this.props.config.size * 1024) {
             console.log('File to big');
             return;
         }
 
-        this.createThumbnail(file, null, i);
+        this.createThumbnail(file, null);
     }
 
     /**
      * Creating media from existing id
      * @param media
-     * @param i
      */
-    createThumbnailFromMedia (media, i)
-    {
+    createThumbnailFromMedia(media) {
+        //if it is already exists do not add it
+        if (this.mediaList.indexOf(media) !== -1) return;
+
         this.mediaList.push(media);
-        this.createThumbnail(null, media, i);
+        this.createThumbnail(null, media);
     }
 
     /**
@@ -69,10 +69,8 @@ export default class Media extends Base {
      *
      * @param file
      * @param mediaId
-     * @param i
      */
-    createThumbnail (file, mediaId, i)
-    {
+    createThumbnail(file, mediaId) {
         this.state.count++;
 
         this.thumbnails.push(<Thumbnail file={file}
@@ -107,7 +105,7 @@ export default class Media extends Base {
             return "";
         }
 
-        return <div className="hc-media-uploader">
+        return <div className="hc-media-uploader" key={HC.helpers.uuid()}>
             <label>
                 <input type="file"
                        ref="inputField"
@@ -124,10 +122,8 @@ export default class Media extends Base {
      *
      * @param config
      */
-    thumbnailUpdated(config)
-    {
-        switch (config.action)
-        {
+    thumbnailUpdated(config) {
+        switch (config.action) {
             case "uploaded":
 
                 this.mediaList.push(config.id);
@@ -149,16 +145,21 @@ export default class Media extends Base {
      * Setting value
      * @param data
      */
-    setValue (data)
-    {
-        if (this.mediaList.indexOf(data) !== -1)
-            return;
-
-        if(this.count === 1)
+    setValue(data) {
+        if (this.count === 1) {
             if (!Array.isArray(data))
-                this.createThumbnailFromMedia(data, 0);
+                this.createThumbnailFromMedia(data);
 
-        //TODO: create from multiple images
+            else
+                this.createThumbnailFromMedia(data[0].id);
+
+            return;
+        }
+
+        data.map((media) => {
+
+            this.createThumbnailFromMedia(media.id);
+        });
     }
 
     /**
@@ -166,7 +167,7 @@ export default class Media extends Base {
      */
     getValue() {
 
-        if(this.count === 1)
+        if (this.count === 1)
             if (this.mediaList[0])
                 return this.mediaList[0];
 
