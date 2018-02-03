@@ -397,3 +397,25 @@ if (!function_exists('getHCLanguages')) {
     }
 }
 
+
+if (!function_exists('array_splice_after_key')) {
+    /**
+     * https://stackoverflow.com/a/40305210/657451
+     *
+     * @param $array
+     * @param $key
+     * @param $array_to_insert
+     * @return array
+     */
+    function array_splice_after_key(&$array, $key, $array_to_insert)
+    {
+        $key_pos = array_search($key, array_keys($array));
+        if ($key_pos !== false) {
+            $key_pos++;
+            $second_array = array_splice($array, $key_pos);
+            $array = array_merge($array, $array_to_insert, $second_array);
+        }
+
+        return $array;
+    }
+}
