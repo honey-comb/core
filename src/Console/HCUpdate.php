@@ -48,10 +48,13 @@ class HCUpdate extends Command
 
     public function handle()
     {
+        $this->call('migrate');
         $this->call('hc:seed');
+        $this->call('db:seed');
         $this->call('hc:permissions');
         $this->call('hc:forms');
         $this->call('hc:admin-menu');
+        $this->call('vendor:publish --tag=hc-assets --force');
         $this->call('hc:project-size');
     }
 
