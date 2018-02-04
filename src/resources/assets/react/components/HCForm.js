@@ -9,6 +9,7 @@ import BaseField from "../hc-form/fields/BaseField";
 import DropDownList from "../hc-form/fields/DropDownList";
 import TextArea from "../hc-form/fields/TextArea";
 import Media from "../hc-form/fields/Media";
+import TagList from "../hc-form/fields/TagList";
 
 export default class HCForm extends Component {
 
@@ -233,9 +234,11 @@ export default class HCForm extends Component {
 
             case "dropDownList" :
 
-                return <DropDownList key={i} config={data} ref={ref} id={ref} language={this.state.language}
-                                     onLanguageChange={this.languageChange}
-                                     availableLanguages={this.state.formData.availableLanguages}/>;
+                return <DropDownList key={i} config={data} ref={ref} id={ref} onLanguageChange={this.languageChange}/>;
+
+            case "tagList" :
+
+                return <TagList key={i} config={data} ref={ref} id={ref} />;
 
             case "textArea" :
 
