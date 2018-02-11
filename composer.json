@@ -25,7 +25,7 @@
     "spatie/laravel-cookie-consent": "^2.1",
     "laravel/socialite": "^3.0",
     "honey-comb/starter": "^0.1.0",
-    "honey-comb/resources": "^0.1.0"
+    "honey-comb/resources": "0.2.*"
   },
   "require-dev": {
     "brianium/paratest": "^1.0",
