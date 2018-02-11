@@ -47,7 +47,7 @@ abstract class FeatureTestCase extends TestCase
      */
     private function migrate(): void
     {
-        Schema::create('hc_acl_roles', function(Blueprint $table) {
+        Schema::create('hc_acl_role', function(Blueprint $table) {
             $table->increments('count');
             $table->string('id')->unique();
             $table->timestamps();
@@ -56,14 +56,14 @@ abstract class FeatureTestCase extends TestCase
             $table->string('slug', 100)->unique();
         });
 
-        Schema::create('hc_acl_roles_users_connections', function(Blueprint $table) {
+        Schema::create('hc_acl_role_user_connection', function(Blueprint $table) {
             $table->increments('count');
             $table->timestamps();
             $table->string('role_id', 36);
             $table->string('user_id', 36);
         });
 
-        Schema::create('hc_users', function(Blueprint $table) {
+        Schema::create('hc_user', function(Blueprint $table) {
             $table->increments('count');
             $table->string('id', 36)->unique();
             $table->timestamps();
@@ -83,8 +83,8 @@ abstract class FeatureTestCase extends TestCase
      */
     private function dropTables(): void
     {
-        Schema::drop('hc_users');
-        Schema::drop('hc_acl_roles_users_connections');
-        Schema::drop('hc_acl_roles');
+        Schema::drop('hc_user');
+        Schema::drop('hc_acl_role_user_connection');
+        Schema::drop('hc_acl_role');
     }
 }

@@ -95,7 +95,7 @@ class HCUser extends HCUuidModel implements AuthenticatableContract, Authorizabl
      *
      * @var string
      */
-    protected $table = 'hc_users';
+    protected $table = 'hc_user';
 
     /**
      * The attributes that are mass assignable.

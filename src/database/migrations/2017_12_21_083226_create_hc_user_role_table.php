@@ -32,9 +32,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateHcUserPasswordResetsTable
+ * Class CreateHcUserRolesTable
  */
-class CreateHcUserPasswordResetsTable extends Migration
+class CreateHcUserRoleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,10 +43,20 @@ class CreateHcUserPasswordResetsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('hc_user_password_resets', function (Blueprint $table) {
-            $table->string('email')->index();
-            $table->string('token')->index();
-            $table->datetime('created_at');
+        Schema::create('hc_user_role_connection', function (Blueprint $table) {
+            $table->integer('count', true);
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+
+            $table->uuid('user_id');
+            $table->uuid('role_id');
+
+            $table->unique(['user_id', 'role_id']);
+
+            $table->foreign('user_id')->references('id')->on('hc_user')
+                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
+
+            $table->foreign('role_id')->references('id')->on('hc_acl_role')
+                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
 
@@ -58,6 +68,6 @@ class CreateHcUserPasswordResetsTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hc_user_password_resets');
+        Schema::dropIfExists('hc_user_role_connection');
     }
 }

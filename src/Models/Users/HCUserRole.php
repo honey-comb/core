@@ -25,48 +25,24 @@
  * http://www.interactivesolutions.lt
  */
 
-declare(strict_types = 1);
+namespace HoneyComb\Core\Models\Users;
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use HoneyComb\Starter\Models\HCModel;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Class CreateHcUsersTable
+ * Class HCUserActivation
+ *
+ * @package HoneyComb\Core\Models\Users
+ * @property int $count
+ * @property string $user_id
+ * @property string $token
  */
-class CreateHcUsersTable extends Migration
+class HCUserRole extends HCModel
 {
     /**
-     * Run the migrations.
-     *
-     * @return void
+     * @var string
      */
-    public function up(): void
-    {
-        Schema::create('hc_users', function (Blueprint $table) {
-            $table->increments('count');
-            $table->uuid('id')->unique();
-            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-            $table->datetime('deleted_at')->nullable();
+    protected $table = 'hc_user_role_connection';
 
-            $table->string('email', 100)->unique();
-            $table->string('password', 60);
-            $table->string('remember_token', 100)->nullable();
-            $table->datetime('activated_at')->nullable();
-            $table->datetime('last_login')->nullable();
-            $table->datetime('last_activity')->nullable();
-        });
-    }
-
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('hc_users');
-    }
 }

@@ -100,34 +100,30 @@ class HCUserRequest extends FormRequest
                 }
 
                 return [
-                    'email' => 'required|email|unique:hc_users,email|min:5',
+                    'email' => 'required|email|unique:hc_user,email|min:5',
                     'password' => 'required|min:5',
-                    'roles' => 'required|exists:hc_acl_roles,id',
+                    'roles' => 'required|exists:hc_acl_role,id',
                 ];
-                break;
 
             case 'PUT':
 
                 $userId = $this->segment(4);
 
                 return [
-                    'email' => 'required|email|min:5|unique:hc_users,email,' . $userId,
-                    'roles' => 'required|exists:hc_acl_roles,id',
-                    'photo_id' => 'nullable|exists:hc_resources,id',
+                    'email' => 'required|email|min:5|unique:hc_user,email,' . $userId,
+                    'roles' => 'required|exists:hc_acl_role,id',
+                    'photo_id' => 'nullable|exists:hc_resource,id',
                     'password' => 'nullable|min:5|confirmed',
                     'password_confirmation' => 'required_with:password|nullable|min:5',
                 ];
-                break;
 
             case 'PATCH':
                 return [];
-                break;
 
             case 'DELETE':
                 return [
                     'list' => 'required',
                 ];
-                break;
         }
 
         return [];

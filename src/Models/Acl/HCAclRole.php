@@ -31,6 +31,7 @@ namespace HoneyComb\Core\Models\Acl;
 
 use Carbon\Carbon;
 use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Models\Users\HCUserRole;
 use HoneyComb\Starter\Models\HCUuidModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -67,7 +68,7 @@ class HCAclRole extends HCUuidModel
      *
      * @var string
      */
-    protected $table = 'hc_acl_roles';
+    protected $table = 'hc_acl_role';
 
     /**
      * The attributes that are mass assignable.
@@ -89,7 +90,7 @@ class HCAclRole extends HCUuidModel
     {
         return $this->belongsToMany(
             HCAclPermission::class,
-            'hc_acl_role_permissions',
+            'hc_acl_role_permission_connection',
             'role_id',
             'permission_id'
         );
@@ -113,15 +114,16 @@ class HCAclRole extends HCUuidModel
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(HCUser::class, RolesUsersConnections::getTableName(), 'role_id', 'user_id');
+        return $this->belongsToMany(HCUser::class, HCUserRole::getTableName(), 'role_id', 'user_id');
     }
 
     /**
      * Get super admin
      *
      * @param $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSuperAdmin($query)
+    public function scopeSuperAdmin($query): Builder
     {
         return $query->select('id', 'slug', 'name')->where('slug', 'super-admin');
     }
@@ -130,8 +132,9 @@ class HCAclRole extends HCUuidModel
      * Get super admin
      *
      * @param $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeNotSuperAdmin($query)
+    public function scopeNotSuperAdmin($query): Builder
     {
         return $query->select('id', 'slug', 'name')->where('slug', '!=', 'super-admin');
     }

@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Models\Acl;
 
 use Carbon\Carbon;
+use HoneyComb\Starter\Models\HCModel;
 use HoneyComb\Starter\Models\HCUuidModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -58,14 +59,14 @@ use Illuminate\Support\Collection;
  * @method static Builder|HCAclPermission whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class HCAclPermission extends HCUuidModel
+class HCAclPermission extends HCModel
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'hc_acl_permissions';
+    protected $table = 'hc_acl_permission';
 
     /**
      * The attributes that are mass assignable.
@@ -88,7 +89,7 @@ class HCAclPermission extends HCUuidModel
     {
         return $this->belongsToMany(
             HCAclRole::class,
-            'hc_acl_role_permissions',
+            'hc_acl_role_permission_connection',
             'permission_id',
             'role_id'
         );

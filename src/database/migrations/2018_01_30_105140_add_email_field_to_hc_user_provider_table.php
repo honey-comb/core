@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
+ * E-mail: info@interactivesolutions.lt
  * http://www.interactivesolutions.lt
  */
 
@@ -29,44 +29,34 @@ declare(strict_types = 1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateHcLanguagesTable extends Migration
+/**
+ * Class AddEmailFieldToHcUserProvidersTable
+ */
+class AddEmailFieldToHcUserProviderTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('hc_languages', function (Blueprint $table) {
-            $table->increments('count');
-            $table->uuid('id')->unique();
-            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-            $table->datetime('deleted_at')->nullable();
-
-            $table->string('language_family');
-            $table->string('language');
-            $table->string('native_name');
-            $table->string('iso_639_1', 2)->index();
-            $table->string('iso_639_2', 3);
-
-            $table->boolean('front_end')->default(0);
-            $table->boolean('back_end')->default(0);
-            $table->boolean('content')->default(0);
+        Schema::table('hc_user_provider', function (Blueprint $table) {
+            $table->string('email')->nullable();
         });
     }
-
 
     /**
      * Reverse the migrations.
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::drop('hc_languages');
+        Schema::table('hc_user_provider', function (Blueprint $table) {
+            $table->dropColumn('email');
+        });
     }
-
 }

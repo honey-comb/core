@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2017 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Contact InteractiveSolutions:
- * E-mail: info@interactivesolutions.lt
+ * E-mail: hello@interactivesolutions.lt
  * http://www.interactivesolutions.lt
  */
 
@@ -32,9 +32,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class AddEmailFieldToHcUserProvidersTable
+ * Class CreateHcAclRolePermissionsTable
  */
-class AddEmailFieldToHcUserProvidersTable extends Migration
+class CreateHcAclRolePermissionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,10 +43,23 @@ class AddEmailFieldToHcUserProvidersTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('hc_user_providers', function (Blueprint $table) {
-            $table->string('email')->nullable();
+        Schema::create('hc_acl_role_permission_connection', function (Blueprint $table) {
+            $table->integer('count', true);
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+
+            $table->uuid('role_id');
+            $table->uuid('permission_id');
+
+            $table->unique(['role_id', 'permission_id']);
+
+            $table->foreign('role_id')->references('id')->on('hc_acl_role')
+                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
+
+            $table->foreign('permission_id')->references('id')->on('hc_acl_permission')
+                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
+
 
     /**
      * Reverse the migrations.
@@ -55,8 +68,6 @@ class AddEmailFieldToHcUserProvidersTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('hc_user_providers', function (Blueprint $table) {
-            $table->dropColumn('email');
-        });
+        Schema::dropIfExists('hc_acl_role_permission_connection');
     }
 }

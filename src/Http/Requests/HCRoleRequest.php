@@ -30,8 +30,8 @@ class HCRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role_id' => 'required|exists:hc_acl_roles,id',
-            'permission_id' => 'required|exists:hc_acl_permissions,id',
+            'role_id' => 'required|exists:hc_acl_role,id',
+            'permission_id' => 'required|exists:hc_acl_permission,id',
         ];
     }
 }

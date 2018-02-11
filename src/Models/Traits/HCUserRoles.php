@@ -45,10 +45,10 @@ trait HCUserRoles
     {
         return $this->belongsToMany(
             HCAclRole::class,
-            'hc_user_roles',
+            'hc_user_role_connection',
             'user_id',
             'role_id'
-        )->withTimestamps();
+        );
     }
 
     /**

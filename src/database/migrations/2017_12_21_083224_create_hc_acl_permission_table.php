@@ -32,9 +32,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateHcAclRolePermissionsTable
+ * Class CreateHcAclPermissionsTable
  */
-class CreateHcAclRolePermissionsTable extends Migration
+class CreateHcAclPermissionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,19 +43,16 @@ class CreateHcAclRolePermissionsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('hc_acl_role_permissions', function (Blueprint $table) {
+        Schema::create('hc_acl_permission', function (Blueprint $table) {
+            $table->uuid('id')->unique();
             $table->integer('count', true);
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->datetime('deleted_at')->nullable();
 
-            $table->string('role_id', 36);
-            $table->string('permission_id', 36);
-
-            $table->foreign('role_id')->references('id')->on('hc_acl_roles')
-                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
-
-            $table->foreign('permission_id')->references('id')->on('hc_acl_permissions')
-                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->string('name', 768);
+            $table->text('controller');
+            $table->string('action', 768)->unique();
         });
     }
 
@@ -67,6 +64,6 @@ class CreateHcAclRolePermissionsTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hc_acl_role_permissions');
+        Schema::dropIfExists('hc_acl_permission');
     }
 }

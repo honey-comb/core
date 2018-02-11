@@ -25,51 +25,39 @@
  * http://www.interactivesolutions.lt
  */
 
-namespace HoneyComb\Core\Models\Users;
+declare(strict_types = 1);
 
-use HoneyComb\Starter\Models\HCModel;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
- * Class HCUserActivation
- *
- * @package HoneyComb\Core\Models\Users
- * @property int $count
- * @property string $user_id
- * @property string $token
- * @property \Carbon\Carbon $created_at
- * @method static Builder|HCUserActivation whereCount($value)
- * @method static Builder|HCUserActivation whereCreatedAt($value)
- * @method static Builder|HCUserActivation whereToken($value)
- * @method static Builder|HCUserActivation whereUserId($value)
- * @mixin \Eloquent
+ * Class CreateHcUserPasswordResetsTable
  */
-class HCUserActivation extends HCModel
+class CreateHcUserPasswordResetTable extends Migration
 {
     /**
-     * @var string
+     * Run the migrations.
+     *
+     * @return void
      */
-    protected $table = 'hc_user_activation';
+    public function up(): void
+    {
+        Schema::create('hc_user_password_reset', function (Blueprint $table) {
+            $table->string('email')->index();
+            $table->string('token')->index();
+            $table->datetime('created_at');
+        });
+    }
+
 
     /**
-     * @var array
+     * Reverse the migrations.
+     *
+     * @return void
      */
-    protected $fillable = [
-        'user_id',
-        'token',
-    ];
-
-    /**
-     * @var array
-     */
-    protected $dates = [
-        'created_at',
-    ];
-
-    /**
-     * @var array
-     */
-    protected $casts = [
-        'created_at' => 'datetime',
-    ];
+    public function down(): void
+    {
+        Schema::dropIfExists('hc_user_password_reset');
+    }
 }

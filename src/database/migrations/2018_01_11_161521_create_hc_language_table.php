@@ -29,33 +29,32 @@ declare(strict_types = 1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
-/**
- * Class CreateHcUserRolesTable
- */
-class CreateHcUserRolesTable extends Migration
+class CreateHcLanguageTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('hc_user_roles', function (Blueprint $table) {
-            $table->integer('count', true);
+        Schema::create('hc_language', function (Blueprint $table) {
+            $table->increments('count');
+            $table->uuid('id')->unique();
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->datetime('deleted_at')->nullable();
 
-            $table->string('user_id', 36);
-            $table->string('role_id', 36);
+            $table->string('language_family');
+            $table->string('language');
+            $table->string('native_name');
+            $table->string('iso_639_1', 2)->index();
+            $table->string('iso_639_2', 3);
 
-            $table->foreign('user_id')->references('id')->on('hc_users')
-                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
-
-            $table->foreign('role_id')->references('id')->on('hc_acl_roles')
-                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->boolean('front_end')->default(0);
+            $table->boolean('back_end')->default(0);
+            $table->boolean('content')->default(0);
         });
     }
 
@@ -65,8 +64,9 @@ class CreateHcUserRolesTable extends Migration
      *
      * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('hc_user_roles');
+        Schema::drop('hc_language');
     }
+
 }

@@ -32,9 +32,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateHcAclRolesTable
+ * Class CreateHcUsersTable
  */
-class CreateHcAclRolesTable extends Migration
+class CreateHcUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,15 +43,19 @@ class CreateHcAclRolesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('hc_acl_roles', function (Blueprint $table) {
+        Schema::create('hc_user', function (Blueprint $table) {
+            $table->increments('count');
             $table->uuid('id')->unique();
-            $table->integer('count', true);
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->datetime('deleted_at')->nullable();
 
-            $table->string('name', 36)->unique();
-            $table->string('slug', 768)->unique();
+            $table->string('email', 100)->unique();
+            $table->string('password', 60);
+            $table->string('remember_token', 100)->nullable();
+            $table->datetime('activated_at')->nullable();
+            $table->datetime('last_login')->nullable();
+            $table->datetime('last_activity')->nullable();
         });
     }
 
@@ -63,6 +67,6 @@ class CreateHcAclRolesTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hc_acl_roles');
+        Schema::dropIfExists('hc_user');
     }
 }

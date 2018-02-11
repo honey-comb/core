@@ -223,8 +223,7 @@ class HCCreateSuperAdminCommand extends Command
                 ], [], [
                 'first_name' => "Super",
                 'last_name' => "Admin",
-            ], false, false
-            );
+            ], false, false);
 
             // add sa role
             $user->assignRoleBySlug(HCRoleRepository::ROLE_SA);

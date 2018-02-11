@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHcUserProviders extends Migration
+class CreateHcUserProvider extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateHcUserProviders extends Migration
      */
     public function up(): void
     {
-        Schema::create('hc_user_providers', function (Blueprint $table) {
+        Schema::create('hc_user_provider', function (Blueprint $table) {
             $table->increments('count');
-            $table->string('id', 36)->unique();
+            $table->uuid('id')->unique();
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->datetime('updated_at')->useCurrent();
+            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->datetime('deleted_at')->nullable();
 
             $table->string('user_id', 36);
@@ -25,7 +25,7 @@ class CreateHcUserProviders extends Migration
             $table->enum('provider', ['facebook', 'twitter', 'linkedin', 'google', 'github', 'bitbucket']);
             $table->text('response')->nullable();
 
-            $table->foreign('user_id')->references('id')->on('hc_users')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->foreign('user_id')->references('id')->on('hc_user')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
 
@@ -36,6 +36,6 @@ class CreateHcUserProviders extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hc_user_providers');
+        Schema::dropIfExists('hc_user_provider');
     }
 }

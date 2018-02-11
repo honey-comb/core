@@ -18,7 +18,7 @@ class AddPhotoIdAndDescriptionFieldsToHcUserPersonalInfoTable extends Migration
             $table->uuid('photo_id')->nullable();
             $table->text('description')->nullable();
 
-            $table->foreign('photo_id')->references('id')->on('hc_resources')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->foreign('photo_id')->references('id')->on('hc_resource')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
 

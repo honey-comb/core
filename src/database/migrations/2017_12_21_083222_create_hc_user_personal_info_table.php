@@ -50,11 +50,12 @@ class CreateHcUserPersonalInfoTable extends Migration
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->datetime('deleted_at')->nullable();
 
-            $table->string('user_id', 36);
+            $table->uuid('user_id');
+
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
 
-            $table->foreign('user_id')->references('id')->on('hc_users')
+            $table->foreign('user_id')->references('id')->on('hc_user')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }

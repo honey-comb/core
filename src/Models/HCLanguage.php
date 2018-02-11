@@ -38,7 +38,7 @@ class HCLanguage extends HCUuidModel
      *
      * @var string
      */
-    protected $table = 'hc_languages';
+    protected $table = 'hc_language';
 
     /**
      * The attributes that are mass assignable.

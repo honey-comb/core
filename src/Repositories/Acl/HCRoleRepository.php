@@ -94,13 +94,13 @@ class HCRoleRepository extends HCBaseRepository
             'permission_id' => $permissionId,
         ];
 
-        $permissionExists = \DB::table('hc_acl_role_permissions')->where($rolePermission)->exists();
+        $permissionExists = \DB::table('hc_acl_role_permission_connection')->where($rolePermission)->exists();
 
         if ($permissionExists) {
-            \DB::table('hc_acl_role_permissions')->where($rolePermission)->delete();
+            \DB::table('hc_acl_role_permission_connection')->where($rolePermission)->delete();
             $message = 'deleted';
         } else {
-            \DB::table('hc_acl_role_permissions')->insert($rolePermission);
+            \DB::table('hc_acl_role_permission_connection')->insert($rolePermission);
             $message = 'created';
         }
 

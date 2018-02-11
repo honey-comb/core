@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddProfileUrlToHcUserProvidersTable extends Migration
+class AddProfileUrlToHcUserProviderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddProfileUrlToHcUserProvidersTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('hc_user_providers', function (Blueprint $table) {
+        Schema::table('hc_user_provider', function (Blueprint $table) {
             $table->string('profile_url')->nullable();
         });
     }
@@ -26,7 +26,7 @@ class AddProfileUrlToHcUserProvidersTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('hc_user_providers', function (Blueprint $table) {
+        Schema::table('hc_user_provider', function (Blueprint $table) {
             $table->dropColumn('profile_url');
         });
     }

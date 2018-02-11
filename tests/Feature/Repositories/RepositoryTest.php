@@ -121,7 +121,7 @@ class HCUser extends HCUuidModel
     /**
      * @var string
      */
-    protected $table = 'hc_users';
+    protected $table = 'hc_user';
     /**
      * @var array
      */

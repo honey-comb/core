@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class CreateHcUserActivationsTable
  */
-class CreateHcUserActivationsTable extends Migration
+class CreateHcUserActivationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,15 +43,15 @@ class CreateHcUserActivationsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('hc_user_activations', function (Blueprint $table) {
+        Schema::create('hc_user_activation', function (Blueprint $table) {
             $table->integer('count', true);
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
-            $table->string('user_id', 36);
+            $table->uuid('user_id');
             $table->string('token')->index();
 
-            $table->foreign('user_id')->references('id')->on('hc_users')
-                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->foreign('user_id')->references('id')->on('hc_user')
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
@@ -63,6 +63,6 @@ class CreateHcUserActivationsTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hc_user_activations');
+        Schema::dropIfExists('hc_user_activation');
     }
 }
