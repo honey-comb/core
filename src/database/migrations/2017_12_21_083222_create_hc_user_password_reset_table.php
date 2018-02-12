@@ -50,7 +50,6 @@ class CreateHcUserPasswordResetTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *

@@ -44,8 +44,8 @@ class CreateHcAclPermissionTable extends Migration
     public function up(): void
     {
         Schema::create('hc_acl_permission', function (Blueprint $table) {
+            $table->increments('count');
             $table->uuid('id')->unique();
-            $table->integer('count', true);
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->datetime('deleted_at')->nullable();
@@ -55,7 +55,6 @@ class CreateHcAclPermissionTable extends Migration
             $table->string('action', 768)->unique();
         });
     }
-
 
     /**
      * Reverse the migrations.

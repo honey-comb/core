@@ -59,7 +59,6 @@ class CreateHcUserTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *

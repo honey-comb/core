@@ -44,7 +44,7 @@ class CreateHcUserRoleTable extends Migration
     public function up(): void
     {
         Schema::create('hc_user_role_connection', function (Blueprint $table) {
-            $table->integer('count', true);
+            $table->increments('count');
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->uuid('user_id');
@@ -53,13 +53,12 @@ class CreateHcUserRoleTable extends Migration
             $table->unique(['user_id', 'role_id']);
 
             $table->foreign('user_id')->references('id')->on('hc_user')
-                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
 
             $table->foreign('role_id')->references('id')->on('hc_acl_role')
-                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
-
 
     /**
      * Reverse the migrations.

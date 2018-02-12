@@ -44,7 +44,7 @@ class CreateHcUserActivationTable extends Migration
     public function up(): void
     {
         Schema::create('hc_user_activation', function (Blueprint $table) {
-            $table->integer('count', true);
+            $table->increments('count');
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->uuid('user_id');
@@ -54,7 +54,6 @@ class CreateHcUserActivationTable extends Migration
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
-
 
     /**
      * Reverse the migrations.

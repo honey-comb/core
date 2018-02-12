@@ -44,7 +44,7 @@ class CreateHcAclRolePermissionTable extends Migration
     public function up(): void
     {
         Schema::create('hc_acl_role_permission_connection', function (Blueprint $table) {
-            $table->integer('count', true);
+            $table->increments('count');
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->uuid('role_id');
@@ -53,13 +53,12 @@ class CreateHcAclRolePermissionTable extends Migration
             $table->unique(['role_id', 'permission_id']);
 
             $table->foreign('role_id')->references('id')->on('hc_acl_role')
-                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
 
             $table->foreign('permission_id')->references('id')->on('hc_acl_permission')
-                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
-
 
     /**
      * Reverse the migrations.
