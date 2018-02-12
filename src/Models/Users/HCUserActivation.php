@@ -52,6 +52,11 @@ class HCUserActivation extends HCModel
     protected $table = 'hc_user_activation';
 
     /**
+     * @var string
+     */
+    protected $primaryKey = 'count';
+
+    /**
      * @var array
      */
     protected $fillable = [

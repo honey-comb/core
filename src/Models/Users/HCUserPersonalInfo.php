@@ -31,7 +31,7 @@ namespace HoneyComb\Core\Models\Users;
 
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Resources\Models\HCResource;
-use HoneyComb\Starter\Models\HCUuidModel;
+use HoneyComb\Starter\Models\HCModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -40,7 +40,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *
  * @package HoneyComb\Core\Models\Users
  */
-class HCUserPersonalInfo extends HCUuidModel
+class HCUserPersonalInfo extends HCModel
 {
     /**
      * @var string
@@ -48,10 +48,14 @@ class HCUserPersonalInfo extends HCUuidModel
     protected $table = 'hc_user_personal_info';
 
     /**
+     * @var string
+     */
+    protected $primaryKey = 'count';
+
+    /**
      * @var array
      */
     protected $fillable = [
-        'id',
         'user_id',
         'first_name',
         'last_name',
@@ -65,7 +69,6 @@ class HCUserPersonalInfo extends HCUuidModel
     protected $dates = [
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     /**

@@ -30,10 +30,13 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Models\Users;
 
 use HoneyComb\Core\Models\HCUser;
-use HoneyComb\Starter\Models\HCUuidModel;
+use HoneyComb\Starter\Models\HCModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class HCUserProvider extends HCUuidModel
+/**
+ * Class HCUserProvider.
+ */
+class HCUserProvider extends HCModel
 {
     /**
      * Table name
@@ -43,12 +46,16 @@ class HCUserProvider extends HCUuidModel
     protected $table = 'hc_user_provider';
 
     /**
+     * @var string
+     */
+    protected $primaryKey = 'count';
+
+    /**
      * Fillable fields
      *
      * @var array
      */
     protected $fillable = [
-        'id',
         'user_id',
         'user_provider_id',
         'provider',

@@ -28,7 +28,6 @@
 namespace HoneyComb\Core\Models\Users;
 
 use HoneyComb\Starter\Models\HCModel;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class HCUserActivation
@@ -45,4 +44,8 @@ class HCUserRole extends HCModel
      */
     protected $table = 'hc_user_role_connection';
 
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'count';
 }
