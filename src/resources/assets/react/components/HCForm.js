@@ -238,7 +238,7 @@ export default class HCForm extends Component {
 
             case "tagList" :
 
-                return <TagList key={i} config={data} ref={ref} id={ref} />;
+                return <TagList key={i} config={data} ref={ref} id={ref}/>;
 
             case "textArea" :
 
@@ -283,33 +283,48 @@ export default class HCForm extends Component {
                 }
             });
         }
-
         //TODO: check if changed field is in dependencies, if not do not update components
 
+        //running through fields which has dependencies
         Object.keys(this.dependencyFields).map((key) => {
 
+            //checking for field names in dependency list
             if (this.refs[key]) {
-                let dependant = this.dependencyFields[key];
-                let hide = true;
 
-                Object.keys(dependant.dependencies).map((targetKey) => {
+                // getting dependency configuration
+                let dependant = this.dependencyFields[key]
 
-                    let config = dependant.dependencies[targetKey];
+                if (!fieldChanged || dependant.dependencies[fieldChanged]) {
+                    let hide = true;
+                    let fieldsData = {};
 
-                    config.values.map((configValue) => {
-                        if (HC.helpers.isArray(this.record[targetKey])) {
-                            //TODO: IMPLEMENT ARRAY DEPENDENCY VALIDATION
-                            console.log('IMPLEMENT ARRAY DEPENDENCY VALIDATION');
+                    // running through every dependency
+                    Object.keys(dependant.dependencies).map((targetKey) => {
+
+                        let config = dependant.dependencies[targetKey];
+                        fieldsData[targetKey] = this.record[targetKey];
+
+                        if (config.values) {
+                            config.values.map((configValue) => {
+                                if (HC.helpers.isArray(this.record[targetKey])) {
+                                    //TODO: IMPLEMENT ARRAY DEPENDENCY VALIDATION
+                                    console.log('IMPLEMENT ARRAY DEPENDENCY VALIDATION');
+                                }
+                                else {
+
+                                    if (this.record[targetKey] === configValue)
+                                        hide = false;
+                                }
+                            });
                         }
                         else {
-
-                            if (this.record[targetKey] === configValue)
+                            if (this.record[targetKey])
                                 hide = false;
                         }
                     });
 
-                    this.refs[key].toggleDependency(hide);
-                });
+                    this.refs[key].toggleDependency(hide, fieldsData);
+                }
             }
         });
     }
@@ -435,7 +450,6 @@ export default class HCForm extends Component {
      * @param error
      */
     handleSubmitError(error) {
-        console.log(error.response);
         this.setState({formDisabled: false});
     }
 
