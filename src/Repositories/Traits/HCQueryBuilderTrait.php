@@ -38,14 +38,11 @@ trait HCQueryBuilderTrait
      */
     protected function createBuilderQuery(Request $request, array $availableFields = null): Builder
     {
-        $with = [];
-
         if ($availableFields == null) {
             $availableFields = $this->model()::getFillableFields();
         }
 
-        $builder = $this->model()::with($with)
-            ->select($availableFields)
+        $builder = $this->model()::select($availableFields)
             ->where(function (Builder $query) use ($request, $availableFields) {
                 // add request filtering
                 $this->filterByRequestParameters($query, $request, $availableFields);
