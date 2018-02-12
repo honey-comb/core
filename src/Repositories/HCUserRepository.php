@@ -31,10 +31,7 @@ use HoneyComb\Core\DTO\HCUserDTO;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Class HCUserRepository
@@ -74,57 +71,30 @@ class HCUserRepository extends HCBaseRepository
      * Soft delete users
      *
      * @param array $userIds
-     * @return void
      */
     public function deleteSoft(array $userIds): void
     {
-        $users = $this->makeQuery()->whereIn('id', $userIds)->get();
-
-        foreach ($users as $user) {
-            /** @var HCUser $user */
-            $user->providers()->delete();
-            $user->personal()->delete();
-            $user->delete();
-        }
+        $this->makeQuery()->whereIn('id', $userIds)->delete();
     }
 
     /**
      * Restore soft deleted users
      *
      * @param array $userIds
-     * @return void
      */
     public function restore(array $userIds): void
     {
-        $users = $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->get();
-
-        foreach ($users as $user) {
-            /** @var HCUser $user */
-            $user->providers()->restore();
-            $user->personal()->restore();
-            $user->restore();
-        }
+        $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->restore();
     }
 
     /**
      * Force delete users by given id
      *
      * @param array $userIds
-     * @return void
-     * @throws \Exception
      */
     public function deleteForce(array $userIds): void
     {
-        $users = $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->get();
-
-        foreach ($users as $user) {
-            /** @var HCUser $user */
-            $user->providers()->forceDelete();
-            $user->personal()->forceDelete();
-            $user->roles()->detach();
-            $user->activation()->delete();
-            $user->forceDelete();
-        }
+        $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->forceDelete();
     }
 
     /**

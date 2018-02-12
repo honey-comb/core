@@ -129,6 +129,7 @@ class HCUserController extends HCBaseController
             $this->connection->commit();
         } catch (\Throwable $exception) {
             $this->connection->rollBack();
+            logger()->error($exception->getMessage(), $exception->getTrace());
 
             return $this->response->error($exception->getMessage());
         }
