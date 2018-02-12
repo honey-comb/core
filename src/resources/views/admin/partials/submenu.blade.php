@@ -21,17 +21,35 @@
 
                 {{--if it has allowed children to show children than add dropdown --}}
                 <a href="#">
-                    @if(isset($item['iconPath']) && ! empty($item['iconPath']))
-                        <img src="{{ $item['iconPath'] }}"
-                             class="{{ $item['iconParams']['class'] or '' }}"
-                             style="{{ $item['iconParams']['style'] or '' }}"
-                             width="15"
-                             alt=""/>
+
+                    @if(isset($item['parentConfig']))
+
+                        @if(isset($item['parentConfig']['iconPath']) && ! empty($item['parentConfig']['iconPath']))
+                            <img src="{{ $item['parentConfig']['iconPath'] }}"
+                                 class="{{ $item['parentConfig']['iconParams']['class'] or '' }}"
+                                 style="{{ $item['iconParams']['style'] or '' }}"
+                                 width="15"
+                                 alt=""/>
+                        @else
+                            {!!  fontAwesomeIcon($item['parentConfig']['icon']) !!}
+                        @endif
+
+                        <span>{{ trans($item['parentConfig']['translation']) }}</span>
                     @else
-                        {!!  fontAwesomeIcon($item['icon']) !!}
+
+                        @if(isset($item['iconPath']) && ! empty($item['iconPath']))
+                            <img src="{{ $item['iconPath'] }}"
+                                 class="{{ $item['iconParams']['class'] or '' }}"
+                                 style="{{ $item['iconParams']['style'] or '' }}"
+                                 width="15"
+                                 alt=""/>
+                        @else
+                            {!!  fontAwesomeIcon($item['icon']) !!}
+                        @endif
+
+                        <span>{{ trans($item['translation']) }}</span>
                     @endif
 
-                    <span>{{ trans($item['translation']) }}</span>
                     <span class="pull-right-container">
                         {!!  fontAwesomeIcon('angle-left', "", "fa-angle-left pull-right") !!}
                     </span>
@@ -40,20 +58,26 @@
                 {{-- if menu item is available and children are available than display second level menu --}}
                 <ul class="treeview-menu">
                     @if($item['route'] != 'admin.index')
+
                         <li @if($item['route'] == request()->route()->getName()) class="active" @endif>
+
                             <a href="{{ route($item['route']) }}">
-                                @if(isset($item['listTranslation']))
-                                    @if(isset($item['listIconPath']) && ! empty($item['listIconPath']))
-                                        <img src="{{ $item['listIconPath'] }}" width="15" alt=""/>
+                                @if(isset($item['skipList']))
+
+                                    @if(isset($item['iconPath']) && ! empty($item['iconPath']))
+                                        <img src="{{ $item['iconPath'] }}"
+                                             width="15"
+                                             class="{{ $item['iconParams']['class'] or '' }}"
+                                             style="{{ $item['iconParams']['style'] or '' }}"
+                                             alt=""/>
                                     @else
-                                        @if (isset($item['listIcon']) && ! empty($item['listIcon']))
-                                            {!!  fontAwesomeIcon($item['listIcon']) !!}
-                                        @else
-                                            {!!  fontAwesomeIcon('list-ul') !!}
-                                        @endif
+                                        {!!  fontAwesomeIcon($item['icon']) !!}
+
                                     @endif
-                                    {{ trans($item['listTranslation']) }}
+
+                                    {{ trans($item['translation']) }}
                                 @else
+
                                     {!!  fontAwesomeIcon('list-ul') !!}
                                     {{ trans('HCCore::core.list') }}
                                 @endif
