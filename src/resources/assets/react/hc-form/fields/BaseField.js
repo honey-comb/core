@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from "axios/index";
 
 let classNames = require('classnames');
 
@@ -15,7 +16,9 @@ export default class BaseField extends Component {
         this.state = {
             hasError: false,
             value: undefined,
-            hideDependant: false
+            hideDependant: false,
+            dependencyValues: {},
+            loadingDisabled: false
         };
 
         if (this.props.config.dependencies) {
@@ -29,6 +32,7 @@ export default class BaseField extends Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
+
         if (this.multiLanguage) {
 
             if (this.props.language !== nextProps.language) {
@@ -61,8 +65,17 @@ export default class BaseField extends Component {
         </div>;
     }
 
-    toggleDependency(value) {
-        this.setState({hideDependant: value});
+    toggleDependency(value, data) {
+
+        this.setState(
+            {
+                hideDependant: value,
+                dependencyValues: data
+            });
+
+        if (value === false)
+            if (this.props.config.url)
+                this.loadOptions();
     }
 
     getHidden() {
@@ -274,5 +287,29 @@ export default class BaseField extends Component {
         });
 
         return list;
+    }
+
+    getOptions() {
+        if (this.state.options)
+            return this.state.options;
+
+        if (this.props.config.options)
+            return this.props.config.options;
+
+        return [];
+    }
+
+    loadOptions() {
+
+        this.setState({loadingDisabled: true});
+
+        axios.get(this.props.config.url, {params: this.state.dependencyValues})
+            .then(res => {
+                this.setState({
+                    loadingDisabled: false,
+                    options: res.data
+                });
+                this.validate();
+            });
     }
 }

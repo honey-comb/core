@@ -9,15 +9,14 @@ export default class DropDownList extends Base {
         this.validationTimeOutMiliseconds = 0;
     }
 
-
     getInput() {
 
         return <select className="form-control"
                        ref="inputField"
-                       disabled={this.props.config.disabled || this.props.config.readonly}
+                       disabled={this.getDisabled()}
                        onChange={this.contentChange}>
 
-            {this.getOptions()}
+            {this.getOptionsFormatted()}
 
         </select>
     }
@@ -26,6 +25,7 @@ export default class DropDownList extends Base {
      * If input required validate first option
      */
     componentDidMount() {
+
         if (this.props.config.required)
             this.validate();
     }
@@ -35,14 +35,16 @@ export default class DropDownList extends Base {
      *
      * @returns {Array}
      */
-    getOptions() {
+    getOptionsFormatted() {
         let list = [];
+        let options = this.getOptions();
 
         if (!this.props.config.required) {
             list.push(<option key={-1} value="undefined">Please select:</option>)
         }
 
-        this.props.config.options.map((item, i) => list.push(<option key={i} value={item.id}>{item.label}</option>));
+        if (options)
+            options.map((item, i) => list.push(<option key={i} value={item.id}>{item.label}</option>));
 
         return list;
     }
