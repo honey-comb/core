@@ -30,11 +30,10 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Models\Users;
 
 use HoneyComb\Core\Models\HCUser;
-use HoneyComb\Starter\Models\HCModel;
 use HoneyComb\Starter\Models\HCUuidModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class HCUserProvider extends HCModel
+class HCUserProvider extends HCUuidModel
 {
     /**
      * Table name
