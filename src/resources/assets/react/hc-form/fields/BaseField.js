@@ -83,6 +83,11 @@ export default class BaseField extends Component {
         return (this.props.config.hidden || this.state.hideDependant);
     }
 
+    getDisabled() {
+
+        return (this.props.config.disabled || this.state.loadingDisabled);
+    }
+
     /**
      * Creating label div
      *
@@ -113,7 +118,7 @@ export default class BaseField extends Component {
                       placeholder={this.props.config.label}
                       className={inputClasses}
                       readOnly={this.props.config.readonly}
-                      disabled={this.props.config.disabled}
+                      disabled={this.getDisabled()}
                       onChange={this.contentChange}/>;
 
         return <div className="input-group">
@@ -273,13 +278,13 @@ export default class BaseField extends Component {
                         onChange={(e) => this.props.onLanguageChange(this.refs.multiLanguage.value)}
                         value={this.props.language}>
 
-            {this.getMultiLanguageOptions()}
+            {this.getLanguageSelector()}
 
         </select>,
-            <div key={HC.helpers.uuid()} className="clearfix"></div>];
+            <div key={HC.helpers.uuid()} className="clearfix"/>];
     }
 
-    getMultiLanguageOptions() {
+    getLanguageSelector() {
         let list = [];
 
         this.props.availableLanguages.map((item, i) => {
