@@ -73,6 +73,8 @@ export default class BaseField extends Component {
                 dependencyValues: data
             });
 
+        console.log('ToggleDependency');
+
         if (value === false)
             if (this.props.config.url)
                 this.loadOptions();
@@ -177,6 +179,7 @@ export default class BaseField extends Component {
     validate() {
         let isValid = this.isValid();
 
+        //TODO: do not trigger if not needed
         if (isValid) {
             this.triggerChange();
         }

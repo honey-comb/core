@@ -10,6 +10,7 @@ import DropDownList from "../hc-form/fields/DropDownList";
 import TextArea from "../hc-form/fields/TextArea";
 import Media from "../hc-form/fields/Media";
 import TagList from "../hc-form/fields/TagList";
+import DateTimePicker from "../hc-form/fields/DateTimePicker";
 
 export default class HCForm extends Component {
 
@@ -249,6 +250,10 @@ export default class HCForm extends Component {
             case "media" :
 
                 return <Media key={i} config={data} ref={ref} id={ref} language={this.state.language}/>;
+
+            case "dateTimePicker" :
+
+                return <DateTimePicker key={i} config={data} ref={ref} id={ref}/>;
         }
 
         return "";
