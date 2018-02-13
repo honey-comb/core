@@ -73,8 +73,6 @@ export default class BaseField extends Component {
                 dependencyValues: data
             });
 
-        console.log('ToggleDependency');
-
         if (value === false)
             if (this.props.config.url)
                 this.loadOptions();
