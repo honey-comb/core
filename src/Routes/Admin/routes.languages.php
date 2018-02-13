@@ -39,7 +39,7 @@ Route::prefix(config('hc.admin_url'))
             ->name('admin.api.language')
             ->middleware('acl:honey_comb_core_language_list');
 
-        Route::patch('api/languages/{id}', 'HCLanguageController@updateStrict')
+        Route::patch('api/languages/{id}', 'HCLanguageController@patch')
             ->name('admin.api.language.update.strict')
             ->middleware('acl:honey_comb_core_language_update');
     });

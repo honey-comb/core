@@ -133,7 +133,7 @@ class HCLanguageController extends HCBaseController
      * @param string $languageId
      * @return mixed
      */
-    public function updateStrict(HCLanguageRequest $request, string $languageId)
+    public function patch(HCLanguageRequest $request, string $languageId)
     {
         $this->service->update($request, $languageId);
 
