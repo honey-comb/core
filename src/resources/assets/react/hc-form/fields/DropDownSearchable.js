@@ -58,6 +58,6 @@ export default class DropDownSearchable extends BaseField {
     }
 
     getValue() {
-        return this.state.value.id;
+        return this.state.value;
     }
 }
