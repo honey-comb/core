@@ -28,10 +28,12 @@
 namespace HoneyComb\Core\Repositories;
 
 use HoneyComb\Core\DTO\HCUserDTO;
+use HoneyComb\Core\Http\Requests\HCUserRequest;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * Class HCUserRepository
@@ -127,5 +129,19 @@ class HCUserRepository extends HCBaseRepository
             optional($record->personal)->description,
             $record->roles
         );
+    }
+
+    /**
+     * @param \HoneyComb\Core\Http\Requests\HCUserRequest $request
+     * @return \Illuminate\Support\Collection
+     */
+    public function getOptions (HCUserRequest $request): Collection
+    {
+        return $this->createBuilderQuery($request)->get()->map (function ($record){
+            return [
+                'id' => $record->id,
+                'label' => $record->email
+            ];
+        });
     }
 }

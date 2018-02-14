@@ -36,7 +36,6 @@ use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class HCUserController extends HCBaseController
@@ -174,13 +173,25 @@ class HCUserController extends HCBaseController
 
     /**
      * Creating data list
-     * @param Request $request
+     * @param HCUserRequest $request
      * @return JsonResponse
      */
-    public function getListPaginate(Request $request): JsonResponse
+    public function getListPaginate(HCUserRequest $request): JsonResponse
     {
         return response()->json(
             $this->service->getRepository()->getListPaginate($request)
+        );
+    }
+
+    /**
+     * Creating data list
+     * @param HCUserRequest $request
+     * @return JsonResponse
+     */
+    public function getOptions(HCUserRequest $request): JsonResponse
+    {
+        return response()->json(
+            $this->service->getRepository()->getOptions($request)
         );
     }
 
