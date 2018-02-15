@@ -4,6 +4,26 @@ HC.helpers = new function () {
 
     let scope = this;
 
+    this.extendUrl= function (url, extension, forceSlash)
+    {
+        let params = '';
+
+        if (url.indexOf('?') !== -1)
+        {
+            let splitUrl = url.split('?');
+
+            url = splitUrl[0];
+            params = '?' + splitUrl[1];
+        }
+
+        if (forceSlash && url[url.length - 1] !== '/')
+            url += '/';
+
+        url += extension + params;
+
+        return url;
+    };
+
     /**
      * Creating a UUID
      * @returns {*}

@@ -164,7 +164,6 @@ export default class HCAdminListView extends Component {
                 actionsDisabled.clone = false;
         }
 
-
         this.setState(
             {
                 selected: selected,

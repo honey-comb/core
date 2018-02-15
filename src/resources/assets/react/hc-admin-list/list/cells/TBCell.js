@@ -51,7 +51,7 @@ export default class TBCell extends Component {
             return;
 
         HC.react.popUp({
-            url: this.props.form + "-edit",
+            url: HC.helpers.extendUrl(this.props.form, "-edit"),
             type: "form",
             recordId: this.props.id,
             callBack: this.recordUpdated,
