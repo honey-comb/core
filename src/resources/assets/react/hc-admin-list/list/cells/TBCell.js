@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import axios from "axios/index";
 import Thumbnail from "../../../hc-form/fields/media/Thumbnail";
+import Url from "../../../hc-form/fields/Url";
 
 let classNames = require('classnames');
 
@@ -78,6 +77,10 @@ export default class TBCell extends Component {
 
                 this.disableUpdate = true;
                 return this.getImage();
+
+            case 'url' :
+                this.disableUpdate = true;
+                return this.getUrl();
         }
 
         return "";
@@ -97,6 +100,13 @@ export default class TBCell extends Component {
                           hideDelete={true}
                           hideEdit={true}
                           viewUrl="/resources"/>
+    }
+
+    getUrl ()
+    {
+        return <Url key={HC.helpers.uuid()}
+                    id={this.props.id}
+                    config={this.props.config}/>
     }
 
     updateStrict() {

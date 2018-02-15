@@ -74,4 +74,23 @@ trait HCAdminListHeaders
             'height' => $height,
         ];
     }
+
+    /**
+     * @param string $label
+     * @param bool $useId
+     * @param bool $external
+     * @param string $url
+     * @return array
+     */
+    protected function headerUrl(string $label, bool $external = true, string $url = '', bool $useId = true)
+    {
+        return [
+            'type' => 'url',
+            'label' => $label,
+            'external' => $external,
+            'url' => $url,
+            //will be ignored only if url is empty
+            'useId' => $useId,
+        ];
+    }
 }
