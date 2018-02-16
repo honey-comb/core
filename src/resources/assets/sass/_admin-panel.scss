@@ -75,6 +75,15 @@ body.disabled {
             width: calc(100% - 80px);
           }
 
+          .new-option {
+            float: left;
+            width: calc(100% - 50px);
+          }
+
+          .new-option-button {
+            margin-left: 10px;
+          }
+
           select.multi {
             float: right;
             width: 70px;
