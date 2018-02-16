@@ -142,14 +142,12 @@ export default class HCForm extends Component {
 
                             this.setState(stateObject);
                             this.fillForm();
-                            this.updateDependencies();
                         }
                     )
                 }
                 else {
 
                     this.setState(stateObject);
-                    this.updateDependencies();
                 }
             });
     }
