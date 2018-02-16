@@ -80,7 +80,7 @@ class HCUserController extends HCBaseController
         $config = [
             'title' => trans('HCCore::user.page_title'),
             'url' => route('admin.api.user'),
-            'form' => route('admin.api.form-manager', ['user']) . '?company_id=1',
+            'form' => route('admin.api.form-manager', ['user']),
             'headers' => $this->getTableColumns(),
             'actions' => $this->getActions('honey_comb_core_user'),
         ];
