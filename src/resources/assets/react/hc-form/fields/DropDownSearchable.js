@@ -29,6 +29,11 @@ export default class DropDownSearchable extends BaseField {
         });
     }
 
+    componentDidUpdate ()
+    {
+        this.triggerChange();
+    }
+
     search(input, callback) {
         if (!input) {
             return Promise.resolve({options: this.props.config.options});
@@ -58,6 +63,7 @@ export default class DropDownSearchable extends BaseField {
     }
 
     getValue() {
+
         return this.state.value;
     }
 }
