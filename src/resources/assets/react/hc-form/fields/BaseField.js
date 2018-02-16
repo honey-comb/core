@@ -346,4 +346,8 @@ export default class BaseField extends Component {
                 this.validate();
             });
     }
+
+    getClassNames(obj) {
+        return classNames(obj);
+    }
 }
