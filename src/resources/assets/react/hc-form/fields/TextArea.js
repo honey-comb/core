@@ -1,13 +1,11 @@
 import React from 'react'
 import Base from "./BaseField";
 
-let classNames = require('classnames');
-
 export default class TextArea extends Base {
 
     getInput ()
     {
-        let inputClasses = classNames({
+        let inputClasses = this.getClassNames({
             "form-control": true,
             "multi-language": this.props.config.multiLanguage
         });
