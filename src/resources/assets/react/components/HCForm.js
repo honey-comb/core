@@ -302,7 +302,7 @@ export default class HCForm extends Component {
             if (this.refs[key]) {
 
                 // getting dependency configuration
-                let dependant = this.dependencyFields[key]
+                let dependant = this.dependencyFields[key];
 
                 if (!fieldChanged || dependant.dependencies[fieldChanged]) {
                     let hide = true;
@@ -328,8 +328,15 @@ export default class HCForm extends Component {
                             });
                         }
                         else {
-                            if (this.record[targetKey])
-                                hide = false;
+
+                            if (this.record[targetKey]) {
+                                if (HC.helpers.isArray(this.record[targetKey])) {
+                                    if (this.record[targetKey].length > 0)
+                                        hide = false
+                                }
+                                else
+                                    hide = false;
+                            }
                         }
                     });
 

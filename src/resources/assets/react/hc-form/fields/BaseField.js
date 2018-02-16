@@ -67,6 +67,26 @@ export default class BaseField extends Component {
 
     toggleDependency(value, data) {
 
+        let dependencyValues = this.state.dependencyValues;
+
+        //checking if data is object then adding it to dependency values
+        Object.keys(data).map((key, i) => {
+
+            if (HC.helpers.isArray(data[key])) {
+                dependencyValues[key] = [];
+
+                data[key].map((selection, i) => {
+                    dependencyValues[key].push(selection.id);
+                });
+            }
+            else if (HC.helpers.isObject(data[key])) {
+                dependencyValues[key] = data[key].id;
+            }
+            else {
+                dependencyValues[key] = data[key];
+            }
+        });
+
         this.setState(
             {
                 hideDependant: value,
