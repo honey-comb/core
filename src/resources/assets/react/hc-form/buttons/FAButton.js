@@ -10,7 +10,7 @@ export default class FAButton extends Component {
         let divClasses = classNames(this.props.type, {
             "hidden": this.props.display,
             "disabled": this.props.disabled
-        });
+        }, this.props.classes);
 
         let hideCounter = !this.props.showCounter;
 
