@@ -34,6 +34,7 @@ export default class DateTimePicker extends BaseField {
     getInput() {
         return <DatePicker
             selected={this.state.startDate}
+            ref="inputField"
             onChange={this.handleSelectionChange}
             dateFormat={this.props.config.dateFormat}
         />;
