@@ -87,12 +87,6 @@ export default class BaseField extends Component {
             }
         });
 
-        this.setState(
-            {
-                hideDependant: value,
-                dependencyValues: data
-            });
-
         Object.keys(dependencyOptions).map((key, i) => {
 
             if (dependencyOptions[key].sendAs) {
@@ -100,6 +94,12 @@ export default class BaseField extends Component {
                 delete(dependencyValues[key]);
             }
         });
+
+        this.setState(
+            {
+                hideDependant: value,
+                dependencyValues: dependencyValues
+            });
 
         if (value === false)
             if (this.props.config.url)
