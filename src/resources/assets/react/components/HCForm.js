@@ -118,10 +118,9 @@ export default class HCForm extends Component {
      * Loading form data
      */
     loadFormData() {
-        let url = this.props.config.url;
         let formData;
 
-        axios.get(url)
+        axios.get(this.props.config.url, {params: this.props.config.params})
             .then(res => {
 
                 formData = res.data;
