@@ -1,5 +1,6 @@
 import React from 'react'
 import Base from "./BaseField";
+import FAButton from "../buttons/FAButton";
 
 export default class DropDownList extends Base {
 
@@ -7,17 +8,29 @@ export default class DropDownList extends Base {
         super(props);
 
         this.validationTimeOutMiliseconds = 0;
+
+        this.getNewButton = this.getNewButton.bind(this);
+        this.newOptionAction = this.newOptionAction.bind(this);
     }
 
     getInput() {
 
-        return <select className="form-control"
+        return [this.getSelect(), this.getNewButton()]
+    }
+
+    getSelect() {
+        let classNames = this.getClassNames({
+            "form-control": true,
+            "new-option": !!this.props.config.new
+        });
+
+        return <select className={classNames}
                        ref="inputField"
+                       key={HC.helpers.uuid()}
                        disabled={this.getDisabled()}
                        onChange={this.contentChange}>
 
             {this.getOptionsFormatted()}
-
         </select>
     }
 
@@ -75,4 +88,43 @@ export default class DropDownList extends Base {
         return this.refs.inputField.value;
     }
 
+    /**
+     * Getting new button
+     */
+    getNewButton() {
+
+        if (!!this.props.config.new)
+        {
+            return <FAButton key={HC.helpers.uuid()}
+                             icon={HC.helpers.faIcon('plus')}
+                             type={HC.helpers.buttonClass('info')}
+                             onPress={this.newOptionAction}
+                             classes={"new-option-button"}
+
+            />
+        }
+        else {
+            return '';
+        }
+    }
+
+    newOptionAction() {
+
+        console.log(this.state.dependencyValues);
+
+        HC.react.popUp({
+            url: this.props.config.new,
+            params: this.state.dependencyValues,
+            type: "form",
+            callBack: this.newOptionCreated,
+            scope: this
+        });
+
+        console.log('NEW');
+    }
+
+    newOptionCreated (data)
+    {
+        console.log(data);
+    }
 }
