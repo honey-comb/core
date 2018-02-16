@@ -65,7 +65,7 @@ export default class BaseField extends Component {
         </div>;
     }
 
-    toggleDependency(value, data) {
+    toggleDependency(value, data, dependencyOptions) {
 
         let dependencyValues = this.state.dependencyValues;
 
@@ -92,6 +92,14 @@ export default class BaseField extends Component {
                 hideDependant: value,
                 dependencyValues: data
             });
+
+        Object.keys(dependencyOptions).map((key, i) => {
+
+            if (dependencyOptions[key].sendAs) {
+                dependencyValues[dependencyOptions[key].sendAs] = dependencyValues[key];
+                delete(dependencyValues[key]);
+            }
+        });
 
         if (value === false)
             if (this.props.config.url)

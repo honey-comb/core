@@ -340,7 +340,7 @@ export default class HCForm extends Component {
                         }
                     });
 
-                    this.refs[key].toggleDependency(hide, fieldsData);
+                    this.refs[key].toggleDependency(hide, fieldsData, dependant.dependencies);
                 }
             }
         });
