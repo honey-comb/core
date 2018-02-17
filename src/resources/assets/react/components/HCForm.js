@@ -478,8 +478,10 @@ export default class HCForm extends Component {
             if (r.redirectUrl)
                 document.location.href = r.redirectUrl;
 
-            this.animateForm(false);
+            if (this.props.config.createdCallback)
+                this.props.config.createdCallback.call(this.props.config.createdCallbackScope, r.data);
 
+            this.animateForm(false);
         }
     }
 }

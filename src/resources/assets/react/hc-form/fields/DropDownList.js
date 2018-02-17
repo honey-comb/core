@@ -34,6 +34,10 @@ export default class DropDownList extends Base {
         </select>
     }
 
+    contentChange (e)
+    {
+    }
+
     /**
      * If input required validate first option
      */
@@ -110,21 +114,23 @@ export default class DropDownList extends Base {
 
     newOptionAction() {
 
-        console.log(this.state.dependencyValues);
+        let params = this.state.dependencyValues;
+        params.hc_options = 1;
 
         HC.react.popUp({
             url: this.props.config.new,
-            params: this.state.dependencyValues,
-            type: "form",
-            callBack: this.newOptionCreated,
-            scope: this
+            params: params,
+            type: 'form',
+            createdCallback: this.newOptionCreated,
+            createdCallbackScope: this
         });
-
-        console.log('NEW');
     }
 
     newOptionCreated (data)
     {
-        console.log(data);
+        this.addNewOption(data);
+        this.render();
+        this.setValue(data.id);
+        this.validate();
     }
 }

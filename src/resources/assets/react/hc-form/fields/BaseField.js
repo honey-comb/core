@@ -29,6 +29,7 @@ export default class BaseField extends Component {
         this.validate = this.validate.bind(this);
         this.getValue = this.getValue.bind(this);
         this.getMultiLanguage = this.getMultiLanguage.bind(this);
+        this.addNewOption = this.addNewOption.bind(this);
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -44,6 +45,11 @@ export default class BaseField extends Component {
                     this.refs.inputField.value = null;
             }
         }
+    }
+
+    componentDidMount() {
+        if (this.props.config.value)
+            this.setValue(this.props.config.value);
     }
 
     render() {
@@ -345,6 +351,13 @@ export default class BaseField extends Component {
                 });
                 this.validate();
             });
+    }
+
+    addNewOption(obj) {
+        if (!this.state.options)
+            this.state.options = [];
+
+        this.state.options.unshift(obj);
     }
 
     getClassNames(obj) {
