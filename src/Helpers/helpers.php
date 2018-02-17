@@ -309,16 +309,27 @@ if (!function_exists('optimizeTranslationOptions')) {
     {
         return $list->map(function($record) {
 
-            $data['id'] = $record->id;
-
-            if ($record->translation) {
-                $data['label'] = $record->translation->label;
-            } else {
-                $data['label'] = $record->id;
-            }
-
-            return $data;
+            return optimizeSingleTranslationOption($record);
         });
+    }
+}
+
+if (!function_exists('optimizeSingleTranslationOption')) {
+    /**
+     * @param $record
+     * @return mixed
+     */
+    function optimizeSingleTranslationOption($record): array
+    {
+        $data['id'] = $record->id;
+
+        if ($record->translation) {
+            $data['label'] = $record->translation->label;
+        } else {
+            $data['label'] = $record->id;
+        }
+
+        return $data;
     }
 }
 
