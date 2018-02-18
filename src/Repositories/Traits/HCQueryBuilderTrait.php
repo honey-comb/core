@@ -217,18 +217,21 @@ trait HCQueryBuilderTrait
      * @param Request $request
      * @param int $perPage
      * @param array $columns
-     * @return LengthAwarePaginator
+     * @param array $with
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function getListPaginate(
         Request $request,
+        array $with = [],
         int $perPage = self::DEFAULT_PER_PAGE,
         array $columns = ['*']
-    ): LengthAwarePaginator {
+    ): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
 
         if ($request->has('per_page')) {
             $perPage = $request->get('per_page');
         }
 
-        return $this->createBuilderQuery($request)->paginate($perPage, $columns)->appends($request->all());
+        return $this->createBuilderQuery($request)->with($with)->paginate($perPage, $columns)->appends($request->all());
     }
 }
