@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Services;
 
 use Carbon\Carbon;
+use HoneyComb\Core\Events\HCUserCreatedEvent;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Models\Users\HCUserProvider;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
@@ -140,6 +141,8 @@ class HCUserService
         if (is_null($user->activated_at)) {
             $user->createTokenAndSendActivationCode();
         }
+
+        event(new HCUserCreatedEvent($user));
 
         return $user;
     }
