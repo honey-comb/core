@@ -39,10 +39,10 @@ trait HCQueryBuilderTrait
     protected function createBuilderQuery(Request $request, array $availableFields = null): Builder
     {
         if ($availableFields == null) {
-            $availableFields = $this->model()::getFillableFields();
+            $availableFields = $this->getModel()::getFillableFields();
         }
 
-        $builder = $this->model()::select($availableFields)
+        $builder = $this->getModel()::select($availableFields)
             ->where(function (Builder $query) use ($request, $availableFields) {
                 // add request filtering
                 $this->filterByRequestParameters($query, $request, $availableFields);
@@ -191,7 +191,7 @@ trait HCQueryBuilderTrait
      */
     protected function searchQuery(Builder $query, string $phrase): Builder
     {
-        $fields = $this->model()::getFillableFields();
+        $fields = $this->getModel()::getFillableFields();
 
         return $query->where(function (Builder $query) use ($fields, $phrase) {
             foreach ($fields as $key => $field) {
