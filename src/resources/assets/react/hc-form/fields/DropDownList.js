@@ -8,6 +8,7 @@ export default class DropDownList extends Base {
         super(props);
 
         this.validationTimeOutMiliseconds = 0;
+        this.key = HC.helpers.uuid();
 
         this.getNewButton = this.getNewButton.bind(this);
         this.newOptionAction = this.newOptionAction.bind(this);
@@ -27,7 +28,7 @@ export default class DropDownList extends Base {
         return <select className={classNames}
                        ref="inputField"
                        value={this.state.value}
-                       key={HC.helpers.uuid()}
+                       key={this.key}
                        disabled={this.getDisabled()}
                        onChange={this.contentChange}>
 
