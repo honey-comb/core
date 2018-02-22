@@ -392,7 +392,7 @@ export default class HCForm extends Component {
 
         Object.keys(this.finalFieldStructure).map((key, i) => {
 
-            if (!this.refs[key].validate())
+            if (!this.refs[key].validate(true))
                 valid = false;
         });
 

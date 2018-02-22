@@ -208,11 +208,11 @@ export default class BaseField extends Component {
     /**
      * Validating input field
      */
-    validate() {
+    validate(ignoreChange) {
         let isValid = this.isValid();
 
         //TODO: do not trigger if not needed
-        if (isValid) {
+        if (isValid && !ignoreChange) {
             this.triggerChange();
         }
 
