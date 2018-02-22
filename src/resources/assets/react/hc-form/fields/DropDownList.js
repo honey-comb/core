@@ -26,6 +26,7 @@ export default class DropDownList extends Base {
 
         return <select className={classNames}
                        ref="inputField"
+                       value={this.state.value}
                        key={HC.helpers.uuid()}
                        disabled={this.getDisabled()}
                        onChange={this.contentChange}>
@@ -36,6 +37,7 @@ export default class DropDownList extends Base {
 
     contentChange (e)
     {
+        this.setValue(e.target.value);
     }
 
     /**
@@ -90,6 +92,17 @@ export default class DropDownList extends Base {
             return undefined;
 
         return this.refs.inputField.value;
+    }
+
+    /**
+     * Setting value
+     *
+     * @param value
+     */
+    setValue (value)
+    {
+        this.setState({value:value});
+        this.validate();
     }
 
     /**
