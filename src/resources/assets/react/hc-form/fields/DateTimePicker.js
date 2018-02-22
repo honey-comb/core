@@ -44,4 +44,9 @@ export default class DateTimePicker extends BaseField {
     {
         return this.value;
     }
+
+    componentDidMount ()
+    {
+        this.validate();
+    }
 }
