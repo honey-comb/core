@@ -106,6 +106,7 @@ export default class TBCell extends Component {
     {
         return <Url key={HC.helpers.uuid()}
                     id={this.props.id}
+                    value={this.state.value}
                     config={this.props.config}/>
     }
 

@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
-export default class Url extends Component{
+export default class Url extends Component {
 
-    render () {
+    render() {
         const icon = this.props.config.external ? 'external-link' : 'link';
         const target = this.props.config.external ? '_blank' : '_self';
         const url = this.getUrl();
@@ -20,6 +20,11 @@ export default class Url extends Component{
             else
                 return this.props.config.url;
         } else {
+
+            if (this.props.value) {
+                return this.props.value;
+            }
+
             return HC.helpers.extendUrl(window.location.href, this.props.id, true);
         }
     }
