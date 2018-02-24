@@ -363,4 +363,13 @@ export default class BaseField extends Component {
     getClassNames(obj) {
         return classNames(obj);
     }
+
+    /**
+     * reset the value
+     */
+    reset() {
+        this.refs.inputField.value = undefined;
+        this.state.value = undefined;
+        this.value = undefined;
+    }
 }

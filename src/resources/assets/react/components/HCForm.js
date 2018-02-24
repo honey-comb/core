@@ -54,7 +54,19 @@ export default class HCForm extends Component {
      * When component has mounted, load form data
      */
     componentDidMount() {
-        this.loadFormData();
+
+        if (this.props.structure) {
+            let stateObject = {
+                formData: {
+                    structure: this.props.structure
+                }
+            };
+
+            this.setState(stateObject);
+        }
+        else {
+            this.loadFormData();
+        }
     }
 
     /**
@@ -229,6 +241,9 @@ export default class HCForm extends Component {
 
         this.record[fieldId] = value;
         this.updateDependencies(fieldId);
+
+        if (this.props.onSelectionChange)
+            this.props.onSelectionChange(this.record);
     }
 
     /**
@@ -436,5 +451,15 @@ export default class HCForm extends Component {
 
             this.props.formClosed();
         }
+    }
+
+    /**
+     * Reset form values
+     */
+    reset ()
+    {
+        Object.keys(this.finalFieldStructure).map((key) => {
+            this.refs[key].reset();
+        });
     }
 }

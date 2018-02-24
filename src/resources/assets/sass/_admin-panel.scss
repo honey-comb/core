@@ -182,6 +182,28 @@ body.disabled {
         }
       }
 
+      #filters {
+
+        display: flex;
+        align-items: center;
+
+        button {
+          margin-left: 10px;
+        }
+
+        .hc-form {
+          .form-structure {
+            all: unset;
+            display: flex;
+
+            .form-group {
+              all: unset;
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+
       #list {
         margin-top: 20px;
 

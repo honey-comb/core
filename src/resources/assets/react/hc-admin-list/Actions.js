@@ -1,20 +1,24 @@
 import React, {Component} from 'react';
 import FAButton from '../hc-form/buttons/FAButton';
 import axios from "axios/index";
+import HCForm from "../components/HCForm";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 export default class Actions extends Component {
 
     constructor() {
         super();
 
-        this.state = {
-            searchValue: ""
-        };
+        this.allParams = {};
 
         this.refs = {
-            hcAdminFilter: {
+            searchField: {
                 value: ""
             }
+        };
+
+        this.state = {
+            enableClearFilter: false
         };
 
         this.getNewButton = this.getNewButton.bind(this);
@@ -23,23 +27,54 @@ export default class Actions extends Component {
         this.forceDeleteAction = this.forceDeleteAction.bind(this);
         this.restoreAction = this.restoreAction.bind(this);
         this.filterAction = this.filterAction.bind(this);
+        this.searchAction = this.searchAction.bind(this);
+        this.getFilters = this.getFilters.bind(this);
+        this.clearFilters = this.clearFilters.bind(this);
     }
 
     componentWillUpdate(nextProps) {
         if (this.props.onlyTrashed !== nextProps.onlyTrashed)
-            this.refs.hcAdminFilter.value = "";
+            this.clearFilters();
     }
 
     render() {
-        return <div id="actions">
-            {this.getNewButton()}
-            {this.getDeleteButton()}
-            {this.getRestoreButton()}
-            {this.getForceDeleteButton()}
-            {this.getSearchField()}
-            {this.getMergeButton()}
-            {this.getCloneButton()}
+        return <div style={{display: 'flex', alignItems: 'center'}}>
+            <div id="actions">
+                {this.getNewButton()}
+                {this.getDeleteButton()}
+                {this.getRestoreButton()}
+                {this.getForceDeleteButton()}
+                {this.getSearchField()}
+                {this.getMergeButton()}
+                {this.getCloneButton()}
+            </div>
+            <div id="filters">
+                {this.getFilters()}
+            </div>
         </div>;
+    }
+
+    getFilters() {
+
+        if (this.props.filters)
+        {
+            return [
+                <HCForm key={0} ref="form" structure={this.props.filters} onSelectionChange={this.filterAction}/>,
+                <button key={1} ref="clear" onClick={this.clearFilters} className="btn btn-danger">
+                    <FontAwesomeIcon icon={HC.helpers.faIcon('times')}/>
+                </button>
+            ]
+        }
+
+        return '';
+    }
+
+    clearFilters ()
+    {
+        this.allParams = {};
+        this.refs.searchField.value = "";
+        this.refs.form.reset();
+        this.loadData();
     }
 
     /**
@@ -51,7 +86,7 @@ export default class Actions extends Component {
 
         return <div key="first">
             <input className="form-control input-bg"
-                   placeholder="Search" ref="hcAdminFilter" onKeyUp={this.filterAction}/>
+                   placeholder="Search" ref="searchField" onKeyUp={this.searchAction}/>
         </div>;
     }
 
@@ -160,11 +195,15 @@ export default class Actions extends Component {
 
     newAction() {
 
-        HC.react.popUp({url: HC.helpers.extendUrl(this.props.form, "-new"), type: "form", callBack:this.newCreated, scope:this});
+        HC.react.popUp({
+            url: HC.helpers.extendUrl(this.props.form, "-new"),
+            type: "form",
+            callBack: this.newCreated,
+            scope: this
+        });
     }
 
-    newCreated ()
-    {
+    newCreated() {
         this.props.reload();
     }
 
@@ -200,18 +239,91 @@ export default class Actions extends Component {
             });
     }
 
-    filterAction(e) {
-        let params = {
-            q: e.target.value
+    /**
+     * On search change
+     *
+     * @param e
+     */
+    searchAction(e) {
+
+        if (e.target.value.length > 2 || e.target.value.length === 0) {
+            this.allParams.q = e.target.value;
+            this.loadData();
+        }
+    }
+
+    /**
+     * On filter update
+     *
+     * @param record
+     */
+    filterAction(record) {
+        let q = '';
+
+        Object.keys(record).map((key) => {
+
+            if (record[key]) {
+                q += record[key] + '&';
+            }
+        });
+
+        let params = this.filterParams(q);
+
+        if (this.allParams.q)
+            params.q = this.allParams.q;
+
+        this.allParams = params;
+
+        this.loadData();
+    }
+
+    /**
+     * Creating filter based params
+     *
+     * @param query
+     * @returns {{}}
+     */
+    filterParams(query) {
+        const getParams = query => {
+            if (!query) {
+                return {};
+            }
+
+            return (/^[?#]/.test(query) ? query.slice(1) : query)
+                .split('&')
+                .reduce((params, param) => {
+                    let [key, value] = param.split('=');
+
+                    if (key === "" || value === "")
+                        return params;
+
+                    if (!params[key]) {
+                        params[key] = value;
+                    }
+                    else {
+                        if (!HC.helpers.isArray(params[key])) {
+                            params[key] = [params[key]]
+                        }
+
+                        params[key].push(value);
+                    }
+                    return params;
+                }, {});
         };
 
-        if (this.props.onlyTrashed)
-            params.trashed = 1;
+        return getParams(query);
+    }
 
-        if (e.target.value.length > 2 || e.target.value.length === 0)
-            axios.get(this.props.url, {params: params})
-                .then(res => {
-                    this.props.reload(res);
-                });
+    /**
+     * Loading new content based on filters and search element
+     */
+    loadData() {
+        if (this.props.onlyTrashed)
+            this.allParams.trashed = 1;
+
+        axios.get(this.props.url, {params: this.allParams})
+            .then(res => {
+                this.props.reload(res);
+            });
     }
 }

@@ -84,6 +84,7 @@ export default class HCAdminListView extends Component {
                     url={this.props.config.url}
                     form={this.props.config.form}
                     actions={this.props.config.actions}
+                    filters={this.props.config.filters}
                     onlyTrashed={this.state.onlyTrashed}
                     actionsDisabled={this.state.actionsDisabled}
                     selected={this.state.selected}
