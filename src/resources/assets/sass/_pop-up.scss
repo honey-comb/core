@@ -1,7 +1,37 @@
-.hc-pop-up {
+#hc-pop-up, .inner-pop-up {
   position: fixed;
   z-index: 2000;
   width: 100%;
   height: 100%;
   background-color: rgba(30, 30, 30, 0.7);
+}
+
+.hc-pop-up {
+  width: 25%;
+  min-width: 640px;
+  height: 100%;
+  background-color: white;
+  padding-bottom: 35px;
+  position: absolute;
+
+  .header {
+
+    display: flex;
+    align-items: center;
+    background-color: #3c8dbc;
+    padding: 20px;
+
+    .label {
+      font-weight: 600;
+      font-size: 20px;
+      margin-left: 20px;
+      color: white;
+      padding: 0;
+    }
+  }
+
+  .hc-form
+  {
+    padding: 20px;
+  }
 }

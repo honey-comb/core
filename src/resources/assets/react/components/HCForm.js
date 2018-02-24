@@ -1,6 +1,4 @@
 import React, {Component} from 'react'
-import TweenMax from "gsap"
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import axios from "axios/index";
 import Email from "../hc-form/fields/Email";
 import Password from "../hc-form/fields/Password";
@@ -42,11 +40,7 @@ export default class HCForm extends Component {
 
     render() {
 
-        return <div ref="formHolder" id={this.state.id} className="hc-form" style={{opacity: this.opacity}}>
-            <div className="header">
-                {this.getCloseButton()}
-                <div className="label">{this.props.contentID ? "Edit record" : "New record"}</div>
-            </div>
+        return <div ref="formHolder" id={this.state.id} className="hc-form">
             <div className="form-structure">
                 {this.getFields()}
             </div>
@@ -60,7 +54,6 @@ export default class HCForm extends Component {
      * When component has mounted, load form data
      */
     componentDidMount() {
-        this.animateForm(true);
         this.loadFormData();
     }
 
@@ -101,20 +94,6 @@ export default class HCForm extends Component {
     }
 
     /**
-     * Getting close button
-     * TODO:Move button to PopUp
-     * @returns {*}
-     */
-    getCloseButton() {
-        if (this.props.config.parent)
-            return <div className="close" style={{float: "left"}} onClick={() => this.animateForm(false)}>
-                <FontAwesomeIcon icon={HC.helpers.faIcon('times-circle')}/>
-            </div>;
-
-        return "";
-    }
-
-    /**
      * Loading form data
      */
     loadFormData() {
@@ -150,32 +129,6 @@ export default class HCForm extends Component {
                     this.updateDependencies();
                 }
             });
-    }
-
-    /**
-     * Animate form
-     *
-     * @param forward
-     */
-    animateForm(forward) {
-
-        if (forward) {
-            TweenMax.to(this, 0.5, {
-                opacity: 1,
-                onUpdate: () => this.refs.formHolder.style.opacity = this.opacity,
-            });
-        }
-        else {
-
-            if (!this.props.config.parent)
-                return;
-
-            TweenMax.to(this, 0.5, {
-                opacity: 0,
-                onUpdate: () => this.refs.formHolder.style.opacity = this.opacity,
-                onComplete: this.props.formClosed
-            });
-        }
     }
 
     /**
@@ -481,7 +434,7 @@ export default class HCForm extends Component {
             if (this.props.config.createdCallback)
                 this.props.config.createdCallback.call(this.props.config.createdCallbackScope, r.data);
 
-            this.animateForm(false);
+            this.props.formClosed();
         }
     }
 }

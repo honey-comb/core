@@ -40,7 +40,8 @@ HC.react = new function () {
             id = HC.helpers.uuid();
             let creating = document.createElement('div');
             creating.id = id;
-            data.style = {paddingLeft:50 * popUpCount + 1};
+            creating.classList.add('inner-pop-up');
+            data.style = {marginLeft:50 * popUpCount};
             existing.append(creating);
         }
 
