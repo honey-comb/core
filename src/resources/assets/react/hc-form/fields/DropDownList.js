@@ -91,8 +91,14 @@ export default class DropDownList extends Base {
      * @returns {undefined}
      */
     getValue() {
+
         if (this.refs.inputField.value === "undefined")
+        {
+            if (this.props.config.value && this.getDisabled())
+                return this.props.config.value;
+
             return undefined;
+        }
 
         return this.refs.inputField.value;
     }
