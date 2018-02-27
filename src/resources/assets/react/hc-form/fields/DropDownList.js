@@ -46,6 +46,8 @@ export default class DropDownList extends Base {
      */
     componentDidMount() {
 
+        super.componentDidMount();
+
         if (this.props.config.required)
             this.validate();
     }
