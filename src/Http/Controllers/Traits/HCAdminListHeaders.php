@@ -93,4 +93,22 @@ trait HCAdminListHeaders
             'useId' => $useId,
         ];
     }
+
+    /**
+     * @param string $label
+     * @param string $valuePath
+     * @param string $addMore
+     * @param string $idAs
+     * @return array
+     */
+    private function headerList(string $label, string $valuePath, string $addMore = null, string $idAs = null): array
+    {
+        return [
+            'type' => 'list',
+            'label' => $label,
+            'valuePath' => $valuePath,
+            'addMore' => $addMore,
+            'idAs' => $idAs,
+        ];
+    }
 }
