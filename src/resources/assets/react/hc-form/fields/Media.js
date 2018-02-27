@@ -161,6 +161,8 @@ export default class Media extends Base {
 
             this.createThumbnailFromMedia(media.id);
         });
+
+        this.triggerChange();
     }
 
     /**
