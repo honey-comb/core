@@ -27,7 +27,8 @@ export default class TagList extends Base {
 
     handleOnChange(value) {
 
-        this.state.multi ? this.setState({multiValue: value}) : this.setState({value});
+        this.state.multi ? this.state.multiValue = value : this.state.value = value;
+        this.setState(this.state);
         this.triggerChange();
     }
 
