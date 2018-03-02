@@ -9,7 +9,7 @@ export default class Actions extends Component {
     constructor() {
         super();
 
-        this.allParams = {};
+        this.params = {};
 
         this.refs = {
             searchField: {
@@ -29,16 +29,12 @@ export default class Actions extends Component {
         this.filterAction = this.filterAction.bind(this);
         this.searchAction = this.searchAction.bind(this);
         this.getFilters = this.getFilters.bind(this);
-        this.clearFilters = this.clearFilters.bind(this);
-    }
-
-    componentWillUpdate(nextProps) {
-        if (this.props.onlyTrashed !== nextProps.onlyTrashed)
-            this.clearFilters();
+        this.getParams = this.getParams.bind(this);
+        this.reset = this.reset.bind(this);
     }
 
     render() {
-        return <div style={{display: 'flex', alignItems: 'center'}}>
+        return <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
             <div id="actions">
                 {this.getNewButton()}
                 {this.getDeleteButton()}
@@ -59,7 +55,7 @@ export default class Actions extends Component {
         if (this.props.filters) {
             return [
                 <HCForm key={0} ref="form" structure={this.props.filters} onSelectionChange={this.filterAction}/>,
-                <button key={1} ref="clear" onClick={this.clearFilters} className="btn btn-danger">
+                <button key={1} ref="clear" onClick={this.reset} className="btn btn-danger">
                     <FontAwesomeIcon icon={HC.helpers.faIcon('times')}/>
                 </button>
             ]
@@ -68,11 +64,15 @@ export default class Actions extends Component {
         return '';
     }
 
-    clearFilters() {
-        this.allParams = {};
+    reset(inner) {
+        this.params = {};
         this.refs.searchField.value = "";
-        this.refs.form.reset();
-        this.loadData();
+
+        if (this.refs.form)
+            this.refs.form.reset();
+
+        if (inner)
+            this.props.reload();
     }
 
     /**
@@ -205,6 +205,9 @@ export default class Actions extends Component {
         this.props.reload();
     }
 
+    /**
+     *  delete action function
+     */
     deleteAction() {
 
         let params = {data: {list: this.props.selected}};
@@ -216,6 +219,9 @@ export default class Actions extends Component {
             });
     }
 
+    /**
+     *  force delete action function
+     */
     forceDeleteAction() {
 
         let params = {data: {list: this.props.selected}};
@@ -227,6 +233,9 @@ export default class Actions extends Component {
             });
     }
 
+    /**
+     *  restore action function
+     */
     restoreAction() {
         let params = {list: this.props.selected};
 
@@ -245,8 +254,8 @@ export default class Actions extends Component {
     searchAction(e) {
 
         if (e.target.value.length > 2 || e.target.value.length === 0) {
-            this.allParams.q = e.target.value;
-            this.loadData();
+            this.params.q = e.target.value;
+            this.props.reload();
         }
     }
 
@@ -272,12 +281,17 @@ export default class Actions extends Component {
 
         let params = this.filterParams(q);
 
-        if (this.allParams.q)
-            params.q = this.allParams.q;
+        if (this.params.q)
+            params.q = this.params.q;
 
-        this.allParams = params;
+        this.params = params;
 
-        this.loadData();
+        this.props.reload();
+    }
+
+    getParams ()
+    {
+        return this.params;
     }
 
     /**
@@ -315,18 +329,5 @@ export default class Actions extends Component {
         };
 
         return getParams(query);
-    }
-
-    /**
-     * Loading new content based on filters and search element
-     */
-    loadData() {
-        if (this.props.onlyTrashed)
-            this.allParams.trashed = 1;
-
-        axios.get(this.props.url, {params: this.allParams})
-            .then(res => {
-                this.props.reload(res);
-            });
     }
 }

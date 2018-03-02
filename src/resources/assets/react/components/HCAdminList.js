@@ -49,6 +49,8 @@ export default class HCAdminListView extends Component {
             },
         };
 
+        this.params = {};
+
         if (this.props.config.pageSizeOptions)
             this.state.pageSizeOptions = this.props.config.pageSizeOptions;
 
@@ -81,6 +83,7 @@ export default class HCAdminListView extends Component {
             </div>
             <div className="box-body">
                 <Actions
+                    ref="actions"
                     url={this.props.config.url}
                     form={this.props.config.form}
                     actions={this.props.config.actions}
@@ -118,12 +121,11 @@ export default class HCAdminListView extends Component {
     }
 
     onSortOrderUpdate(key, order) {
-        this.state.params.params.page = 1;
-        this.state.params.params.sort_by = key;
-        this.state.params.params.sort_order = order;
+        this.params.page = 1;
+        this.params.sort_by = key;
+        this.params.sort_order = order;
 
         this.reload();
-
     }
 
     /**
@@ -132,10 +134,10 @@ export default class HCAdminListView extends Component {
      * @param pageSize
      */
     onShowSizeChange(current, pageSize) {
-        this.state.params.params.page = current;
+        this.params.page = current;
 
         if (pageSize)
-            this.state.params.params.per_page = pageSize;
+            this.params.per_page = pageSize;
 
         this.reload();
     }
@@ -194,16 +196,18 @@ export default class HCAdminListView extends Component {
             total: 0
         };
 
+        this.refs.actions.reset();
+
         if (value) {
             this.state.title = this.props.config.title + ' (Trashed)';
             this.state.hideCheckBox = this.getCheckBoxConfiguration(true);
 
-            this.state.params = {params: {trashed: 1}};
+            this.params = {params: {trashed: 1}};
         }
         else {
             this.state.title = this.props.config.title;
             this.state.hideCheckBox = this.getCheckBoxConfiguration(false);
-            this.state.params = {params: {}};
+            this.params = {params: {}};
         }
 
         this.setState(this.state);
@@ -216,22 +220,20 @@ export default class HCAdminListView extends Component {
      *
      * @param data
      */
-    reload(data) {
+    reload() {
         this.setState({selected: []});
 
-        if (data) {
-            this.setState({
-                records: data.data
-            });
-        }
-        else
-            axios.get(this.props.config.url, this.state.params)
-                .then(res => {
+        let params = {
+            params: this.refs.actions.getParams()
+        };
 
-                    this.setState({
-                        records: res.data,
-                    });
+        axios.get(this.props.config.url, params)
+            .then(res => {
+
+                this.setState({
+                    records: res.data,
                 });
+            });
     }
 
     /**
