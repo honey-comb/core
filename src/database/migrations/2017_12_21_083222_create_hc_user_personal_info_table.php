@@ -53,8 +53,7 @@ class CreateHcUserPersonalInfoTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
 
-            $table->foreign('user_id')->references('id')->on('hc_user')
-                ->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('user_id')->references('id')->on('hc_user')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
