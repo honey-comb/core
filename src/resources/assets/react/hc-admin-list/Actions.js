@@ -56,8 +56,7 @@ export default class Actions extends Component {
 
     getFilters() {
 
-        if (this.props.filters)
-        {
+        if (this.props.filters) {
             return [
                 <HCForm key={0} ref="form" structure={this.props.filters} onSelectionChange={this.filterAction}/>,
                 <button key={1} ref="clear" onClick={this.clearFilters} className="btn btn-danger">
@@ -69,8 +68,7 @@ export default class Actions extends Component {
         return '';
     }
 
-    clearFilters ()
-    {
+    clearFilters() {
         this.allParams = {};
         this.refs.searchField.value = "";
         this.refs.form.reset();
@@ -263,7 +261,12 @@ export default class Actions extends Component {
         Object.keys(record).map((key) => {
 
             if (record[key]) {
-                q += record[key] + '&';
+                if (record[key].indexOf('=') === -1) {
+                    q += key + '=' + record[key] + '&';
+                }
+                else if (record[key]) {
+                    q += record[key] + '&';
+                }
             }
         });
 

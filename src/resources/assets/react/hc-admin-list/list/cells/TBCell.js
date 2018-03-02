@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Thumbnail from "../../../hc-form/fields/media/Thumbnail";
 import Url from "../../../hc-form/fields/Url";
+import HCCellList from "../../../hc-form/fields/HCCellList";
 
 let classNames = require('classnames');
 
@@ -8,6 +9,10 @@ export default class TBCell extends Component {
 
     constructor(props) {
         super(props);
+
+        this.id = HC.helpers.uuid();
+
+        this.cellClasses = '';
 
         this.state = {
             url: this.props.url + '/' + this.props.id,
@@ -37,11 +42,13 @@ export default class TBCell extends Component {
 
     render() {
 
-        let tdClass = classNames({
-            update: this.props.update
-        });
+        const content = this.getContent();
 
-        return <td className={tdClass} onClick={this.editRecord}>{this.getContent()}</td>;
+        const tdClass = classNames({
+            update: (this.props.update && !this.disableUpdate)
+        }, this.cellClasses);
+
+        return <td className={tdClass} onClick={this.editRecord}>{content}</td>;
     }
 
     editRecord() {
@@ -59,6 +66,7 @@ export default class TBCell extends Component {
     }
 
     recordUpdated() {
+
         this.props.reload();
     }
 
@@ -70,6 +78,7 @@ export default class TBCell extends Component {
 
             case "checkBox" :
 
+                this.cellClasses = 'text-center';
                 this.disableUpdate = true;
                 return this.getCheckBox();
 
@@ -81,6 +90,10 @@ export default class TBCell extends Component {
             case 'url' :
                 this.disableUpdate = true;
                 return this.getUrl();
+
+            case 'list' :
+                this.disableUpdate = true;
+                return this.getList();
         }
 
         return "";
@@ -88,7 +101,7 @@ export default class TBCell extends Component {
 
     getCheckBox() {
         return <input type="checkbox"
-                      disabled={this.state.disabled}
+                      key={this.id} disabled={this.state.disabled}
                       checked={this.state.value}
                       onChange={this.updateStrict}/>
     }
@@ -96,7 +109,7 @@ export default class TBCell extends Component {
     getImage() {
 
         return <Thumbnail mediaId={this.state.value}
-                          key={HC.helpers.uuid()}
+                          key={this.id}
                           hideDelete={true}
                           hideEdit={true}
                           viewUrl="/resources"/>
@@ -104,10 +117,20 @@ export default class TBCell extends Component {
 
     getUrl ()
     {
-        return <Url key={HC.helpers.uuid()}
+        return <Url key={this.id}
                     id={this.props.id}
                     value={this.state.value}
                     config={this.props.config}/>
+    }
+
+    getList ()
+    {
+        return <HCCellList key={this.id}
+                           id={this.props.id}
+                           value={this.state.value}
+                           config={this.props.config}
+                           recordUpdated={this.recordUpdated}
+                           recordUpdatedScope={this}/>
     }
 
     updateStrict() {
