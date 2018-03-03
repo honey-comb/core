@@ -8,6 +8,7 @@ import List from './../hc-admin-list/List';
 
 import axios from "axios/index";
 import Select from 'rc-select';
+import * as CancelToken from "axios";
 
 export default class HCAdminListView extends Component {
 
@@ -227,13 +228,50 @@ export default class HCAdminListView extends Component {
             params: this.refs.actions.getParams()
         };
 
-        axios.get(this.props.config.url, params)
-            .then(res => {
+        let allowCall = true;
 
-                this.setState({
-                    records: res.data,
-                });
+        if (!this.pageSizeChange) {
+            this.params.page = 1;
+        }
+
+        this.pageSizeChange = false;
+
+        Object.assign(params.params, this.params);
+
+        if (this.lastCallParams) {
+            allowCall = !HC.helpers.isEquivalent(this.lastCallParams, params.params, true);
+        }
+
+        this.lastCallParams = Object.assign({}, params.params);
+
+        if (allowCall) {
+
+            if (this.dataLoadingSource) {
+                this.dataLoadingSource.cancel();
+            }
+
+            let CancelToken = axios.CancelToken;
+            this.dataLoadingSource = CancelToken.source();
+
+            params.cancelToken = this.dataLoadingSource.token;
+
+            axios.get(this.props.config.url, params)
+                .then(res => {
+
+                    this.dataLoadingSource = undefined;
+
+                    this.setState({
+                        records: res.data,
+                    });
+                }).catch(function (thrown) {
+
+                    if (axios.isCancel(thrown)) {
+                        console.log('Request canceled', thrown.message);
+                    } else {
+                        // handle error
+                    }
             });
+        }
     }
 
     /**
