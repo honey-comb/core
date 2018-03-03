@@ -139,6 +139,8 @@ export default class HCAdminListView extends Component {
         if (pageSize)
             this.params.per_page = pageSize;
 
+        this.pageSizeChange = true;
+
         this.reload();
     }
 
@@ -196,19 +198,19 @@ export default class HCAdminListView extends Component {
             total: 0
         };
 
-        this.refs.actions.reset();
-
         if (value) {
             this.state.title = this.props.config.title + ' (Trashed)';
             this.state.hideCheckBox = this.getCheckBoxConfiguration(true);
 
-            this.params = {params: {trashed: 1}};
+            this.params.trashed = 1;
         }
         else {
             this.state.title = this.props.config.title;
             this.state.hideCheckBox = this.getCheckBoxConfiguration(false);
-            this.params = {params: {}};
+            delete(this.params.trashed);
         }
+
+        this.refs.actions.reset();
 
         this.setState(this.state);
 
@@ -217,8 +219,6 @@ export default class HCAdminListView extends Component {
 
     /**
      * Reload page with data or without it.
-     *
-     * @param data
      */
     reload() {
         this.setState({selected: []});
