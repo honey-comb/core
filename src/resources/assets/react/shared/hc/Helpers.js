@@ -249,4 +249,46 @@ HC.helpers = new function () {
     {
         return type === Object.prototype.toString.call (object);
     };
+
+    /**
+     * Checking if both objects are equal
+     *
+     * Origin: http://adripofjavascript.com/blog/drips/object-equality-in-javascript.html
+     *
+     * @param a
+     * @param b
+     * @param deep - validate all levels
+     * @returns {boolean}
+     */
+    this.isEquivalent = function (a, b, deep) {
+        // Create arrays of property names
+        let aProps = Object.getOwnPropertyNames(a);
+        let bProps = Object.getOwnPropertyNames(b);
+
+        // If number of properties is different,
+        // objects are not equivalent
+        if (aProps.length !== bProps.length) {
+            return false;
+        }
+
+        for (let i = 0; i < aProps.length; i++) {
+            let propName = aProps[i];
+
+            if (this.isObject(a[propName]) && this.isObject(b[propName]))
+            {
+                if (!this.isEquivalent(a[propName], b[propName], deep))
+                    return false;
+            }
+
+            // If values of same property are not equal,
+            // objects are not equivalent
+            if (a[propName] !== b[propName]) {
+                return false;
+            }
+        }
+
+        // If we made it this far, objects
+        // are considered equivalent
+        return true;
+    };
 };

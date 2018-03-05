@@ -176,6 +176,8 @@ body.disabled {
     .box-body {
       #actions {
         display: flex;
+        align-items: center;
+        margin-top: 10px;
 
         div, button {
           margin: 0 3px 0 3px;
@@ -186,6 +188,7 @@ body.disabled {
 
         display: flex;
         align-items: center;
+        margin-top: 10px;
 
         button {
           margin-left: 10px;
@@ -199,6 +202,13 @@ body.disabled {
             .form-group {
               all: unset;
               margin-left: 10px;
+              display: flex;
+              align-items: center;
+
+              label {
+                margin-bottom: 0;
+                margin-right: 5px;
+              }
             }
           }
         }
