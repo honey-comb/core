@@ -101,7 +101,7 @@ trait HCAdminListHeaders
      * @param string $idAs
      * @return array
      */
-    private function headerList(string $label, string $valuePath, string $addMore = null, string $idAs = null): array
+    protected function headerList(string $label, string $valuePath, string $addMore = null, string $idAs = null): array
     {
         return [
             'type' => 'list',

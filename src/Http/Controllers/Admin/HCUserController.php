@@ -38,6 +38,10 @@ use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
+/**
+ * Class HCUserController
+ * @package HoneyComb\Core\Http\Controllers\Admin
+ */
 class HCUserController extends HCBaseController
 {
     use HCAdminListHeaders;
@@ -45,7 +49,7 @@ class HCUserController extends HCBaseController
     /**
      * @var Connection
      */
-    private $connection;
+    protected $connection;
 
     /**
      * @var HCUserService
@@ -55,7 +59,7 @@ class HCUserController extends HCBaseController
     /**
      * @var HCFrontendResponse
      */
-    private $response;
+    protected $response;
 
     /**
      * HCUsersController constructor.
