@@ -12,12 +12,12 @@ export default class BaseField extends Component {
         this.multiLanguage = false;
         this.multiLanguageValues = {};
         this.validationTimeOutMiliseconds = 400;
+        this.dependencyValues = {};
 
         this.state = {
             hasError: false,
             value: undefined,
             hideDependant: false,
-            dependencyValues: {},
             loadingDisabled: false
         };
 
@@ -73,7 +73,7 @@ export default class BaseField extends Component {
 
     toggleDependency(value, data, dependencyOptions) {
 
-        let dependencyValues = this.state.dependencyValues;
+        let dependencyValues = this.dependencyValues;
 
         //checking if data is object then adding it to dependency values
         Object.keys(data).map((key, i) => {
@@ -343,7 +343,7 @@ export default class BaseField extends Component {
 
         this.setState({loadingDisabled: true});
 
-        axios.get(this.props.config.url, {params: this.state.dependencyValues})
+        axios.get(this.props.config.url, {params: this.dependencyValues})
             .then(res => {
                 this.setState({
                     loadingDisabled: false,
