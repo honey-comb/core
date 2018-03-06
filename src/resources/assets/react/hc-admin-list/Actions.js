@@ -202,7 +202,7 @@ export default class Actions extends Component {
     }
 
     newCreated() {
-        this.props.reload();
+        this.props.reload(true);
     }
 
     /**

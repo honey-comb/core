@@ -67,7 +67,7 @@ export default class TBCell extends Component {
 
     recordUpdated() {
 
-        this.props.reload();
+        this.props.reload(true);
     }
 
     getContent() {

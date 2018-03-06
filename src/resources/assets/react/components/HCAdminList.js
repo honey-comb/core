@@ -221,7 +221,7 @@ export default class HCAdminListView extends Component {
     /**
      * Reload page with data or without it.
      */
-    reload() {
+    reload(force) {
         this.setState({selected: []});
 
         let params = {
@@ -238,7 +238,7 @@ export default class HCAdminListView extends Component {
 
         Object.assign(params.params, this.params);
 
-        if (this.lastCallParams) {
+        if (!force && this.lastCallParams) {
             allowCall = !HC.helpers.isEquivalent(this.lastCallParams, params.params, true);
         }
 
