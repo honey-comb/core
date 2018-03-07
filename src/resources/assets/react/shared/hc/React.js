@@ -4,6 +4,7 @@ import HCPopUp from "../../components/HCPopUp";
 import HCAdminListView from "../../components/HCAdminList";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import HCForm from "../../components/HCForm";
+import {toast, ToastContainer} from 'react-toastify';
 
 HC.react = new function () {
 
@@ -15,7 +16,8 @@ HC.react = new function () {
      * @param data
      */
     this.adminList = function (data) {
-        ReactDOM.render(<HCAdminListView config={data}/>, document.getElementById('admin-list'))
+        ReactDOM.render(<HCAdminListView config={data}/>, document.getElementById('admin-list'));
+        ReactDOM.render(<ToastContainer/>, document.getElementById('toastrify'));
     };
 
     /**
@@ -41,7 +43,7 @@ HC.react = new function () {
             let creating = document.createElement('div');
             creating.id = id;
             creating.classList.add('inner-pop-up');
-            data.style = {marginLeft:50 * popUpCount};
+            data.style = {marginLeft: 50 * popUpCount};
             existing.append(creating);
         }
 
