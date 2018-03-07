@@ -23,7 +23,7 @@ export default class THCell extends Component {
     }
 
     render() {
-        return <th tabIndex="0">
+        return <th tabIndex="0" style={{width: this.props.cellWidth + '%'}}>
             <div className={this.state.className}>
                 <FontAwesomeIcon onClick={(e) => {
                     if (this.state.flip === undefined)

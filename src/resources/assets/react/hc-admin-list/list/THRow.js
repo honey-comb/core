@@ -28,6 +28,7 @@ export default class THRow extends Component {
             </th>
             {Object.keys(this.props.headers).map((item, i) => (
                 <THCell label={this.props.headers[item].label}
+                        cellWidth={this.props.headers[item].cellWidth}
                         key={item}
                         field={item}
                         update={this.props.update}

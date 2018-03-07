@@ -48,7 +48,7 @@ export default class TBCell extends Component {
             update: (this.props.update && !this.disableUpdate)
         }, this.cellClasses);
 
-        return <td className={tdClass} onClick={this.editRecord}>{content}</td>;
+        return <td className={tdClass} onClick={this.editRecord} style={{width:this.props.config.cellWidth + '%'}}>{content}</td>;
     }
 
     editRecord() {

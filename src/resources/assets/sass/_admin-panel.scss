@@ -214,7 +214,7 @@ body.disabled {
         }
       }
 
-      #list {
+      .list {
         margin-top: 20px;
 
         tr.selected {
@@ -257,6 +257,12 @@ body.disabled {
   display: flex;
   align-items: center;
 }
+
+.rc-pagination
+{
+  padding-top:10px;
+}
+
 
 .hc-media-uploader, .hc-media {
 

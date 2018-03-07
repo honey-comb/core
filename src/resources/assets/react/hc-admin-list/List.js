@@ -19,12 +19,14 @@ export default class List extends Component {
             allSelected: false,
             update: this.props.actions.indexOf('update') !== -1 ? 1 : 0,
             selected: [],
-            sortBy: {}
+            sortBy: {},
+            listHeight: {}
         };
 
         this.invertAll = this.invertAll.bind(this);
         this.getRows = this.getRows.bind(this);
         this.singleRowSelect = this.singleRowSelect.bind(this);
+        this.handleResize = this.handleResize.bind(this);
     }
 
     /**
@@ -110,20 +112,40 @@ export default class List extends Component {
      */
     render() {
 
-        return <div id="list">
-            <table id={this.state.listId} className="table table-hover table-bordered dataTable" role="grid">
-                <thead>
-                <THRow hidden={this.props.hideCheckBox}
-                       headers={this.props.headers}
-                       invertAll={this.invertAll}
-                       checked={this.state.allSelected}
-                       onSortOrderUpdate={this.props.onSortOrderUpdate}/>
-                </thead>
-                <tbody>
-                {this.getRows()}
-                </tbody>
-            </table>
+        return <div>
+
+            <div className="list" style={{overflow: 'auto', height:this.state.listHeight}} ref="listArea">
+                <table id={this.state.listId} className="table table-hover table-bordered" role="grid">
+                    <thead>
+                    <THRow hidden={this.props.hideCheckBox}
+                           headers={this.props.headers}
+                           invertAll={this.invertAll}
+                           checked={this.state.allSelected}
+                           onSortOrderUpdate={this.props.onSortOrderUpdate}/>
+                    </thead>
+                    <tbody>
+                    {this.getRows()}
+                    </tbody>
+                </table>
+            </div>
         </div>;
+    }
+
+    componentDidMount ()
+    {
+        window.addEventListener('resize', this.handleResize);
+        this.calculateListHeight(window.innerHeight);
+    }
+
+    handleResize (e)
+    {
+        this.calculateListHeight(e.currentTarget.innerHeight);
+    }
+
+    calculateListHeight (height)
+    {
+        height -= 345;
+        this.setState({listHeight:height});
     }
 
     /**
