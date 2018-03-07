@@ -61,6 +61,7 @@ export default class HCAdminListView extends Component {
         this.reload = this.reload.bind(this);
         this.onShowSizeChange = this.onShowSizeChange.bind(this);
         this.onSortOrderUpdate = this.onSortOrderUpdate.bind(this);
+        this.loadListCompleted = this.loadListCompleted.bind(this);
     }
 
     /**
@@ -255,23 +256,17 @@ export default class HCAdminListView extends Component {
 
             params.cancelToken = this.dataLoadingSource.token;
 
-            axios.get(this.props.config.url, params)
-                .then(res => {
-
-                    this.dataLoadingSource = undefined;
-
-                    this.setState({
-                        records: res.data,
-                    });
-                }).catch(function (thrown) {
-
-                    if (axios.isCancel(thrown)) {
-                        console.log('Request canceled', thrown.message);
-                    } else {
-                        // handle error
-                    }
-            });
+            HC.react.loader.get(this.props.config.url, params, this.loadListCompleted)
         }
+    }
+
+    loadListCompleted (data)
+    {
+        this.dataLoadingSource = undefined;
+
+        this.setState({
+            records: data,
+        });
     }
 
     /**

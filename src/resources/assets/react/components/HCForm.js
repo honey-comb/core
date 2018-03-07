@@ -36,6 +36,7 @@ export default class HCForm extends Component {
         this.submitData = this.submitData.bind(this);
         this.languageChange = this.languageChange.bind(this);
         this.updateDependencies = this.updateDependencies.bind(this);
+        this.handleSubmitComplete = this.handleSubmitComplete.bind(this);
     }
 
     render() {
@@ -372,19 +373,9 @@ export default class HCForm extends Component {
         this.setState({formDisabled: true});
 
         if (this.props.config.recordId)
-            axios.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, finalRecordStructure).then(
-                (res) =>
-                    this.handleSubmitComplete(res.data)
-            ).catch(error => {
-                this.handleSubmitError(error)
-            });
+            HC.react.loader.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, finalRecordStructure, this.handleSubmitComplete);
         else
-            axios.post(this.state.formData.storageUrl, finalRecordStructure)
-                .then(
-                    (res) => this.handleSubmitComplete(res.data)
-                ).catch(error => {
-                this.handleSubmitError(error)
-            });
+            HC.react.loader.post(this.state.formData.storageUrl, finalRecordStructure, this.handleSubmitComplete);
     }
 
     /**
@@ -425,15 +416,6 @@ export default class HCForm extends Component {
         });
 
         return structure;
-    }
-
-    /**
-     * Handling submit error
-     *
-     * @param error
-     */
-    handleSubmitError(error) {
-        this.setState({formDisabled: false});
     }
 
     /**

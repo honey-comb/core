@@ -4,12 +4,103 @@ import HCPopUp from "../../components/HCPopUp";
 import HCAdminListView from "../../components/HCAdminList";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import HCForm from "../../components/HCForm";
+import * as axios from "axios/index";
 import {toast, ToastContainer} from 'react-toastify';
 
 HC.react = new function () {
 
     let scope = this;
     let popUpCount = 0;
+
+    /**
+     * Loader
+     * @constructor
+     */
+    let Loader = function () {
+        /**
+         * Get method
+         *
+         * @param url
+         * @param params
+         * @param callback
+         * @param notify
+         */
+        this.get = function (url, params, callback, notify) {
+            axios.get(url, params).then(res => {
+
+                res = res.data;
+                handleSuccess(res, callback, notify);
+
+            }).catch(function (error) {
+                if (axios.isCancel(error)) {
+                    console.log('Request canceled', error.message);
+                } else {
+                    handleAxiosError(error);
+                }
+            });
+        };
+
+        /**
+         * Put method
+         *
+         * @param url
+         * @param params
+         * @param callback
+         * @param notify
+         */
+        this.put = function (url, params, callback, notify) {
+            axios.put(url, params).then(res => {
+
+                res = res.data;
+                handleSuccess(res, callback, notify);
+
+            }).catch(function (error) {
+                handleAxiosError(error);
+            });
+        };
+
+        /**
+         *
+         * @param url
+         * @param params
+         * @param callback
+         * @param notify
+         */
+        this.post = function (url, params, callback, notify) {
+            axios.post(url, params).then(res => {
+
+                res = res.data;
+                handleSuccess(res, callback, notify);
+
+            }).catch(function (error) {
+                handleAxiosError(error);
+            });
+        };
+
+        /**
+         * Handling success
+         *
+         * @param data
+         * @param callback
+         * @param notify
+         */
+        function handleSuccess(data, callback, notify) {
+            if (notify && data.message) {
+                toast.success(data.message, {position: toast.POSITION.TOP_CENTER})
+            }
+
+            callback(data);
+        }
+
+        /**
+         * Handling error
+         *
+         * @param e
+         */
+        function handleAxiosError(e) {
+            toast.error(e.message, {position: toast.POSITION.TOP_CENTER});
+        }
+    };
 
     /**
      * showing admin list
@@ -90,5 +181,7 @@ HC.react = new function () {
 
             ReactDOM.render(<FontAwesomeIcon icon={HC.helpers.faIcon(icon.icon)}/>, list[i]);
         }
-    }
+    };
+
+    this.loader = new Loader();
 };
