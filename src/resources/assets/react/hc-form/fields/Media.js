@@ -82,6 +82,7 @@ export default class Media extends Base {
                                         onChange={this.thumbnailUpdated}/>);
 
         this.setState({count: this.state.count});
+        this.contentChange();
     }
 
     /**
@@ -161,8 +162,6 @@ export default class Media extends Base {
 
             this.createThumbnailFromMedia(media.id);
         });
-
-        this.contentChange();
     }
 
     /**
