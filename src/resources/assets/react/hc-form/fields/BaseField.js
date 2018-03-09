@@ -48,7 +48,7 @@ export default class BaseField extends Component {
     }
 
     componentDidMount() {
-        if (this.props.config.value)
+        if (this.props.config.value !== null || this.props.config.value !== undefined)
             this.setValue(this.props.config.value);
     }
 
