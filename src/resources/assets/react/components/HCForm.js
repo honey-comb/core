@@ -92,13 +92,13 @@ export default class HCForm extends Component {
                                 this.refs[key].setMultiLanguageValue(item['language_code'], item[keySequence[1]]);
                             });
                         }
-                        else if (value) {
+                        else if (value !== null && value !== undefined) {
 
                             this.refs[key].setValue(value);
                         }
                     }
                 }
-                else if (value) {
+                else if (value !== null && value !== undefined) {
 
                     this.refs[key].setValue(value);
                 }
