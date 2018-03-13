@@ -77,6 +77,18 @@ HC.react = new function () {
             });
         };
 
+        this.delete = function(url, params, callback, notify)
+        {
+            axios.delete(url, params).then(res => {
+
+                res = res.data;
+                handleSuccess(res, callback, notify);
+
+            }).catch(function (error) {
+                handleAxiosError(error);
+            });
+        };
+
         /**
          * Handling success
          *

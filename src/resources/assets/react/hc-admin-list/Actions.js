@@ -31,6 +31,7 @@ export default class Actions extends Component {
         this.getFilters = this.getFilters.bind(this);
         this.getParams = this.getParams.bind(this);
         this.reset = this.reset.bind(this);
+        this.actionCompleted = this.actionCompleted.bind(this);
     }
 
     render() {
@@ -212,11 +213,14 @@ export default class Actions extends Component {
 
         let params = {data: {list: this.props.selected}};
 
-        axios.delete(this.props.url, params)
-            .then(res => {
+        HC.react.loader.delete(this.props.url, params, this.actionCompleted, true);
+    }
 
-                this.props.reload();
-            });
+    /**
+     * Deletion completed force reload
+     */
+    actionCompleted() {
+        this.props.reload(true);
     }
 
     /**
@@ -226,11 +230,7 @@ export default class Actions extends Component {
 
         let params = {data: {list: this.props.selected}};
 
-        axios.delete(this.props.url + '/force', params)
-            .then(res => {
-
-                this.props.reload();
-            });
+        HC.react.loader.delete(this.props.url + '/force', params, this.actionCompleted, true);
     }
 
     /**
@@ -239,11 +239,7 @@ export default class Actions extends Component {
     restoreAction() {
         let params = {list: this.props.selected};
 
-        axios.post(this.props.url + '/restore', params)
-            .then(res => {
-
-                this.props.reload();
-            });
+        HC.react.loader.post(this.props.url + '/restore', params, this.actionCompleted, true);
     }
 
     /**
@@ -289,8 +285,7 @@ export default class Actions extends Component {
         this.props.reload();
     }
 
-    getParams ()
-    {
+    getParams() {
         return this.params;
     }
 
