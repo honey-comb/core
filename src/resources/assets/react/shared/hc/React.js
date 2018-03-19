@@ -77,18 +77,6 @@ HC.react = new function () {
             });
         };
 
-        this.delete = function(url, params, callback, notify)
-        {
-            axios.delete(url, params).then(res => {
-
-                res = res.data;
-                handleSuccess(res, callback, notify);
-
-            }).catch(function (error) {
-                handleAxiosError(error);
-            });
-        };
-
         /**
          * Handling success
          *
@@ -110,7 +98,26 @@ HC.react = new function () {
          * @param e
          */
         function handleAxiosError(e) {
-            toast.error(e.message, {position: toast.POSITION.TOP_CENTER});
+
+            let message = e.message;
+
+            if (e.response.data) {
+
+                if (e.response.data.message && e.response.data.errors) {
+                    message = '';
+
+                    Object.keys(e.response.data.errors).map((value) => {
+                        toast.error(e.response.data.errors[value][0], {position: toast.POSITION.TOP_CENTER});
+                    });
+
+                    return;
+                }
+                else if (e.response.data.message) {
+                    message = e.response.data.message;
+                }
+            }
+
+            toast.error(message, {position: toast.POSITION.TOP_CENTER});
         }
     };
 
