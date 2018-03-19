@@ -37,6 +37,7 @@ export default class HCForm extends Component {
         this.languageChange = this.languageChange.bind(this);
         this.updateDependencies = this.updateDependencies.bind(this);
         this.handleSubmitComplete = this.handleSubmitComplete.bind(this);
+        this.handleSubmitError = this.handleSubmitError.bind(this);
     }
 
     render() {
@@ -373,9 +374,9 @@ export default class HCForm extends Component {
         this.setState({formDisabled: true});
 
         if (this.props.config.recordId)
-            HC.react.loader.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, finalRecordStructure, this.handleSubmitComplete);
+            HC.react.loader.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, finalRecordStructure, this.handleSubmitComplete, false, this.handleSubmitError);
         else
-            HC.react.loader.post(this.state.formData.storageUrl, finalRecordStructure, this.handleSubmitComplete);
+            HC.react.loader.post(this.state.formData.storageUrl, finalRecordStructure, this.handleSubmitComplete, false, this.handleSubmitError);
     }
 
     /**
@@ -433,6 +434,11 @@ export default class HCForm extends Component {
 
             this.props.formClosed();
         }
+    }
+
+    handleSubmitError()
+    {
+        this.setState({formDisabled: false});
     }
 
     /**

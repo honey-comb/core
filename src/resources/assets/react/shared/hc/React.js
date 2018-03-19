@@ -25,7 +25,7 @@ HC.react = new function () {
          * @param callback
          * @param notify
          */
-        this.get = function (url, params, callback, notify) {
+        this.get = function (url, params, callback, notify, errorCallBack) {
             axios.get(url, params).then(res => {
 
                 res = res.data;
@@ -35,7 +35,7 @@ HC.react = new function () {
                 if (axios.isCancel(error)) {
                     console.log('Request canceled', error.message);
                 } else {
-                    handleAxiosError(error);
+                    handleAxiosError(error, errorCallBack);
                 }
             });
         };
@@ -48,14 +48,14 @@ HC.react = new function () {
          * @param callback
          * @param notify
          */
-        this.put = function (url, params, callback, notify) {
+        this.put = function (url, params, callback, notify, errorCallBack) {
             axios.put(url, params).then(res => {
 
                 res = res.data;
                 handleSuccess(res, callback, notify);
 
             }).catch(function (error) {
-                handleAxiosError(error);
+                handleAxiosError(error, errorCallBack);
             });
         };
 
@@ -66,14 +66,14 @@ HC.react = new function () {
          * @param callback
          * @param notify
          */
-        this.post = function (url, params, callback, notify) {
+        this.post = function (url, params, callback, notify, errorCallBack) {
             axios.post(url, params).then(res => {
 
                 res = res.data;
                 handleSuccess(res, callback, notify);
 
             }).catch(function (error) {
-                handleAxiosError(error);
+                handleAxiosError(error, errorCallBack);
             });
         };
 
@@ -96,8 +96,12 @@ HC.react = new function () {
          * Handling error
          *
          * @param e
+         * @param errorCallBack
          */
-        function handleAxiosError(e) {
+        function handleAxiosError(e, errorCallBack) {
+
+            if (errorCallBack)
+                errorCallBack(e);
 
             let message = e.message;
 
