@@ -30,7 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Controllers\Admin\Acl;
 
 use HoneyComb\Core\Http\Controllers\HCBaseController;
-use HoneyComb\Core\Http\Requests\HCRoleRequest;
+use HoneyComb\Core\Http\Requests\Admin\HCRoleRequest;
 use HoneyComb\Core\Services\Acl\HCRoleService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Http\JsonResponse;

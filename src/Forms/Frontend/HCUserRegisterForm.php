@@ -27,15 +27,15 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Forms;
+namespace HoneyComb\Core\Forms\Frontend;
 
 use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
- * Class HCPasswordResetForm
+ * Class HCUserRegisterForm
  * @package HoneyComb\Core\Forms
  */
-class HCPasswordResetForm extends HCBaseForm
+class HCUserRegisterForm extends HCBaseForm
 {
     /**
      * Creating form
@@ -46,71 +46,33 @@ class HCPasswordResetForm extends HCBaseForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            "storageUrl" => route('users.password.reset.post'),
-            "buttons" => [
+            'storageUrl' => route('auth.register'),
+            'buttons' => [
                 [
                     "class" => "col-centered",
-                    "label" => trans('HCCore::user.passwords.reset_button'),
+                    "label" => trans('HCCore::core.buttons.register'),
                     "type" => "submit",
                 ],
             ],
-            "structure" => $this->getStructure($edit),
+            'structure' => [
+                [
+                    "type" => "singleLine",
+                    "fieldId" => "email",
+                    "label" => trans("HCCore::user.email"),
+                    "required" => 1,
+                    "requiredVisible" => 1,
+                ],
+                [
+                    "type" => "password",
+                    "fieldId" => "password",
+                    "label" => trans("HCCore::user.register.password"),
+                    "required" => 1,
+                    "requiredVisible" => 1,
+                ],
+            ],
         ];
-
-        if ($this->multiLanguage) {
-            $form['availableLanguages'] = getHCContentLanguages();
-        }
-
-        if (!$edit) {
-            return $form;
-        }
 
         return $form;
-    }
-
-    /**
-     * Get new structure
-     *
-     * @param string $prefix
-     * @return array
-     */
-    public function getStructureNew(string $prefix): array
-    {
-        return [
-            [
-                "type" => "email",
-                "fieldId" => "email",
-                "label" => trans('HCCore::user.login.email'),
-                "required" => 1,
-                "requiredVisible" => 1,
-                "maxLength" => "197",
-            ],
-            [
-                "type" => "password",
-                "fieldId" => "password",
-                "label" => trans('HCCore::user.passwords.new'),
-                "required" => 1,
-                "requiredVisible" => 1,
-                "maxLength" => "197",
-            ],
-            [
-                "type" => "password",
-                "fieldId" => "password_confirmation",
-                "label" => trans('HCCore::user.passwords.new_again'),
-                "required" => 1,
-                "requiredVisible" => 1,
-                "maxLength" => "197",
-            ],
-            [
-                "type" => "singleLine",
-                "fieldId" => "token",
-                "hidden" => 1,
-                "required" => 1,
-                "requiredVisible" => 1,
-                "maxLength" => "255",
-                "value" => request()->input('token'),
-            ],
-        ];
     }
 
     /**
@@ -121,6 +83,17 @@ class HCPasswordResetForm extends HCBaseForm
      */
     public function getStructureEdit(string $prefix): array
     {
-        return [];
+        // TODO: Implement getStructureEdit() method.
+    }
+
+    /**
+     * Get new structure
+     *
+     * @param string $prefix
+     * @return array
+     */
+    public function getStructureNew(string $prefix): array
+    {
+        // TODO: Implement getStructureNew() method.
     }
 }

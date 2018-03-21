@@ -27,8 +27,8 @@
 
 namespace HoneyComb\Core\Repositories;
 
-use HoneyComb\Core\DTO\HCUserDTO;
-use HoneyComb\Core\Http\Requests\HCUserRequest;
+use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
+use HoneyComb\Core\Http\Resources\HCUserResource;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
@@ -101,10 +101,11 @@ class HCUserRepository extends HCBaseRepository
 
     /**
      * @param string $userId
-     * @return HCUserDTO
+     * @return HCUserResource
      */
-    public function getRecordById(string $userId): HCUserDTO
+    public function getRecordById(string $userId): HCUserResource
     {
+        /** @var HCUser $record */
         $record = $this->getById($userId);
 
         $record->load([
@@ -116,19 +117,7 @@ class HCUserRepository extends HCBaseRepository
             },
         ]);
 
-        return new HCUserDTO(
-            $record->id,
-            $record->email,
-            $record->activated_at,
-            $record->last_login,
-            $record->last_visited,
-            $record->last_activity,
-            optional($record->personal)->first_name,
-            optional($record->personal)->last_name,
-            optional($record->personal)->photo_id,
-            optional($record->personal)->description,
-            $record->roles
-        );
+        return new HCUserResource($record);
     }
 
     /**

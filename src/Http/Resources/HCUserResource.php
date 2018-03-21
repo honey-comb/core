@@ -27,18 +27,19 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\DTO;
+namespace HoneyComb\Core\Http\Resources;
 
 use Carbon\Carbon;
 use HoneyComb\Core\Models\Acl\HCAclRole;
+use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Starter\DTO\HCBaseDTO;
 use Illuminate\Support\Collection;
 
 /**
- * Class HCUserDTO
+ * Class HCUserResource
  * @package HoneyComb\Core\DTO
  */
-class HCUserDTO extends HCBaseDTO
+class HCUserResource extends HCBaseDTO
 {
     /**
      * @var string
@@ -96,44 +97,22 @@ class HCUserDTO extends HCBaseDTO
     private $photoId;
 
     /**
-     * HCUserDTO constructor.
+     * HCUserResource constructor.
      *
-     * @param string $userId
-     * @param string $email
-     * @param Carbon|null $activatedAt
-     * @param Carbon|null $lastLogin
-     * @param Carbon|null $lastVisited
-     * @param Carbon|null $lastActivity
-     * @param string|null $firstName
-     * @param string|null $lastName
-     * @param string|null $photoId
-     * @param string|null $description
-     * @param Collection|null $roles
+     * @param HCUser $model
      */
-    public function __construct(
-        string $userId,
-        string $email,
-        Carbon $activatedAt = null,
-        Carbon $lastLogin = null,
-        Carbon $lastVisited = null,
-        Carbon $lastActivity = null,
-        string $firstName = null,
-        string $lastName = null,
-        string $photoId = null,
-        string $description = null,
-        Collection $roles = null
-    ) {
-        $this->userId = $userId;
-        $this->email = $email;
-        $this->activatedAt = $activatedAt;
-        $this->lastLogin = $lastLogin;
-        $this->lastVisited = $lastVisited;
-        $this->lastActivity = $lastActivity;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->photoId = $photoId;
-        $this->description = $description;
-        $this->roles = $roles->pluck('id');
+    public function __construct(HCUser $model) {
+        $this->userId = $model->id;
+        $this->email = $model->email;
+        $this->activatedAt = $model->activated_at;
+        $this->lastLogin = $model->last_login;
+        $this->lastVisited = $model->last_visited;
+        $this->lastActivity = $model->last_activity;
+        $this->firstName = $model->personal->first_name;
+        $this->lastName = $model->personal->last_name;
+        $this->photoId = $model->personal->photo_id;
+        $this->description = $model->personal->description;
+        $this->roles = $model->roles->pluck('id');
     }
 
     /**

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Requests;
+namespace HoneyComb\Core\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 

@@ -27,7 +27,7 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Forms;
+namespace HoneyComb\Core\Forms\Frontend;
 
 use HoneyComb\Starter\Forms\HCBaseForm;
 

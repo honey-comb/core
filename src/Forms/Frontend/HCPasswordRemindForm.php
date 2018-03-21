@@ -27,15 +27,15 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Forms;
+namespace HoneyComb\Core\Forms\Frontend;
 
 use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
- * Class HCUserRegisterForm
+ * Class HCPasswordRemindForm
  * @package HoneyComb\Core\Forms
  */
-class HCUserRegisterForm extends HCBaseForm
+class HCPasswordRemindForm extends HCBaseForm
 {
     /**
      * Creating form
@@ -46,44 +46,26 @@ class HCUserRegisterForm extends HCBaseForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            'storageUrl' => route('auth.register'),
-            'buttons' => [
+            "storageUrl" => route('users.password.remind.post'),
+            "buttons" => [
                 [
                     "class" => "col-centered",
-                    "label" => trans('HCCore::core.buttons.register'),
+                    "label" => trans('HCCore::core.buttons.submit'),
                     "type" => "submit",
                 ],
             ],
-            'structure' => [
-                [
-                    "type" => "singleLine",
-                    "fieldId" => "email",
-                    "label" => trans("HCCore::user.email"),
-                    "required" => 1,
-                    "requiredVisible" => 1,
-                ],
-                [
-                    "type" => "password",
-                    "fieldId" => "password",
-                    "label" => trans("HCCore::user.register.password"),
-                    "required" => 1,
-                    "requiredVisible" => 1,
-                ],
-            ],
+            "structure" => $this->getStructure($edit),
         ];
 
-        return $form;
-    }
+        if ($this->multiLanguage) {
+            $form['availableLanguages'] = getHCContentLanguages();
+        }
 
-    /**
-     * Get Edit structure
-     *
-     * @param string $prefix
-     * @return array
-     */
-    public function getStructureEdit(string $prefix): array
-    {
-        // TODO: Implement getStructureEdit() method.
+        if (!$edit) {
+            return $form;
+        }
+
+        return $form;
     }
 
     /**
@@ -94,6 +76,30 @@ class HCUserRegisterForm extends HCBaseForm
      */
     public function getStructureNew(string $prefix): array
     {
-        // TODO: Implement getStructureNew() method.
+        return [
+            [
+                "type" => "email",
+                "fieldId" => "email",
+                "label" => trans('HCCore::user.login.email'),
+                "editType" => 0,
+                "required" => 1,
+                "requiredVisible" => 0,
+                "properties" => [
+                    "style" => "varchar",
+                    "maxlength" => "197",
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Get Edit structure
+     *
+     * @param string $prefix
+     * @return array
+     */
+    public function getStructureEdit(string $prefix): array
+    {
+        return [];
     }
 }

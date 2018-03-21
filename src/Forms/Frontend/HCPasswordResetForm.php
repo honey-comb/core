@@ -27,15 +27,15 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Forms;
+namespace HoneyComb\Core\Forms\Frontend;
 
 use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
- * Class HCPasswordRemindForm
+ * Class HCPasswordResetForm
  * @package HoneyComb\Core\Forms
  */
-class HCPasswordRemindForm extends HCBaseForm
+class HCPasswordResetForm extends HCBaseForm
 {
     /**
      * Creating form
@@ -46,11 +46,11 @@ class HCPasswordRemindForm extends HCBaseForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            "storageUrl" => route('users.password.remind.post'),
+            "storageUrl" => route('users.password.reset.post'),
             "buttons" => [
                 [
                     "class" => "col-centered",
-                    "label" => trans('HCCore::core.buttons.submit'),
+                    "label" => trans('HCCore::user.passwords.reset_button'),
                     "type" => "submit",
                 ],
             ],
@@ -81,13 +81,34 @@ class HCPasswordRemindForm extends HCBaseForm
                 "type" => "email",
                 "fieldId" => "email",
                 "label" => trans('HCCore::user.login.email'),
-                "editType" => 0,
                 "required" => 1,
-                "requiredVisible" => 0,
-                "properties" => [
-                    "style" => "varchar",
-                    "maxlength" => "197",
-                ],
+                "requiredVisible" => 1,
+                "maxLength" => "197",
+            ],
+            [
+                "type" => "password",
+                "fieldId" => "password",
+                "label" => trans('HCCore::user.passwords.new'),
+                "required" => 1,
+                "requiredVisible" => 1,
+                "maxLength" => "197",
+            ],
+            [
+                "type" => "password",
+                "fieldId" => "password_confirmation",
+                "label" => trans('HCCore::user.passwords.new_again'),
+                "required" => 1,
+                "requiredVisible" => 1,
+                "maxLength" => "197",
+            ],
+            [
+                "type" => "singleLine",
+                "fieldId" => "token",
+                "hidden" => 1,
+                "required" => 1,
+                "requiredVisible" => 1,
+                "maxLength" => "255",
+                "value" => request()->input('token'),
             ],
         ];
     }
