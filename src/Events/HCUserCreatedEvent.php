@@ -8,6 +8,10 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
+/**
+ * Class HCUserCreatedEvent
+ * @package HoneyComb\Core\Events
+ */
 class HCUserCreatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;

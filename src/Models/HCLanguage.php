@@ -31,6 +31,10 @@ namespace HoneyComb\Core\Models;
 
 use HoneyComb\Starter\Models\HCUuidModel;
 
+/**
+ * Class HCLanguage
+ * @package HoneyComb\Core\Models
+ */
 class HCLanguage extends HCUuidModel
 {
     /**

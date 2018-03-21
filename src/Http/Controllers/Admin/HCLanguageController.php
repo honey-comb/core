@@ -39,6 +39,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+/**
+ * Class HCLanguageController
+ * @package HoneyComb\Core\Http\Controllers\Admin
+ */
 class HCLanguageController extends HCBaseController
 {
     use HCAdminListHeaders;

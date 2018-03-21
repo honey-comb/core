@@ -37,7 +37,7 @@ use Illuminate\Support\Collection;
 
 /**
  * Class HCUserResource
- * @package HoneyComb\Core\DTO
+ * @package HoneyComb\Core\Http\Resources
  */
 class HCUserResource extends HCBaseDTO
 {

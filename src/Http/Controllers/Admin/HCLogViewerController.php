@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class HCLogViewerController
- * @package HoneyComb\Core\Http\Controllers
+ * @package HoneyComb\Core\Http\Controllers\Admin
  */
 class HCLogViewerController extends LogViewerController
 {

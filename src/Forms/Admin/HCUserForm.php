@@ -34,7 +34,7 @@ use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
  * Class HCUserForm
- * @package HoneyComb\Core\Forms
+ * @package HoneyComb\Core\Forms\Admin
  */
 class HCUserForm extends HCBaseForm
 {

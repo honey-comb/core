@@ -6,6 +6,10 @@ namespace HoneyComb\Core\Http\Requests\Frontend;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class HCAuthRequestRequest
+ * @package HoneyComb\Core\Http\Requests\Frontend
+ */
 class HCAuthRequestRequest extends FormRequest
 {
     /**

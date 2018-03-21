@@ -43,7 +43,7 @@ use Illuminate\View\View;
 
 /**
  * Class HCAuthController
- * @package HoneyComb\Core\Http\Controllers
+ * @package HoneyComb\Core\Http\Controllers\Frontend
  */
 class HCAuthController extends HCBaseController
 {

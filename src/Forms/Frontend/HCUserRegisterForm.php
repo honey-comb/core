@@ -33,7 +33,7 @@ use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
  * Class HCUserRegisterForm
- * @package HoneyComb\Core\Forms
+ * @package HoneyComb\Core\Forms\Frontend
  */
 class HCUserRegisterForm extends HCBaseForm
 {

@@ -33,7 +33,7 @@ use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
  * Class HCPasswordRemindForm
- * @package HoneyComb\Core\Forms
+ * @package HoneyComb\Core\Forms\Frontend
  */
 class HCPasswordRemindForm extends HCBaseForm
 {

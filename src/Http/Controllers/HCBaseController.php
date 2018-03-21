@@ -9,6 +9,10 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 
+/**
+ * Class HCBaseController
+ * @package HoneyComb\Core\Http\Controllers
+ */
 class HCBaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;

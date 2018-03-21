@@ -33,7 +33,7 @@ use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
  * Class HCUserLoginForm
- * @package HoneyComb\Core\Forms
+ * @package HoneyComb\Core\Forms\Frontend
  */
 class HCUserLoginForm extends HCBaseForm
 {

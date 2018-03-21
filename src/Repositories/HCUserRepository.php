@@ -121,7 +121,7 @@ class HCUserRepository extends HCBaseRepository
     }
 
     /**
-     * @param \HoneyComb\Core\Http\Requests\HCUserRequest $request
+     * @param \HoneyComb\Core\Http\Requests\Admin\HCUserRequest $request
      * @return \Illuminate\Support\Collection
      */
     public function getOptions (HCUserRequest $request): Collection

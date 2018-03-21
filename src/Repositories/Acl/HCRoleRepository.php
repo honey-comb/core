@@ -33,6 +33,10 @@ use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 
+/**
+ * Class HCRoleRepository
+ * @package HoneyComb\Core\Repositories\Acl
+ */
 class HCRoleRepository extends HCBaseRepository
 {
     /**

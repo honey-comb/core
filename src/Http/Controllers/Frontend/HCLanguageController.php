@@ -35,6 +35,10 @@ use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
 use Illuminate\Http\Request;
 
+/**
+ * Class HCLanguageController
+ * @package HoneyComb\Core\Http\Controllers\Frontend
+ */
 class HCLanguageController extends HCBaseController
 {
     /**

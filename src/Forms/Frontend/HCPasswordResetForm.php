@@ -33,7 +33,7 @@ use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
  * Class HCPasswordResetForm
- * @package HoneyComb\Core\Forms
+ * @package HoneyComb\Core\Forms\Frontend
  */
 class HCPasswordResetForm extends HCBaseForm
 {

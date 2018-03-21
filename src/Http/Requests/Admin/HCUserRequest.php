@@ -6,6 +6,10 @@ namespace HoneyComb\Core\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class HCUserRequest
+ * @package HoneyComb\Core\Http\Requests\Admin
+ */
 class HCUserRequest extends FormRequest
 {
     /**

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class HCLanguageRequest
- * @package HoneyComb\Core\Http\Requests
+ * @package HoneyComb\Core\Http\Requests\Admin
  */
 class HCLanguageRequest extends FormRequest
 {

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class HCRoleRequest
- * @package HoneyComb\Core\Http\Requests
+ * @package HoneyComb\Core\Http\Requests\Admin
  */
 class HCRoleRequest extends FormRequest
 {
