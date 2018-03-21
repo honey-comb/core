@@ -30,7 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
 use HoneyComb\Core\Http\Controllers\HCBaseController;
-use HoneyComb\Core\Http\Requests\HCUserRequest;
+use HoneyComb\Core\Http\Requests\Frontend\HCAuthRequestRequest;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
@@ -189,12 +189,12 @@ class HCAuthController extends HCBaseController
     /**
      * User registration
      *
-     * @param HCUserRequest $request
+     * @param HCAuthRequestRequest $request
      * @return JsonResponse
      * @throws \Exception
      * @throws \Illuminate\Container\EntryNotFoundException
      */
-    public function register(HCUserRequest $request): JsonResponse
+    public function register(HCAuthRequestRequest $request): JsonResponse
     {
         if (!config('hc.allow_registration')) {
             throw new \Exception();
