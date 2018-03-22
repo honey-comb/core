@@ -80,9 +80,10 @@ class HCUserActivationService
 
     /**
      * @param string $token
+     * @return HCUser
      * @throws \Exception
      */
-    public function activateUser(string $token): void
+    public function activateUser(string $token): HCUser
     {
         $activation = $this->hcUserActivationRepository->getActivationByToken($token);
 
@@ -104,6 +105,8 @@ class HCUserActivationService
 
         // login user to the site
         auth()->login($user);
+
+        return $user;
     }
 
     /**

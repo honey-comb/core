@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Admin\Acl;
 
+use HoneyComb\Core\Events\Admin\HCRolePermissionUpdated;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Requests\Admin\HCRoleRequest;
 use HoneyComb\Core\Services\Acl\HCRoleService;
@@ -92,6 +93,15 @@ class HCRoleController extends HCBaseController
                 $request->input('role_id'),
                 $request->input('permission_id')
             );
+
+            event(
+                new HCRolePermissionUpdated(
+                    $request->input('role_id'),
+                    $request->input('permission_id'),
+                    $message
+                )
+            );
+
         } catch (\Exception $exception) {
             return $this->response->error($exception->getMessage());
         }
