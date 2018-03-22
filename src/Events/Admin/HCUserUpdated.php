@@ -1,33 +1,38 @@
 <?php
 
-namespace HoneyComb\Core\Events;
+declare(strict_types = 1);
+
+namespace HoneyComb\Core\Events\Admin;
 
 use HoneyComb\Core\Models\HCUser;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /**
- * Class HCUserCreatedEvent
- * @package HoneyComb\Core\Events
+ * Class HCUserUpdated
+ * @package HoneyComb\Core\Events\Admin
  */
-class HCUserCreatedEvent
+class HCUserUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     /**
-     * @var \HoneyComb\Core\Models\HCUser
+     * @var HCUser
      */
     private $user;
 
     /**
      * Create a new event instance.
      *
-     * @param \HoneyComb\Core\Models\HCUser $user
+     * @return void
      */
     public function __construct(HCUser $user)
     {
-        //
         $this->user = $user;
     }
 
@@ -36,16 +41,8 @@ class HCUserCreatedEvent
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn()
+    public function broadcastOn($id)
     {
         return new PrivateChannel('channel-name');
-    }
-
-    /**
-     * @return \HoneyComb\Core\Models\HCUser
-     */
-    public function getUser(): HCUser
-    {
-        return $this->user;
     }
 }

@@ -74,9 +74,17 @@ class HCUserRepository extends HCBaseRepository
      *
      * @param array $userIds
      */
-    public function deleteSoft(array $userIds): void
+    public function deleteSoft(array $userIds): array
     {
-        $this->makeQuery()->whereIn('id', $userIds)->delete();
+        $deleted = [];
+
+        foreach ($userIds as $userId) {
+            if ($this->makeQuery()->where('id', $userId)->delete()) {
+                $deleted[] = $userId;
+            }
+        }
+
+        return $deleted;
     }
 
     /**
@@ -94,9 +102,20 @@ class HCUserRepository extends HCBaseRepository
      *
      * @param array $userIds
      */
-    public function deleteForce(array $userIds): void
+    public function deleteForce(array $userIds): array
     {
-        $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->forceDelete();
+        $deleted = [];
+
+        $users = $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->get();
+
+        /** @var HCUser $user */
+        foreach ($users as $user) {
+            if ($user->forceDelete()) {
+                $deleted[] = $user;
+            }
+        }
+
+        return $deleted;
     }
 
     /**
@@ -124,9 +143,9 @@ class HCUserRepository extends HCBaseRepository
      * @param \HoneyComb\Core\Http\Requests\Admin\HCUserRequest $request
      * @return \Illuminate\Support\Collection
      */
-    public function getOptions (HCUserRequest $request): Collection
+    public function getOptions(HCUserRequest $request): Collection
     {
-        return $this->createBuilderQuery($request)->get()->map (function ($record){
+        return $this->createBuilderQuery($request)->get()->map(function ($record) {
             return [
                 'id' => $record->id,
                 'label' => $record->email

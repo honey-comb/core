@@ -65,6 +65,8 @@ class HCSocialiteAuthController extends Controller
             return $this->deAuthorize($user);
         }
 
+        event(new HCUserLoggedInThroughSocial([$request->segment(3), $user]));
+
         auth()->login(
             $this->service->createOrUpdateUserProvider($user, $request->segment(3))
         );
