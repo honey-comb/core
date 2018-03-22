@@ -16,6 +16,8 @@ export default class DateTimePicker extends BaseField {
             startDate: moment(this.props.value)
         };
 
+        this.value = this.state.startDate;
+
         this.handleSelectionChange = this.handleSelectionChange.bind(this);
     }
 
