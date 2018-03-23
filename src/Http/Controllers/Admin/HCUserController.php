@@ -30,8 +30,8 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Controllers\Admin;
 
 use HoneyComb\Core\Events\Admin\HCUserRestored;
-use HoneyComb\Core\Events\Admin\HCUserDeletedSoft;
-use HoneyComb\Core\Events\Admin\HCUserDeletedForce;
+use HoneyComb\Core\Events\Admin\HCUserSoftDeleted;
+use HoneyComb\Core\Events\Admin\HCUserForceDeleted;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
 use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
@@ -227,7 +227,7 @@ class HCUserController extends HCBaseController
         try {
             $deletedIds = $this->service->getRepository()->deleteSoft($request->getListIds());
 
-            event(new HCUserDeletedSoft($deletedIds));
+            event(new HCUserSoftDeleted($deletedIds));
 
             $this->connection->commit();
         } catch (\Exception $exception) {
@@ -251,7 +251,7 @@ class HCUserController extends HCBaseController
         try {
             $deletedUsers = $this->service->getRepository()->deleteForce($request->getListIds());
 
-            event(new HCUserDeletedForce($deletedUsers));
+            event(new HCUserForceDeleted($deletedUsers));
 
             $this->connection->commit();
         } catch (\Exception $exception) {

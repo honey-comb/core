@@ -29,7 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Events\Admin;
 
-use HoneyComb\Core\Models\HCUser;
+
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -39,26 +39,26 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /**
- * Class HCUserUpdated
+ * Class HCUserForceDeleted
  * @package HoneyComb\Core\Events\Admin
  */
-class HCUserUpdated
+class HCUserForceDeleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var HCUser
+     * @var array
      */
-    private $user;
+    private $users;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(HCUser $user)
+    public function __construct(array $users)
     {
-        $this->user = $user;
+        $this->users = $users;
     }
 
     /**
@@ -66,7 +66,7 @@ class HCUserUpdated
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn($id)
+    public function broadcastOn()
     {
         return new PrivateChannel('channel-name');
     }

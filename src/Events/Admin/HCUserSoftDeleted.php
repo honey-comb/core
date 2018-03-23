@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Events\Admin;
 
-
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -13,23 +12,27 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class HCUserDeletedForce
+/**
+ * Class HCUserSoftDeleted
+ * @package HoneyComb\Core\Events\Admin
+ */
+class HCUserSoftDeleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * @var array
      */
-    private $users;
+    private $userIds;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(array $users)
+    public function __construct(array $userIds)
     {
-        $this->users = $users;
+        $this->userIds = $userIds;
     }
 
     /**
