@@ -29,8 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Admin;
 
-use HoneyComb\Core\Events\Admin\HCUserCreated;
-use HoneyComb\Core\Events\Admin\HCUserUpdated;
+use HoneyComb\Core\Events\Admin\HCUserRestored;
 use HoneyComb\Core\Events\Admin\HCUserDeletedSoft;
 use HoneyComb\Core\Events\Admin\HCUserDeletedForce;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
@@ -133,8 +132,6 @@ class HCUserController extends HCBaseController
                 $request->filled('send_password')
             );
 
-            event(new HCUserCreated($record));
-
             $this->connection->commit();
         } catch (\Throwable $exception) {
             $this->connection->rollBack();
@@ -169,8 +166,6 @@ class HCUserController extends HCBaseController
             if ($request->wantToActivate()) {
                 $this->service->activateUser($record->id);
             }
-
-            event(new HCUserUpdated($record));
 
             $this->connection->commit();
 
@@ -278,7 +273,9 @@ class HCUserController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->service->getRepository()->restore($request->getListIds());
+            $restoredUsers = $this->service->getRepository()->restore($request->getListIds());
+
+            event(new HCUserRestored($restoredUsers));
 
             $this->connection->commit();
         } catch (\Exception $exception) {

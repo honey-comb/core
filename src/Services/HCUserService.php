@@ -30,6 +30,8 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Services;
 
 use Carbon\Carbon;
+use HoneyComb\Core\Events\Admin\HCUserCreated;
+use HoneyComb\Core\Events\Admin\HCUserUpdated;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Models\Users\HCUserProvider;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
@@ -136,6 +138,8 @@ class HCUserService
             }
         }
 
+        event(new HCUserCreated($user));
+
         // create user activation
         if (is_null($user->activated_at)) {
             $user->createTokenAndSendActivationCode();
@@ -160,6 +164,8 @@ class HCUserService
         /** @var HCUser $user */
         $user = $this->repository->updateOrCreate(['id' => $userId], $userData);
         $this->personalInfoRepository->updateOrCreate(['user_id' => $userId], $personalData);
+
+        event(new HCUserUpdated($user));
 
         $user->assignRoles($roles);
 
