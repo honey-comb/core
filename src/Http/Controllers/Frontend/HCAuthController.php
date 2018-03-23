@@ -29,7 +29,6 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
-use HoneyComb\Core\Events\frontend\HCUserRegistered;
 use HoneyComb\Core\Events\frontend\HCUserActivated;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Requests\Frontend\HCAuthRequestRequest;
@@ -213,8 +212,6 @@ class HCAuthController extends HCBaseController
 
             return $this->response->error($exception->getMessage());
         }
-
-        event(new HCUserRegistered($user));
 
         $this->connection->commit();
 
