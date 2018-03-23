@@ -11,7 +11,6 @@ export default class Thumbnail extends Component {
 
         this.state = {
             progress: 0,
-            mediaId: this.props.mediaId,
             abandoned: false,
             hideDelete: this.props.hideDelete,
             hideEdit: this.props.hideEdit,
@@ -57,7 +56,7 @@ export default class Thumbnail extends Component {
      */
     getView() {
 
-        if (this.state.mediaId) {
+        if (this.props.mediaId) {
             return this.thumbnailView();
         }
 
@@ -119,14 +118,14 @@ export default class Thumbnail extends Component {
      */
     thumbnailView() {
         return <div className="thumbnail"
-                    style={{backgroundImage: "url(" + this.props.viewUrl + "/" + this.state.mediaId + "/90/90)"}}/>
+                    style={{backgroundImage: "url(" + this.props.viewUrl + "/" + this.props.mediaId + "/90/90)"}}/>
     }
 
     /**
      * Removing component
      */
     remove() {
-        this.props.onChange({action: "remove", id: this.state.mediaId});
+        this.props.onChange({action: "remove", id: this.props.mediaId});
         this.setState({abandoned: true});
     }
 
