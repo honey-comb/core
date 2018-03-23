@@ -92,7 +92,7 @@ class HCUserRepository extends HCBaseRepository
      *
      * @param array $userIds
      */
-    public function restore(array $userIds): void
+    public function restore(array $userIds): array
     {
         $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->restore();
     }
