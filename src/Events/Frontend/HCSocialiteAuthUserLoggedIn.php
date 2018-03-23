@@ -18,10 +18,12 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class HCSocialiteAuthUserLoggedIn
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     /**
      * @var HCUser
      */
     private $user;
+
     /**
      * @var string
      */
@@ -35,7 +37,6 @@ class HCSocialiteAuthUserLoggedIn
      */
     public function __construct(HCUser $user, string $provider)
     {
-        //
         $this->user = $user;
         $this->provider = $provider;
     }
