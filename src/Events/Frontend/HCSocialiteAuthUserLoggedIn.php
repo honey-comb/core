@@ -1,10 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+namespace HoneyComb\Core\Events\frontend;
 
-namespace HoneyComb\Core\Events\Admin;
-
-
+use HoneyComb\Core\Models\HCUser;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -13,23 +11,33 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class HCUserDeletedForce
+/**
+ * Class HCSocialiteAuthUserLoggedIn
+ * @package HoneyComb\Core\Events\frontend\HCSocialiteAuthUserLoggedIn
+ */
+class HCSocialiteAuthUserLoggedIn
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+    /**
+     * @var HCUser
+     */
+    private $user;
+    /**
+     * @var string
+     */
+    private $provider;
+
 
     /**
-     * @var array
+     * HCSocialiteAuthUserLoggedIn constructor.
+     * @param HCUser $user
+     * @param string $provider
      */
-    private $users;
-
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct(array $users)
+    public function __construct(HCUser $user, string $provider)
     {
-        $this->users = $users;
+        //
+        $this->user = $user;
+        $this->provider = $provider;
     }
 
     /**

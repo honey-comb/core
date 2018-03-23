@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
+use HoneyComb\Core\Events\Frontend\HCSocialiteAuthUserLoggedIn;
 use GuzzleHttp\Client;
 use HoneyComb\Core\Services\HCUserService;
 use Illuminate\Http\RedirectResponse;
@@ -65,7 +66,8 @@ class HCSocialiteAuthController extends Controller
             return $this->deAuthorize($user);
         }
 
-        event(new HCUserLoggedInThroughSocial([$request->segment(3), $user]));
+        // TODO Event HCSocialiteAuthUserLoggedIn not tested! Facebook force to use HTTPS
+        event(new HCSocialiteAuthUserLoggedIn($user, $request->segment(3)));
 
         auth()->login(
             $this->service->createOrUpdateUserProvider($user, $request->segment(3))

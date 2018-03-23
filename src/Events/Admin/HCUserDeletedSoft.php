@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace HoneyComb\Core\Events\Admin;
 
 use Illuminate\Broadcasting\Channel;

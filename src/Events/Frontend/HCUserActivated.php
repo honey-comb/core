@@ -1,10 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+namespace HoneyComb\Core\Events\frontend;
 
-namespace HoneyComb\Core\Events\Admin;
-
-
+use HoneyComb\Core\Models\HCUser;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -13,23 +11,27 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class HCUserDeletedForce
+/**
+ * Class HCRegisteredUserWelcomeMail
+ * @package HoneyComb\Core\Events\frontend
+ */
+class HCUserActivated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var array
+     * @var HCUser
      */
-    private $users;
+    private $user;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(array $users)
+    public function __construct(HCUser $user)
     {
-        $this->users = $users;
+        $this->user = $user;
     }
 
     /**

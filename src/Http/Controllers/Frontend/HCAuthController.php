@@ -29,8 +29,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
+use HoneyComb\Core\Events\frontend\HCUserRegistered;
+use HoneyComb\Core\Events\frontend\HCUserActivated;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Requests\Frontend\HCAuthRequestRequest;
+use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
@@ -203,12 +206,15 @@ class HCAuthController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->userService->createUser($request->getInputData());
+            /** @var HCUser $user */
+            $user = $this->userService->createUser($request->getInputData());
         } catch (\Exception $exception) {
             $this->connection->rollback();
 
             return $this->response->error($exception->getMessage());
         }
+
+        event(new HCUserRegistered($user));
 
         $this->connection->commit();
 
@@ -271,7 +277,7 @@ class HCAuthController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->activation->activateUser(
+            $user = $this->activation->activateUser(
                 $request->input('token')
             );
         } catch (\Exception $e) {
@@ -279,6 +285,8 @@ class HCAuthController extends HCBaseController
 
             return redirect()->back()->withErrors($e->getMessage());
         }
+
+        event(new HCUserActivated($user));
 
         $this->connection->commit();
 
