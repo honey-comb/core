@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Middleware;
 
+use Carbon\Carbon;
 use Closure;
 use HoneyComb\Core\Models\HCUser;
 use Illuminate\Http\Request;
@@ -48,7 +49,18 @@ class HCLogLastActivity
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->check()) {
+        if (auth()->guest()) {
+            return $next($request);
+        }
+
+        $time = config('hc.logActivityTime');
+
+        $lastActive = $request->session()->get('_lastActive');
+
+        if ($time && (is_null($lastActive) || Carbon::now()->gt($lastActive))) {
+            $request->session()->forget('_lastActive');
+            $request->session()->put('_lastActive', Carbon::now()->addMinutes($time));
+
             /** @var HCUser $user */
             $user = auth()->user();
             $user->updateLastActivity();

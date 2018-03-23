@@ -54,6 +54,13 @@ return [
     | List of models to override by repositories
     |---------------------------------------------------------------------------
     */
-    'model_list' => []
+    'model_list' => [],
+
+    /*
+    |---------------------------------------------------------------------------
+    | Log user activity at certain intervals in minutes. By default 15 minutes
+    |---------------------------------------------------------------------------
+    */
+    'logActivityTime' => ENV('HC_LOG_USER_ACTIVITY_INTERVAL', 15),
 
 ];
