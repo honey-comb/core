@@ -47,7 +47,7 @@ class CreateHcAclPermissionTable extends Migration
             $table->increments('count');
             $table->uuid('id')->unique();
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('deleted_at')->nullable();
 
             $table->string('name', 768);

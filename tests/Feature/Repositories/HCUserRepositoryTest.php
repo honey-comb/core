@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Contact InteractiveSolutions:
- * E-mail: info@interactivesolutions.lt
+ * E-mail: hello@interactivesolutions.lt
  * http://www.interactivesolutions.lt
  */
 
@@ -29,48 +29,59 @@ declare(strict_types = 1);
 
 namespace Tests\Feature\Repositories;
 
-
-use Faker\Generator;
-use HoneyComb\Starter\Models\HCUuidModel;
-use HoneyComb\Starter\Repositories\HCBaseRepository;
-use Illuminate\Support\Collection;
-use Tests\FeatureTestCase;
+use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Repositories\HCUserRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
- * Class RepositoryTest
+ * Class HCUserRepositoryTest
  * @package Tests\Feature\Repositories
  */
-class RepositoryTest extends FeatureTestCase
+class HCUserRepositoryTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
-     *
+     * @test
+     * @group user
      */
-    protected function setUp()
+    public function it_must_create_singleton_instance(): void
     {
-        parent::setUp();
+        $this->assertInstanceOf(HCUserRepository::class, $this->getTestClassInstance());
 
-        $this->factory->define(HCUser::class, function (Generator $faker) {
-            static $password;
-
-            return [
-                'email' => $faker->email,
-                'password' => $password ?: $password = bcrypt('secret'),
-                'remember_token' => str_random(10),
-                'last_visited' => $faker->dateTime,
-            ];
-        });
+        $this->assertSame($this->getTestClassInstance(), $this->getTestClassInstance());
     }
 
     /**
      * @test
+     * @group user
      */
-    public function is_should_return_model_method_of_bind_model_class(): void
+    public function is_must_return_model_method_of_bind_model_class(): void
     {
         $this->assertEquals(HCUser::class, $this->getTestClassInstance()->model());
     }
 
     /**
      * @test
+     * @group user
+     */
+    public function it_must_return_user_by_id(): void
+    {
+        // create user via factory
+        $expected = factory(HCUser::class)->create();
+
+        // execute function getById
+        $user = $this->getTestClassInstance()->getById($expected->id);
+
+        // assert created user id is equal to returned from getById response
+        $this->assertEquals($expected->id, $user->id);
+    }
+
+    /**
+     * @test
+     * @group user
      */
     public function it_should_get_all_selected_columns(): void
     {
@@ -104,59 +115,10 @@ class RepositoryTest extends FeatureTestCase
     }
 
     /**
-     * @return RepositoryFake
+     * @return HCUserRepository
      */
-    private function getTestClassInstance(): RepositoryFake
+    private function getTestClassInstance(): HCUserRepository
     {
-        return $this->app->make(RepositoryFake::class);
-    }
-}
-
-/**
- * Class HCUser
- * @package Tests\Feature\Repositories
- */
-class HCUser extends HCUuidModel
-{
-    /**
-     * @var string
-     */
-    protected $table = 'hc_user';
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'id',
-        'activated_at',
-        'last_login',
-        'last_visited',
-        'last_activity',
-        'email',
-        'password',
-    ];
-
-    /**
-     * @var array
-     */
-    protected $casts = [
-        'activated_at' => 'datetime',
-        'last_login' => 'datetime',
-        'last_visited' => 'datetime',
-        'last_activity' => 'datetime',
-    ];
-}
-
-/**
- * Class RepositoryFake
- * @package Tests\Feature\Repositories
- */
-class RepositoryFake extends HCBaseRepository
-{
-    /**
-     * @return string
-     */
-    public function model(): string
-    {
-        return HCUser::class;
+        return $this->app->make(HCUserRepository::class);
     }
 }

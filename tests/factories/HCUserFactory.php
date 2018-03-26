@@ -21,48 +21,32 @@
  * SOFTWARE.
  *
  * Contact InteractiveSolutions:
- * E-mail: info@interactivesolutions.lt
+ * E-mail: hello@interactivesolutions.lt
  * http://www.interactivesolutions.lt
  */
 
-declare(strict_types = 1);
+use Faker\Generator as Faker;
 
-namespace Tests;
+/*
+|--------------------------------------------------------------------------
+| Model Factories
+|--------------------------------------------------------------------------
+|
+| This directory should contain each of the model factory definitions for
+| your application. Factories provide a convenient way to generate new
+| model instances for testing / seeding your application's database.
+|
+*/
 
-use HoneyComb\Core\Providers\HCCoreServiceProvider;
-use HoneyComb\Resources\Providers\HCResourceServiceProvider;
-use Illuminate\Foundation\Application;
+$factory->define(\HoneyComb\Core\Models\HCUser::class, function (Faker $faker) {
+    static $password;
 
-/**
- * Class TestCase
- * @package Tests
- */
-abstract class TestCase extends \Orchestra\Testbench\BrowserKit\TestCase
-{
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->withFactories(__DIR__ . '/factories');
-    }
-
-    /**
-     * @param Application $app
-     * @return array
-     */
-    protected function getPackageProviders($app): array
-    {
-        return [
-            HCCoreServiceProvider::class,
-            HCResourceServiceProvider::class,
-        ];
-    }
-
-    protected function getEnvironmentSetUp($app)
-    {
-        parent::getEnvironmentSetUp($app);
-    }
-}
+    return [
+        'email' => $faker->email,
+        'password' => $password ?: $password = bcrypt('secret'),
+        'remember_token' => str_random(10),
+        'activated_at' => $faker->dateTime,
+        'last_login' => $faker->dateTime,
+        'last_activity' => $faker->dateTime,
+    ];
+});
