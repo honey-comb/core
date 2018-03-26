@@ -46,7 +46,7 @@ class CreateHcUserPersonalInfoTable extends Migration
         Schema::create('hc_user_personal_info', function (Blueprint $table) {
             $table->increments('count');
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->uuid('user_id');
 
