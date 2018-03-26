@@ -24,6 +24,7 @@ HC.react = new function () {
          * @param params
          * @param callback
          * @param notify
+         * @param errorCallBack
          */
         this.get = function (url, params, callback, notify, errorCallBack) {
             axios.get(url, params).then(res => {
@@ -47,6 +48,7 @@ HC.react = new function () {
          * @param params
          * @param callback
          * @param notify
+         * @param errorCallBack
          */
         this.put = function (url, params, callback, notify, errorCallBack) {
             axios.put(url, params).then(res => {
@@ -65,9 +67,29 @@ HC.react = new function () {
          * @param params
          * @param callback
          * @param notify
+         * @param errorCallBack
          */
         this.post = function (url, params, callback, notify, errorCallBack) {
             axios.post(url, params).then(res => {
+
+                res = res.data;
+                handleSuccess(res, callback, notify);
+
+            }).catch(function (error) {
+                handleAxiosError(error, errorCallBack);
+            });
+        };
+
+        /**
+         *
+         * @param url
+         * @param params
+         * @param callback
+         * @param notify
+         * @param errorCallBack
+         */
+        this.delete = function (url, params, callback, notify, errorCallBack) {
+            axios.delete(url, params).then(res => {
 
                 res = res.data;
                 handleSuccess(res, callback, notify);
