@@ -33,6 +33,7 @@ use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -73,6 +74,7 @@ class HCUserRepository extends HCBaseRepository
      * Soft delete users
      *
      * @param array $userIds
+     * @return array
      */
     public function deleteSoft(array $userIds): array
     {
@@ -91,16 +93,20 @@ class HCUserRepository extends HCBaseRepository
      * Restore soft deleted users
      *
      * @param array $userIds
+     * @return array
      */
     public function restore(array $userIds): array
     {
         $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->restore();
+
+        return $userIds;
     }
 
     /**
      * Force delete users by given id
      *
      * @param array $userIds
+     * @return array
      */
     public function deleteForce(array $userIds): array
     {
@@ -128,10 +134,10 @@ class HCUserRepository extends HCBaseRepository
         $record = $this->getById($userId);
 
         $record->load([
-            'roles' => function ($query) {
+            'roles' => function (Builder $query) {
                 $query->select('id', 'name as label');
             },
-            'personal' => function ($query) {
+            'personal' => function (Builder $query) {
                 $query->select('user_id', 'first_name', 'last_name', 'photo_id', 'description');
             },
         ]);
