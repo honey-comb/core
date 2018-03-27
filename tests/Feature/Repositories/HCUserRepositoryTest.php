@@ -30,9 +30,12 @@ declare(strict_types = 1);
 namespace Tests\Feature\Repositories;
 
 use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
 use Tests\TestCase;
 
 /**
@@ -83,6 +86,44 @@ class HCUserRepositoryTest extends TestCase
      * @test
      * @group user
      */
+    public function it_must_return_null_if_user_is_not_found_by_id(): void
+    {
+        $user = $this->getTestClassInstance()->getById('custom-id');
+
+        $this->assertNull($user);
+    }
+
+    /**
+     * @test
+     * @group user
+     */
+    public function it_must_return_user_with_personal_data(): void
+    {
+        $expectedPersonalInfo = factory(HCUserPersonalInfo::class)->create();
+
+        $userInfo = $this->getTestClassInstance()->getByIdWithPersonal($expectedPersonalInfo->user_id);
+
+        $this->assertEquals($expectedPersonalInfo->user_id, $userInfo->personal->user_id);
+        $this->assertEquals($expectedPersonalInfo->first_name, $userInfo->personal->first_name);
+        $this->assertEquals($expectedPersonalInfo->last_name, $userInfo->personal->last_name);
+        $this->assertEquals($expectedPersonalInfo->description, $userInfo->personal->description);
+    }
+
+    /**
+     * @test
+     * @group user
+     */
+    public function it_must_return_exception_if_user_info_is_not_found_by_id(): void
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->getTestClassInstance()->getByIdWithPersonal('custom-id');
+    }
+
+    /**
+     * @test
+     * @group user
+     */
     public function it_should_get_all_selected_columns(): void
     {
         $count = mt_rand(2, 10);
@@ -121,4 +162,6 @@ class HCUserRepositoryTest extends TestCase
     {
         return $this->app->make(HCUserRepository::class);
     }
+
+
 }
