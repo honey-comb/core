@@ -32,14 +32,14 @@ namespace HoneyComb\Core\Http\Resources;
 use Carbon\Carbon;
 use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Models\HCUser;
-use HoneyComb\Starter\DTO\HCBaseDTO;
+use HoneyComb\Starter\DTO\HCBaseResource;
 use Illuminate\Support\Collection;
 
 /**
  * Class HCUserResource
  * @package HoneyComb\Core\Http\Resources
  */
-class HCUserResource extends HCBaseDTO
+class HCUserResource extends HCBaseResource
 {
     /**
      * @var string
