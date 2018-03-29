@@ -25,8 +25,6 @@
  * http://www.interactivesolutions.lt
  */
 
-declare(strict_types = 1);
-
 namespace HoneyComb\Core\Events\Admin;
 
 

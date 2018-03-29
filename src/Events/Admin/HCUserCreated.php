@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 namespace HoneyComb\Core\Events\Admin;
 
 use HoneyComb\Core\Models\HCUser;
