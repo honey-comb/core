@@ -43,7 +43,7 @@ class HCLanguageService
     /**
      * @var HCLanguageRepository
      */
-    private $repository;
+    protected $repository;
 
 
     /**

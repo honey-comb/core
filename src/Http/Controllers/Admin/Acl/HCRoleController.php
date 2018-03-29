@@ -50,7 +50,7 @@ class HCRoleController extends HCBaseController
     /**
      * @var HCFrontendResponse
      */
-    private $response;
+    protected $response;
 
     /**
      * HCRoleController constructor.

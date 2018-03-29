@@ -42,11 +42,11 @@ class HCUserActivationService
     /**
      * @var HCUserActivationRepository
      */
-    private $hcUserActivationRepository;
+    protected $hcUserActivationRepository;
     /**
      * @var HCUserRepository
      */
-    private $hcUserRepository;
+    protected $hcUserRepository;
 
     /**
      * UserActivationService constructor.

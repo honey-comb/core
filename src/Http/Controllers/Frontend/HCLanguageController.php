@@ -44,17 +44,17 @@ class HCLanguageController extends HCBaseController
     /**
      * @var Connection
      */
-    private $connection;
+    protected $connection;
 
     /**
      * @var HCFrontendResponse
      */
-    private $response;
+    protected $response;
 
     /**
      * @var HCLanguageRepository
      */
-    private $languageRepository;
+    protected $languageRepository;
 
     /**
      * HCUsersController constructor.

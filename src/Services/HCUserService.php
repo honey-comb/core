@@ -50,27 +50,27 @@ class HCUserService
     /**
      * @var HCUserRepository
      */
-    private $repository;
+    protected $repository;
 
     /**
      * @var HCPersonalInfoRepository
      */
-    private $personalInfoRepository;
+    protected $personalInfoRepository;
 
     /**
      * @var HCRoleRepository
      */
-    private $roleRepository;
+    protected $roleRepository;
 
     /**
      * @var HCUserProviderRepository
      */
-    private $userProviderRepository;
+    protected $userProviderRepository;
 
     /**
      * @var HCResourceService
      */
-    private $resourceService;
+    protected $resourceService;
 
     /**
      * HCUserService constructor.

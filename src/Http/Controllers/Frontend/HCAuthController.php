@@ -75,22 +75,22 @@ class HCAuthController extends HCBaseController
     /**
      * @var HCUserActivationService
      */
-    private $activation;
+    protected $activation;
 
     /**
      * @var Connection
      */
-    private $connection;
+    protected $connection;
 
     /**
      * @var HCFrontendResponse
      */
-    private $response;
+    protected $response;
 
     /**
      * @var HCUserService
      */
-    private $userService;
+    protected $userService;
 
     /**
      * AuthController constructor.

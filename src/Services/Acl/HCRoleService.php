@@ -43,11 +43,11 @@ class HCRoleService
     /**
      * @var HCRoleRepository
      */
-    private $roleRepository;
+    protected $roleRepository;
     /**
      * @var HCPermissionRepository
      */
-    private $permissionRepository;
+    protected $permissionRepository;
 
     /**
      * HCRoleService constructor.
