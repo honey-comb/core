@@ -33,6 +33,8 @@ use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
@@ -134,10 +136,10 @@ class HCUserRepository extends HCBaseRepository
         $record = $this->getById($userId);
 
         $record->load([
-            'roles' => function (Builder $query) {
+            'roles' => function (BelongsToMany $query) {
                 $query->select('id', 'name as label');
             },
-            'personal' => function (Builder $query) {
+            'personal' => function (HasOne $query) {
                 $query->select('user_id', 'first_name', 'last_name', 'photo_id', 'description');
             },
         ]);
