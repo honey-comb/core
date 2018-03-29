@@ -17,6 +17,7 @@ class HCBaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    
     /**
      * @var
      */

@@ -46,15 +46,15 @@ class HCUserRestored
     /**
      * @var array
      */
-    private $userIds;
+    public $record;
 
     /**
      * HCUserRestored constructor.
      * @param array $userIds
      */
-    public function __construct(array $userIds)
+    public function __construct(array $record)
     {
-        $this->userIds = $userIds;
+        $this->record = $record;
     }
 
     /**

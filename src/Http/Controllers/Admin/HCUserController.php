@@ -227,14 +227,14 @@ class HCUserController extends HCBaseController
         try {
             $deletedIds = $this->service->getRepository()->deleteSoft($request->getListIds());
 
-            event(new HCUserSoftDeleted($deletedIds));
-
             $this->connection->commit();
         } catch (\Exception $exception) {
             $this->connection->rollBack();
 
             return $this->response->error($exception->getMessage());
         }
+
+        event(new HCUserSoftDeleted($deletedIds));
 
         return $this->response->success('Successfully deleted');
     }

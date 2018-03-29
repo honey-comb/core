@@ -23,7 +23,7 @@ class HCUserSoftDeleted
     /**
      * @var array
      */
-    private $userIds;
+    public $userIds;
 
     /**
      * Create a new event instance.

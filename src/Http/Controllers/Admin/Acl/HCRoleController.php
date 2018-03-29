@@ -29,7 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Admin\Acl;
 
-use HoneyComb\Core\Events\Admin\HCRolePermissionUpdated;
+use HoneyComb\Core\Events\Admin\Acl\HCRolePermissionUpdated;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Requests\Admin\HCRoleRequest;
 use HoneyComb\Core\Services\Acl\HCRoleService;

@@ -27,9 +27,9 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Events\Admin;
+namespace HoneyComb\Core\Events\Admin\Acl;
 
-
+use HoneyComb\Core\Services\Acl\HCRoleService;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -38,27 +38,36 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-/**
- * Class HCUserForceDeleted
- * @package HoneyComb\Core\Events\Admin
- */
-class HCUserForceDeleted
+class HCRolePermissionUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var array
+     * @var string
      */
-    public $users;
+    public $roleId;
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * @var string
      */
-    public function __construct(array $users)
+    public $permissionId;
+
+    /**
+     * @var string
+     */
+    public $status;
+
+    /**
+     * HCRoleUpdatedPermissions constructor.
+     * @param string $roleId
+     * @param string $permissionId
+     * @param string $status
+     */
+    public function __construct(string $roleId, string $permissionId, string $status)
     {
-        $this->users = $users;
+        $this->roleId = $roleId;
+        $this->permissionId = $permissionId;
+        $this->status = $status;
     }
 
     /**

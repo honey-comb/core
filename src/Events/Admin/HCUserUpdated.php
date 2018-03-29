@@ -49,7 +49,7 @@ class HCUserUpdated
     /**
      * @var HCUser
      */
-    private $user;
+    public $user;
 
     /**
      * Create a new event instance.

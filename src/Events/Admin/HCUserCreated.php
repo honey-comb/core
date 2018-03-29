@@ -18,9 +18,9 @@ class HCUserCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     /**
-     * @var \HoneyComb\Core\Models\HCUser
+     * @var HCUser
      */
-    private $user;
+    public $user;
 
     /**
      * Create a new event instance.
@@ -45,8 +45,4 @@ class HCUserCreated
     /**
      * @return \HoneyComb\Core\Models\HCUser
      */
-    public function getUser(): HCUser
-    {
-        return $this->user;
-    }
 }
