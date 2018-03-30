@@ -32,10 +32,10 @@ namespace Tests\Feature\Repositories;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
 use HoneyComb\Core\Repositories\HCUserRepository;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Mockery;
 use Tests\TestCase;
 
 /**
@@ -44,7 +44,7 @@ use Tests\TestCase;
  */
 class HCUserRepositoryTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, InteractsWithDatabase;
 
     /**
      * @test
@@ -118,6 +118,24 @@ class HCUserRepositoryTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         $this->getTestClassInstance()->getByIdWithPersonal('custom-id');
+    }
+
+    /**
+     * @test
+     * @group user
+     */
+    public function it_must_return_soft_deleted_user(): void
+    {
+        /** @var Collection $users */
+        $users = factory(HCUser::class, 10)->create();
+
+        /** @var array $deletedUsers */
+        $deletedUsers = $this->getTestClassInstance()->deleteSoft($users->pluck('id')->all());
+
+        foreach ($deletedUsers as $deletedUser) {
+
+            $this->assertSoftDeleted('hc_user', $deletedUser->toArray());
+        }
     }
 
     /**

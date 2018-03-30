@@ -234,8 +234,6 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
      */
     private function registerRepositories(): void
     {
-        $this->app->singleton(HCBaseRepository::class);
-
         $this->app->singleton(HCUserRepository::class);
         $this->app->singleton(HCRoleRepository::class);
         $this->app->singleton(HCPermissionRepository::class);

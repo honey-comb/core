@@ -84,7 +84,7 @@ class HCUserRepository extends HCBaseRepository
 
         foreach ($userIds as $userId) {
             if ($this->makeQuery()->where('id', $userId)->delete()) {
-                $deleted[] = $userId;
+                $deleted[] = $this->makeQuery()->withTrashed()->find($userId);
             }
         }
 

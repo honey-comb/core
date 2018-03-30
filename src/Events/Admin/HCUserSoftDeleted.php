@@ -46,16 +46,16 @@ class HCUserSoftDeleted
     /**
      * @var array
      */
-    public $userIds;
+    public $deletedUsers;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(array $userIds)
+    public function __construct(array $deletedUsers)
     {
-        $this->userIds = $userIds;
+        $this->deletedUsers = $deletedUsers;
     }
 
     /**
