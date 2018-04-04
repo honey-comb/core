@@ -33,17 +33,20 @@ trait HCQueryBuilderTrait
      * Creating data query
      *
      * @param Request $request
-     * @param array $availableFields
+     * @param array $columns
+     * @param bool $merge
      * @return Builder
      */
-    protected function createBuilderQuery(Request $request, array $availableFields = null): Builder
+    protected function createBuilderQuery(Request $request, array $columns = [], bool $merge = true): Builder
     {
-        if ($availableFields == null) {
-            $availableFields = $this->getModel()::getFillableFields();
+        if ($merge) {
+            $availableFields = array_merge($this->getModel()::getFillableFields(), $columns);
+        } else {
+            $availableFields = $columns;
         }
 
         $builder = $this->getModel()::select($availableFields)
-            ->where(function (Builder $query) use ($request, $availableFields) {
+            ->where(function(Builder $query) use ($request, $availableFields) {
                 // add request filtering
                 $this->filterByRequestParameters($query, $request, $availableFields);
             });
@@ -193,7 +196,7 @@ trait HCQueryBuilderTrait
     {
         $fields = $this->getModel()::getFillableFields();
 
-        return $query->where(function (Builder $query) use ($fields, $phrase) {
+        return $query->where(function(Builder $query) use ($fields, $phrase) {
             foreach ($fields as $key => $field) {
                 $method = $key == 0 ? 'where' : 'orWhere';
 
@@ -225,13 +228,13 @@ trait HCQueryBuilderTrait
         array $with = [],
         int $perPage = self::DEFAULT_PER_PAGE,
         array $columns = ['*']
-    ): \Illuminate\Contracts\Pagination\LengthAwarePaginator
-    {
+    ): \Illuminate\Contracts\Pagination\LengthAwarePaginator {
 
         if ($request->has('per_page')) {
             $perPage = $request->get('per_page');
         }
 
-        return $this->createBuilderQuery($request)->with($with)->paginate($perPage, $columns)->appends($request->all());
+        return $this->createBuilderQuery($request, $columns)->with($with)->paginate($perPage,
+            $columns)->appends($request->all());
     }
 }
