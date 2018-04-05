@@ -29,13 +29,14 @@ declare(strict_types = 1);
 
 namespace Tests\Feature\Repositories;
 
+use Carbon\Carbon;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
 use HoneyComb\Core\Repositories\HCUserRepository;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 /**
@@ -119,12 +120,21 @@ class HCUserRepositoryTest extends TestCase
 
         $this->getTestClassInstance()->getByIdWithPersonal('custom-id');
     }
+    /**
+     * @test
+     * @group u
+     */
+    public function it_must_create_user(): void
+    {
+        $expected = factory(HCUser::class)->create();
+        dd($expected);
+    }
 
     /**
      * @test
      * @group user
      */
-    public function it_must_return_soft_deleted_user(): void
+    public function it_must_soft_delete_users(): void
     {
         /** @var Collection $users */
         $users = factory(HCUser::class, 10)->create();
@@ -133,8 +143,44 @@ class HCUserRepositoryTest extends TestCase
         $deletedUsers = $this->getTestClassInstance()->deleteSoft($users->pluck('id')->all());
 
         foreach ($deletedUsers as $deletedUser) {
-
             $this->assertSoftDeleted('hc_user', $deletedUser->toArray());
+        }
+    }
+
+    /**
+     * @test
+     * @group user
+     */
+    public function it_must_restore_user(): void
+    {
+        $expected = factory(HCUser::class)->create([
+            'deleted_at' => new Carbon(),
+        ]);
+
+        $restoredUser = $this->getTestClassInstance()->restore([$expected->id]);
+
+        $userId = head($restoredUser);
+
+        $this->assertDatabaseHas('hc_user', ['id' => $userId, 'deleted_at' => null]);
+
+        $this->assertNotSame($expected, HCUser::find($userId));
+    }
+
+    /**
+     * @test
+     * @group user
+     * @throws \Exception
+     */
+    public function it_must_force_delete_user(): void
+    {
+        /** @var Collection $users */
+        $users = factory(HCUser::class, 10)->create();
+
+        /** @var array $deletedUsers */
+        $deletedUsers = $this->getTestClassInstance()->deleteForce($users->pluck('id')->all());
+
+        foreach ($deletedUsers as $deletedUser) {
+            $this->assertDatabaseMissing('hc_user', $deletedUser->toArray());
         }
     }
 
