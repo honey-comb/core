@@ -135,9 +135,9 @@ class HCLanguageController extends HCBaseController
      *
      * @param HCLanguageRequest $request
      * @param string $languageId
-     * @return mixed
+     * @return JsonResponse
      */
-    public function patch(HCLanguageRequest $request, string $languageId)
+    public function patch(HCLanguageRequest $request, string $languageId): JsonResponse
     {
         $this->service->update($request, $languageId);
 
