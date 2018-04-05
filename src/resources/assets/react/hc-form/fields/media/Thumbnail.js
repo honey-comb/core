@@ -15,6 +15,7 @@ export default class Thumbnail extends Component {
             hideDelete: this.props.hideDelete,
             hideEdit: this.props.hideEdit,
             disableEdit: true,
+            mediaId: this.props.mediaId
         };
 
         if (!this.state.hideEdit) {
@@ -56,7 +57,7 @@ export default class Thumbnail extends Component {
      */
     getView() {
 
-        if (this.props.mediaId) {
+        if (this.state.mediaId) {
             return this.thumbnailView();
         }
 
@@ -73,6 +74,18 @@ export default class Thumbnail extends Component {
 
         if (this.props.file) {
             this.uploadFile();
+        }
+    }
+
+    /**
+     *
+     * @param nextProps
+     * @param nextState
+     */
+    componentWillUpdate(nextProps, nextState) {
+
+        if (nextState.mediaId == null) {
+            nextState.mediaId = nextProps.mediaId;
         }
     }
 
@@ -118,15 +131,15 @@ export default class Thumbnail extends Component {
      */
     thumbnailView() {
         return <div className="thumbnail"
-                    style={{backgroundImage: "url(" + this.props.viewUrl + "/" + this.props.mediaId + "/90/90)"}}/>
+                    style={{backgroundImage: "url(" + this.props.viewUrl + "/" + this.state.mediaId + "/90/90)"}}/>
     }
 
     /**
      * Removing component
      */
     remove() {
-        this.props.onChange({action: "remove", id: this.props.mediaId});
-        this.setState({abandoned: true});
+        this.props.onChange({action: "remove", id: this.state.mediaId});
+        this.setState({abandoned: true, mediaId: null});
     }
 
     /**
@@ -136,7 +149,7 @@ export default class Thumbnail extends Component {
         HC.react.popUp({
             url: this.props.editUrl,
             type: "form",
-            recordId: this.props.mediaId,
+            recordId: this.state.mediaId,
         });
     }
 
