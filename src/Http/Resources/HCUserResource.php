@@ -34,12 +34,14 @@ use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Starter\Http\Resources\HCBaseResource;
 use Illuminate\Support\Collection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\Resource;
 
 /**
  * Class HCUserResource
  * @package HoneyComb\Core\Http\Resources
  */
-class HCUserResource extends HCBaseResource
+class HCUserResource extends ResourceCollection
 {
     /**
      * @var string
@@ -97,12 +99,16 @@ class HCUserResource extends HCBaseResource
     private $photoId;
 
 
+
     /**
      * HCUserResource constructor.
      *
      * @param HCUser $model
      */
     public function __construct(HCUser $model) {
+
+        parent::__construct($model);
+
         $this->userId = $model->id;
         $this->email = $model->email;
         $this->activatedAt = $model->activated_at;
@@ -237,19 +243,20 @@ class HCUserResource extends HCBaseResource
     }
 
     /**
-     * @return Collection|HCAclRole
+     * @return Collection
      */
-    public function getRoles()
+    public function getRoles(): Collection
     {
         return $this->roles;
     }
 
     /**
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
-    protected function jsonData(): array
+    public function toArray($request): array
     {
-        $data = [
+        return [
             'id' => $this->getUserId(),
             'activated_at' => $this->getActivatedAt(),
             'last_login' => $this->getLastLogin(),
@@ -264,7 +271,5 @@ class HCUserResource extends HCBaseResource
             'description' => $this->getDescription(),
             'roles' => $this->getRoles(),
         ];
-
-        return $data;
     }
 }
