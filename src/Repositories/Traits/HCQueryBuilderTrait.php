@@ -41,6 +41,10 @@ trait HCQueryBuilderTrait
     {
         if ($merge) {
             $availableFields = array_merge($this->getModel()::getFillableFields(), $columns);
+
+            if (($key = array_search('*', $availableFields)) !== false) {
+                unset($availableFields[$key]);
+            }
         } else {
             $availableFields = $columns;
         }
