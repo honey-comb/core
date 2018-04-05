@@ -30,9 +30,11 @@ declare(strict_types = 1);
 namespace Tests\Feature\Repositories;
 
 use Carbon\Carbon;
+use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
 use HoneyComb\Core\Repositories\HCUserRepository;
+use HoneyComb\Core\Services\HCUserService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -120,15 +122,7 @@ class HCUserRepositoryTest extends TestCase
 
         $this->getTestClassInstance()->getByIdWithPersonal('custom-id');
     }
-    /**
-     * @test
-     * @group u
-     */
-    public function it_must_create_user(): void
-    {
-        $expected = factory(HCUser::class)->create();
-        dd($expected);
-    }
+
 
     /**
      * @test
@@ -226,6 +220,5 @@ class HCUserRepositoryTest extends TestCase
     {
         return $this->app->make(HCUserRepository::class);
     }
-
 
 }
