@@ -111,4 +111,20 @@ trait HCAdminListHeaders
             'idAs' => $idAs,
         ];
     }
+
+    /**
+     * @param string $label
+     * @param string $valuePath
+     * @param string $prefix
+     * @return array
+     */
+    protected function headerCopy(string $label, string $valuePath = null, string $prefix = null) : array
+    {
+        return [
+            'type' => 'copy',
+            'label' => $label,
+            'valuePath' => $valuePath,
+            'prefix' => $prefix,
+        ];
+    }
 }

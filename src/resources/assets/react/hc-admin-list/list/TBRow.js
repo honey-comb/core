@@ -37,6 +37,7 @@ export default class TBRow extends Component {
                         update={this.props.update}
                         id={this.props.record.id}
                         reload={this.props.reload}
+                        record={this.props.record}
                         url={this.props.url}/>
             ))}
         </tr>

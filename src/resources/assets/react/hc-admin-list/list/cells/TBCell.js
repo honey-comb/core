@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Thumbnail from "../../../hc-form/fields/media/Thumbnail";
 import Url from "../../../hc-form/fields/Url";
 import HCCellList from "../../../hc-form/fields/HCCellList";
+import HCCellCopy from "../../../hc-form/fields/HCCellCopy";
 
 let classNames = require('classnames');
 
@@ -48,7 +49,8 @@ export default class TBCell extends Component {
             update: (this.props.update && !this.disableUpdate)
         }, this.cellClasses);
 
-        return <td className={tdClass} onClick={this.editRecord} style={{width:this.props.config.cellWidth + '%'}}>{content}</td>;
+        return <td className={tdClass} onClick={this.editRecord}
+                   style={{width: this.props.config.cellWidth + '%'}}>{content}</td>;
     }
 
     editRecord() {
@@ -94,6 +96,11 @@ export default class TBCell extends Component {
             case 'list' :
                 this.disableUpdate = true;
                 return this.getList();
+
+            case 'copy' :
+
+                this.disableUpdate = true;
+                return this.getCopy();
         }
 
         return "";
@@ -115,22 +122,29 @@ export default class TBCell extends Component {
                           viewUrl="/resources"/>
     }
 
-    getUrl ()
-    {
+    getUrl() {
         return <Url key={this.id}
                     id={this.props.id}
                     value={this.state.value}
                     config={this.props.config}/>
     }
 
-    getList ()
-    {
+    getList() {
         return <HCCellList key={this.id}
                            id={this.props.id}
                            value={this.state.value}
                            config={this.props.config}
                            recordUpdated={this.recordUpdated}
                            recordUpdatedScope={this}/>
+    }
+
+    getCopy() {
+        return <HCCellCopy
+            key={this.id}
+            record={this.props.record}
+            value={this.state.value}
+            config={this.props.config}
+        />
     }
 
     updateStrict() {
