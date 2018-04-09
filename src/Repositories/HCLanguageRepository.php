@@ -27,6 +27,7 @@
 
 namespace HoneyComb\Core\Repositories;
 
+use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
 use HoneyComb\Core\Models\HCLanguage;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
@@ -80,5 +81,19 @@ class HCLanguageRepository extends HCBaseRepository
     public function isAvailableForChange(string $lang, string $location): bool
     {
         return $this->makeQuery()->where(['iso_639_1' => $lang, $location => 1])->exists();
+    }
+
+    /**
+     * @param HCLanguageRequest $request
+     * @return \Illuminate\Support\Collection|static
+     */
+    public function getOptions(HCLanguageRequest $request)
+    {
+        return $this->createBuilderQuery($request)->get()->map(function ($record) {
+            return [
+                'id' => $record->id,
+                'language' => $record->language
+            ];
+        });
     }
 }
