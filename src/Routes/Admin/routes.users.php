@@ -43,8 +43,7 @@ Route::prefix(config('hc.admin_url'))
                 ->middleware('acl:honey_comb_core_user_list');
 
             Route::get('/options', 'HCUserController@getOptions')
-                ->name('admin.api.user.options')
-                ->middleware('acl:honey_comb_core_user_list');
+                ->name('admin.api.user.options');
 
             Route::post('/', 'HCUserController@store')
                 ->name('admin.api.create')
