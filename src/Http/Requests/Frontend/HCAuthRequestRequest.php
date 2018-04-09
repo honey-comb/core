@@ -34,10 +34,31 @@ class HCAuthRequestRequest extends FormRequest
                 return [
                     'email' => 'required|email|unique:hc_user,email|min:5',
                     'password' => 'required|min:5',
-                    'roles' => 'required|exists:hc_acl_role,id',
+//                    'roles' => 'required|exists:hc_acl_role,id',
                 ];
         }
 
         return [];
+    }
+
+    public function getInputData(): array
+    {
+        $data = [
+        'email' => $this->input('email'),
+        ];
+
+        if ($this->input('password')) {
+            array_set($data, 'password', $this->input('password'));
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoles(): array
+    {
+        return $this->input('roles', []);
     }
 }
