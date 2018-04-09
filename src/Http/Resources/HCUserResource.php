@@ -30,12 +30,9 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Resources;
 
 use Carbon\Carbon;
-use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Models\HCUser;
-use HoneyComb\Starter\Http\Resources\HCBaseResource;
-use Illuminate\Support\Collection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Support\Collection;
 
 /**
  * Class HCUserResource
@@ -99,13 +96,13 @@ class HCUserResource extends ResourceCollection
     private $photoId;
 
 
-
     /**
      * HCUserResource constructor.
      *
      * @param HCUser $model
      */
-    public function __construct(HCUser $model) {
+    public function __construct(HCUser $model)
+    {
 
         parent::__construct($model);
 
