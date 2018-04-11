@@ -42,19 +42,18 @@ class HCPasswordRemindForm extends HCBaseForm
      *
      * @param bool $edit
      * @return array
+     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function createForm(bool $edit = false): array
     {
         $form = [
-            "storageUrl" => route('users.password.remind.post'),
-            "buttons" => [
-                [
-                    "class" => "col-centered",
-                    "label" => trans('HCCore::core.buttons.submit'),
-                    "type" => "submit",
+            'storageUrl' => route('users.password.reset.post'),
+            'buttons' => [
+                'submit' => [
+                    'label' => trans('HCCore::user.passwords.reset_button'),
                 ],
             ],
-            "structure" => $this->getStructure($edit),
+            'structure' => $this->getStructure($edit),
         ];
 
         if ($this->multiLanguage) {
@@ -77,18 +76,19 @@ class HCPasswordRemindForm extends HCBaseForm
     public function getStructureNew(string $prefix): array
     {
         return [
-            [
-                "type" => "email",
-                "fieldId" => "email",
-                "label" => trans('HCCore::user.login.email'),
-                "editType" => 0,
-                "required" => 1,
-                "requiredVisible" => 0,
-                "properties" => [
-                    "style" => "varchar",
-                    "maxlength" => "197",
+            'email' =>
+                [
+                    "type" => "email",
+                    "fieldId" => "email",
+                    "label" => trans('HCCore::user.login.email'),
+                    "editType" => 0,
+                    "required" => 1,
+                    "requiredVisible" => 0,
+                    "properties" => [
+                        "style" => "varchar",
+                        "maxlength" => "197",
+                    ],
                 ],
-            ],
         ];
     }
 
