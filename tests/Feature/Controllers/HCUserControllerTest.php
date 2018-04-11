@@ -29,70 +29,37 @@ declare(strict_types = 1);
 
 namespace Tests\Feature\Controllers;
 
-use HoneyComb\Core\Http\Controllers\Admin\HCLanguageController;
-use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
-use HoneyComb\Core\Models\HCLanguage;
 use HoneyComb\Core\Models\HCUser;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\JsonResponse;
 use Tests\TestCase;
 
 /**
- * Class HCLanguageControllerTest
- * @package Tests\Feature\Languages
+ * Class HCUserControllerTest
+ * @package Tests\Feature\Controllers
  */
-class HCLanguageControllerTest extends TestCase
+class HCUserControllerTest extends TestCase
 {
     use RefreshDatabase, InteractsWithDatabase;
 
     /**
      * @test
-     * @group lang
-     */
-    public function it_must_enable_front_end_language_by_patch_method(): void
-    {
-        $request = new HCLanguageRequest([], [], ['front_end' => 1]);
-        $request->setMethod('PATCH');
-
-        /** @var JsonResponse $response */
-        $response = $this->getTestClassInstance()->patch($request, 'lt');
-
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertTrue($response->getData()->success);
-        $this->assertEquals('Updated', $response->getData()->message);
-    }
-
-    /**
-     * @test
-     * @group lang
+     * @group user
      * @throws \Exception
      */
-    public function it_must_show_get_options_for_language(): void
+    public function it_must_show_get_options_for_user(): void
     {
         $expectedUser = factory(HCUser::class)->create();
 
-        $expectedLanguage = factory(HCLanguage::class)->create();
-
-        $response = $this->actingAs($expectedUser)->json('GET', route('admin.api.language.options'));
+        $response = $this->actingAs($expectedUser)->json('GET', route('admin.api.user.options'));
 
         $response->assertResponseOk();
 
         $response->seeJsonEquals([
             [
-                'id' => $expectedLanguage->id,
-                'language' => $expectedLanguage->language,
+                'id' => $expectedUser->id,
+                'label' => $expectedUser->email,
             ],
         ]);
     }
-
-    /**
-     * @return HCLanguageController
-     */
-    private function getTestClassInstance(): HCLanguageController
-    {
-        return $this->app->make(HCLanguageController::class);
-    }
-
-
 }

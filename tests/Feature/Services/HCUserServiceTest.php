@@ -43,7 +43,7 @@ use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 /**
- * Class HCUserControllerTest
+ * Class HCUserServiceTest
  * @package Tests\Feature\Controllers
  */
 class HCUserServiceTest extends TestCase
