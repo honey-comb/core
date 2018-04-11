@@ -192,11 +192,10 @@ class HCAuthController extends HCBaseController
      * User registration
      *
      * @param HCAuthRequestRequest $request
-     * @return JsonResponse
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
-    public function register(HCAuthRequestRequest $request): JsonResponse
+    public function register(HCAuthRequestRequest $request)
     {
         if (!config('hc.allow_registration')) {
             throw new \Exception();
@@ -206,7 +205,11 @@ class HCAuthController extends HCBaseController
 
         try {
             /** @var HCUser $user */
-            $user = $this->userService->createUser($request->getInputData());
+            $this->userService->createUser(
+                $request->getInputData(),
+                $request->getRoles()
+            );
+
         } catch (\Exception $exception) {
             $this->connection->rollback();
 
@@ -246,20 +249,24 @@ class HCAuthController extends HCBaseController
      *
      * @param string $token
      * @return View
+     * @throws \Exception
      */
-    public function showActivation(string $token): View
+    public function showActivation(Request $request, string $token)
     {
-        $message = null;
+        $this->connection->beginTransaction();
 
-        $tokenRecord = DB::table('hc_user_activations')->where('token', $token)->first();
+        try {
 
-        if (is_null($tokenRecord)) {
-            $message = trans('HCCore::user.activation.token_not_exists');
-        } elseif (strtotime($tokenRecord->created_at) + 60 * 60 * 24 < time()) {
-            $message = trans('HCCore::user.activation.token_expired');
+            $this->activation->activateUser($token);
+            $this->connection->commit();
+
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+
+            return view('HCCore::auth.activation', ['token' => $token, 'message' => $e->getMessage()]);
         }
 
-        return view('HCCore::auth.activation', ['token' => $token, 'message' => $message]);
+        return redirect($request->url());
     }
 
     /**

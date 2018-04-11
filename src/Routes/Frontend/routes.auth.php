@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ Route::prefix('auth')->namespace('Frontend')->middleware('web')->group(function 
     Route::post('login', 'HCAuthController@login')->name('auth.login');
 
     Route::get('register', 'HCAuthController@showRegister')->name('auth.register')->middleware('guest');
-    Route::post('register', 'HCAuthController@register');
+    Route::post('register', 'HCAuthController@register')->name('auth.register');
 
     Route::get('activation/{token}', 'HCAuthController@showActivation')->name('auth.activation')->middleware('guest');
     Route::post('activation', 'HCAuthController@activate')->name('auth.activation.post');

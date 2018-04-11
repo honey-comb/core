@@ -48,28 +48,11 @@ class HCUserRegisterForm extends HCBaseForm
         $form = [
             'storageUrl' => route('auth.register'),
             'buttons' => [
-                [
-                    "class" => "col-centered",
-                    "label" => trans('HCCore::core.buttons.register'),
-                    "type" => "submit",
+                'submit' => [
+                    'label' => trans('HCCore::core.buttons.register'),
                 ],
             ],
-            'structure' => [
-                [
-                    "type" => "singleLine",
-                    "fieldId" => "email",
-                    "label" => trans("HCCore::user.email"),
-                    "required" => 1,
-                    "requiredVisible" => 1,
-                ],
-                [
-                    "type" => "password",
-                    "fieldId" => "password",
-                    "label" => trans("HCCore::user.register.password"),
-                    "required" => 1,
-                    "requiredVisible" => 1,
-                ],
-            ],
+            'structure' => $this->getStructure($edit),
         ];
 
         return $form;
@@ -83,7 +66,7 @@ class HCUserRegisterForm extends HCBaseForm
      */
     public function getStructureEdit(string $prefix): array
     {
-        // TODO: Implement getStructureEdit() method.
+        return [];
     }
 
     /**
@@ -94,6 +77,19 @@ class HCUserRegisterForm extends HCBaseForm
      */
     public function getStructureNew(string $prefix): array
     {
-        // TODO: Implement getStructureNew() method.
+        return [
+            'email' =>
+                [
+                    'type' => 'email',
+                    'label' => trans('HCCore::user.login.email'),
+                    'required' => 1,
+                ],
+            'password' =>
+                [
+                    'type' => 'password',
+                    'label' => trans('HCCore::user.login.password'),
+                    'required' => 1,
+                ]
+        ];
     }
 }

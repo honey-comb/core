@@ -31,13 +31,14 @@
 @stop
 
 @section('scripts')
+    {{-- admin list --}}
+    <script src="{{mix('js/hc-full.js')}}"></script>
+
     <script>
-        $(document).ready(function () {
-            HCService.FormManager.initialize();
-            var form = HCService.FormManager.createForm({
-                'structureURL': '{{  route('frontend.api.form-manager', 'users-register-new')}}',
-                'divID': '#register-form'
-            });
-        });
+        HC.react.enableFaIcons();
+        HC.react.hcForm({
+            url: '{{route('frontend.api.form-manager', 'user-register-new')}}',
+            divId: 'register-form'
+        })
     </script>
 @endsection

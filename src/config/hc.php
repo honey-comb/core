@@ -31,7 +31,7 @@ return [
     | You can allow users to register their account by themselves
     |
     */
-    'allow_registration' => false,
+    'allow_registration' => true,
 
     /*
     |---------------------------------------------------------------------------

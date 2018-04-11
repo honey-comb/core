@@ -158,7 +158,7 @@ class HCUserActivationService
     {
         $activation = $this->hcUserActivationRepository->getActivation($user->id);
 
-        return $activation === null || strtotime($activation->created_at) + 60 * 60 * $resendAfter < time();
+        return $activation === null || $activation->created_at->timestamp + 60 * 60 * $resendAfter < time();
     }
 
     /**
