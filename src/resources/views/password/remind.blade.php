@@ -23,13 +23,14 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        $(document).ready(function () {
-            HCService.FormManager.initialize();
-            var form = HCService.FormManager.createForm({
-                'structureURL': '{{  route('frontend.api.form-manager', 'password-remind-new')}}',
-                'divID': '#password-remind-form'
-            });
-        });
+    {{-- admin list --}}
+    <script src="{{mix('js/hc-full.js')}}"></script>
+
+    <script>
+        HC.react.enableFaIcons();
+        HC.react.hcForm({
+            url: '{{route('frontend.api.form-manager', 'password-remind-new')}}',
+            divId: 'password-remind-form'
+        })
     </script>
 @endsection
