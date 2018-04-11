@@ -47,10 +47,17 @@ class HCPasswordRemindForm extends HCBaseForm
     public function createForm(bool $edit = false): array
     {
         $form = [
+<<<<<<< HEAD
+            'storageUrl' => route('users.password.reset.post'),
+            'buttons' => [
+                'submit' => [
+                    'label' => trans('HCCore::user.passwords.reset_button'),
+=======
             'storageUrl' => route('users.password.remind.post'),
             'buttons' => [
                 'submit' => [
                     'label' => trans('HCCore::core.buttons.submit'),
+>>>>>>> de3c28cc8af6e7f47212b3fe79bb89bec4a2ff76
                 ],
             ],
             'structure' => $this->getStructure($edit),

@@ -44,7 +44,11 @@ class HCAuthRequestRequest extends FormRequest
     public function getInputData(): array
     {
         $data = [
+<<<<<<< HEAD
+            'email' => $this->input('email'),
+=======
         'email' => $this->input('email'),
+>>>>>>> de3c28cc8af6e7f47212b3fe79bb89bec4a2ff76
         ];
 
         if ($this->input('password')) {
