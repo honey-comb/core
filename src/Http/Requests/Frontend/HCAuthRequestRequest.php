@@ -34,7 +34,7 @@ class HCAuthRequestRequest extends FormRequest
                 return [
                     'email' => 'required|email|unique:hc_user,email|min:5',
                     'password' => 'required|min:5',
-//                    'roles' => 'required|exists:hc_acl_role,id',
+                    'roles' => 'required|exists:hc_acl_role,id',
                 ];
         }
 
