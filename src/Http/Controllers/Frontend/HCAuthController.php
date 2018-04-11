@@ -31,7 +31,7 @@ namespace HoneyComb\Core\Http\Controllers\Frontend;
 
 use HoneyComb\Core\Events\frontend\HCUserActivated;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
-use HoneyComb\Core\Http\Requests\Frontend\HCAuthRequestRequest;
+use HoneyComb\Core\Http\Requests\Frontend\HCAuthRequest;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
@@ -191,11 +191,11 @@ class HCAuthController extends HCBaseController
     /**
      * User registration
      *
-     * @param HCAuthRequestRequest $request
+     * @param HCAuthRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function register(HCAuthRequestRequest $request)
+    public function register(HCAuthRequest $request)
     {
         if (!config('hc.allow_registration')) {
             throw new \Exception();

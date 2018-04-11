@@ -7,10 +7,10 @@ namespace HoneyComb\Core\Http\Requests\Frontend;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class HCAuthRequestRequest
+ * Class HCAuthRequest
  * @package HoneyComb\Core\Http\Requests\Frontend
  */
-class HCAuthRequestRequest extends FormRequest
+class HCAuthRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,7 +34,7 @@ class HCAuthRequestRequest extends FormRequest
                 return [
                     'email' => 'required|email|unique:hc_user,email|min:5',
                     'password' => 'required|min:5',
-                    'roles' => 'required|exists:hc_acl_role,id',
+//                    'roles' => 'required|exists:hc_acl_role,id',
                 ];
         }
 
