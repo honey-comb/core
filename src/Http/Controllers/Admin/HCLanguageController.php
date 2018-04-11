@@ -32,6 +32,7 @@ namespace HoneyComb\Core\Http\Controllers\Admin;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
 use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
+use HoneyComb\Core\Models\HCLanguage;
 use HoneyComb\Core\Services\HCLanguageService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
