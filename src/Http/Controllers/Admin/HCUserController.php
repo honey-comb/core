@@ -29,9 +29,12 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Admin;
 
+use HoneyComb\Core\Events\Admin\HCUserRestored;
+use HoneyComb\Core\Events\Admin\HCUserSoftDeleted;
+use HoneyComb\Core\Events\Admin\HCUserForceDeleted;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
-use HoneyComb\Core\Http\Requests\HCUserRequest;
+use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
 use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
@@ -222,7 +225,7 @@ class HCUserController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->service->getRepository()->deleteSoft($request->getListIds());
+            $deleted = $this->service->getRepository()->deleteSoft($request->getListIds());
 
             $this->connection->commit();
         } catch (\Exception $exception) {
@@ -230,6 +233,8 @@ class HCUserController extends HCBaseController
 
             return $this->response->error($exception->getMessage());
         }
+
+        event(new HCUserSoftDeleted($deleted));
 
         return $this->response->success('Successfully deleted');
     }
@@ -244,7 +249,9 @@ class HCUserController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->service->getRepository()->deleteForce($request->getListIds());
+            $deletedUsers = $this->service->getRepository()->deleteForce($request->getListIds());
+
+            event(new HCUserForceDeleted($deletedUsers));
 
             $this->connection->commit();
         } catch (\Exception $exception) {
@@ -266,7 +273,9 @@ class HCUserController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->service->getRepository()->restore($request->getListIds());
+            $restoredUsers = $this->service->getRepository()->restore($request->getListIds());
+
+            event(new HCUserRestored($restoredUsers));
 
             $this->connection->commit();
         } catch (\Exception $exception) {

@@ -29,8 +29,10 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
+use HoneyComb\Core\Events\frontend\HCUserActivated;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
-use HoneyComb\Core\Http\Requests\HCUserRequest;
+use HoneyComb\Core\Http\Requests\Frontend\HCAuthRequest;
+use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
@@ -43,7 +45,7 @@ use Illuminate\View\View;
 
 /**
  * Class HCAuthController
- * @package HoneyComb\Core\Http\Controllers
+ * @package HoneyComb\Core\Http\Controllers\Frontend
  */
 class HCAuthController extends HCBaseController
 {
@@ -73,22 +75,22 @@ class HCAuthController extends HCBaseController
     /**
      * @var HCUserActivationService
      */
-    private $activation;
+    protected $activation;
 
     /**
      * @var Connection
      */
-    private $connection;
+    protected $connection;
 
     /**
      * @var HCFrontendResponse
      */
-    private $response;
+    protected $response;
 
     /**
      * @var HCUserService
      */
-    private $userService;
+    protected $userService;
 
     /**
      * AuthController constructor.
@@ -189,12 +191,11 @@ class HCAuthController extends HCBaseController
     /**
      * User registration
      *
-     * @param HCUserRequest $request
-     * @return JsonResponse
+     * @param HCAuthRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
-    public function register(HCUserRequest $request): JsonResponse
+    public function register(HCAuthRequest $request)
     {
         if (!config('hc.allow_registration')) {
             throw new \Exception();
@@ -203,7 +204,12 @@ class HCAuthController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->userService->createUser($request->getInputData());
+            /** @var HCUser $user */
+            $this->userService->createUser(
+                $request->getInputData(),
+                $request->getRoles()
+            );
+
         } catch (\Exception $exception) {
             $this->connection->rollback();
 
@@ -243,20 +249,24 @@ class HCAuthController extends HCBaseController
      *
      * @param string $token
      * @return View
+     * @throws \Exception
      */
-    public function showActivation(string $token): View
+    public function showActivation(Request $request, string $token)
     {
-        $message = null;
+        $this->connection->beginTransaction();
 
-        $tokenRecord = DB::table('hc_user_activations')->where('token', $token)->first();
+        try {
 
-        if (is_null($tokenRecord)) {
-            $message = trans('HCCore::user.activation.token_not_exists');
-        } elseif (strtotime($tokenRecord->created_at) + 60 * 60 * 24 < time()) {
-            $message = trans('HCCore::user.activation.token_expired');
+            $this->activation->activateUser($token);
+            $this->connection->commit();
+
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+
+            return view('HCCore::auth.activation', ['token' => $token, 'message' => $e->getMessage()]);
         }
 
-        return view('HCCore::auth.activation', ['token' => $token, 'message' => $message]);
+        return redirect($request->url());
     }
 
     /**
@@ -271,7 +281,7 @@ class HCAuthController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->activation->activateUser(
+            $user = $this->activation->activateUser(
                 $request->input('token')
             );
         } catch (\Exception $e) {
@@ -279,6 +289,8 @@ class HCAuthController extends HCBaseController
 
             return redirect()->back()->withErrors($e->getMessage());
         }
+
+        event(new HCUserActivated($user));
 
         $this->connection->commit();
 

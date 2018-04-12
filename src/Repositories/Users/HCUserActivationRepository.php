@@ -34,6 +34,10 @@ use HoneyComb\Core\Models\Users\HCUserActivation;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class HCUserActivationRepository
+ * @package HoneyComb\Core\Repositories\Users
+ */
 class HCUserActivationRepository extends HCBaseRepository
 {
     /**

@@ -220,14 +220,14 @@ HCService.FormManager.Objects.UploadFile = function ()
                     if (dataTypes && dataTypes.length > 0)
                         if (dataTypes.indexOf(file.type) == -1)
                         {
-                            HCFunctions.notify('warning', 'Resource type is not allowed: ' + file.type + '. Only: ' + dataTypes);
+                            HCFunctions.notify('warning', 'Resources type is not allowed: ' + file.type + '. Only: ' + dataTypes);
                             success = false;
                         }
 
                     if (scope.getFieldData().uploadSize)
                         if (file.size > scope.getFieldData().uploadSize)
                         {
-                            HCFunctions.notify('warning', 'Resource is to big: ' + HCFunctions.FileSize.toYB(file.size) + '. Maximum is ' + HCFunctions.FileSize.toMB(scope.getFieldData().uploadSize));
+                            HCFunctions.notify('warning', 'Resources is to big: ' + HCFunctions.FileSize.toYB(file.size) + '. Maximum is ' + HCFunctions.FileSize.toMB(scope.getFieldData().uploadSize));
                             success = false;
                         }
                 }

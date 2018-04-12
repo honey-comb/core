@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the 'Software'), to deal
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -12,7 +12,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -31,7 +31,8 @@ namespace HoneyComb\Core\Http\Controllers\Admin;
 
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
-use HoneyComb\Core\Http\Requests\HCLanguageRequest;
+use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
+use HoneyComb\Core\Models\HCLanguage;
 use HoneyComb\Core\Services\HCLanguageService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
@@ -39,6 +40,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+/**
+ * Class HCLanguageController
+ * @package HoneyComb\Core\Http\Controllers\Admin
+ */
 class HCLanguageController extends HCBaseController
 {
     use HCAdminListHeaders;
@@ -46,12 +51,12 @@ class HCLanguageController extends HCBaseController
     /**
      * @var Connection
      */
-    private $connection;
+    protected $connection;
 
     /**
      * @var HCFrontendResponse
      */
-    private $response;
+    protected $response;
 
     /**
      * @var HCLanguageService
@@ -131,12 +136,24 @@ class HCLanguageController extends HCBaseController
      *
      * @param HCLanguageRequest $request
      * @param string $languageId
-     * @return mixed
+     * @return JsonResponse
      */
-    public function patch(HCLanguageRequest $request, string $languageId)
+    public function patch(HCLanguageRequest $request, string $languageId): JsonResponse
     {
         $this->service->update($request, $languageId);
 
         return $this->response->success('Updated');
+    }
+
+    /**
+     * Creating data list
+     * @param HCLanguageRequest $request
+     * @return JsonResponse
+     */
+    public function getOptions(HCLanguageRequest $request): JsonResponse
+    {
+        return response()->json(
+            $this->service->getRepository()->getOptions($request)
+        );
     }
 }

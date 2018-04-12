@@ -33,6 +33,7 @@ namespace HoneyComb\Core\Notifications;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
+
 /**
  * Class HCAdminWelcomeEmail
  * @package HoneyComb\Core\Notifications

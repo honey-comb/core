@@ -34,6 +34,10 @@ use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * Trait HCUserRoles
+ * @package HoneyComb\Core\Models\Traits
+ */
 trait HCUserRoles
 {
     /**

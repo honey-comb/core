@@ -29,7 +29,6 @@ declare(strict_types = 1);
 
 namespace Tests;
 
-
 use HoneyComb\Core\Providers\HCCoreServiceProvider;
 use HoneyComb\Resources\Providers\HCResourceServiceProvider;
 use Illuminate\Foundation\Application;
@@ -46,6 +45,8 @@ abstract class TestCase extends \Orchestra\Testbench\BrowserKit\TestCase
     protected function setUp()
     {
         parent::setUp();
+
+        $this->withFactories(__DIR__ . '/factories');
     }
 
     /**

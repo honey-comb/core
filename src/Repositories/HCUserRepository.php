@@ -27,12 +27,15 @@
 
 namespace HoneyComb\Core\Repositories;
 
-use HoneyComb\Core\DTO\HCUserDTO;
-use HoneyComb\Core\Http\Requests\HCUserRequest;
+use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
+use HoneyComb\Core\Http\Resources\HCUserResource;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -73,71 +76,84 @@ class HCUserRepository extends HCBaseRepository
      * Soft delete users
      *
      * @param array $userIds
+     * @return array
      */
-    public function deleteSoft(array $userIds): void
+    public function deleteSoft(array $userIds): array
     {
-        $this->makeQuery()->whereIn('id', $userIds)->delete();
+        $deleted = [];
+
+        foreach ($userIds as $userId) {
+            if ($this->makeQuery()->where('id', $userId)->delete()) {
+                $deleted[] = $this->makeQuery()->withTrashed()->find($userId);
+            }
+        }
+
+        return $deleted;
     }
 
     /**
      * Restore soft deleted users
      *
      * @param array $userIds
+     * @return array
      */
-    public function restore(array $userIds): void
+    public function restore(array $userIds): array
     {
         $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->restore();
+
+        return $userIds;
     }
 
     /**
      * Force delete users by given id
      *
      * @param array $userIds
+     * @return array
      */
-    public function deleteForce(array $userIds): void
+    public function deleteForce(array $userIds): array
     {
-        $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->forceDelete();
+        $deleted = [];
+
+        $users = $this->makeQuery()->withTrashed()->whereIn('id', $userIds)->get();
+
+        /** @var HCUser $user */
+        foreach ($users as $user) {
+            if ($user->forceDelete()) {
+                $deleted[] = $user;
+            }
+        }
+
+        return $deleted;
     }
 
     /**
      * @param string $userId
-     * @return HCUserDTO
+     * @return HCUserResource
      */
-    public function getRecordById(string $userId): HCUserDTO
+    public function getRecordById(string $userId): HCUserResource
     {
+        /** @var HCUser $record */
         $record = $this->getById($userId);
 
         $record->load([
-            'roles' => function ($query) {
+            'roles' => function (BelongsToMany $query) {
                 $query->select('id', 'name as label');
             },
-            'personal' => function ($query) {
+            'personal' => function (HasOne $query) {
                 $query->select('user_id', 'first_name', 'last_name', 'photo_id', 'description');
             },
         ]);
 
-        return new HCUserDTO(
-            $record->id,
-            $record->email,
-            $record->activated_at,
-            $record->last_login,
-            $record->last_visited,
-            $record->last_activity,
-            optional($record->personal)->first_name,
-            optional($record->personal)->last_name,
-            optional($record->personal)->photo_id,
-            optional($record->personal)->description,
-            $record->roles
-        );
+        return new HCUserResource($record);
     }
 
     /**
-     * @param \HoneyComb\Core\Http\Requests\HCUserRequest $request
+     * @param \HoneyComb\Core\Http\Requests\Admin\HCUserRequest $request
      * @return \Illuminate\Support\Collection
      */
-    public function getOptions (HCUserRequest $request): Collection
+    public function getOptions(HCUserRequest $request): Collection
     {
-        return $this->createBuilderQuery($request)->get()->map (function ($record){
+        return $this->createBuilderQuery($request)->get()->map(function ($record) {
             return [
                 'id' => $record->id,
                 'label' => $record->email

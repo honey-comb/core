@@ -15,7 +15,7 @@ class HCAdminMenuService
     /**
      * @var array
      */
-    private $itemsWithoutParent = [];
+    protected $itemsWithoutParent = [];
 
     /**
      * @param Request $request

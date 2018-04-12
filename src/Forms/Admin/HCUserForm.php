@@ -27,14 +27,14 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Forms;
+namespace HoneyComb\Core\Forms\Admin;
 
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
  * Class HCUserForm
- * @package HoneyComb\Core\Forms
+ * @package HoneyComb\Core\Forms\Admin
  */
 class HCUserForm extends HCBaseForm
 {
@@ -74,7 +74,7 @@ class HCUserForm extends HCBaseForm
             $form['availableLanguages'] = [];
         }
 
-        //TOTO implement honeycomb-languages package getAvailableLanguages
+        //TODO implement honeycomb-languages package getAvailableLanguages
 
         return $form;
     }

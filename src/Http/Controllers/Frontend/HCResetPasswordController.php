@@ -65,7 +65,7 @@ class HCResetPasswordController extends HCBaseController
     /**
      * @var HCFrontendResponse
      */
-    private $response;
+    protected $response;
 
     /**
      * Create a new controller instance.

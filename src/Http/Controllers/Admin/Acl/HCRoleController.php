@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,9 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Admin\Acl;
 
+use HoneyComb\Core\Events\Admin\Acl\HCRolePermissionUpdated;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
-use HoneyComb\Core\Http\Requests\HCRoleRequest;
+use HoneyComb\Core\Http\Requests\Admin\HCRoleRequest;
 use HoneyComb\Core\Services\Acl\HCRoleService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Http\JsonResponse;
@@ -49,7 +50,7 @@ class HCRoleController extends HCBaseController
     /**
      * @var HCFrontendResponse
      */
-    private $response;
+    protected $response;
 
     /**
      * HCRoleController constructor.
@@ -92,6 +93,15 @@ class HCRoleController extends HCBaseController
                 $request->input('role_id'),
                 $request->input('permission_id')
             );
+
+            event(
+                new HCRolePermissionUpdated(
+                    $request->input('role_id'),
+                    $request->input('permission_id'),
+                    $message
+                )
+            );
+
         } catch (\Exception $exception) {
             return $this->response->error($exception->getMessage());
         }

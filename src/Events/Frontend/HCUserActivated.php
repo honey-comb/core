@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,57 +25,47 @@
  * http://www.interactivesolutions.lt
  */
 
-declare(strict_types = 1);
+namespace HoneyComb\Core\Events\frontend;
 
-namespace HoneyComb\Core\Http\Controllers\Traits;
-
-use HCLog;
-use Illuminate\Cache\RateLimiter;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use HoneyComb\Core\Models\HCUser;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /**
- * Trait HCUserThrottle
- * @package HoneyComb\Core\Http\Controllers\Traits
+ * Class HCRegisteredUserWelcomeMail
+ * @package HoneyComb\Core\Events\frontend
  */
-trait HCUserThrottle
+class HCUserActivated
 {
-
-    use ThrottlesLogins;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Redirect the user after determining they are locked out.
-     *
-     * @param  Request $request
-     * @return JsonResponse
+     * @var HCUser
      */
-    protected function sendLockoutResponse(Request $request): JsonResponse
-    {
-        $seconds = app(RateLimiter::class)->availableIn(
-            $this->getThrottleKey($request)
-        );
+    private $user;
 
-        return HCLog::error('AUTH-003', trans('HCCore::user.errors.to_many_attempts', ['seconds' => $seconds]));
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
+    public function __construct(HCUser $user)
+    {
+        $this->user = $user;
     }
 
     /**
-     * Determine if the class is using the ThrottlesLogins trait.
+     * Get the channels the event should broadcast on.
      *
-     * @return bool
+     * @return \Illuminate\Broadcasting\Channel|array
      */
-    protected function isUsingThrottlesLoginTrait(): bool
+    public function broadcastOn()
     {
-        return in_array(ThrottlesLogins::class, class_uses_recursive(get_class($this)));
-    }
-
-    /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
-    public function loginUsername(): string
-    {
-        return property_exists($this, 'username') ? auth()->username : 'email';
+        return new PrivateChannel('channel-name');
     }
 }

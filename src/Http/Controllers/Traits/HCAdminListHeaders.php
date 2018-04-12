@@ -29,6 +29,10 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Traits;
 
+/**
+ * Trait HCAdminListHeaders
+ * @package HoneyComb\Core\Http\Controllers\Traits
+ */
 trait HCAdminListHeaders
 {
     /**

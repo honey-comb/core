@@ -34,7 +34,8 @@ use HoneyComb\Starter\Models\HCUuidModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Class HCUserProvider.
+ * Class HCUserProvider
+ * @package HoneyComb\Core\Models\Users
  */
 class HCUserProvider extends HCUuidModel
 {

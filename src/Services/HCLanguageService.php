@@ -29,7 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Services;
 
-use HoneyComb\Core\Http\Requests\HCLanguageRequest;
+use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
 use HoneyComb\Core\Repositories\HCLanguageRepository;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 
@@ -43,7 +43,7 @@ class HCLanguageService
     /**
      * @var HCLanguageRepository
      */
-    private $repository;
+    protected $repository;
 
 
     /**

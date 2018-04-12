@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Requests;
+namespace HoneyComb\Core\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class HCRoleRequest
- * @package HoneyComb\Core\Http\Requests
+ * @package HoneyComb\Core\Http\Requests\Admin
  */
 class HCRoleRequest extends FormRequest
 {

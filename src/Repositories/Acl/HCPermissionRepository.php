@@ -33,6 +33,10 @@ use HoneyComb\Core\Models\Acl\HCAclPermission;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 
+/**
+ * Class HCPermissionRepository
+ * @package HoneyComb\Core\Repositories\Acl
+ */
 class HCPermissionRepository extends HCBaseRepository
 {
     use HCQueryBuilderTrait;

@@ -29,6 +29,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Models\Traits;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Trait HCTranslation
@@ -44,9 +46,9 @@ trait HCTranslation
     /**
      * Translations
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function translations()
+    public function translations(): HasMany
     {
         $this->translationClass = get_class($this) . 'Translation';
 
@@ -55,9 +57,9 @@ trait HCTranslation
 
     /**
      * Single translation only
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
-    public function translation()
+    public function translation(): HasOne
     {
         $this->translationClass = get_class($this) . 'Translation';
 
@@ -68,7 +70,7 @@ trait HCTranslation
      * Update translations
      *
      * @param array $data
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|null|object|static
      */
     public function updateTranslation(array $data)
     {
@@ -91,7 +93,7 @@ trait HCTranslation
      *
      * @param array $data
      */
-    public function updateTranslations(array $data = [])
+    public function updateTranslations(array $data = []): void
     {
         foreach ($data as $translationsData) {
             $this->updateTranslation($translationsData);

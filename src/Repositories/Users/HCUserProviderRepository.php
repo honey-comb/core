@@ -32,6 +32,10 @@ namespace HoneyComb\Core\Repositories\Users;
 use HoneyComb\Core\Models\Users\HCUserProvider;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 
+/**
+ * Class HCUserProviderRepository
+ * @package HoneyComb\Core\Repositories\Users
+ */
 class HCUserProviderRepository extends HCBaseRepository
 {
     /**

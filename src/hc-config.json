@@ -5,11 +5,11 @@
     "namespace": "HoneyComb\\Core"
   },
   "formData": {
-    "user": "HoneyComb\\Core\\Forms\\HCUserForm",
-    "user-login": "HoneyComb\\Core\\Forms\\HCUserLoginForm",
-    "user-register": "HoneyComb\\Core\\Forms\\HCUserRegisterForm",
-    "password-remind": "HoneyComb\\Core\\Forms\\HCPasswordRemindForm",
-    "password-reset": "HoneyComb\\Core\\Forms\\HCPasswordResetForm"
+    "user": "HoneyComb\\Core\\Forms\\Admin\\HCUserForm",
+    "user-login": "HoneyComb\\Core\\Forms\\Frontend\\HCUserLoginForm",
+    "user-register": "HoneyComb\\Core\\Forms\\Frontend\\HCUserRegisterForm",
+    "password-remind": "HoneyComb\\Core\\Forms\\Frontend\\HCPasswordRemindForm",
+    "password-reset": "HoneyComb\\Core\\Forms\\Frontend\\HCPasswordResetForm"
   },
   "adminMenu": [
     {

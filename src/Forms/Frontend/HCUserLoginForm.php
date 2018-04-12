@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Forms;
+namespace HoneyComb\Core\Forms\Frontend;
 
 use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
- * Class HCPasswordRemindForm
- * @package HoneyComb\Core\Forms
+ * Class HCUserLoginForm
+ * @package HoneyComb\Core\Forms\Frontend
  */
-class HCPasswordRemindForm extends HCBaseForm
+class HCUserLoginForm extends HCBaseForm
 {
     /**
      * Creating form
@@ -46,50 +46,16 @@ class HCPasswordRemindForm extends HCBaseForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            "storageUrl" => route('users.password.remind.post'),
-            "buttons" => [
-                [
-                    "class" => "col-centered",
-                    "label" => trans('HCCore::core.buttons.submit'),
-                    "type" => "submit",
+            'storageUrl' => route('auth.login'),
+            'buttons' => [
+                'submit' => [
+                    'label' => trans('HCCore::core.buttons.login'),
                 ],
             ],
-            "structure" => $this->getStructure($edit),
+            'structure' => $this->getStructure($edit),
         ];
-
-        if ($this->multiLanguage) {
-            $form['availableLanguages'] = getHCContentLanguages();
-        }
-
-        if (!$edit) {
-            return $form;
-        }
 
         return $form;
-    }
-
-    /**
-     * Get new structure
-     *
-     * @param string $prefix
-     * @return array
-     */
-    public function getStructureNew(string $prefix): array
-    {
-        return [
-            [
-                "type" => "email",
-                "fieldId" => "email",
-                "label" => trans('HCCore::user.login.email'),
-                "editType" => 0,
-                "required" => 1,
-                "requiredVisible" => 0,
-                "properties" => [
-                    "style" => "varchar",
-                    "maxlength" => "197",
-                ],
-            ],
-        ];
     }
 
     /**
@@ -101,5 +67,34 @@ class HCPasswordRemindForm extends HCBaseForm
     public function getStructureEdit(string $prefix): array
     {
         return [];
+    }
+
+    /**
+     * Get new structure
+     *
+     * @param string $prefix
+     * @return array
+     */
+    public function getStructureNew(string $prefix): array
+    {
+        return [
+            'email' =>
+                [
+                    'type' => 'singleLine',
+                    'label' => trans('HCCore::user.login.email'),
+                    'required' => 1,
+                ],
+            'password' =>
+                [
+                    'type' => 'password',
+                    'label' => trans('HCCore::user.login.password'),
+                    'required' => 1,
+                ],
+            'remember' =>
+                [
+                    'type' => 'checkBoxList',
+                    'options' => [['id' => '1', 'label' => trans('HCCore::user.login.remember')]],
+                ],
+        ];
     }
 }

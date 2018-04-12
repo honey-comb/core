@@ -42,11 +42,11 @@ class HCUserActivationService
     /**
      * @var HCUserActivationRepository
      */
-    private $hcUserActivationRepository;
+    protected $hcUserActivationRepository;
     /**
      * @var HCUserRepository
      */
-    private $hcUserRepository;
+    protected $hcUserRepository;
 
     /**
      * UserActivationService constructor.
@@ -80,9 +80,10 @@ class HCUserActivationService
 
     /**
      * @param string $token
+     * @return HCUser
      * @throws \Exception
      */
-    public function activateUser(string $token): void
+    public function activateUser(string $token): HCUser
     {
         $activation = $this->hcUserActivationRepository->getActivationByToken($token);
 
@@ -104,6 +105,8 @@ class HCUserActivationService
 
         // login user to the site
         auth()->login($user);
+
+        return $user;
     }
 
     /**
@@ -155,7 +158,7 @@ class HCUserActivationService
     {
         $activation = $this->hcUserActivationRepository->getActivation($user->id);
 
-        return $activation === null || strtotime($activation->created_at) + 60 * 60 * $resendAfter < time();
+        return $activation === null || $activation->created_at->timestamp + 60 * 60 * $resendAfter < time();
     }
 
     /**

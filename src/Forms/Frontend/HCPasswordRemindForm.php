@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,63 +27,45 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Forms;
+namespace HoneyComb\Core\Forms\Frontend;
 
 use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
- * Class HCUserRegisterForm
- * @package HoneyComb\Core\Forms
+ * Class HCPasswordRemindForm
+ * @package HoneyComb\Core\Forms\Frontend
  */
-class HCUserRegisterForm extends HCBaseForm
+class HCPasswordRemindForm extends HCBaseForm
 {
     /**
      * Creating form
      *
      * @param bool $edit
      * @return array
+     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function createForm(bool $edit = false): array
     {
         $form = [
-            'storageUrl' => route('auth.register'),
+            'storageUrl' => route('users.password.remind.post'),
             'buttons' => [
-                [
-                    "class" => "col-centered",
-                    "label" => trans('HCCore::core.buttons.register'),
-                    "type" => "submit",
+                'submit' => [
+                    'label' => trans('HCCore::core.buttons.submit'),
                 ],
             ],
-            'structure' => [
-                [
-                    "type" => "singleLine",
-                    "fieldId" => "email",
-                    "label" => trans("HCCore::user.email"),
-                    "required" => 1,
-                    "requiredVisible" => 1,
-                ],
-                [
-                    "type" => "password",
-                    "fieldId" => "password",
-                    "label" => trans("HCCore::user.register.password"),
-                    "required" => 1,
-                    "requiredVisible" => 1,
-                ],
-            ],
+            'structure' => $this->getStructure($edit),
         ];
 
-        return $form;
-    }
 
-    /**
-     * Get Edit structure
-     *
-     * @param string $prefix
-     * @return array
-     */
-    public function getStructureEdit(string $prefix): array
-    {
-        // TODO: Implement getStructureEdit() method.
+        if ($this->multiLanguage) {
+            $form['availableLanguages'] = getHCContentLanguages();
+        }
+
+        if (!$edit) {
+            return $form;
+        }
+
+        return $form;
     }
 
     /**
@@ -94,6 +76,31 @@ class HCUserRegisterForm extends HCBaseForm
      */
     public function getStructureNew(string $prefix): array
     {
-        // TODO: Implement getStructureNew() method.
+        return [
+            'email' =>
+                [
+                    "type" => "email",
+                    "fieldId" => "email",
+                    "label" => trans('HCCore::user.login.email'),
+                    "editType" => 0,
+                    "required" => 1,
+                    "requiredVisible" => 0,
+                    "properties" => [
+                        "style" => "varchar",
+                        "maxlength" => "197",
+                    ],
+                ],
+        ];
+    }
+
+    /**
+     * Get Edit structure
+     *
+     * @param string $prefix
+     * @return array
+     */
+    public function getStructureEdit(string $prefix): array
+    {
+        return [];
     }
 }

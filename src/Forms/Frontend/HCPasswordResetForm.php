@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 interactivesolutions
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,13 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Forms;
+namespace HoneyComb\Core\Forms\Frontend;
 
 use HoneyComb\Starter\Forms\HCBaseForm;
 
 /**
  * Class HCPasswordResetForm
- * @package HoneyComb\Core\Forms
+ * @package HoneyComb\Core\Forms\Frontend
  */
 class HCPasswordResetForm extends HCBaseForm
 {
