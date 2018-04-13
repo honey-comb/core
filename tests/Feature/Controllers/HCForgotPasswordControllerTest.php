@@ -56,6 +56,8 @@ class HCForgotPasswordControllerTest extends TestCase
 
         config(['auth.providers.users.model' => HCUser::class]);
 
+        config(['auth.passwords.users.table' => 'hc_user_password_reset']);
+
         $response = $this->json('POST', route('users.password.remind.post'), $userMail);
         $response->assertResponseOk();
         $response->seeJsonEquals([
