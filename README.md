@@ -53,6 +53,16 @@ Make sure to update the User controller in `config/auth.php`
     ],
 ```
 
+```php
+'passwords' => [
+        'users' => [
+            'provider' => 'users',
+            'table' => 'hc_user_password_reset',
+            'expire' => 60,
+        ],
+    ],
+```
+
 ### Database
 
 We recomend to use `utf8mb4_unicode_520_ci` collation, so you can update it in `config/database.php`
