@@ -7,12 +7,14 @@ HoneyComb CMS Core package for backend elements
 
 ## Attention
 
-This is part core package HoneyComb CMS package.
+This is part core package HoneyComb CMS package. It require `starter` and `resources` packages.
+ 
+If you want to use laravel version 5.5.* [use core package version 0.2.*](https://github.com/honey-comb/core/tree/5.5 "Core package version 0.2.*")
 
 ## Requirement
 
  - php: `^7.1`
- - laravel: `^5.5`
+ - laravel: `^5.6`
  - composer
  - npm
  
