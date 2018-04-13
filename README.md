@@ -7,7 +7,11 @@ HoneyComb CMS Core package for backend elements
 
 ## Attention
 
-This is part core package HoneyComb CMS package.
+This is part core package HoneyComb CMS package. 
+
+This package is for laravel version 5.5.* 
+
+If you wish to use [laravel 5.6.* version click here](https://github.com/honey-comb/core/tree/master "laravel 5.5.* version")
 
 ## Requirement
 
@@ -49,6 +53,16 @@ Make sure to update the User controller in `config/auth.php`
         'users' => [
             'driver' => 'eloquent',
             'model' => \HoneyComb\Core\Models\HCUser::class,
+        ],
+    ],
+```
+
+```php
+'passwords' => [
+        'users' => [
+            'provider' => 'users',
+            'table' => 'hc_user_password_reset',
+            'expire' => 60,
         ],
     ],
 ```
