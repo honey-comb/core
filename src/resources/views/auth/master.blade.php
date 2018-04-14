@@ -13,14 +13,16 @@
 
 @include('HCCore::admin.assets.js')
 
+@include('HCCore::admin.partials.toastrify')
+
+</body>
+{{-- admin list --}}
+<script src="{{mix('js/hc-full.js')}}"></script>
+<script>
+    HC.react.enableToastContainer();
+</script>
+
 @yield('scripts')
 
-<script>
-    jQuery.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-</script>
-</body>
+
 </html>

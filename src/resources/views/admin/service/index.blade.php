@@ -8,8 +8,6 @@
 
     <div id="admin-list" data-hc="parameters"></div>
     <div id="admin-form"></div>
-    <div id="toastrify"></div>
-
 @endsection
 
 @section('scripts')

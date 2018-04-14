@@ -37,11 +37,14 @@
 
 </div>
 
+@include('HCCore::admin.partials.toastrify')
+
 {{-- js include --}}
 @include('HCCore::admin.assets.js')
 
 @yield('scripts')
 
 @include('HCCore::admin.partials.sidebar-filter-js')
+
 </body>
 </html>
