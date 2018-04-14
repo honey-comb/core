@@ -57,7 +57,7 @@ export default class BaseField extends Component {
         let fieldClasses = classNames(
             "form-group", {
                 "has-error": this.state.hasError,
-                hidden: this.getHidden(),
+                "d-none": this.getHidden(),
             }
         );
 

@@ -8,7 +8,7 @@ export default class FAButton extends Component {
     render() {
 
         let divClasses = classNames(this.props.type, {
-            "hidden": this.props.display,
+            "d-none": this.props.display,
             "disabled": this.props.disabled
         }, this.props.classes);
 
@@ -22,7 +22,7 @@ export default class FAButton extends Component {
 
         let counterClasses = classNames(
             "counter", "fa-layers-counter", {
-                "hidden": hideCounter
+                "d-none": hideCounter
             }
         );
 
