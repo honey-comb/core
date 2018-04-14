@@ -153,6 +153,14 @@ HC.react = new function () {
      */
     this.adminList = function (data) {
         ReactDOM.render(<HCAdminListView config={data}/>, document.getElementById('admin-list'));
+        this.enableToastContainer();
+    };
+
+    /**
+     * Enabling toastr container
+     */
+    this.enableToastContainer = function ()
+    {
         ReactDOM.render(<ToastContainer/>, document.getElementById('toastrify'));
     };
 
