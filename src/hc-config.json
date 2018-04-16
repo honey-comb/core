@@ -41,7 +41,6 @@
     "Routes/Admin/routes.roles.php",
     "Routes/Admin/routes.users.php",
     "Routes/Admin/routes.languages.php",
-    "Routes/Frontend/routes.welcome.php",
     "Routes/Frontend/routes.auth.php",
     "Routes/Frontend/routes.password.php",
     "Routes/Frontend/routes.languages.php"
