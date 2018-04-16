@@ -17,9 +17,11 @@
 
                 {{--<div class="social-auth-links text-center"></div>--}}
 
-                <a href="{{ route('users.password.remind')}}">{{ trans('HCCore::user.passwords.forgot_password') }}</a><br>
+                <div class="text-center mt-4">
+                    <a href="{{ route('users.password.remind')}}">{{ trans('HCCore::user.passwords.forgot_password') }}</a><br>
+                </div>
 
-                <div class="social-auth-links text-center">
+                <div class="text-center mt-4">
                     @if(config('services.facebook.client_id'))
                         <a href="{{ route('login.socialite', 'facebook')}}">{!! trans('HCCore::user.socialite.facebook') !!}</a>
                         <br>
@@ -64,8 +66,6 @@
 @stop
 
 @section('scripts')
-    {{-- admin list --}}
-    <script src="{{mix('js/hc-full.js')}}"></script>
 
     <script>
         HC.react.enableFaIcons();
