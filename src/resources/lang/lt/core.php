@@ -14,7 +14,7 @@ return [
     'language_not_found' => 'Kalba nerasta',
     'label' => 'Pavadimimas',
     'title' => 'Antraštė',
-    'index' => 'Indekas',
+    'index' => 'Titulinis',
     'filter' => 'Filtras',
     'administration' => 'Administracija',
     'dev_env' => 'Vystymo aplink',
