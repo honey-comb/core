@@ -1,6 +1,7 @@
 <?php
 
-Route::prefix(config('hc.admin_url'))
+Route::domain(config('hc.admin_domain'))
+    ->prefix(config('hc.admin_url'))
     ->middleware(['web', 'auth'])
     ->namespace('Admin')
     ->group(function () {
