@@ -27,7 +27,8 @@
 
 declare(strict_types = 1);
 
-Route::prefix(config('hc.admin_url'))
+Route::domain(config('hc.admin_domain'))
+    ->prefix(config('hc.admin_url'))
     ->namespace('Admin\Acl')
     ->middleware(['web', 'auth'])
     ->group(function () {
