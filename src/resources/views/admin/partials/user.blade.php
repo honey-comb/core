@@ -1,12 +1,12 @@
-<li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" style="display: flex" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">
         {!!  fontAwesomeIcon('user') !!}
     </a>
-    <ul class="dropdown-menu dropdown-user">
-        <li>
-            <a href="{{ route('auth.logout') }}">
-                <i class="fa fa-sign-out fa-fw"></i> {{ trans('HCCore::user.admin.menu.logout') }}
-            </a>
-        </li>
-    </ul>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" style="display: flex" href="{{ route('auth.logout') }}">
+            {!!  fontAwesomeIcon('sign-out') !!} {{ trans('HCCore::user.admin.menu.logout') }}
+        </a>
+    </div>
 </li>
+

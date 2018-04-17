@@ -1,33 +1,27 @@
-<li class="dropdown languages tasks-menu">
+@if(sizeof($adminLanguages) > 1)
 
-    @if(in_array(app()->getLocale(), array_pluck($adminLanguages, 'iso_639_1')))
-        @foreach($adminLanguages as $language)
-            @if($language->iso_639_1 == app()->getLocale())
-                <a title="{{$language->native_name}}" class="dropdown-toggle" data-toggle="dropdown"
-                   href="#">
-                    {{ $language->native_name }} <i class="fa fa-angle-down"></i>
-                </a>
-            @endif
-        @endforeach
-    @else
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            {{ trans('HCCore::language.select_language') }}
-            <i class="fa fa-angle-down"></i>
-        </a>
-    @endif
-
-    <ul class="dropdown-menu">
-        <li class="header">{{ trans('HCCore::language.select_language') }}</li>
-        <li>
-            <ul class="menu">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+            @if(in_array(app()->getLocale(), array_pluck($adminLanguages, 'iso_639_1')))
                 @foreach($adminLanguages as $language)
-                    <li class="{{ $language->iso_639_1 == app()->getLocale() ? 'active' : '' }}">
-                        <a href="{{ route('language.change', ['back-end', $language->iso_639_1]) }}">
-                            {{ $language->native_name }}
-                        </a>
-                    </li>
+                    @if($language->iso_639_1 == app()->getLocale())
+                        {{ $language->native_name }}
+                    @endif
                 @endforeach
-            </ul>
-        </li>
-    </ul>
-</li>
+            @else
+                {{ trans('HCCore::language.select_language') }}
+            @endif
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            @foreach($adminLanguages as $language)
+                @if ($language->iso_639_1 !==app()->getLocale() )
+                    <a class="dropdown-item" href="{{ route('language.change', ['back-end', $language->iso_639_1]) }}">
+                        {{ $language->native_name }}
+                    </a>
+                @endif
+            @endforeach
+        </div>
+    </li>
+
+@endif

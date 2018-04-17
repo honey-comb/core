@@ -29,7 +29,25 @@ body.disabled {
   .sidebar-toggle:before {
     content: none;
   }
+
+  .sidebar-toggle {
+    padding: 5px;
+  }
 }
+
+.main-header {
+  .logo {
+    background-color: #3c8dbc !important;
+    height: 56px;
+    line-height: 56px;
+  }
+}
+
+.dropdown-toggle::after
+{
+  margin-top: 9px;
+}
+
 
 .hc-form {
   width: 100%;
@@ -258,11 +276,9 @@ body.disabled {
   align-items: center;
 }
 
-.rc-pagination
-{
-  padding-top:10px;
+.rc-pagination {
+  padding-top: 10px;
 }
-
 
 .hc-media-uploader, .hc-media {
 
