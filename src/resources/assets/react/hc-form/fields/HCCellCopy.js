@@ -27,7 +27,7 @@ export default class HCCellCopy extends Component {
     copyData() {
         const textField = document.createElement('textarea');
         textField.innerText = this.getText();
-        const parentElement = document.getElementsByTagName('body');
+        const parentElement = document.getElementsByTagName('body')[0];
         parentElement.appendChild(textField);
         textField.select();
         document.execCommand('copy');
