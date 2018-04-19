@@ -73,4 +73,17 @@ return [
     */
     'logActivityTime' => ENV('HC_LOG_USER_ACTIVITY_INTERVAL', 15),
 
+    /*
+    |---------------------------------------------------------------------------
+    | List of middleware to ignore
+    |---------------------------------------------------------------------------
+    |
+    | Enter package name which you can find in his ServiceProvider
+    | i.e. HCCoreServiceProvider -> $packageName property
+    |
+    */
+    'ignoreDefaultMiddleware' => [
+        //
+    ],
+
 ];

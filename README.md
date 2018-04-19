@@ -23,7 +23,7 @@ If you want to use laravel version 5.5.* [use core package version 0.2.*](https:
 Begin by installing this package through Composer.
 
 
-```js
+```json
 	{
 	    "require": {
 	        "honey-comb/core": "*"
@@ -40,6 +40,13 @@ or
 Firstly register the service provider and Facade by opening `config/app.php`
 
     HoneyComb\Core\Providers\HCCoreServiceProvider::class,
+    
+To customize middleware:
+* disable middleware in hc.php file adding value to ignoreDefaultMiddleware property
+```php
+    'ignoreDefaultMiddleware' => [ ],
+```
+* manualy add middleware to kernel.php
 
 ## Preparation
 ### Users
