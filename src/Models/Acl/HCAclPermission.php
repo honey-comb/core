@@ -30,7 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Models\Acl;
 
 use Carbon\Carbon;
-use HoneyComb\Starter\Models\HCUuidModel;
+use HoneyComb\Starter\Models\HCUuidSoftModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
@@ -58,7 +58,7 @@ use Illuminate\Support\Collection;
  * @method static Builder|HCAclPermission whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class HCAclPermission extends HCUuidModel
+class HCAclPermission extends HCUuidSoftModel
 {
     /**
      * The database table used by the model.

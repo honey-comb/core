@@ -38,7 +38,7 @@ use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
 use HoneyComb\Core\Models\Users\HCUserProvider;
 use HoneyComb\Core\Notifications\HCAdminWelcomeEmail;
 use HoneyComb\Core\Notifications\HCResetPassword;
-use HoneyComb\Starter\Models\HCUuidModel;
+use HoneyComb\Starter\Models\HCUuidSoftModel;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -86,7 +86,7 @@ use Illuminate\Support\Collection;
  * @method static Builder|HCUser whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class HCUser extends HCUuidModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class HCUser extends HCUuidSoftModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, Notifiable, HCUserRoles, HCActivateUser;
 

@@ -29,13 +29,13 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Models;
 
-use HoneyComb\Starter\Models\HCUuidModel;
+use HoneyComb\Starter\Models\HCUuidSoftModel;
 
 /**
  * Class HCLanguage
  * @package HoneyComb\Core\Models
  */
-class HCLanguage extends HCUuidModel
+class HCLanguage extends HCUuidSoftModel
 {
     /**
      * The database table used by the model.

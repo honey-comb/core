@@ -32,7 +32,7 @@ namespace HoneyComb\Core\Models\Acl;
 use Carbon\Carbon;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Models\Users\HCUserRole;
-use HoneyComb\Starter\Models\HCUuidModel;
+use HoneyComb\Starter\Models\HCUuidSoftModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
@@ -61,7 +61,7 @@ use Illuminate\Support\Collection;
  * @method static Builder|HCAclRole whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class HCAclRole extends HCUuidModel
+class HCAclRole extends HCUuidSoftModel
 {
     /**
      * The database table used by the model.
