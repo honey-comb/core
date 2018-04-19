@@ -155,6 +155,11 @@ class HCUserForm extends HCBaseForm
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.last_name'),
             ],
+            $prefix . 'phone' => [
+                'type' => 'singleLine',
+                'tabID' => trans('HCCore::core.general'),
+                'label' => trans('HCCore::user.phone'),
+            ],
             $prefix . 'photo_id' => [
                 'type' => 'media',
                 'tabID' => trans('HCCore::core.general'),
@@ -169,6 +174,11 @@ class HCUserForm extends HCBaseForm
                 'type' => 'textArea',
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.description'),
+            ],
+            $prefix . 'address' => [
+                'type' => 'textArea',
+                'tabID' => trans('HCCore::core.general'),
+                'label' => trans('HCCore::user.address'),
             ],
             $prefix . 'email' => [
                 'type' => 'email',

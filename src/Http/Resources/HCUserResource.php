@@ -95,6 +95,15 @@ class HCUserResource extends ResourceCollection
      */
     private $photoId;
 
+    /**
+     * @var null|string
+     */
+    private $phone;
+
+    /**
+     * @var null|string
+     */
+    private $address;
 
     /**
      * HCUserResource constructor.
@@ -116,6 +125,8 @@ class HCUserResource extends ResourceCollection
         $this->lastName = $model->personal->last_name;
         $this->photoId = $model->personal->photo_id;
         $this->description = $model->personal->description;
+        $this->phone = $model->personal->phone;
+        $this->address = $model->personal->address;
         $this->roles = $model->roles->pluck('id');
     }
 
@@ -240,6 +251,22 @@ class HCUserResource extends ResourceCollection
     }
 
     /**
+     * @return null|string
+     */
+    public function getPhone(): ? string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getAddress(): ? string
+    {
+        return $this->address;
+    }
+
+    /**
      * @return Collection
      */
     public function getRoles(): Collection
@@ -266,6 +293,8 @@ class HCUserResource extends ResourceCollection
             'photo' => $this->getPhoto(),
             'photo_id' => $this->getPhotoId(),
             'description' => $this->getDescription(),
+            'phone' => $this->getPhone(),
+            'address' => $this->getAddress(),
             'roles' => $this->getRoles(),
         ];
     }

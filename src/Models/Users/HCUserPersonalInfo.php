@@ -61,6 +61,8 @@ class HCUserPersonalInfo extends HCModel
         'last_name',
         'photo_id',
         'description',
+        'phone',
+        'address'
     ];
 
     /**

@@ -34,6 +34,8 @@ return [
     'last_name' => 'Last name',
     'description' => 'Description',
     'photo' => 'Photo',
+    'phone' => 'Phone',
+    'address' => 'Address',
     'provider' => 'Provider',
     'active' => 'Is activated?',
     'active_true' => 'Yes',
