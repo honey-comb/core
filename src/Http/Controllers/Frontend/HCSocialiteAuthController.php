@@ -6,6 +6,7 @@ namespace HoneyComb\Core\Http\Controllers\Frontend;
 
 use GuzzleHttp\Client;
 use HoneyComb\Core\Services\HCUserService;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -40,6 +41,8 @@ class HCSocialiteAuthController extends Controller
      */
     public function redirectToProvider(Request $request): RedirectResponse
     {
+        session()->put('url.intended', URL::previous());
+
         return Socialite::driver($request->segment(3))->redirect();
     }
 
