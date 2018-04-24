@@ -43,11 +43,9 @@ body.disabled {
   }
 }
 
-.dropdown-toggle::after
-{
+.dropdown-toggle::after {
   margin-top: 9px;
 }
-
 
 .hc-form {
   width: 100%;
@@ -64,6 +62,11 @@ body.disabled {
     padding: 15px;
 
     .form-group {
+
+      label {
+        font-weight: 600;
+      }
+
       label .required {
         color: crimson;
         font-size: 20px;
