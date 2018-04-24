@@ -177,3 +177,5 @@ export default class Media extends Base {
         return this.mediaList;
     }
 }
+
+HC.formFields.register('media', Media);

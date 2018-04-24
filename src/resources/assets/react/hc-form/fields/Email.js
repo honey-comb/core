@@ -7,3 +7,5 @@ export default class Email extends Base {
         return HC.helpers.validateEmail(this.getValue());
     }
 }
+
+HC.formFields.register('email', Email);

@@ -1,15 +1,5 @@
 import React, {Component} from 'react'
 import axios from "axios/index";
-import Email from "../hc-form/fields/Email";
-import Password from "../hc-form/fields/Password";
-import CheckBoxList from "../hc-form/fields/CheckBoxList";
-import BaseField from "../hc-form/fields/BaseField";
-import DropDownList from "../hc-form/fields/DropDownList";
-import TextArea from "../hc-form/fields/TextArea";
-import Media from "../hc-form/fields/Media";
-import TagList from "../hc-form/fields/TagList";
-import DateTimePicker from "../hc-form/fields/DateTimePicker";
-import DropDownSearchable from "../hc-form/fields/DropDownSearchable";
 
 export default class HCForm extends Component {
 
@@ -180,53 +170,18 @@ export default class HCForm extends Component {
 
         data.updateFormData = this.updateFormData;
 
-        switch (data.type) {
-            case "email" :
+        const FieldTagName = HC.formFields.get(data.type);
 
-                return <Email key={i} config={data} ref={ref} id={ref} language={this.state.language}/>;
+        if (!FieldTagName)
+            return '';
 
-            case "password" :
-
-                return <Password key={i} config={data} ref={ref} id={ref}/>;
-
-            case "checkBoxList" :
-
-                return <CheckBoxList key={i} config={data} ref={ref} id={ref} language={this.state.language}/>;
-
-            case "singleLine" :
-
-                return <BaseField key={i} config={data} ref={ref} id={ref} language={this.state.language}
-                                  onLanguageChange={this.languageChange}
-                                  availableLanguages={this.state.formData.availableLanguages}/>;
-
-            case "dropDownList" :
-
-                return <DropDownList key={i} config={data} ref={ref} id={ref} onLanguageChange={this.languageChange}/>;
-
-            case "tagList" :
-
-                return <TagList key={i} config={data} ref={ref} id={ref}/>;
-
-            case "textArea" :
-
-                return <TextArea key={i} config={data} ref={ref} id={ref} language={this.state.language}
-                                 onLanguageChange={this.languageChange}
-                                 availableLanguages={this.state.formData.availableLanguages}/>;
-
-            case "media" :
-
-                return <Media key={i} config={data} ref={ref} id={ref} language={this.state.language}/>;
-
-            case "dateTimePicker" :
-
-                return <DateTimePicker key={i} config={data} ref={ref} id={ref}/>;
-
-            case "dropDownSearchable" :
-
-                return <DropDownSearchable key={i} config={data} ref={ref} id={ref}/>;
-        }
-
-        return "";
+        return <FieldTagName key={i}
+                             config={data}
+                             ref={ref}
+                             id={ref}
+                             language={this.state.language}
+                             onLanguageChange={this.languageChange}
+                             availableLanguages={this.state.formData.availableLanguages}/>;
     }
 
     languageChange(language) {
@@ -436,16 +391,14 @@ export default class HCForm extends Component {
         }
     }
 
-    handleSubmitError()
-    {
+    handleSubmitError() {
         this.setState({formDisabled: false});
     }
 
     /**
      * Reset form values
      */
-    reset ()
-    {
+    reset() {
         Object.keys(this.finalFieldStructure).map((key) => {
             this.refs[key].reset();
         });

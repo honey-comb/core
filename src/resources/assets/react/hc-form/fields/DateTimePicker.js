@@ -69,3 +69,5 @@ export default class DateTimePicker extends BaseField {
         this.validate();
     }
 }
+
+HC.formFields.register('dateTimePicker', DateTimePicker);

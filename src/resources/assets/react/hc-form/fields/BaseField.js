@@ -373,3 +373,5 @@ export default class BaseField extends Component {
         this.value = undefined;
     }
 }
+
+HC.formFields.register('singleLine', BaseField);

@@ -49,3 +49,5 @@ export default class TagList extends Base {
         return true;
     }
 }
+
+HC.formFields.register('tagList', TagList);
