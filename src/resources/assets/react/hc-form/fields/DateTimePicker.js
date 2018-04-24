@@ -37,6 +37,7 @@ export default class DateTimePicker extends BaseField {
             ref="inputField"
             onChange={this.handleSelectionChange}
             dateFormat={this.props.config.dateFormat}
+            locale={this.props.config.locale}
         />;
     }
 
