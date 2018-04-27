@@ -11,7 +11,7 @@ export default class DropDownSearchable extends BaseField {
         this.state.options = this.props.config.options;
         this.state.multiValue = [];
         this.state.value = undefined;
-        this.state.createble = false;
+        this.state.creatable = this.props.config.creatable;
         this.state.backspaceRemoves = true;
 
         this.search = this.search.bind(this);
