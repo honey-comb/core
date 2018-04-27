@@ -13,3 +13,5 @@ export default class Password extends Base {
         return (this.getValue().length >= 8);
     }
 }
+
+HC.formFields.register('password', Password);

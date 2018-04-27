@@ -160,3 +160,5 @@ export default class DropDownList extends Base {
         this.validate();
     }
 }
+
+HC.formFields.register('dropDownList', DropDownList);

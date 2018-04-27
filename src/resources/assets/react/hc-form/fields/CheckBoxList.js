@@ -76,3 +76,5 @@ export default class CheckBoxList extends Base {
         this.validate();
     }
 }
+
+HC.formFields.register('checkBoxList', CheckBoxList);

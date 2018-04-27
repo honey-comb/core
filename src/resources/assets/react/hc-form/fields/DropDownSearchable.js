@@ -68,3 +68,5 @@ export default class DropDownSearchable extends BaseField {
         return this.state.value;
     }
 }
+
+HC.formFields.register('dropDownSearchable', DropDownSearchable);

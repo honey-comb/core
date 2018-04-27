@@ -20,3 +20,5 @@ export default class TextArea extends Base {
                       onChange={this.contentChange}/>;
     }
 }
+
+HC.formFields.register('textArea', TextArea);
