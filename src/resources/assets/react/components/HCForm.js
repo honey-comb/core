@@ -241,7 +241,7 @@ export default class HCForm extends Component {
                             config.values.map((configValue) => {
                                 if (HC.helpers.isArray(this.record[targetKey])) {
                                     //TODO: IMPLEMENT ARRAY DEPENDENCY VALIDATION
-                                    console.log('IMPLEMENT ARRAY DEPENDENCY VALIDATION');
+                                    console.log('IMPLEMENT FIELD VALUES ARRAY DEPENDENCY VALIDATION');
                                 }
                                 else {
 
