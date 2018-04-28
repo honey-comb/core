@@ -1,7 +1,7 @@
 import React from 'react'
-import Base from "./BaseField";
+import BaseField from "./BaseField";
 
-export default class Password extends Base {
+export default class Password extends BaseField {
     isValid ()
     {
         if (!this.props.config.required)

@@ -1,8 +1,8 @@
 import React from 'react';
-import Base from "./BaseField";
+import BaseField from "./BaseField";
 import Thumbnail from "./media/Thumbnail";
 
-export default class Media extends Base {
+export default class Media extends BaseField {
 
     constructor(props) {
         super(props);

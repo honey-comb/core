@@ -1,8 +1,8 @@
 import React from 'react'
-import Base from "./BaseField";
+import BaseField from "./BaseField";
 import Select from 'react-select';
 
-export default class TagList extends Base {
+export default class TagList extends BaseField {
     constructor(props) {
 
         super(props);

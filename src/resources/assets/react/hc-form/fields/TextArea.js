@@ -1,7 +1,7 @@
 import React from 'react'
-import Base from "./BaseField";
+import BaseField from "./BaseField";
 
-export default class TextArea extends Base {
+export default class TextArea extends BaseField {
 
     getInput ()
     {

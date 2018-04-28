@@ -1,7 +1,7 @@
 import React from 'react'
-import Base from "./BaseField";
+import BaseField from "./BaseField";
 
-export default class Email extends Base {
+export default class Email extends BaseField {
     isValid ()
     {
         return HC.helpers.validateEmail(this.getValue());

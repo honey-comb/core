@@ -1,8 +1,8 @@
 import React from 'react'
-import Base from "./BaseField";
+import BaseField from "./BaseField";
 import FAButton from "../buttons/FAButton";
 
-export default class DropDownList extends Base {
+export default class DropDownList extends BaseField {
 
     constructor(props) {
         super(props);

@@ -1,7 +1,7 @@
 import React from 'react'
-import Base from "./BaseField";
+import BaseField from "./BaseField";
 
-export default class CheckBoxList extends Base {
+export default class CheckBoxList extends BaseField {
 
     constructor(props) {
         super(props);
