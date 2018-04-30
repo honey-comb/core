@@ -62,6 +62,26 @@ HC.react = new function () {
         };
 
         /**
+         * Patch method
+         *
+         * @param url
+         * @param params
+         * @param callback
+         * @param notify
+         * @param errorCallBack
+         */
+        this.patch = function (url, params, callback, notify, errorCallBack) {
+            axios.patch(url, params).then(res => {
+
+                res = res.data;
+                handleSuccess(res, callback, notify);
+
+            }).catch(function (error) {
+                handleAxiosError(error, errorCallBack);
+            });
+        };
+
+        /**
          *
          * @param url
          * @param params
