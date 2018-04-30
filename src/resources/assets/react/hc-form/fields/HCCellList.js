@@ -24,7 +24,7 @@ export default class HCCellList extends Component {
         let lastKey = 0;
 
         this.props.value.map((value, i) => {
-            content.push(<li key={i}>{value[this.props.config.valuePath]}</li>);
+            content.push(<li key={i}>{this.getItemLabel(value)}</li>);
             lastKey++;
         });
 
@@ -34,6 +34,23 @@ export default class HCCellList extends Component {
         }
 
         return content;
+    }
+
+    getItemLabel(value) {
+        if (HC.helpers.isArray(this.props.config.valuePath)) {
+            let label = '';
+
+            this.props.config.valuePath.map((key, i) => {
+                label += HC.helpers.pathIndex(value, key) + ' | ';
+            });
+
+            label.substr(label.length, -3);
+
+            return label;
+        }
+        else {
+            return HC.helpers.pathIndex(value, this.props.config.valuePath)
+        }
     }
 
     addMorePopUp() {
