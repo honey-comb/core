@@ -29,10 +29,6 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Traits;
 
-/**
- * Trait HCAdminListHeaders
- * @package HoneyComb\Core\Http\Controllers\Traits
- */
 trait HCAdminListHeaders
 {
     /**
@@ -100,12 +96,12 @@ trait HCAdminListHeaders
 
     /**
      * @param string $label
-     * @param string $valuePath
+     * @param string|array $valuePath
      * @param string $addMore
      * @param string $idAs
      * @return array
      */
-    protected function headerList(string $label, string $valuePath, string $addMore = null, string $idAs = null): array
+    protected function headerList(string $label, $valuePath, string $addMore = null, string $idAs = null): array
     {
         return [
             'type' => 'list',
@@ -122,7 +118,7 @@ trait HCAdminListHeaders
      * @param string $prefix
      * @return array
      */
-    protected function headerCopy(string $label, string $valuePath = null, string $prefix = null) : array
+    protected function headerCopy(string $label, string $valuePath = null, string $prefix = null): array
     {
         return [
             'type' => 'copy',
