@@ -127,4 +127,20 @@ trait HCAdminListHeaders
             'prefix' => $prefix,
         ];
     }
+
+    /**
+     * @param string $label
+     * @param array $options
+     * @return array
+     */
+    protected function headerDropDown(string $label, array $options = []): array
+    {
+        return [
+            'type' => 'dropDown',
+            'label' => $label,
+            'config' => [
+                'options' => $options,
+            ],
+        ];
+    }
 }

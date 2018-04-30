@@ -3,6 +3,7 @@ import Thumbnail from "../../../hc-form/fields/media/Thumbnail";
 import Url from "../../../hc-form/fields/Url";
 import HCCellList from "../../../hc-form/fields/HCCellList";
 import HCCellCopy from "../../../hc-form/fields/HCCellCopy";
+import DropDownList from "../../../hc-form/fields/DropDownList";
 
 let classNames = require('classnames');
 
@@ -27,6 +28,10 @@ export default class TBCell extends Component {
         this.getCheckBox = this.getCheckBox.bind(this);
         this.updateStrict = this.updateStrict.bind(this);
         this.editRecord = this.editRecord.bind(this);
+        this.updateStrictDropDown = this.updateStrictDropDown.bind(this);
+        this.updateStrictDropDownSuccess = this.updateStrictDropDownSuccess.bind(this);
+        this.updateStrictDropDownFailure = this.updateStrictDropDownFailure.bind(this);
+        this.getOptionsFormatted = this.getOptionsFormatted.bind(this);
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -101,6 +106,11 @@ export default class TBCell extends Component {
 
                 this.disableUpdate = true;
                 return this.getCopy();
+
+            case 'dropDown' :
+
+                this.disableUpdate = true;
+                return this.getDropDown();
         }
 
         return "";
@@ -169,5 +179,62 @@ export default class TBCell extends Component {
                 disabled: false,
             });
         });
+    }
+
+    getDropDown() {
+
+        return <select key={this.id}
+                       value={this.state.value}
+                       disabled={this.state.disabled}
+                       onChange={this.updateStrictDropDown}>
+            {this.getOptionsFormatted()}
+        </select>
+    }
+
+    /**
+     * Creating select options
+     *
+     * @returns {Array}
+     */
+    getOptionsFormatted() {
+        let list = [];
+        let options = this.props.config.config.options;
+
+        if (options)
+            options.map((item, i) => list.push(<option key={i} value={item.id}>{item.label}</option>));
+
+        return list;
+    }
+
+    updateStrictDropDown (e)
+    {
+        const value = e.currentTarget.value;
+
+        if (value === this.state.value)
+            return;
+
+        this.state.value = value;
+
+        let params = {};
+        params[this.props.fieldKey] = value;
+
+        this.setState({disabled: true});
+        this.state.internalUpdate = true;
+
+        HC.react.loader.patch(this.state.url, params, this.updateStrictDropDownSuccess, false, this.updateStrictDropDownFailure);
+    }
+
+    updateStrictDropDownFailure ()
+    {
+        this.state.disabled = false;
+
+        this.setState(this.state);
+    }
+
+    updateStrictDropDownSuccess ()
+    {
+        this.updateStrictDropDownFailure();
+
+        this.props.reload(true);
     }
 }
