@@ -24,7 +24,7 @@ export default class HCCellList extends Component {
         let lastKey = 0;
 
         this.props.value.map((value, i) => {
-            content.push(<li key={i}>{value[this.props.config.valuePath]}</li>);
+            content.push(<li key={i}>{HC.helpers.pathIndex(value, this.props.config.valuePath)}</li>);
             lastKey++;
         });
 
