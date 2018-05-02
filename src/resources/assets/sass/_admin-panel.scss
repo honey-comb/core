@@ -1,6 +1,7 @@
 body {
   min-width: 320px;
   font-family: "Open sans";
+  font-size: var(--main-font-size);
 
   .wrapper {
     .content-wrapper {
@@ -15,6 +16,11 @@ body {
       }
     }
   }
+}
+
+.form-control, .dropdown-menu
+{
+  font-size: var(--main-font-size);
 }
 
 [hidden] {
@@ -318,6 +324,9 @@ body.disabled {
 }
 
 .btn {
+
+  font-size: var(--main-font-size);
+
   span.fa-layers-counter {
     font-size: 40px;
     margin-top: -7px;
