@@ -5,6 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
     @include('HCCore::admin.assets.css')
+    @yield('css')
 
 </head>
 <body>
