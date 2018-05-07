@@ -8,7 +8,7 @@ export default class Picker extends BaseField {
         super(props);
 
         this.state = {
-            startDate: moment(this.props.value)
+            startDate: this.props.value ? moment(this.props.value) : null
         };
 
         this.value = this.state.startDate;
@@ -35,7 +35,10 @@ export default class Picker extends BaseField {
     }
 
     getValue() {
-        return this.value.format(this.getDateFormat());
+        if (this.value)
+            return this.value.format(this.getDateFormat());
+
+        return null;
     }
 
     setValue(value) {
@@ -44,6 +47,8 @@ export default class Picker extends BaseField {
         this.setState({
             startDate: this.value,
         });
+
+        this.validate();
     }
 
     componentDidMount() {

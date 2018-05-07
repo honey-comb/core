@@ -11,7 +11,7 @@ export default class DateTimePicker extends Picker {
             showYearDropdown
             onChange={this.handleSelectionChange}
             dateFormat={this.getDateFormat()}
-            showTimeSelect={this.props.config.timeFormat ? true : false}
+            showTimeSelect={!!this.props.config.timeFormat}
             timeFormat={this.props.config.timeFormat}
             locale={this.props.config.locale}
             timeIntervals={this.props.config.timeIntervals ? this.props.config.timeIntervals : 60}
