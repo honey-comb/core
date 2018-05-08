@@ -237,7 +237,7 @@ export default class HCForm extends Component {
                         let config = dependant.dependencies[targetKey];
                         fieldsData[targetKey] = this.record[targetKey];
 
-                        if (config.values) {
+                        if (HC.helpers.isArray(config.values)) {
                             config.values.map((configValue) => {
                                 if (HC.helpers.isArray(this.record[targetKey])) {
                                     //TODO: IMPLEMENT ARRAY DEPENDENCY VALIDATION
