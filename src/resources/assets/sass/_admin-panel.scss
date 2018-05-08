@@ -403,3 +403,18 @@ aside.main-sidebar {
 input[type="color"] {
   padding: 0 2px;
 }
+
+.el-picker-panel.time-select, .el-time-panel
+{
+  z-index: 2200 !important;
+}
+
+span[class^="el-"], div[class^="el-input"]
+{
+  width: 100% !important;
+}
+
+.el-input__inner
+{
+  border-radius: 0;
+}

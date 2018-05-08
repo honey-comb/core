@@ -1,22 +1,84 @@
 import React from 'react';
-import Picker from "./time/Picker";
-import DatePicker from 'react-datepicker';
+import BaseField from "./BaseField";
+import {TimePicker} from "element-react";
 
-export default class TimePicker extends Picker {
+export default class HCTimePicker extends BaseField {
 
-    getInput() {
-        return <DatePicker
-            selected={this.state.startDate}
-            ref="inputField"
-            onChange={this.handleSelectionChange}
-            timeFormat={this.props.config.timeFormat}
-            timeIntervals={this.props.config.timeIntervals}
-            locale={this.props.config.locale}
-            showTimeSelect={true}
-            showTimeSelectOnly={true}
-            dateFormat={this.props.config.dateFormat ? this.props.config.dateFormat : 'LT'}
-        />;
+    constructor (props)
+    {
+        super(props);
     }
+    /**
+     * Getting element-select timePicker
+     * @returns {*}
+     */
+    getInput() {
+
+        return (
+            <TimePicker
+                onChange={this.handleSelectionChange.bind(this)}
+                value={this.state.value}
+                ref="inputField"
+            />
+        )
+    }
+
+    /**
+     * Updating change value
+     * @param value
+     */
+    handleSelectionChange(value) {
+        this.setState({value: value});
+        this.triggerChange();
+    }
+
+    /**
+     * Setting value, expecting (HH:mm:ss)
+     * @param value
+     */
+    setValue(value) {
+        if (HC.helpers.isString(value)) {
+            value = value.split(':');
+
+            if (value.length !== 3) {
+                value = null;
+            }
+            else {
+                let today = new Date();
+                value = new Date(today.getFullYear(), today.getMonth(), today.getDate(), value[0], value[1], value[2]);
+            }
+        }
+
+        this.setState({value: value});
+        this.triggerChange();
+    }
+
+    /**
+     * Retrieving hours (HH:mm:ss)
+     * @returns {string}
+     */
+    getValue() {
+        return this.state.value.getFullHours() + ':' + this.state.value.getFullMinutes() + ':' + this.state.value.getFullSeconds();
+    }
+
 }
 
-HC.formFields.register('timePicker', TimePicker);
+HC.formFields.register('timePicker', HCTimePicker);
+
+//************** HELPERS ***********************
+
+function formatTime(value) {
+    return ('00' + value).slice(-2)
+}
+
+Date.prototype.getFullHours = function () {
+    return formatTime(this.getHours());
+};
+
+Date.prototype.getFullMinutes = function () {
+    return formatTime(this.getMinutes());
+};
+
+Date.prototype.getFullSeconds = function () {
+    return formatTime(this.getSeconds());
+};
