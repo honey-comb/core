@@ -16,6 +16,7 @@ export default class DropDownFilterable extends BaseField {
     }
 
     /**
+     *Set value for input
      *
      * @param value
      */
@@ -29,6 +30,7 @@ export default class DropDownFilterable extends BaseField {
     }
 
     /**
+     * Get input value
      *
      * @returns {*}
      */
@@ -44,6 +46,7 @@ export default class DropDownFilterable extends BaseField {
     }
 
     /**
+     * Format options for needed format
      *
      * @param options
      * @returns {Array}
@@ -64,6 +67,7 @@ export default class DropDownFilterable extends BaseField {
     }
 
     /**
+     * Get input value
      *
      */
     getValue() {
