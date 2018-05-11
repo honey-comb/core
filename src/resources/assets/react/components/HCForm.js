@@ -228,40 +228,55 @@ export default class HCForm extends Component {
                 let dependant = this.dependencyFields[key];
 
                 if (!fieldChanged || dependant.dependencies[fieldChanged]) {
-                    let hide = true;
+                    let hide = false;
+                    let hideList = {};
                     let fieldsData = {};
+                    let scope = this;
 
                     // running through every dependency
-                    Object.keys(dependant.dependencies).map((targetKey) => {
+                    Object.keys(dependant.dependencies).map(function (targetKey) {
+
+                        hideList[targetKey] = true;
+
+                        if (scope.record[targetKey] === undefined)
+                            return;
 
                         let config = dependant.dependencies[targetKey];
-                        fieldsData[targetKey] = this.record[targetKey];
+                        fieldsData[targetKey] = scope.record[targetKey];
 
-                        if (HC.helpers.isArray(config.values)) {
-                            config.values.map((configValue) => {
-                                if (HC.helpers.isArray(this.record[targetKey])) {
-                                    //TODO: IMPLEMENT ARRAY DEPENDENCY VALIDATION
-                                    console.log('IMPLEMENT FIELD VALUES ARRAY DEPENDENCY VALIDATION');
-                                }
-                                else {
+                        if (HC.helpers.isObject(config)) {
 
-                                    if (this.record[targetKey] === configValue)
-                                        hide = false;
-                                }
-                            });
-                        }
-                        else {
+                            if (config.value.indexOf(scope.record[targetKey].id) >= 0) {
+                                hideList[targetKey] = false;
+                            }
 
-                            if (this.record[targetKey]) {
-                                if (HC.helpers.isArray(this.record[targetKey])) {
-                                    if (this.record[targetKey].length > 0)
-                                        hide = false
+                        } else if (HC.helpers.isArray(config)) {
+
+                            if (config.length > 0)
+                            {
+                                if (config.indexOf(scope.record[targetKey]) >= 0) {
+                                    hideList[targetKey] = false;
                                 }
-                                else
-                                    hide = false;
+                            }
+                            else
+                            {
+                                if (HC.helpers.isArray(scope.record[targetKey])) {
+                                    if (scope.record[targetKey].length > 0) hideList[targetKey] = false;
+                                } else {
+                                    hideList[targetKey] = false;
+                                }
                             }
                         }
                     });
+
+                    Object.keys(hideList).map((key) => {
+
+                        if (hideList[key] === true) {
+                            hide = true;
+                        }
+                    });
+
+                    console.log(hideList, hide);
 
                     this.refs[key].toggleDependency(hide, fieldsData, dependant.dependencies);
                 }
