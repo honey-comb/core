@@ -18,9 +18,12 @@ body {
   }
 }
 
-.form-control, .dropdown-menu
-{
+.form-control, .dropdown-menu {
   font-size: var(--main-font-size);
+}
+
+.input-group-text {
+  font-size: 12px;
 }
 
 [hidden] {
@@ -404,17 +407,26 @@ input[type="color"] {
   padding: 0 2px;
 }
 
-.el-picker-panel.time-select, .el-time-panel
-{
+.el-picker-panel.time-select, .el-time-panel {
   z-index: 2200 !important;
 }
 
-span[class^="el-"], div[class^="el-input"]
-{
+span[class^="el-"], div[class^="el-input"] {
   width: 100% !important;
 }
 
-.el-input__inner
-{
+.el-input__inner {
   border-radius: 0;
 }
+
+div[data-container="dateTimePicker-append"] > div:nth-child(1),
+div[data-container="dateTimePicker-prepend"] > div:nth-child(2)
+{
+  width: calc(100% - 36px);
+}
+
+div[data-container="dateTimePicker-prepend-append"] > div:nth-child(2)
+{
+  width: calc(100% - 72px);
+}
+

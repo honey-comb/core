@@ -30,6 +30,7 @@ export default class BaseField extends Component {
         this.getValue = this.getValue.bind(this);
         this.getMultiLanguage = this.getMultiLanguage.bind(this);
         this.addNewOption = this.addNewOption.bind(this);
+        this.getContainerName = this.getContainerName.bind(this);
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -50,6 +51,8 @@ export default class BaseField extends Component {
     componentDidMount() {
         if (this.props.config.value !== null && this.props.config.value !== undefined)
             this.setValue(this.props.config.value);
+
+        HC.react.enableFaIcons();
     }
 
     render() {
@@ -63,11 +66,14 @@ export default class BaseField extends Component {
 
         return <div className={fieldClasses}>
             {this.getLabel()}
-            <div>
+            <div className={this.props.config.useInputGroup ? 'input-group' : null}
+                 data-container={this.getContainerName()}>
+                {this.getInputAddon(true)}
                 {this.getInput()}
-                {this.getNote()}
-                {this.getMultiLanguage()}
+                {this.getInputAddon(false)}
             </div>
+            {this.getNote()}
+            {this.getMultiLanguage()}
         </div>;
     }
 
@@ -154,12 +160,6 @@ export default class BaseField extends Component {
                       readOnly={this.props.config.readonly}
                       disabled={this.getDisabled()}
                       onChange={this.contentChange}/>;
-
-        return <div className="input-group">
-            {this.getInputAddon(true)}
-            "INPUT"
-            {this.getInputAddon(false)}
-        </div>
     }
 
     /**
@@ -169,9 +169,27 @@ export default class BaseField extends Component {
      * @returns {*}
      */
     getInputAddon(first) {
-        return "";
 
-        return <div className="input-group-addon">$</div>;
+        if (first) {
+            if (this.props.config.inputGroupPrepend) {
+                return <div className="input-group-prepend">
+                    <span className="input-group-text" id="basic-addon1"
+                          dangerouslySetInnerHTML={{__html: this.props.config.inputGroupPrepend}}/>
+                </div>;
+            }
+
+            return '';
+        }
+
+        if (this.props.config.inputGroupAppend) {
+            return <div className="input-group-append">
+                <span className="input-group-text" id="basic-addon1"
+                      dangerouslySetInnerHTML={{__html: this.props.config.inputGroupAppend}}/>
+            </div>;
+
+        }
+
+        return '';
     }
 
     getRequired() {
@@ -371,6 +389,23 @@ export default class BaseField extends Component {
         this.refs.inputField.value = undefined;
         this.state.value = undefined;
         this.value = undefined;
+    }
+
+    /**
+     * Getting container name
+     */
+    getContainerName() {
+        let name = this.props.config.type;
+
+        if (this.props.config.inputGroupPrepend) {
+            name += '-prepend';
+        }
+
+        if (this.props.config.inputGroupAppend) {
+            name += '-append';
+        }
+
+        return name;
     }
 }
 
