@@ -121,6 +121,12 @@ class HCUserService
 
         $userData['password'] = bcrypt($password);
 
+        if ($userData['is_active'] == 1) {
+            $userData['activated_at'] = Carbon::now();
+        }
+
+        $userData['password'] = bcrypt($password);
+
         /** @var HCUser $user */
         $user = $this->repository->create($userData);
         $personalData['user_id'] = $user->id;
@@ -230,7 +236,7 @@ class HCUserService
 
                     $personalData = $this->parseNameFromSocialite($providerUser);
                     $personalData = $this->getPhoto($providerUser, $personalData, $provider);
-                    
+
                     $user = $this->createUser($userData, [$this->roleRepository->getRoleUserId()], $personalData);
                 }
             } else {
