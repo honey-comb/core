@@ -17,7 +17,7 @@ export default class List extends Component {
             listId: uuid(),
             globalSelection: false,
             allSelected: false,
-            update: this.props.actions.indexOf('update') !== -1 ? 1 : 0,
+            update: this.props.config.actions.indexOf('update') !== -1 ? 1 : 0,
             selected: [],
             sortBy: {},
             listHeight: {}
@@ -54,7 +54,7 @@ export default class List extends Component {
             if (nextProps.onlyTrashed)
                 nextState.update = false;
             else
-                nextState.update = this.props.actions.indexOf('update') !== -1 ? 1 : 0;
+                nextState.update = this.props.config.actions.indexOf('update') !== -1 ? 1 : 0;
 
             return true;
         }
@@ -118,7 +118,7 @@ export default class List extends Component {
                 <table id={this.state.listId} className="table table-hover table-bordered" role="grid">
                     <thead>
                     <THRow hidden={this.props.hideCheckBox}
-                           headers={this.props.headers}
+                           headers={this.props.config.headers}
                            invertAll={this.invertAll}
                            checked={this.state.allSelected}
                            onSortOrderUpdate={this.props.onSortOrderUpdate}/>
@@ -157,13 +157,11 @@ export default class List extends Component {
 
         this.props.records.data.map((item, i) => (
             this.state.rows.push(<TDRow key={i}
-                                        url={this.props.url}
                                         record={item}
                                         update={this.state.update}
-                                        headers={this.props.headers}
+                                        config={this.props.config}
                                         globalSelection={this.state.globalSelection}
                                         onChange={this.singleRowSelect}
-                                        form={this.props.form}
                                         reload={this.props.reload}/>)
         ));
 
