@@ -386,11 +386,14 @@ export default class HCForm extends Component {
     handleSubmitComplete(r) {
 
         if (r.success) {
-            if (r.redirectUrl)
+            if (r.redirectUrl) {
                 document.location.href = r.redirectUrl;
+                return;
+            }
 
-            if (this.props.config.createdCallback)
+            if (this.props.config.createdCallback) {
                 this.props.config.createdCallback.call(this.props.config.createdCallbackScope, r.data);
+            }
 
             this.props.formClosed();
         }
