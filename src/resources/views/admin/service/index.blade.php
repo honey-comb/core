@@ -20,4 +20,10 @@
         HC.react.adminList({!! json_encode($config) !!});
     </script>
 
+    @if (session()->has('success-message'))
+        <script>
+            HC.react.notify('success', '{!! session('success-message') !!}');
+        </script>
+    @endif
+
 @endsection
