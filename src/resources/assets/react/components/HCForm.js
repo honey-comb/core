@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import axios from "axios/index";
 
 export default class HCForm extends Component {
 
@@ -240,8 +239,21 @@ export default class HCForm extends Component {
 
                         if (HC.helpers.isObject(config)) {
 
-                            if (config.value && config.value.indexOf(scope.record[targetKey].id) >= 0) {
+                            if (!config.value) {
                                 hideList[targetKey] = false;
+                            }
+                            else {
+                                //TODO check if record item is Array and compare with multiple
+                                if (HC.helpers.isObject(scope.record[targetKey])) {
+                                    if (config.value.indexOf(scope.record[targetKey].id) >= 0) {
+                                        hideList[targetKey] = false;
+                                    }
+                                }
+                                else {
+                                    if (config.value.indexOf(scope.record[targetKey]) >= 0) {
+                                        hideList[targetKey] = false;
+                                    }
+                                }
                             }
 
                         } else if (HC.helpers.isArray(config)) {
