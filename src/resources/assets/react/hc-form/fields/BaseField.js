@@ -105,6 +105,10 @@ export default class BaseField extends Component {
                 dependencyValues[dependencyOptions[key].sendAs] = dependencyValues[key];
                 delete(dependencyValues[key]);
             }
+
+            if (dependencyOptions[key].ignore) {
+                delete(dependencyValues[key]);
+            }
         });
 
         this.setState(
