@@ -246,7 +246,7 @@ export default class HCForm extends Component {
 
                         if (HC.helpers.isObject(config)) {
 
-                            if (config.value.indexOf(scope.record[targetKey].id) >= 0) {
+                            if (config.value && config.value.indexOf(scope.record[targetKey].id) >= 0) {
                                 hideList[targetKey] = false;
                             }
 
