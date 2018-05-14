@@ -89,6 +89,11 @@ export default class Thumbnail extends Component {
         }
     }
 
+    componentDidUpdate ()
+    {
+        this.state.mediaId = null;
+    }
+
     /**
      * Generating upload view
      * @returns {*[]}

@@ -236,5 +236,17 @@ HC.react = new function () {
         }
     };
 
+    /**
+     * Custom notifications
+     *
+     * @param type
+     * @param message
+     * @param options
+     */
+    this.notify = function (type, message)
+    {
+        toast[type](message, {position: toast.POSITION.TOP_CENTER})
+    };
+
     this.loader = new Loader();
 };

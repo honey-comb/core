@@ -1,22 +1,23 @@
 @extends('HCCore::admin.layout.master')
 
-@if ( isset( $config['title'] ) &&  ! empty($config['title']))
-    @section('content-header',  $config['title'] )
-@endif
-
 @section('content')
-
-    <div id="here-comes-form"></div>
-
+    <div id="admin-form"></div>
 @endsection
 
 @section('scripts')
-    <script>
-        $().ready(function () {
-            var config = {!! json_encode($config) !!};
-            config.divID = '#here-comes-form';
 
-            var form = ISService.FormManager.createForm(config);
-        });
+    {{-- admin list --}}
+    <script src="{{mix('js/hc-full.js')}}"></script>
+
+    <script>
+
+        let config = {!! json_encode($config) !!};
+        config.divId = 'admin-form';
+
+        HC.react.enableFaIcons();
+        HC.react.enableToastContainer();
+        HC.react.hcForm(config);
+
     </script>
+
 @endsection

@@ -16,7 +16,7 @@ export default class BaseField extends Component {
 
         this.state = {
             hasError: false,
-            value: undefined,
+            value: null,
             hideDependant: false,
             loadingDisabled: false
         };

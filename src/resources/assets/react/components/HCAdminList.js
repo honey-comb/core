@@ -8,7 +8,6 @@ import List from './../hc-admin-list/List';
 
 import axios from "axios/index";
 import Select from 'rc-select';
-import * as CancelToken from "axios";
 
 export default class HCAdminListView extends Component {
 
@@ -86,23 +85,16 @@ export default class HCAdminListView extends Component {
             <div className="box-body">
                 <Actions
                     ref="actions"
-                    url={this.props.config.url}
-                    form={this.props.config.form}
-                    actions={this.props.config.actions}
-                    filters={this.props.config.filters}
+                    config={this.props.config}
                     onlyTrashed={this.state.onlyTrashed}
                     actionsDisabled={this.state.actionsDisabled}
                     selected={this.state.selected}
                     reload={this.reload}
                 />
                 <List
-                    url={this.props.config.url}
-                    headers={this.props.config.headers}
-                    perPage={this.props.config.perPage}
-                    form={this.props.config.form}
+                    config={this.props.config}
                     hideCheckBox={this.state.hideCheckBox}
                     onlyTrashed={this.state.onlyTrashed}
-                    actions={this.props.config.actions}
                     records={this.state.records}
                     selectionUpdated={this.selectionUpdated}
                     onSortOrderUpdate={this.onSortOrderUpdate}

@@ -21,7 +21,7 @@ class HCUserRequest extends FormRequest
     {
         $data = [
             'email' => $this->input('email'),
-//            'is_active' => $this->filled('is_active'),
+            'is_active' => $this->filled('is_active') ? 1 : 0,
         ];
 
         if ($this->input('password')) {

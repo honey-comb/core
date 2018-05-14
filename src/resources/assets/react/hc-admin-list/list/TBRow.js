@@ -28,17 +28,16 @@ export default class TBRow extends Component {
                        checked={this.state.selected}/>
             </td>
 
-            {Object.keys(this.props.headers).map((item, i) => (
-                <TBCell config={this.props.headers[item]}
+            {Object.keys(this.props.config.headers).map((item, i) => (
+                <TBCell config={this.props.config}
+                        options={this.props.config.headers[item]}
                         value={HC.helpers.pathIndex(this.props.record, item)}
                         key={i}
                         fieldKey={item}
-                        form={this.props.form}
                         update={this.props.update}
                         id={this.props.record.id}
                         reload={this.props.reload}
-                        record={this.props.record}
-                        url={this.props.url}/>
+                        record={this.props.record}/>
             ))}
         </tr>
     }

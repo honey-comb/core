@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import FAButton from '../hc-form/buttons/FAButton';
-import axios from "axios/index";
 import HCForm from "../components/HCForm";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
@@ -53,9 +52,9 @@ export default class Actions extends Component {
 
     getFilters() {
 
-        if (this.props.filters) {
+        if (this.props.config.filters) {
             return [
-                <HCForm key={0} ref="form" structure={this.props.filters} onSelectionChange={this.filterAction}/>,
+                <HCForm key={0} ref="form" structure={this.props.config.filters} onSelectionChange={this.filterAction}/>,
                 <button key={1} ref="clear" onClick={this.reset} className="btn btn-danger">
                     <FontAwesomeIcon icon={HC.helpers.faIcon('times')}/>
                 </button>
@@ -95,7 +94,7 @@ export default class Actions extends Component {
      * @returns {*}
      */
     getNewButton() {
-        if (this.props.actions.indexOf('new') === -1)
+        if (this.props.config.actions.indexOf('new') === -1)
             return '';
 
         return <FAButton display={this.props.onlyTrashed}
@@ -110,7 +109,7 @@ export default class Actions extends Component {
      * @returns {*}
      */
     getDeleteButton() {
-        if (this.props.actions.indexOf('delete') === -1)
+        if (this.props.config.actions.indexOf('delete') === -1)
             return '';
 
         return <FAButton display={this.props.onlyTrashed}
@@ -128,7 +127,7 @@ export default class Actions extends Component {
      * @returns {*}
      */
     getMergeButton() {
-        if (this.props.actions.indexOf('merge') === -1)
+        if (this.props.config.actions.indexOf('merge') === -1)
             return '';
 
         return <FAButton display={this.props.onlyTrashed}
@@ -145,7 +144,7 @@ export default class Actions extends Component {
      * @returns {*}
      */
     getCloneButton() {
-        if (this.props.actions.indexOf('clone') === -1)
+        if (this.props.config.actions.indexOf('clone') === -1)
             return '';
 
         return <FAButton display={this.props.onlyTrashed}
@@ -162,7 +161,7 @@ export default class Actions extends Component {
      * @returns {*}
      */
     getRestoreButton() {
-        if (this.props.actions.indexOf('restore') === -1)
+        if (this.props.config.actions.indexOf('restore') === -1)
             return '';
 
         return <FAButton display={!this.props.onlyTrashed}
@@ -180,7 +179,7 @@ export default class Actions extends Component {
      * @returns {*}
      */
     getForceDeleteButton() {
-        if (this.props.actions.indexOf('forceDelete') === -1)
+        if (this.props.config.actions.indexOf('forceDelete') === -1)
             return '';
 
         return <FAButton display={!this.props.onlyTrashed}
@@ -194,8 +193,14 @@ export default class Actions extends Component {
 
     newAction() {
 
+        if (this.props.config.options && this.props.config.options.separatePage)
+        {
+            window.location.href = window.location.href + '/create';
+            return;
+        }
+
         HC.react.popUp({
-            url: HC.helpers.extendUrl(this.props.form, "-new"),
+            url: HC.helpers.extendUrl(this.props.config.form, "-new"),
             type: "form",
             callBack: this.newCreated,
             scope: this
@@ -213,7 +218,7 @@ export default class Actions extends Component {
 
         let params = {data: {list: this.props.selected}};
 
-        HC.react.loader.delete(this.props.url, params, this.actionCompleted, true);
+        HC.react.loader.delete(this.props.config.url, params, this.actionCompleted, true);
     }
 
     /**
@@ -230,7 +235,7 @@ export default class Actions extends Component {
 
         let params = {data: {list: this.props.selected}};
 
-        HC.react.loader.delete(this.props.url + '/force', params, this.actionCompleted, true);
+        HC.react.loader.delete(this.props.config.url + '/force', params, this.actionCompleted, true);
     }
 
     /**
@@ -239,7 +244,7 @@ export default class Actions extends Component {
     restoreAction() {
         let params = {list: this.props.selected};
 
-        HC.react.loader.post(this.props.url + '/restore', params, this.actionCompleted, true);
+        HC.react.loader.post(this.props.config.url + '/restore', params, this.actionCompleted, true);
     }
 
     /**

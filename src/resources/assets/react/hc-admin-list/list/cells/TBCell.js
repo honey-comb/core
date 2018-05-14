@@ -36,7 +36,7 @@ export default class TBCell extends Component {
             this.state.value = nextProps.value;
         }
         else {
-            this.state.url = this.props.url + '/' + nextProps.id;
+            this.state.url = this.props.config.url + '/' + nextProps.id;
             this.state.value = nextProps.value;
         }
     }
@@ -50,7 +50,7 @@ export default class TBCell extends Component {
         }, this.cellClasses);
 
         return <td className={tdClass} onClick={this.editRecord}
-                   style={{width: this.props.config.cellWidth + '%'}}>{content}</td>;
+                   style={{width: this.props.options.cellWidth + '%'}}>{content}</td>;
     }
 
     editRecord() {
@@ -58,8 +58,14 @@ export default class TBCell extends Component {
         if (!this.props.update || this.disableUpdate)
             return;
 
+        if (this.props.config.options && this.props.config.options.separatePage)
+        {
+            window.location.href = window.location.href + '/edit/' + this.props.id;
+            return;
+        }
+
         HC.react.popUp({
-            url: HC.helpers.extendUrl(this.props.form, "-edit"),
+            url: HC.helpers.extendUrl(this.props.config.form, "-edit"),
             type: "form",
             recordId: this.props.id,
             callBack: this.recordUpdated,
@@ -73,7 +79,7 @@ export default class TBCell extends Component {
     }
 
     getContent() {
-        switch (this.props.config.type) {
+        switch (this.props.options.type) {
             case "text" :
 
                 return this.state.value;
@@ -126,14 +132,14 @@ export default class TBCell extends Component {
         return <Url key={this.id}
                     id={this.props.id}
                     value={this.state.value}
-                    config={this.props.config}/>
+                    config={this.props.options}/>
     }
 
     getList() {
         return <HCCellList key={this.id}
                            id={this.props.id}
                            value={this.state.value}
-                           config={this.props.config}
+                           config={this.props.options}
                            recordUpdated={this.recordUpdated}
                            recordUpdatedScope={this}/>
     }
@@ -143,7 +149,7 @@ export default class TBCell extends Component {
             key={this.id}
             record={this.props.record}
             value={this.state.value}
-            config={this.props.config}
+            config={this.props.options}
         />
     }
 

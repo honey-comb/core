@@ -101,38 +101,32 @@ export default class HCForm extends Component {
      * Loading form data
      */
     loadFormData() {
-        let formData;
 
-        axios.get(this.props.config.url, {params: this.props.config.params})
-            .then(res => {
+        let scope = this;
 
-                formData = res.data;
+        HC.react.loader.get(this.props.config.url, this.props.config.params, function (response) {
 
-                let stateObject = {
-                    formData: formData
-                };
+            let stateObject = {
+                formData: response
+            };
 
-                if (formData.availableLanguages && formData.availableLanguages.length > 0) {
-                    stateObject.language = formData.availableLanguages[0];
-                }
+            if (response.availableLanguages && response.availableLanguages.length > 0) {
+                stateObject.language = response.availableLanguages[0];
+            }
 
-                if (this.props.config.recordId) {
-                    axios.get(formData.storageUrl + '/' + this.props.config.recordId).then(
-                        res => {
+            if (scope.props.config.recordId) {
+                HC.react.loader.get(response.storageUrl + '/' + scope.props.config.recordId, null, function (response) {
+                    scope.existingRecord = response;
 
-                            this.existingRecord = res.data;
-
-                            this.setState(stateObject);
-                            this.fillForm();
-                        }
-                    )
-                }
-                else {
-
-                    this.setState(stateObject);
-                    this.updateDependencies();
-                }
-            });
+                    scope.setState(stateObject);
+                    scope.fillForm();
+                });
+            }
+            else {
+                scope.setState(stateObject);
+                scope.updateDependencies();
+            }
+        });
     }
 
     /**
@@ -252,14 +246,12 @@ export default class HCForm extends Component {
 
                         } else if (HC.helpers.isArray(config)) {
 
-                            if (config.length > 0)
-                            {
+                            if (config.length > 0) {
                                 if (config.indexOf(scope.record[targetKey]) >= 0) {
                                     hideList[targetKey] = false;
                                 }
                             }
-                            else
-                            {
+                            else {
                                 if (HC.helpers.isArray(scope.record[targetKey])) {
                                     if (scope.record[targetKey].length > 0) hideList[targetKey] = false;
                                 } else {
@@ -275,8 +267,6 @@ export default class HCForm extends Component {
                             hide = true;
                         }
                     });
-
-                    console.log(hideList, hide);
 
                     this.refs[key].toggleDependency(hide, fieldsData, dependant.dependencies);
                 }
@@ -396,11 +386,14 @@ export default class HCForm extends Component {
     handleSubmitComplete(r) {
 
         if (r.success) {
-            if (r.redirectUrl)
+            if (r.redirectUrl) {
                 document.location.href = r.redirectUrl;
+                return;
+            }
 
-            if (this.props.config.createdCallback)
+            if (this.props.config.createdCallback) {
                 this.props.config.createdCallback.call(this.props.config.createdCallbackScope, r.data);
+            }
 
             this.props.formClosed();
         }
