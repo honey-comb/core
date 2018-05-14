@@ -118,7 +118,13 @@ export default class BaseField extends Component {
                 });
             }
             else if (HC.helpers.isObject(data[key])) {
-                dependencyValues[key] = data[key].id;
+
+                if (data[key].id) {
+                    dependencyValues[key] = data[key].id;
+                }
+                else if (data[key].value) {
+                    dependencyValues[key] = data[key].value;
+                }
             }
             else {
                 dependencyValues[key] = data[key];
@@ -390,6 +396,8 @@ export default class BaseField extends Component {
     loadOptions() {
 
         this.setState({loadingDisabled: true});
+
+        console.log(this.dependencyValues);
 
         axios.get(this.props.config.url, {params: this.dependencyValues})
             .then(res => {

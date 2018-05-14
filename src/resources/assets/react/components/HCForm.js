@@ -270,6 +270,7 @@ export default class HCForm extends Component {
                             }
                             else {
                                 //TODO check if record item is Array and compare with multiple
+                                //TODO move all validation of object->id/value to single function
                                 if (HC.helpers.isObject(scope.record[targetKey])) {
                                     if (config.value.indexOf(scope.record[targetKey].id) >= 0) {
                                         hideList[targetKey] = false;
@@ -285,7 +286,20 @@ export default class HCForm extends Component {
                         } else if (HC.helpers.isArray(config)) {
 
                             if (config.length > 0) {
-                                if (config.indexOf(scope.record[targetKey]) >= 0) {
+
+                                if (HC.helpers.isObject(scope.record[targetKey])) {
+
+                                    if (scope.record[targetKey].id) {
+                                        if (config.indexOf(scope.record[targetKey].id) >= 0) {
+                                            hideList[targetKey] = false;
+                                        }
+                                    } else if (scope.record[targetKey].value) {
+                                        if (config.indexOf(scope.record[targetKey].value) >= 0) {
+                                            hideList[targetKey] = false;
+                                        }
+                                    }
+                                }
+                                else if (config.indexOf(scope.record[targetKey]) >= 0) {
                                     hideList[targetKey] = false;
                                 }
                             }

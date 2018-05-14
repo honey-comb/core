@@ -1,6 +1,7 @@
 import React from 'react'
 import BaseField from "./BaseField";
 import FAButton from "../buttons/FAButton";
+import Select from 'react-select';
 
 export default class DropDownList extends BaseField {
 
@@ -10,16 +11,30 @@ export default class DropDownList extends BaseField {
         this.validationTimeOutMiliseconds = 0;
         this.key = HC.helpers.uuid();
         this.state = {
-            value : this.props.config.value
+            value: this.props.config.value
         };
 
         this.getNewButton = this.getNewButton.bind(this);
         this.newOptionAction = this.newOptionAction.bind(this);
+        this.inputUpdated = this.inputUpdated.bind(this);
     }
 
     getInput() {
 
         return [this.getSelect(), this.getNewButton()]
+    }
+
+    /**
+     *Set value for input
+     *
+     * @param value
+     */
+    inputUpdated(value) {
+
+        this.state.value = value;
+        this.setState(this.state);
+
+        this.validate();
     }
 
     getSelect() {
@@ -28,15 +43,37 @@ export default class DropDownList extends BaseField {
             "new-option": !!this.props.config.new
         });
 
-        return <select className={classNames}
-                       ref="inputField"
+        return <Select classNamePrefix={classNames}
                        key={this.key}
-                       value={this.state.value}
+                       defaultValue={this.state.value}
+                       options={this.formatOptions(this.getOptions())}
+                       rtl={this.state.rtl}
+                       ref="inputField"
                        disabled={this.getDisabled()}
-                       onChange={this.contentChange}>
+                       onChange={this.inputUpdated}
+        >
+        </Select>
+    }
 
-            {this.getOptionsFormatted()}
-        </select>
+    /**
+     * Format options for needed format
+     *
+     * @param options
+     * @returns {Array}
+     */
+    formatOptions (options)
+    {
+        let newOptions = [];
+
+        options.map((option, i) =>
+        {
+            newOptions.push({
+                value:option.id,
+                label:option.label,
+            });
+        });
+
+        return newOptions;
     }
 
     contentChange (e)
@@ -56,46 +93,13 @@ export default class DropDownList extends BaseField {
     }
 
     /**
-     * Creating select options
-     *
-     * @returns {Array}
-     */
-    getOptionsFormatted() {
-        let list = [];
-        let options = this.getOptions();
-
-        if (!this.props.config.required) {
-            list.push(<option key={-1} value="undefined">Please select:</option>)
-        }
-
-        if (options)
-            options.map((item, i) => list.push(<option key={i} value={item.id}>{item.label}</option>));
-
-        return list;
-    }
-
-    /**
-     * Validating input
-     *
-     * @returns {boolean}
-     */
-    isValid() {
-
-        if (this.props.config.required)
-            if (!this.refs.inputField.value)
-                return false;
-
-        return true;
-    }
-
-    /**
      * Getting value
      *
      * @returns {undefined}
      */
     getValue() {
 
-        if (this.refs.inputField.value === "undefined")
+        if (this.state.value === "undefined")
         {
             if (this.props.config.value && this.getDisabled())
                 return this.props.config.value;
@@ -103,7 +107,7 @@ export default class DropDownList extends BaseField {
             return undefined;
         }
 
-        return this.refs.inputField.value;
+        return this.state.value;
     }
 
     /**
