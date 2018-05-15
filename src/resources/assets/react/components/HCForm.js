@@ -47,24 +47,57 @@ export default class HCForm extends Component {
         this.dependencyFields = null;
 
         this.getFields = this.getFields.bind(this);
+        this.getFieldsFiltered = this.getFieldsFiltered.bind(this);
         this.updateFormData = this.updateFormData.bind(this);
         this.submitData = this.submitData.bind(this);
         this.languageChange = this.languageChange.bind(this);
         this.updateDependencies = this.updateDependencies.bind(this);
         this.handleSubmitComplete = this.handleSubmitComplete.bind(this);
         this.handleSubmitError = this.handleSubmitError.bind(this);
+        this.getStructuredFormFields = this.getStructuredFormFields.bind(this);
     }
 
     render() {
 
         return <div ref="formHolder" id={this.state.id} className="hc-form">
             <div className="form-structure">
-                {this.getFields()}
+                {this.getStructuredFormFields()}
             </div>
             <div className="footer">
                 {this.getButtons()}
             </div>
         </div>;
+    }
+
+    getStructuredFormFields() {
+
+        if (isNaN(this.state.formData.columns)) {
+            return this.getFields();
+        }
+        else {
+
+            let columns = [];
+
+            for (let i = 0; i < this.state.formData.columns; i++) {
+                let fields = this.getFieldsFiltered({column: i});
+                let finalArray = [];
+
+                Object.keys(fields).map((key) => finalArray.push(fields[key]));
+                Object.keys(fields).map((key) => {
+                    this.finalFieldStructure[key] = fields[key]
+                });
+
+                columns.push(<div key={i} className="col-sm">
+                    {finalArray}
+                </div>);
+            }
+
+            let grid = <div className="row">
+                {columns}
+            </div>;
+
+            return grid;
+        }
     }
 
     /**
@@ -154,6 +187,39 @@ export default class HCForm extends Component {
         });
     }
 
+    getFieldsFiltered(options) {
+        let structure = this.state.formData.structure;
+        let includeList = {};
+        let fields = [];
+
+        Object.keys(structure).map((key, i) => {
+            Object.keys(options).map((foKey) => {
+
+                if (structure[key][foKey] === options[foKey]) {
+                    includeList[foKey] = true;
+                }
+                else {
+                    includeList[foKey] = false;
+                }
+            });
+
+            let include = true;
+
+            Object.keys(includeList).map((includeKey) => {
+
+                if (includeList[includeKey] === false) {
+                    include = false;
+                }
+            });
+
+            if (include) {
+                fields[key] = this.getField(structure[key], key, i)
+            }
+        });
+
+        return fields;
+    }
+
     /**
      * Getting all fields
      *
@@ -166,9 +232,10 @@ export default class HCForm extends Component {
         if (!structure)
             return this.finalFieldStructure;
 
-        Object.keys(structure).map((key, i) => (
+        Object.keys(structure).map((key, i) => {
+
             this.finalFieldStructure[key] = this.getField(structure[key], key, i)
-        ));
+        });
 
         let finalArray = [];
 
@@ -374,8 +441,9 @@ export default class HCForm extends Component {
 
         Object.keys(this.finalFieldStructure).map((key, i) => {
 
-            if (!this.refs[key].validate(true))
+            if (!this.refs[key].validate(true)) {
                 valid = false;
+            }
         });
 
         if (!valid)
