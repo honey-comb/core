@@ -272,6 +272,10 @@ export default class BaseField extends Component {
 
         this.setState({hasError: !isValid});
 
+        if (this.state.hideDependant) {
+            return true;
+        }
+
         return isValid;
     }
 
@@ -396,8 +400,6 @@ export default class BaseField extends Component {
     loadOptions() {
 
         this.setState({loadingDisabled: true});
-
-        console.log(this.dependencyValues);
 
         axios.get(this.props.config.url, {params: this.dependencyValues})
             .then(res => {
