@@ -153,7 +153,7 @@ HC.react = new function () {
 
             let message = e.message;
 
-            if (e.response.data) {
+            if (e.response && e.response.data) {
 
                 if (e.response.data.message && e.response.data.errors) {
                     message = '';
