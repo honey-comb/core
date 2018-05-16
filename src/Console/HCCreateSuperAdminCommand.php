@@ -220,6 +220,7 @@ class HCCreateSuperAdminCommand extends Command
                     'email' => $this->email,
                     'password' => $this->password,
                     'activated_at' => Carbon::now()->toDateTimeString(),
+                    'is_active' => 1,
                 ], [], [
                 'first_name' => "Super",
                 'last_name' => "Admin",
