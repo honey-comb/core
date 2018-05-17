@@ -35,6 +35,7 @@ use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Services\HCUserService;
+use HoneyComb\Starter\Enum\BoolEnum;
 use Illuminate\Console\Command;
 use Illuminate\Database\Connection;
 use Validator;
@@ -72,14 +73,17 @@ class HCCreateSuperAdminCommand extends Command
      * @var
      */
     private $email;
+
     /**
      * @var HCUserRepository
      */
     private $userRepository;
+
     /**
      * @var Connection
      */
     private $connection;
+
     /**
      * @var HCUserService
      */
@@ -170,7 +174,7 @@ class HCCreateSuperAdminCommand extends Command
     {
         $this->getPassword();
 
-        $admin->password = $this->password;
+        $admin->password = bcrypt($this->password);
         $admin->save();
 
         $this->info('Password has been updated!');
@@ -202,7 +206,7 @@ class HCCreateSuperAdminCommand extends Command
             return $this->getPassword();
         }
 
-        $this->password = bcrypt($password);
+        $this->password = $password;
 
         return null;
     }
@@ -219,10 +223,11 @@ class HCCreateSuperAdminCommand extends Command
                 [
                     'email' => $this->email,
                     'password' => $this->password,
+                    'is_active' => BoolEnum::yes()->id(),
                     'activated_at' => Carbon::now()->toDateTimeString(),
                 ], [], [
-                'first_name' => "Super",
-                'last_name' => "Admin",
+                'first_name' => 'Super',
+                'last_name' => 'Admin',
             ], false, false);
 
             // add sa role
@@ -230,6 +235,8 @@ class HCCreateSuperAdminCommand extends Command
 
         } catch (\Exception $e) {
             $this->connection->rollBack();
+
+            logger()->error($e->getMessage(), $e->getTrace());
 
             $this->error('Super admin role doesn\'t exists!');
             $this->info('error:');
@@ -283,6 +290,8 @@ class HCCreateSuperAdminCommand extends Command
                     $adminExists->assignRoleBySlug(HCRoleRepository::ROLE_SA);
                 } catch (\Exception $e) {
                     $this->connection->rollBack();
+
+                    logger()->error($e->getMessage(), $e->getTrace());
 
                     $this->error($e->getMessage());
                     exit;
