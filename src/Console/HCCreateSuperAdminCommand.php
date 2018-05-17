@@ -225,7 +225,6 @@ class HCCreateSuperAdminCommand extends Command
                     'password' => $this->password,
                     'is_active' => BoolEnum::yes()->id(),
                     'activated_at' => Carbon::now()->toDateTimeString(),
-                    'is_active' => 1,
                 ], [], [
                 'first_name' => 'Super',
                 'last_name' => 'Admin',
