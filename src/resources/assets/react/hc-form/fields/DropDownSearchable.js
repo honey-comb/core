@@ -86,8 +86,12 @@ export default class DropDownSearchable extends BaseField {
 
         return (
             <div className="section">
-                <AsyncComponent multi={this.state.multi} value={this.state.value} onChange={this.setValue} valueKey="id"
-                                labelKey="label" loadOptions={this.search}
+                <AsyncComponent multi={this.state.multi}
+                                value={this.state.value}
+                                onChange={this.setValue}
+                                valueKey="id"
+                                labelKey="label"
+                                loadOptions={this.search}
                                 disabled={this.getDisabled()}
                                 backspaceRemoves={this.state.backspaceRemoves}/>
             </div>
