@@ -40,6 +40,7 @@ export default class DropDownFilterable extends BaseField {
             ref="inputField"
             isMulti={this.state.isMulti}
             disabled={this.getDisabled()}
+            creatable={this.props.config.creatable}
             onChange={this.inputUpdated}
         />
     }
