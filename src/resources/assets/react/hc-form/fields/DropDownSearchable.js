@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'react-select';
+import {AsyncCreatable, Async} from 'react-select'
 import BaseField from "./BaseField";
 import * as axios from "axios";
 
@@ -13,6 +13,8 @@ export default class DropDownSearchable extends BaseField {
         this.state.value = undefined;
         this.state.creatable = this.props.config.creatable;
         this.state.backspaceRemoves = true;
+
+        this.dataLoadingSource = undefined;
 
         this.search = this.search.bind(this);
         this.setValue = this.setValue.bind(this);
@@ -35,12 +37,12 @@ export default class DropDownSearchable extends BaseField {
     }
 
     search(input, callback) {
-        if (!input) {
+        if (!input || !this.props.config.searchUrl) {
             return Promise.resolve({options: this.props.config.options});
         }
 
         let params = {
-            q: input
+            params: {q: input}
         };
 
         if (this.dataLoadingSource) {
@@ -81,8 +83,8 @@ export default class DropDownSearchable extends BaseField {
 
     getInput() {
         const AsyncComponent = this.state.creatable
-            ? Select.AsyncCreatable
-            : Select.Async;
+            ? AsyncCreatable
+            : Async;
 
         return (
             <div className="section">
