@@ -43,8 +43,15 @@ export default class DropDownSearchable extends BaseField {
             q: input
         };
 
-        axios.get(this.props.config.searchUrl, {params: params}).then(res => {
-            callback(null, {options: res.data})
+        if (this.dataLoadingSource) {
+            this.dataLoadingSource.cancel();
+        }
+
+        let CancelToken = axios.CancelToken;
+        this.dataLoadingSource = CancelToken.source();
+
+        params.cancelToken = this.dataLoadingSource.token;
+
         });
     }
 
