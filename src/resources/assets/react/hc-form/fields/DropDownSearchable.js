@@ -52,6 +52,30 @@ export default class DropDownSearchable extends BaseField {
 
         params.cancelToken = this.dataLoadingSource.token;
 
+        HC.react.loader.get(this.props.config.searchUrl, params, function (data)
+        {
+            callback(null, {options: data});
+
+            /**
+             * Format options for needed format
+             *
+             * @param options
+             * @returns {Array}
+             */
+            function formatOptions (options)
+            {
+                let newOptions = [];
+
+                options.map((option, i) =>
+                {
+                    newOptions.push({
+                        value:option.id,
+                        label:option.label,
+                    });
+                });
+
+                return newOptions;
+            }
         });
     }
 
