@@ -173,16 +173,23 @@ export default class HCForm extends Component {
             }
 
             if (scope.props.config.recordId) {
-                HC.react.loader.get(response.storageUrl + '/' + scope.props.config.recordId, null, function (response) {
-                    scope.existingRecord = response;
+                HC.react.loader.get(response.storageUrl + '/' + scope.props.config.recordId, null, function (recordData) {
+                    scope.existingRecord = recordData;
 
                     scope.setState(stateObject);
                     scope.fillForm();
+
+                    if (scope.props.formDataLoaded) {
+                        scope.props.formDataLoaded(response.editLabelKey ? HC.helpers.pathIndex(recordData, response.editLabelKey) : "Edit record");
+                    }
                 });
             }
             else {
                 scope.setState(stateObject);
                 scope.updateDependencies();
+                if (scope.props.formDataLoaded) {
+                    scope.props.formDataLoaded(response.newLabel ? response.newLabel : "New record");
+                }
             }
         });
     }
