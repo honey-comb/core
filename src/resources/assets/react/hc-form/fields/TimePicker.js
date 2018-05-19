@@ -64,21 +64,3 @@ export default class HCTimePicker extends BaseField {
 }
 
 HC.formFields.register('timePicker', HCTimePicker);
-
-//************** HELPERS ***********************
-
-function formatTime(value) {
-    return ('00' + value).slice(-2)
-}
-
-Date.prototype.getFullHours = function () {
-    return formatTime(this.getHours());
-};
-
-Date.prototype.getFullMinutes = function () {
-    return formatTime(this.getMinutes());
-};
-
-Date.prototype.getFullSeconds = function () {
-    return formatTime(this.getSeconds());
-};

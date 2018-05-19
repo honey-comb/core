@@ -292,3 +292,34 @@ HC.helpers = new function () {
         return true;
     };
 };
+
+//************** HELPERS ***********************
+
+function formatTime(value) {
+    return ('00' + value).slice(-2)
+}
+
+Date.prototype.addHours = function (h) {
+    this.setTime(this.getTime() + (h * 60 * 60 * 1000));
+    return this;
+};
+
+Date.prototype.getFullHours = function () {
+    return formatTime(this.getHours());
+};
+
+Date.prototype.getFullMinutes = function () {
+    return formatTime(this.getMinutes());
+};
+
+Date.prototype.getFullSeconds = function () {
+    return formatTime(this.getSeconds());
+};
+
+Date.prototype.getFullMonth = function () {
+    return formatTime(this.getMonth() + 1);
+};
+
+Date.prototype.getFullDay = function () {
+    return formatTime(this.getDate());
+};
