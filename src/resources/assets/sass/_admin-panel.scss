@@ -429,13 +429,13 @@ input[type="color"] {
   border-radius: 0;
 }
 
-div[data-container="dateTimePicker-append"] > div:nth-child(1),
-div[data-container="dateTimePicker-prepend"] > div:nth-child(2) {
-  width: calc(100% - 36px);
+div[data-container="dateTimePicker-append"] > span:nth-child(1),
+div[data-container="dateTimePicker-prepend"] > span:nth-child(2) {
+  width: calc(100% - 36px) !important;
 }
 
-div[data-container="dateTimePicker-prepend-append"] > div:nth-child(2) {
-  width: calc(100% - 72px);
+div[data-container="dateTimePicker-prepend-append"] > span:nth-child(2) {
+  width: calc(100% - 72px) !important;
 }
 
 select, select[disabled] {
