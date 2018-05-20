@@ -39,6 +39,18 @@ export default class DateTimePicker extends BaseField {
         );
     }
 
+    /**
+     * Setting value
+     *
+     * @param value
+     */
+    setValue(value) {
+
+        this.state.value = new Date(value);
+
+        this.validate();
+    }
+
     externalFocus() {
         this.refs.inputField.refs.inputRoot.focus();
     }

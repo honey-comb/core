@@ -210,6 +210,17 @@ HC.helpers = new function () {
     };
 
     /**
+     * Checking if object is a Function
+     *
+     * @param object
+     * @returns {boolean}
+     */
+    this.isFunction = function (object)
+    {
+        return this.isObjectMyType(object, '[object Function]');
+    };
+
+    /**
      * Check if given object is a string or json string
      *
      * @param object

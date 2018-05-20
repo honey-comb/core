@@ -460,11 +460,11 @@ export default class HCForm extends Component {
 
         this.setState({formDisabled: true});
 
-        if (!callbackSuccess) {
+        if (!callbackSuccess || !HC.helpers.isFunction(callbackSuccess)) {
             callbackSuccess = this.handleSubmitComplete;
         }
 
-        if (!callbackFailure) {
+        if (!callbackFailure || !HC.helpers.isFunction(callbackSuccess)) {
             callbackFailure = this.handleSubmitError;
         }
 
