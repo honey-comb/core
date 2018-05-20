@@ -28,8 +28,11 @@ export default class HCTimePicker extends BaseField {
      * @param value
      */
     handleSelectionChange(value) {
-        this.setState({value: value});
-        this.triggerChange();
+
+        this.state.value = value;
+
+        this.setState(this.state);
+        this.validate();
     }
 
     /**
@@ -50,14 +53,17 @@ export default class HCTimePicker extends BaseField {
         }
 
         this.setState({value: value});
-        this.triggerChange();
+        this.validate();
     }
 
     /**
      * Retrieving hours (HH:mm:ss)
-     * @returns {string}
+     * @returns {string|null}
      */
     getValue() {
+        if (!this.state.value)
+            return null;
+
         return this.state.value.getFullHours() + ':' + this.state.value.getFullMinutes() + ':' + this.state.value.getFullSeconds();
     }
 

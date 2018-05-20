@@ -417,11 +417,11 @@ input[type="color"] {
   padding: 0 2px;
 }
 
-.el-picker-panel.time-select, .el-time-panel {
+.el-picker-panel.time-select, .el-time-panel, .el-date-picker {
   z-index: 2200 !important;
 }
 
-span[class^="el-"], div[class^="el-input"] {
+.form-group > div > span[class^="el-"], div[class^="el-input"] {
   width: 100% !important;
 }
 
@@ -452,3 +452,20 @@ select.form-control:not([size]):not([multiple]) {
   height: 2.25rem;
 }
 
+.el-date-table > tbody {
+  > tr:first-child {
+    text-align: center !important;
+
+    > th {
+      font-weight: 600;
+    }
+  }
+}
+
+.el-date-table > tbody > .el-date-table__row {
+  > td.available:first-child,
+  > td.available:last-child {
+    color: white;
+    background-color: indianred;
+  }
+}
