@@ -92,11 +92,9 @@ export default class HCForm extends Component {
                 </div>);
             }
 
-            let grid = <div className="row">
+            return <div className="row">
                 {columns}
             </div>;
-
-            return grid;
         }
     }
 
@@ -274,6 +272,8 @@ export default class HCForm extends Component {
                              id={ref}
                              language={this.state.language}
                              onLanguageChange={this.languageChange}
+                             fullFormData={this.record}
+                             submitData={this.submitData}
                              availableLanguages={this.state.formData.availableLanguages}/>;
     }
 
@@ -443,7 +443,7 @@ export default class HCForm extends Component {
     /**
      * Submitting data
      */
-    submitData() {
+    submitData(callbackSuccess, callbackFailure) {
         let valid = true;
 
         Object.keys(this.finalFieldStructure).map((key, i) => {
@@ -460,10 +460,18 @@ export default class HCForm extends Component {
 
         this.setState({formDisabled: true});
 
+        if (!callbackSuccess) {
+            callbackSuccess = this.handleSubmitComplete;
+        }
+
+        if (!callbackFailure) {
+            callbackFailure = this.handleSubmitError;
+        }
+
         if (this.props.config.recordId)
-            HC.react.loader.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, finalRecordStructure, this.handleSubmitComplete, false, this.handleSubmitError);
+            HC.react.loader.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, finalRecordStructure, callbackSuccess, false, callbackFailure);
         else
-            HC.react.loader.post(this.state.formData.storageUrl, finalRecordStructure, this.handleSubmitComplete, false, this.handleSubmitError);
+            HC.react.loader.post(this.state.formData.storageUrl, finalRecordStructure, callbackSuccess, false, callbackFailure);
     }
 
     /**
