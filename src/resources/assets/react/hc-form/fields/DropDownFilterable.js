@@ -51,15 +51,13 @@ export default class DropDownFilterable extends BaseField {
      * @param options
      * @returns {Array}
      */
-    formatOptions (options)
-    {
+    formatOptions(options) {
         let newOptions = [];
 
-        options.map((option, i) =>
-        {
+        options.map((option, i) => {
             newOptions.push({
-                value:option.id,
-                label:option.label,
+                value: option.id,
+                label: option.label,
             });
         });
 
@@ -71,9 +69,6 @@ export default class DropDownFilterable extends BaseField {
      *
      */
     getValue() {
-
-        console.log(this.state.value);
-
         return this.state.value;
     }
 }
