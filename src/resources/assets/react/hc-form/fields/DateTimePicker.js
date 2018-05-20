@@ -22,8 +22,6 @@ export default class DateTimePicker extends BaseField {
     }
 
     getInput() {
-
-
         return (
             <DatePicker
                 firstDayOFWeek={this.state.firstDayOFWeek}
@@ -39,6 +37,10 @@ export default class DateTimePicker extends BaseField {
                 ref="inputField"
             />
         );
+    }
+
+    externalFocus() {
+        this.refs.inputField.refs.inputRoot.focus();
     }
 
     /**
@@ -101,8 +103,13 @@ export default class DateTimePicker extends BaseField {
         if (!this.state.value)
             return null;
 
-        return this.state.value.getFullYear() + '-' + this.state.value.getFullMonth() + '-' + this.state.value.getFullDay() +
-            ' ' + this.state.value.getFullHours() + ':' + this.state.value.getFullMinutes() + ':' + this.state.value.getFullSeconds();
+        let date = this.state.value.getFullYear() + '-' + this.state.value.getFullMonth() + '-' + this.state.value.getFullDay();
+
+        if (this.state.showTime) {
+            date += ' ' + this.state.value.getFullHours() + ':' + this.state.value.getFullMinutes() + ':' + this.state.value.getFullSeconds();
+        }
+
+        return date;
     }
 }
 //TODO move this one to globals somewhere
