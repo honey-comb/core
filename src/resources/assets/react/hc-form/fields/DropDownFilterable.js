@@ -6,7 +6,7 @@ export default class DropDownFilterable extends BaseField {
     constructor(props) {
         super(props);
 
-        this.state.isMulti = this.props.config.multi;
+        this.state.multi = this.props.config.multi;
         this.state.options = this.props.config.options;
         this.state.multiValue = [];
         this.state.value = null;
@@ -38,7 +38,7 @@ export default class DropDownFilterable extends BaseField {
             rtl={this.state.rtl}
             value={this.state.value}
             ref="inputField"
-            isMulti={this.state.isMulti}
+            multi={this.state.multi}
             disabled={this.getDisabled()}
             creatable={this.props.config.creatable}
             onChange={this.inputUpdated}
@@ -51,15 +51,13 @@ export default class DropDownFilterable extends BaseField {
      * @param options
      * @returns {Array}
      */
-    formatOptions (options)
-    {
+    formatOptions(options) {
         let newOptions = [];
 
-        options.map((option, i) =>
-        {
+        options.map((option, i) => {
             newOptions.push({
-                value:option.id,
-                label:option.label,
+                value: option.id,
+                label: option.label,
             });
         });
 
@@ -71,9 +69,6 @@ export default class DropDownFilterable extends BaseField {
      *
      */
     getValue() {
-
-        console.log(this.state.value);
-
         return this.state.value;
     }
 }
