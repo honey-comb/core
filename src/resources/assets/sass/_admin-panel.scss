@@ -110,6 +110,11 @@ body.disabled {
     }
   }
 
+  .form-structure.has-tabs
+  {
+    height: calc(100% - 85px - 37px);
+  }
+
   .footer {
     text-align: center;
   }
@@ -467,5 +472,24 @@ select.form-control:not([size]):not([multiple]) {
   > td.available:last-child {
     color: white;
     background-color: indianred;
+  }
+}
+
+.form-tabs {
+  .form-tab {
+
+    margin:0 5px;
+
+    .available {
+      cursor: pointer;
+    }
+
+    .available:hover {
+      background-color: lightgrey;
+    }
+
+    .active {
+      cursor: default;
+    }
   }
 }

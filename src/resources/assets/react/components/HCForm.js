@@ -26,6 +26,8 @@
 
 import React, {Component} from 'react'
 
+let classNames = require('classnames');
+
 export default class HCForm extends Component {
 
     constructor(props) {
@@ -40,7 +42,8 @@ export default class HCForm extends Component {
             id: HC.helpers.uuid(),
             formData: {},
             formDisabled: false,
-            language: null
+            language: null,
+            currentTab: undefined
         };
 
         this.opacity = 0;
@@ -55,18 +58,64 @@ export default class HCForm extends Component {
         this.handleSubmitComplete = this.handleSubmitComplete.bind(this);
         this.handleSubmitError = this.handleSubmitError.bind(this);
         this.getStructuredFormFields = this.getStructuredFormFields.bind(this);
+        this.changeTab = this.changeTab.bind(this);
     }
 
     render() {
 
+        const tabs = this.getTabs();
+
+        let formClasses = classNames({
+            'form-structure': true,
+            'has-tabs': tabs !== ''
+        });
+
         return <div ref="formHolder" id={this.state.id} className="hc-form">
-            <div className="form-structure">
+            {tabs}
+            <div className={formClasses}>
                 {this.getStructuredFormFields()}
             </div>
             <div className="footer">
                 {this.getButtons()}
             </div>
         </div>;
+    }
+
+    getTabs() {
+        if (!this.state.tabs)
+            return '';
+
+        if (!this.state.currentTab) {
+            this.state.currentTab = this.state.tabs[0];
+        }
+
+        let tabs = [];
+
+        this.state.tabs.map((value, i) => {
+
+            let classes = classNames(
+                {
+                    'nav-link': true,
+                    'active': this.state.currentTab === value,
+                    'available': this.state.currentTab !== value
+                }
+            );
+
+            tabs.push(
+                <li key={i} className="nav-item form-tab">
+                    <div className={classes} data-tab={value} onClick={this.changeTab}>{value}</div>
+                </li>
+            )
+        });
+
+        return <ul className="nav nav-pills form-tabs">
+            {tabs}
+        </ul>
+    }
+
+    changeTab (e)
+    {
+        this.setState({currentTab: e.currentTarget.dataset.tab})
     }
 
     getStructuredFormFields() {
@@ -166,6 +215,19 @@ export default class HCForm extends Component {
                 formData: response
             };
 
+            Object.keys(response.structure).map((key, i) => {
+
+                if (response.structure[key].tab) {
+                    if (!stateObject.tabs) {
+                        stateObject.tabs = [];
+                    }
+
+                    if (stateObject.tabs.indexOf(response.structure[key].tab) === -1) {
+                        stateObject.tabs.push(response.structure[key].tab);
+                    }
+                }
+            });
+
             if (response.availableLanguages && response.availableLanguages.length > 0) {
                 stateObject.language = response.availableLanguages[0];
             }
@@ -200,12 +262,7 @@ export default class HCForm extends Component {
         Object.keys(structure).map((key, i) => {
             Object.keys(options).map((foKey) => {
 
-                if (structure[key][foKey] === options[foKey]) {
-                    includeList[foKey] = true;
-                }
-                else {
-                    includeList[foKey] = false;
-                }
+                includeList[foKey] = structure[key][foKey] === options[foKey];
             });
 
             let include = true;
@@ -270,6 +327,7 @@ export default class HCForm extends Component {
                              config={data}
                              ref={ref}
                              id={ref}
+                             tab={this.state.currentTab}
                              language={this.state.language}
                              onLanguageChange={this.languageChange}
                              fullFormData={this.record}
