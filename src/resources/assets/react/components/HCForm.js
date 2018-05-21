@@ -92,11 +92,9 @@ export default class HCForm extends Component {
                 </div>);
             }
 
-            let grid = <div className="row">
+            return <div className="row">
                 {columns}
             </div>;
-
-            return grid;
         }
     }
 
@@ -173,16 +171,23 @@ export default class HCForm extends Component {
             }
 
             if (scope.props.config.recordId) {
-                HC.react.loader.get(response.storageUrl + '/' + scope.props.config.recordId, null, function (response) {
-                    scope.existingRecord = response;
+                HC.react.loader.get(response.storageUrl + '/' + scope.props.config.recordId, null, function (recordData) {
+                    scope.existingRecord = recordData;
 
                     scope.setState(stateObject);
                     scope.fillForm();
+
+                    if (scope.props.formDataLoaded) {
+                        scope.props.formDataLoaded(response.editLabelKey ? HC.helpers.pathIndex(recordData, response.editLabelKey) : "Edit record");
+                    }
                 });
             }
             else {
                 scope.setState(stateObject);
                 scope.updateDependencies();
+                if (scope.props.formDataLoaded) {
+                    scope.props.formDataLoaded(response.newLabel ? response.newLabel : "New record");
+                }
             }
         });
     }
@@ -267,6 +272,8 @@ export default class HCForm extends Component {
                              id={ref}
                              language={this.state.language}
                              onLanguageChange={this.languageChange}
+                             fullFormData={this.record}
+                             submitData={this.submitData}
                              availableLanguages={this.state.formData.availableLanguages}/>;
     }
 
@@ -436,7 +443,7 @@ export default class HCForm extends Component {
     /**
      * Submitting data
      */
-    submitData() {
+    submitData(callbackSuccess, callbackFailure) {
         let valid = true;
 
         Object.keys(this.finalFieldStructure).map((key, i) => {
@@ -453,10 +460,18 @@ export default class HCForm extends Component {
 
         this.setState({formDisabled: true});
 
+        if (!callbackSuccess || !HC.helpers.isFunction(callbackSuccess)) {
+            callbackSuccess = this.handleSubmitComplete;
+        }
+
+        if (!callbackFailure || !HC.helpers.isFunction(callbackSuccess)) {
+            callbackFailure = this.handleSubmitError;
+        }
+
         if (this.props.config.recordId)
-            HC.react.loader.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, finalRecordStructure, this.handleSubmitComplete, false, this.handleSubmitError);
+            HC.react.loader.put(this.state.formData.storageUrl + '/' + this.props.config.recordId, finalRecordStructure, callbackSuccess, false, callbackFailure);
         else
-            HC.react.loader.post(this.state.formData.storageUrl, finalRecordStructure, this.handleSubmitComplete, false, this.handleSubmitError);
+            HC.react.loader.post(this.state.formData.storageUrl, finalRecordStructure, callbackSuccess, false, callbackFailure);
     }
 
     /**

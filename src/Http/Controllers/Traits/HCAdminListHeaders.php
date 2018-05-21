@@ -127,4 +127,18 @@ trait HCAdminListHeaders
             'prefix' => $prefix,
         ];
     }
+
+    /**
+     * @param string $label
+     * @param int $utc
+     * @return array
+     */
+    protected function headerTime(string $label, int $utc = 0): array
+    {
+        return [
+            'type' => 'time',
+            'label' => $label,
+            'utc' => $utc,
+        ];
+    }
 }

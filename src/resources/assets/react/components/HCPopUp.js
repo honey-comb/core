@@ -9,10 +9,12 @@ export default class HCPopUp extends Component {
         super(props);
 
         this.state = {
-            id: HC.helpers.uuid()
+            id: HC.helpers.uuid(),
+            popUpLabel: ''
         };
 
         this.handlePopUpClose = this.handlePopUpClose.bind(this);
+        this.updateLabel = this.updateLabel.bind(this);
     }
 
     render() {
@@ -22,17 +24,21 @@ export default class HCPopUp extends Component {
                 return <div id={this.state.id} ref="popUp" className="hc-pop-up" style={this.props.config.style}>
                     <div className="header">
                         {this.getCloseButton()}
-                        <div className="label">{this.props.contentID ? "Edit record" : "New record"}</div>
+                        <div className="label">{this.state.popUpLabel}</div>
                     </div>
-                    <HCForm config={this.props.config} formClosed={this.handlePopUpClose}/>
+                    <HCForm config={this.props.config} formDataLoaded={this.updateLabel}
+                            formClosed={this.handlePopUpClose}/>
                 </div>
         }
 
         return "";
     }
 
-    componentDidMount ()
-    {
+    updateLabel(value) {
+        this.setState({popUpLabel: value})
+    }
+
+    componentDidMount() {
         this.animatePopUp(true);
     }
 

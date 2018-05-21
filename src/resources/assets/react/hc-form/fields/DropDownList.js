@@ -145,7 +145,7 @@ export default class DropDownList extends BaseField {
 
         HC.react.popUp({
             url: this.props.config.new,
-            params: params,
+            params: {params:params},
             type: 'form',
             createdCallback: this.newOptionCreated,
             createdCallbackScope: this

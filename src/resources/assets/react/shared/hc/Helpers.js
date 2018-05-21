@@ -210,6 +210,17 @@ HC.helpers = new function () {
     };
 
     /**
+     * Checking if object is a Function
+     *
+     * @param object
+     * @returns {boolean}
+     */
+    this.isFunction = function (object)
+    {
+        return this.isObjectMyType(object, '[object Function]');
+    };
+
+    /**
      * Check if given object is a string or json string
      *
      * @param object
@@ -291,4 +302,35 @@ HC.helpers = new function () {
         // are considered equivalent
         return true;
     };
+};
+
+//************** HELPERS ***********************
+
+function formatTime(value) {
+    return ('00' + value).slice(-2)
+}
+
+Date.prototype.addHours = function (h) {
+    this.setTime(this.getTime() + (h * 60 * 60 * 1000));
+    return this;
+};
+
+Date.prototype.getFullHours = function () {
+    return formatTime(this.getHours());
+};
+
+Date.prototype.getFullMinutes = function () {
+    return formatTime(this.getMinutes());
+};
+
+Date.prototype.getFullSeconds = function () {
+    return formatTime(this.getSeconds());
+};
+
+Date.prototype.getFullMonth = function () {
+    return formatTime(this.getMonth() + 1);
+};
+
+Date.prototype.getFullDay = function () {
+    return formatTime(this.getDate());
 };

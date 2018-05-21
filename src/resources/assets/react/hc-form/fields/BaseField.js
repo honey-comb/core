@@ -57,6 +57,7 @@ export default class BaseField extends Component {
         this.getMultiLanguage = this.getMultiLanguage.bind(this);
         this.addNewOption = this.addNewOption.bind(this);
         this.getContainerName = this.getContainerName.bind(this);
+        this.externalFocus = this.externalFocus.bind(this);
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -206,9 +207,11 @@ export default class BaseField extends Component {
      */
     getInputAddon(first) {
 
+        const scope = this;
+
         if (first) {
             if (this.props.config.inputGroupPrepend) {
-                return <div className="input-group-prepend">
+                return <div className="input-group-prepend" onClick={this.externalFocus}>
                     <span className="input-group-text" id="basic-addon1"
                           dangerouslySetInnerHTML={{__html: this.props.config.inputGroupPrepend}}/>
                 </div>;
@@ -218,7 +221,7 @@ export default class BaseField extends Component {
         }
 
         if (this.props.config.inputGroupAppend) {
-            return <div className="input-group-append">
+            return <div className="input-group-append" onClick={this.externalFocus}>
                 <span className="input-group-text" id="basic-addon1"
                       dangerouslySetInnerHTML={{__html: this.props.config.inputGroupAppend}}/>
             </div>;
@@ -226,6 +229,10 @@ export default class BaseField extends Component {
         }
 
         return '';
+    }
+
+    externalFocus() {
+        this.refs.inputField.focus();
     }
 
     getRequired() {

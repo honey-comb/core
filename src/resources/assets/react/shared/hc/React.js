@@ -137,7 +137,9 @@ HC.react = new function () {
                 toast.success(data.message, {position: toast.POSITION.TOP_CENTER})
             }
 
-            callback(data);
+            if (callback) {
+                callback(data);
+            }
         }
 
         /**
@@ -185,8 +187,7 @@ HC.react = new function () {
     /**
      * Enabling toastr container
      */
-    this.enableToastContainer = function ()
-    {
+    this.enableToastContainer = function () {
         ReactDOM.render(<ToastContainer/>, document.getElementById('toastrify'));
     };
 
@@ -269,8 +270,7 @@ HC.react = new function () {
      * @param message
      * @param options
      */
-    this.notify = function (type, message)
-    {
+    this.notify = function (type, message) {
         toast[type](message, {position: toast.POSITION.TOP_CENTER})
     };
 

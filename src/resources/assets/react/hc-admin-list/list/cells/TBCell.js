@@ -3,6 +3,7 @@ import Thumbnail from "../../../hc-form/fields/media/Thumbnail";
 import Url from "../../../hc-form/fields/Url";
 import HCCellList from "../../../hc-form/fields/HCCellList";
 import HCCellCopy from "../../../hc-form/fields/HCCellCopy";
+import HCCellDateTime from "../../../hc-form/fields/HCCellDateTime";
 
 let classNames = require('classnames');
 
@@ -107,6 +108,10 @@ export default class TBCell extends Component {
 
                 this.disableUpdate = true;
                 return this.getCopy();
+
+            case 'time' :
+
+                return this.getTime();
         }
 
         return "";
@@ -142,6 +147,13 @@ export default class TBCell extends Component {
                            config={this.props.options}
                            recordUpdated={this.recordUpdated}
                            recordUpdatedScope={this}/>
+    }
+
+    getTime ()
+    {
+        return <HCCellDateTime key={this.id}
+                               value={this.state.value}
+                               config={this.props.options}/>
     }
 
     getCopy() {
