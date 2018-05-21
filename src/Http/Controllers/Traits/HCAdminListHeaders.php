@@ -63,15 +63,19 @@ trait HCAdminListHeaders
      * @param string $label
      * @param int $width
      * @param int $height
+     * @param bool $showEdit
      * @return array
      */
-    protected function headerImage(string $label, int $width = 100, int $height = 100): array
+    protected function headerImage(string $label, int $width = 100, int $height = 100, bool $showEdit = false): array
     {
-        return [
+        return $config = [
             'type' => 'image',
             'label' => $label,
             'width' => $width,
             'height' => $height,
+            'viewUrl' => route('resource.get', '/'),
+            'editUrl' => $showEdit ? route('admin.api.form-manager', ['resource-edit']) : null,
+            'hideDelete' => true
         ];
     }
 

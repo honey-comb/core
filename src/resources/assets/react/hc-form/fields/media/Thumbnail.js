@@ -12,14 +12,16 @@ export default class Thumbnail extends Component {
         this.state = {
             progress: 0,
             abandoned: false,
-            hideDelete: this.props.hideDelete,
-            hideEdit: this.props.hideEdit,
+            hideDelete: this.props.config.hideDelete,
+            hideEdit: this.props.config.hideEdit,
             disableEdit: true,
-            mediaId: this.props.mediaId
+            mediaId: this.props.mediaId,
+            width: this.props.config.width ? this.props.config.width : 90,
+            height: this.props.config.height ? this.props.config.height : 90,
         };
 
         if (!this.state.hideEdit) {
-            if (this.props.editUrl) {
+            if (this.props.config.editUrl) {
                 this.state.disableEdit = false;
             }
         }
@@ -39,7 +41,7 @@ export default class Thumbnail extends Component {
         if (this.state.abandoned)
             return null;
 
-        return <div className="hc-media" onMouseOver={this.showButtons} onMouseOut={this.hideButtons}>
+        return <div className="hc-media" style={{width:this.state.width, height:this.state.height}} onMouseOver={this.showButtons} onMouseOut={this.hideButtons}>
             {this.getView()}
             <button ref="remove" onClick={this.remove} className="btn btn-danger remove" hidden={this.state.hideDelete}>
                 <FontAwesomeIcon icon={HC.helpers.faIcon('trash-alt')}/>
@@ -50,6 +52,8 @@ export default class Thumbnail extends Component {
             </button>
         </div>;
     }
+
+
 
     /**
      * Getting right view
@@ -89,8 +93,7 @@ export default class Thumbnail extends Component {
         }
     }
 
-    componentDidUpdate ()
-    {
+    componentDidUpdate() {
         this.state.mediaId = null;
     }
 
@@ -113,7 +116,7 @@ export default class Thumbnail extends Component {
     uploadFile() {
         let formData = new FormData();
         formData.append('file', this.props.file);
-        axios.post(this.props.uploadUrl, formData, {
+        axios.post(this.props.config.uploadUrl, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
@@ -136,7 +139,7 @@ export default class Thumbnail extends Component {
      */
     thumbnailView() {
         return <div className="thumbnail"
-                    style={{backgroundImage: "url(" + this.props.viewUrl + "/" + this.state.mediaId + "/90/90)"}}/>
+                    style={{backgroundImage: "url(" + this.props.config.viewUrl + "/" + this.state.mediaId + '/' + this.state.width + '/' + this.state.height}}/>
     }
 
     /**
@@ -152,7 +155,7 @@ export default class Thumbnail extends Component {
      */
     edit() {
         HC.react.popUp({
-            url: this.props.editUrl,
+            url: this.props.config.editUrl,
             type: "form",
             recordId: this.state.mediaId,
         });

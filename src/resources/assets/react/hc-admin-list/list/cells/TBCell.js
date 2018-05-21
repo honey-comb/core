@@ -128,9 +128,7 @@ export default class TBCell extends Component {
 
         return <Thumbnail mediaId={this.state.value}
                           key={this.id}
-                          hideDelete={true}
-                          hideEdit={true}
-                          viewUrl="/resources"/>
+                          config={this.props.options}/>
     }
 
     getUrl() {
