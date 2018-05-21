@@ -117,7 +117,7 @@ export default class List extends Component {
             <div className="list" style={{overflow: 'auto', height:this.state.listHeight}} ref="listArea">
                 <table id={this.state.listId} className="table table-hover table-bordered" role="grid">
                     <thead>
-                    <THRow hidden={this.props.hideCheckBox}
+                    <THRow hideCheckBox={this.props.hideCheckBox}
                            headers={this.props.config.headers}
                            invertAll={this.invertAll}
                            checked={this.state.allSelected}
@@ -162,7 +162,8 @@ export default class List extends Component {
                                         config={this.props.config}
                                         globalSelection={this.state.globalSelection}
                                         onChange={this.singleRowSelect}
-                                        reload={this.props.reload}/>)
+                                        reload={this.props.reload}
+                                        hideCheckBox={this.props.hideCheckBox}/>)
         ));
 
         return this.state.rows;
