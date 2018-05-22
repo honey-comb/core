@@ -23,12 +23,10 @@
 
 @section('scripts')
     <script type="text/javascript">
-        $(document).ready(function () {
-            HCService.FormManager.initialize();
-            var form = HCService.FormManager.createForm({
-                'structureURL': '{{  route('frontend.api.form-manager', 'password-reset-new')}}?token={{ $token }}',
-                'divID': '#password-reset-form'
-            });
-        });
+        HC.react.enableFaIcons();
+        HC.react.hcForm({
+            url: '{{route('frontend.api.form-manager', ['password-reset-new', 'token' => $token])}}',
+            divId: 'password-reset-form'
+        })
     </script>
 @endsection
