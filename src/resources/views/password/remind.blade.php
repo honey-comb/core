@@ -23,7 +23,6 @@
 @endsection
 
 @section('scripts')
-
     <script>
         HC.react.enableFaIcons();
         HC.react.hcForm({
