@@ -7,7 +7,6 @@ export default class DropDownList extends BaseField {
     constructor(props) {
         super(props);
 
-        this.validationTimeOutMiliseconds = 0;
         this.key = HC.helpers.uuid();
         this.state = {
             value : this.props.config.value
@@ -171,7 +170,7 @@ export default class DropDownList extends BaseField {
         }
 
         HC.react.popUp({
-            url: this.props.config.new.url,
+            url: this.props.config.new,
             params: {params: params},
             type: 'form',
             createdCallback: this.newOptionCreated,
