@@ -115,8 +115,11 @@ export default class DropDownFilterable extends BaseField {
             this.state.value = '';
 
             value.map((value, i) => {
-                this.state.value += ',' + value.id;
+                this.state.value += value.id + ',';
             });
+
+            this.state.value = this.state.value.substring(0, this.state.value.length - 1);
+
         }
         else {
 
