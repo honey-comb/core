@@ -54,7 +54,7 @@ export default class DropDownFilterable extends BaseField {
             rtl={this.state.rtl}
             value={this.state.value}
             ref="inputField"
-            multi
+            multi={this.state.multi}
             disabled={this.getDisabled()}
             creatable={this.props.config.creatable}
             onChange={this.inputUpdated}
