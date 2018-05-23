@@ -109,6 +109,10 @@ export default class HCForm extends Component {
             )
         });
 
+        if (tabs.length <= 1) {
+            tabs = [];
+        }
+
         return <ul className="nav nav-pills form-tabs">
             {tabs}
         </ul>
