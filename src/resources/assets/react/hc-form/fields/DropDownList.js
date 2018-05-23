@@ -19,7 +19,7 @@ export default class DropDownList extends BaseField {
 
     getInput() {
 
-        return [this.getSelect(), this.getNewButton()]
+        return [this.getSelect(), this.getNewButton(), <div key={2} className="clearfix"/>];
     }
 
     getSelect() {
@@ -34,6 +34,7 @@ export default class DropDownList extends BaseField {
                        value={this.state.value}
                        disabled={this.getDisabled()}
                        onChange={this.contentChange}>
+
 
             {this.getOptionsFormatted()}
         </select>
@@ -113,9 +114,27 @@ export default class DropDownList extends BaseField {
      */
     setValue (value)
     {
-        this.setState({value:value});
+        if (HC.helpers.isArray(value)) {
+            if (!this.state.options) {
+                this.state.options = value;
+            }
+
+            this.state.value = '';
+
+            value.map((value, i) => {
+                this.state.value += value.id + ',';
+            });
+
+            this.state.value = this.state.value.substring(0, this.state.value.length - 1);
+
+        }
+        else {
+
+            this.state.value = value;
+        }
+
+        this.setState(this.state);
         this.validate();
-        this.triggerChange();
     }
 
     /**
@@ -123,9 +142,8 @@ export default class DropDownList extends BaseField {
      */
     getNewButton() {
 
-        if (!!this.props.config.new)
-        {
-            return <FAButton key={HC.helpers.uuid()}
+        if (!!this.props.config.new) {
+            return <FAButton key={1}
                              icon={HC.helpers.faIcon('plus')}
                              type={HC.helpers.buttonClass('info')}
                              onPress={this.newOptionAction}
@@ -138,26 +156,46 @@ export default class DropDownList extends BaseField {
         }
     }
 
+    /**
+     * Adding new Action
+     */
     newOptionAction() {
 
-        let params = this.state.dependencyValues;
-        params.hc_options = 1;
+        let params = this.state.dependencyValues ? this.state.dependencyValues : {};
+        params.hc_new = 1;
+
+        if (this.props.config.new.require) {
+            this.props.config.new.require.map((value) => {
+                params[value] = HC.helpers.pathIndex(this.props.fullFormData, value);
+            });
+        }
 
         HC.react.popUp({
-            url: this.props.config.new,
-            params: {params:params},
+            url: this.props.config.new.url,
+            params: {params: params},
             type: 'form',
             createdCallback: this.newOptionCreated,
             createdCallbackScope: this
         });
     }
 
-    newOptionCreated (data)
-    {
+    /**
+     * new option created
+     *
+     * @param data
+     */
+    newOptionCreated(data) {
+
         this.addNewOption(data);
-        this.render();
-        this.setValue(data.id);
-        this.validate();
+
+        if (!this.state.value) {
+            this.state.value = data.id;
+        }
+        else {
+            this.state.value += ',' + data.id;
+        }
+
+        this.setState(this.state);
     }
 }
 
