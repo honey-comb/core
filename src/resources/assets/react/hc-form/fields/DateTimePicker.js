@@ -29,7 +29,7 @@ export default class DateTimePicker extends BaseField {
                 format={this.state.format}
                 onChange={this.handleSelectionChange.bind(this)}
                 value={this.state.value}
-                disabled={this.getDisabled()}
+                isDisabled={this.getDisabled()}
                 readOnly={this.props.config.readonly}
                 disabledDate={
                     time => this.validateDate(time)

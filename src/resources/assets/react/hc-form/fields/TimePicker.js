@@ -52,7 +52,8 @@ export default class HCTimePicker extends BaseField {
             }
         }
 
-        this.setState({value: value});
+        this.state.value = value;
+        this.setState(this.state);
         this.validate();
     }
 

@@ -59,6 +59,7 @@ export default class HCForm extends Component {
         this.handleSubmitError = this.handleSubmitError.bind(this);
         this.getStructuredFormFields = this.getStructuredFormFields.bind(this);
         this.changeTab = this.changeTab.bind(this);
+        this.deleteData = this.deleteData.bind(this);
     }
 
     render() {
@@ -113,8 +114,7 @@ export default class HCForm extends Component {
         </ul>
     }
 
-    changeTab (e)
-    {
+    changeTab(e) {
         this.setState({currentTab: e.currentTarget.dataset.tab})
     }
 
@@ -488,14 +488,30 @@ export default class HCForm extends Component {
      * @returns {*}
      */
     getButton(type, data, i) {
+
         switch (type) {
-            case "submit" :
+            case 'submit' :
 
                 return <button disabled={this.state.formDisabled}
                                key={i}
                                className={HC.helpers.buttonClass('primary')}
                                onClick={this.submitData}>{data.label}</button>;
+
+            case 'delete' :
+
+                return <button disabled={this.state.formDisabled}
+                               key={i}
+                               className={HC.helpers.buttonClass('danger')}
+                               onClick={this.deleteData}>{data.label}</button>;
         }
+    }
+
+    /**
+     * Deleting existing record
+     */
+    deleteData() {
+
+        HC.react.loader.delete(this.state.formData.storageUrl + '/' + this.props.config.recordId, null, null, true);
     }
 
     /**
