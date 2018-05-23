@@ -104,9 +104,6 @@ export default class DropDownSearchable extends BaseField {
 
         return this.state.value;
     }
-
-        console.log(this.state.options);
-        console.log(this.state.options)
 }
 
 HC.formFields.register('dropDownSearchable', DropDownSearchable);
