@@ -127,6 +127,7 @@ export default class DropDownFilterable extends BaseField {
         }
 
         this.setState(this.state);
+        this.validate();
     }
 
     /**
