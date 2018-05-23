@@ -173,8 +173,8 @@ export default class Thumbnail extends Component {
      * Hiding buttons
      */
     hideButtons() {
-        this.refs.remove.style.opacity = 0.1;
-        this.refs.edit.style.opacity = 0.1;
+        this.refs.remove.style.opacity = null;
+        this.refs.edit.style.opacity = null;
     }
 
     /**
