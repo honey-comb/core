@@ -39,20 +39,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 trait HCTranslation
 {
     /**
-     * @var
-     */
-    private $translationClass;
-
-    /**
      * Translations
      *
      * @return HasMany
      */
     public function translations(): HasMany
     {
-        $this->translationClass = get_class($this) . 'Translation';
-
-        return $this->hasMany($this->translationClass, 'record_id', 'id');
+        return $this->hasMany($this->getTranslationClass(), 'record_id', 'id');
     }
 
     /**
@@ -61,9 +54,7 @@ trait HCTranslation
      */
     public function translation(): HasOne
     {
-        $this->translationClass = get_class($this) . 'Translation';
-
-        return $this->hasOne($this->translationClass, 'record_id', 'id')->where('language_code', app()->getLocale());
+        return $this->hasOne($this->getTranslationClass(), 'record_id', 'id')->where('language_code', app()->getLocale());
     }
 
     /**
@@ -98,5 +89,13 @@ trait HCTranslation
         foreach ($data as $translationsData) {
             $this->updateTranslation($translationsData);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getTranslationClass ()
+    {
+        return  get_class($this) . 'Translation';
     }
 }
