@@ -145,14 +145,15 @@ trait HCQueryBuilderTrait
     {
         $sortBy = $request->input('sort_by');
         $sortOrder = $request->input('sort_order');
+        $modelPrefix = $this->model()::getTableName() . '.';
 
         if (in_array($sortBy, $availableFields)) {
             if (in_array(strtolower($sortOrder), ['asc', 'desc'])) {
-                return $query->orderBy($sortBy, $sortOrder);
+                return $query->orderBy($modelPrefix . $sortBy, $sortOrder);
             }
         }
 
-        return $query->orderBy('created_at', 'desc');
+        return $query->orderBy($modelPrefix . 'created_at', 'desc');
     }
 
     /**
@@ -168,6 +169,10 @@ trait HCQueryBuilderTrait
 
         if (!$phrase || strlen($phrase) < $this->minimumSearchInputLength) {
             return $query;
+        }
+
+        if ($this->translationModel()) {
+            return $this->searchQueryTranslations($query, $phrase);
         }
 
         return $this->searchQuery($query, $phrase);
@@ -209,6 +214,47 @@ trait HCQueryBuilderTrait
 
             return $query;
         });
+    }
+
+    /**
+     * List search elements
+     *
+     * @param Builder $query
+     * @param string $phrase
+     * @return Builder
+     */
+    protected function searchQueryTranslations(Builder $query, string $phrase): Builder
+    {
+        $r = $this->getModel()::getTableName();
+        $rf = $this->getModel()::getFillableFields(true);
+
+        $t = $this->translationModel()::getTableName();
+        $tf = $this->translationModel()::getFillableFields(true);
+
+        return $query->join($t, "$r.id", "=", "$t.record_id")
+            ->where($t . '.language_code', app()->getLocale())
+            ->where(function(Builder $query) use ($t, $rf, $tf, $phrase) {
+
+                $fields = array_merge($rf, $tf);
+                $count = 0;
+
+                foreach ($fields as $key => $field) {
+
+                    if (strpos($field, 'created_at') ||
+                        strpos($field, 'id') ||
+                        strpos($field, 'record_id') ||
+                        strpos($field, 'language_code')) {
+
+                    } else {
+
+                        $method = $count == 0 ? 'where' : 'orWhere';
+                        $count++;
+                        $query->{$method}($field, 'LIKE', '%' . $phrase . '%');
+                    }
+                }
+
+                return $query;
+            });
     }
 
     /**
