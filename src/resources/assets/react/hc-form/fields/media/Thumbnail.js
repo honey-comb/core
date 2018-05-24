@@ -14,16 +14,13 @@ export default class Thumbnail extends Component {
             abandoned: false,
             hideDelete: this.props.config.hideDelete,
             hideEdit: this.props.config.hideEdit,
-            disableEdit: true,
             mediaId: this.props.mediaId,
             width: this.props.config.width ? this.props.config.width : 90,
             height: this.props.config.height ? this.props.config.height : 90,
         };
 
-        if (!this.state.hideEdit) {
-            if (this.props.config.editUrl) {
-                this.state.disableEdit = false;
-            }
+        if (!this.props.config.editUrl) {
+            this.state.hideEdit = true;
         }
 
         this.remove = this.remove.bind(this);
@@ -46,8 +43,7 @@ export default class Thumbnail extends Component {
             <button ref="remove" onClick={this.remove} className="btn btn-danger remove" hidden={this.state.hideDelete}>
                 <FontAwesomeIcon icon={HC.helpers.faIcon('trash-alt')}/>
             </button>
-            <button ref="edit" onClick={this.edit} className="btn btn-warning edit" disabled={this.state.disableEdit}
-                    hidden={this.state.hideEdit}>
+            <button ref="edit" onClick={this.edit} className="btn btn-warning edit" hidden={this.state.hideEdit}>
                 <FontAwesomeIcon icon={HC.helpers.faIcon('edit')}/>
             </button>
         </div>;
@@ -94,6 +90,7 @@ export default class Thumbnail extends Component {
     }
 
     componentDidUpdate() {
+        this.state.editId = this.state.mediaId;
         this.state.mediaId = null;
     }
 
@@ -157,7 +154,7 @@ export default class Thumbnail extends Component {
         HC.react.popUp({
             url: this.props.config.editUrl,
             type: "form",
-            recordId: this.state.mediaId,
+            recordId: this.state.editId,
         });
     }
 

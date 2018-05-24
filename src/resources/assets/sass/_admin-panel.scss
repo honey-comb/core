@@ -157,8 +157,8 @@ body.disabled {
 
   .remove, .edit {
     position: absolute;
-    width: 33%;
-    height: 33%;
+    width: 40px;
+    height: 40px;
     text-align: center;
     bottom: -10px;
     padding: 0;
@@ -170,7 +170,7 @@ body.disabled {
   }
 
   .remove {
-    left: 0;
+    right: 40px;
   }
 
   .edit {
