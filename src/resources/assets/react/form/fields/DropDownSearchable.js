@@ -25,7 +25,10 @@ export default class DropDownSearchable extends BaseField {
 
     setValue(value) {
 
-        if (value && !value.label) {
+        if (HC.helpers.isArray(value) && value.length === 0) {
+            value = null;
+        }
+        if (value && !HC.helpers.isArray(value) && !value.label) {
             value.label = value[this.props.config.originalLabel];
         }
 
