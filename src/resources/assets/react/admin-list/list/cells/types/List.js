@@ -64,3 +64,5 @@ export default class List extends Component {
         });
     }
 }
+
+HC.adminListCells.register('list', List);
