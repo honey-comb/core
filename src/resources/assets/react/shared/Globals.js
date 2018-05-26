@@ -32,9 +32,9 @@ HC.adminList = new RegisterElements('simple');
 /**
  * Admin list cell types storage
  */
-HC.adminListCells = new RegisterElements();
+HC.adminListCells = new RegisterElements('text');
 
 /**
  * Form fields types storage
  */
-HC.formFields = new RegisterElements();
+HC.formFields = new RegisterElements('singleLine');
