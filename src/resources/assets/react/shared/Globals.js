@@ -17,7 +17,7 @@ function RegisterElements (value)
 
     this.get = function (name) {
 
-        if (!list[name])
+        if (!name)
             name = _default;
 
         return list[name];
