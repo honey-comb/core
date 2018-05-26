@@ -46,6 +46,20 @@ trait HCAdminListHeaders
     }
 
     /**
+     * Admin header text type as html
+     *
+     * @param string $label
+     * @return array
+     */
+    protected function headerHtml(string $label): array
+    {
+        return [
+            'type' => 'html',
+            'label' => $label,
+        ];
+    }
+
+    /**
      * Admin header checkBox type
      *
      * @param string $label
@@ -143,6 +157,18 @@ trait HCAdminListHeaders
             'type' => 'time',
             'label' => $label,
             'utc' => $utc,
+        ];
+    }
+
+    /**
+     * @param string $label
+     * @return array
+     */
+    protected function headerDate(string $label): array
+    {
+        return [
+            'type' => 'date',
+            'label' => $label,
         ];
     }
 }
