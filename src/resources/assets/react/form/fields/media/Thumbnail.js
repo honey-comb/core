@@ -11,10 +11,13 @@ export default class Thumbnail extends Component {
 
         this.state = {
             progress: 0,
+            file: this.props.file,
             abandoned: false,
+            preloadId: this.props.value,
+            mediaId: this.props.value,
+            loadedId: null,
             hideDelete: this.props.config.hideDelete,
             hideEdit: this.props.config.hideEdit,
-            mediaId: this.props.mediaId,
             width: this.props.config.width ? this.props.config.width : 90,
             height: this.props.config.height ? this.props.config.height : 90,
         };
@@ -27,6 +30,7 @@ export default class Thumbnail extends Component {
         this.edit = this.edit.bind(this);
         this.showButtons = this.showButtons.bind(this);
         this.hideButtons = this.hideButtons.bind(this);
+        this.getMediaId = this.getMediaId.bind(this);
     }
 
     /**
@@ -38,7 +42,10 @@ export default class Thumbnail extends Component {
         if (this.state.abandoned)
             return null;
 
-        return <div className="hc-media" style={{width:this.state.width, height:this.state.height}} onMouseOver={this.showButtons} onMouseOut={this.hideButtons}>
+        this.getMediaId();
+
+        return <div className="hc-media" style={{width: this.state.width, height: this.state.height}}
+                    onMouseOver={this.showButtons} onMouseOut={this.hideButtons}>
             {this.getView()}
             <button ref="remove" onClick={this.remove} className="btn btn-danger remove" hidden={this.state.hideDelete}>
                 <FontAwesomeIcon icon={HC.helpers.faIcon('trash-alt')}/>
@@ -49,20 +56,19 @@ export default class Thumbnail extends Component {
         </div>;
     }
 
-
-
     /**
      * Getting right view
      * @returns {*}
      */
     getView() {
 
+        if (this.state.file) {
+            return this.uploadView();
+        }
+
         if (this.state.mediaId) {
             return this.thumbnailView();
         }
-
-        if (this.props.file)
-            return this.uploadView();
 
         return this.nothingView();
     }
@@ -75,35 +81,24 @@ export default class Thumbnail extends Component {
         if (this.props.file) {
             this.uploadFile();
         }
-
-        if (this.state.mediaId) {
-            this.state.editId = this.state.mediaId;
-        }
-        else {
-            this.state.editId = this.props.mediaId
-        }
     }
 
-    /**
-     *
-     * @param nextProps
-     * @param nextState
-     */
-    componentWillUpdate(nextProps, nextState) {
+    getMediaId() {
 
-        if (nextState.mediaId == null) {
-            nextState.mediaId = nextProps.mediaId;
+        if (this.props.value !== this.state.preloadId) {
+            this.state.mediaId = this.props.value;
+            this.state.preloadId = this.props.value;
         }
-    }
 
-    componentDidUpdate() {
-        if (this.state.mediaId) {
-            this.state.editId = this.state.mediaId;
+        if (this.state.loadedId) {
+            this.state.mediaId = this.state.loadedId;
+            this.state.loadedId = null;
         }
-        else {
-            this.state.editId = this.props.mediaId
-        }
-        this.state.mediaId = null;
+
+        console.log(this.props.value);
+        console.log(this.state.preloadId);
+        console.log(this.state.mediaId);
+        console.log(this.state.loadedId);
     }
 
     /**
@@ -111,6 +106,7 @@ export default class Thumbnail extends Component {
      * @returns {*[]}
      */
     uploadView() {
+
         return [
             <div key={0} className="percentage" ref="progress">{this.state.progress}</div>,
             <div key={1} className="spinner">
@@ -123,6 +119,7 @@ export default class Thumbnail extends Component {
      * Upload file logic
      */
     uploadFile() {
+
         let formData = new FormData();
         formData.append('file', this.props.file);
         axios.post(this.props.config.uploadUrl, formData, {
@@ -138,7 +135,12 @@ export default class Thumbnail extends Component {
         }).then((res) => {
 
             this.props.onChange({action: "uploaded", id: res.data.data.id});
-            this.setState({mediaId: res.data.data.id});
+            this.setState(
+                {
+                    loadedId: res.data.data.id,
+                    file: null,
+                    preloadId: null
+                });
         });
     }
 
@@ -147,6 +149,7 @@ export default class Thumbnail extends Component {
      * @returns {*}
      */
     thumbnailView() {
+
         return <div className="thumbnail"
                     style={{backgroundImage: "url(" + this.props.config.viewUrl + "/" + this.state.mediaId + '/' + this.state.width + '/' + this.state.height}}/>
     }
@@ -155,6 +158,7 @@ export default class Thumbnail extends Component {
      * Removing component
      */
     remove() {
+
         this.props.onChange({action: "remove", id: this.state.mediaId});
         this.setState({abandoned: true, mediaId: null});
     }
@@ -163,10 +167,11 @@ export default class Thumbnail extends Component {
      * Editing image meta
      */
     edit() {
+
         HC.react.popUp({
             url: this.props.config.editUrl,
             type: "form",
-            recordId: this.state.editId,
+            recordId: this.state.mediaId,
         });
     }
 
@@ -191,8 +196,11 @@ export default class Thumbnail extends Component {
      * @returns {*}
      */
     nothingView() {
+
         return <div className="thumbnail empty">
             <FontAwesomeIcon icon={HC.helpers.faIcon('image')}/>
         </div>;
     }
 }
+
+HC.adminListCells.register('image', Thumbnail);

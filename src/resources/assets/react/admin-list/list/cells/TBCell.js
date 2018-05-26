@@ -126,7 +126,7 @@ export default class TBCell extends Component {
 
     getImage() {
 
-        return <Thumbnail mediaId={this.state.value}
+        return <Thumbnail value={this.state.value}
                           key={this.id}
                           config={this.props.options}/>
     }

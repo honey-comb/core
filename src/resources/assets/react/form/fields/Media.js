@@ -74,7 +74,7 @@ export default class Media extends BaseField {
         this.state.count++;
 
         this.thumbnails.push(<Thumbnail file={file}
-                                        mediaId={mediaId}
+                                        value={mediaId}
                                         key={HC.helpers.uuid()}
                                         config={this.props.config}
                                         onChange={this.thumbnailUpdated}/>);
