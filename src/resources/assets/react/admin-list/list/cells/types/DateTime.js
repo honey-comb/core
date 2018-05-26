@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-export default class HCCellDateTime extends Component {
+export default class DateTime extends Component {
 
     constructor(props) {
         super(props);

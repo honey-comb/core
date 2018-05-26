@@ -4,7 +4,7 @@ import THRow from "./list/THRow";
 
 const uuid = require('uuid/v4');
 
-export default class List extends Component {
+export default class SimpleList extends Component {
 
     /**
      * initializing component
@@ -205,3 +205,5 @@ export default class List extends Component {
         this.props.selectionUpdated(selected);
     }
 }
+
+HC.adminList.register('simple', SimpleList);

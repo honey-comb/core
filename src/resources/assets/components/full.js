@@ -3,8 +3,6 @@
  * includes React and other helpers. It's a great starting point while
  * building robust, powerful web applications using React + Laravel.
  */
-require('../react/hc-admin-list/List');
-
 require('../../js/bootstrap');
 require('admin-lte');
 
@@ -15,7 +13,4 @@ require('admin-lte');
  */
 
 require('./font-awesome');
-require('../react/shared/HC');
-
-function requireAll(r) { r.keys().forEach(r); }
-requireAll(require.context('./../react/hc-form', true, /\.js$/));
+require('../react/HC');

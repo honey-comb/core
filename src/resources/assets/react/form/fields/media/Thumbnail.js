@@ -75,6 +75,13 @@ export default class Thumbnail extends Component {
         if (this.props.file) {
             this.uploadFile();
         }
+
+        if (this.state.mediaId) {
+            this.state.editId = this.state.mediaId;
+        }
+        else {
+            this.state.editId = this.props.mediaId
+        }
     }
 
     /**
@@ -90,7 +97,12 @@ export default class Thumbnail extends Component {
     }
 
     componentDidUpdate() {
-        this.state.editId = this.state.mediaId;
+        if (this.state.mediaId) {
+            this.state.editId = this.state.mediaId;
+        }
+        else {
+            this.state.editId = this.props.mediaId
+        }
         this.state.mediaId = null;
     }
 

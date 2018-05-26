@@ -26,10 +26,10 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import HCPopUp from "../../components/HCPopUp";
-import HCAdminListView from "../../components/HCAdminList";
+import HCPopUp from "../HCPopUp";
+import HCAdminListView from "../HCAdminList";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import HCForm from "../../components/HCForm";
+import HCForm from "../HCForm";
 import * as axios from "axios/index";
 import {toast, ToastContainer} from 'react-toastify';
 

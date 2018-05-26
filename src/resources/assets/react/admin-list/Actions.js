@@ -25,8 +25,8 @@
  */
 
 import React, {Component} from 'react';
-import FAButton from '../hc-form/buttons/FAButton';
-import HCForm from "../components/HCForm";
+import FAButton from '../form/buttons/FAButton';
+import HCForm from "../HCForm";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 export default class Actions extends Component {

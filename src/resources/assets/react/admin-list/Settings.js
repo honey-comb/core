@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import OnOffButton from "../hc-form/buttons/OnOffButton";
+import OnOffButton from "../form/buttons/OnOffButton";
 
 export default class Settings extends Component {
 

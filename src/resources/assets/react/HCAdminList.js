@@ -2,9 +2,9 @@ import React, {Component} from "react";
 
 import Pagination from "rc-pagination";
 
-import Actions from './../hc-admin-list/Actions';
-import Settings from './../hc-admin-list/Settings';
-import List from './../hc-admin-list/List';
+import Actions from './admin-list/Actions';
+import Settings from './admin-list/Settings';
+import SimpleList from './admin-list/SimpleList';
 
 import axios from "axios/index";
 import Select from 'rc-select';
@@ -76,6 +76,8 @@ export default class HCAdminListView extends Component {
      * @returns {*}
      */
     render() {
+
+        const List = HC.adminList.get(this.props.config.type);
 
         return <div className="box" id={this.id}>
             <div className="box-header">

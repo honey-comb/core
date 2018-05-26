@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import Thumbnail from "../../../hc-form/fields/media/Thumbnail";
-import Url from "../../../hc-form/fields/Url";
-import HCCellList from "../../../hc-form/fields/HCCellList";
-import HCCellCopy from "../../../hc-form/fields/HCCellCopy";
-import HCCellDateTime from "../../../hc-form/fields/HCCellDateTime";
+import Thumbnail from "../../../form/fields/media/Thumbnail";
+import Url from "./types/Url";
+import List from "./types/List";
+import Copy from "./types/Copy";
+import DateTime from "./types/DateTime";
 
 let classNames = require('classnames');
 
@@ -139,23 +139,23 @@ export default class TBCell extends Component {
     }
 
     getList() {
-        return <HCCellList key={this.id}
-                           id={this.props.id}
-                           value={this.state.value}
-                           config={this.props.options}
-                           recordUpdated={this.recordUpdated}
-                           recordUpdatedScope={this}/>
+        return <List key={this.id}
+                     id={this.props.id}
+                     value={this.state.value}
+                     config={this.props.options}
+                     recordUpdated={this.recordUpdated}
+                     recordUpdatedScope={this}/>
     }
 
     getTime ()
     {
-        return <HCCellDateTime key={this.id}
-                               value={this.state.value}
-                               config={this.props.options}/>
+        return <DateTime key={this.id}
+                         value={this.state.value}
+                         config={this.props.options}/>
     }
 
     getCopy() {
-        return <HCCellCopy
+        return <Copy
             key={this.id}
             record={this.props.record}
             value={this.state.value}

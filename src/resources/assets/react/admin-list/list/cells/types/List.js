@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-export default class HCCellList extends Component {
+export default class List extends Component {
 
     constructor(props) {
         super(props);
