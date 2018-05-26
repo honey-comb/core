@@ -17,7 +17,7 @@ class HCBaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    
+
     /**
      * @var
      */
@@ -27,37 +27,38 @@ class HCBaseController extends Controller
      * Getting allowed actions for admin view
      *
      * @param string $prefix
+     * @param array $except
      * @return array
      */
-    protected function getActions(string $prefix): array
+    protected function getActions(string $prefix, array $except = []): array
     {
         $actions[] = 'search';
 
-        if (auth()->user()->can($prefix . '_create')) {
+        if (!in_array('_create', $except) && auth()->user()->can($prefix . '_create')) {
             $actions[] = 'new';
         }
 
-        if (auth()->user()->can($prefix . '_update')) {
+        if (!in_array('_update', $except) && auth()->user()->can($prefix . '_update')) {
             $actions[] = 'update';
         }
 
-        if (auth()->user()->can($prefix . '_delete')) {
+        if (!in_array('_delete', $except) && auth()->user()->can($prefix . '_delete')) {
             $actions[] = 'delete';
         }
 
-        if (auth()->user()->can($prefix . '_restore')) {
+        if (!in_array('_restore', $except) && auth()->user()->can($prefix . '_restore')) {
             $actions[] = 'restore';
         }
 
-        if (auth()->user()->can($prefix . '_force_delete')) {
+        if (!in_array('_force_delete', $except) && auth()->user()->can($prefix . '_force_delete')) {
             $actions[] = 'forceDelete';
         }
 
-        if (auth()->user()->can($prefix . '_merge')) {
+        if (!in_array('_merge', $except) && auth()->user()->can($prefix . '_merge')) {
             $actions[] = 'merge';
         }
 
-        if (auth()->user()->can($prefix . '_clone')) {
+        if (!in_array('_clone', $except) && auth()->user()->can($prefix . '_clone')) {
             $actions[] = 'clone';
         }
 
