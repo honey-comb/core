@@ -94,11 +94,6 @@ export default class Thumbnail extends Component {
             this.state.mediaId = this.state.loadedId;
             this.state.loadedId = null;
         }
-
-        console.log(this.props.value);
-        console.log(this.state.preloadId);
-        console.log(this.state.mediaId);
-        console.log(this.state.loadedId);
     }
 
     /**
@@ -125,6 +120,9 @@ export default class Thumbnail extends Component {
         axios.post(this.props.config.uploadUrl, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
+            },
+            params : {
+                lastModified: this.props.file.lastModified
             },
             onUploadProgress: progressEvent => {
                 this.setState(
