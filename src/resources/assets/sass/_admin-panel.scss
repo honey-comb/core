@@ -527,7 +527,8 @@ select.form-control:not([size]):not([multiple]) {
         background-color: #eee;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
-        background-size: cover;
+        background-size: contain;
+        background-position-y: 0;
       }
 
       .thumbnail.empty {
