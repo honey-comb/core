@@ -110,8 +110,7 @@ body.disabled {
     }
   }
 
-  .form-structure.has-tabs
-  {
+  .form-structure.has-tabs {
     height: calc(100% - 85px - 37px);
   }
 
@@ -478,7 +477,7 @@ select.form-control:not([size]):not([multiple]) {
 .form-tabs {
   .form-tab {
 
-    margin:0 5px;
+    margin: 0 5px;
 
     .available {
       cursor: pointer;
@@ -492,4 +491,7 @@ select.form-control:not([size]):not([multiple]) {
       cursor: default;
     }
   }
+}
+#admin-form > .hc-form {
+  padding: 15px;
 }
