@@ -121,6 +121,14 @@ export default class DropDownFilterable extends BaseField {
             this.state.value = this.state.value.substring(0, this.state.value.length - 1);
 
         }
+        else if (HC.helpers.isObject(value)) {
+
+            if (!this.state.options) {
+                this.state.options = [value];
+            }
+
+            this.state.value = value;
+        }
         else {
 
             this.state.value = value;
@@ -189,11 +197,6 @@ export default class DropDownFilterable extends BaseField {
         }
 
         this.setState(this.state);
-
-
-        //
-        /*this.setValue(data.id);
-        this.validate();*/
     }
 }
 
