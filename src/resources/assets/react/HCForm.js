@@ -129,25 +129,75 @@ export default class HCForm extends Component {
         }
         else {
 
-            let columns = [];
+            let gridElements = [];
 
-            for (let i = 0; i < this.state.formData.columns; i++) {
-                let fields = this.getFieldsFiltered({column: i});
-                let finalArray = [];
+            let grid = [];
+            let field;
+            let column;
+            let row = 0;
+            let singleRow;
 
-                Object.keys(fields).map((key) => finalArray.push(fields[key]));
-                Object.keys(fields).map((key) => {
-                    this.finalFieldStructure[key] = fields[key]
-                });
+            Object.keys(this.state.formData.structure).map((key, i) => {
 
-                columns.push(<div key={i} className="col-sm">
-                    {finalArray}
-                </div>);
-            }
+                field = this.state.formData.structure[key];
 
-            return <div className="row">
-                {columns}
-            </div>;
+                if (field.column === undefined) {
+                    row++;
+                    column = 0;
+                    singleRow = true;
+                }
+                else {
+                    column = field.column;
+                }
+
+                if (!grid[row]) {
+                    grid[row] = [];
+                }
+
+                field = this.getField(field, key, i);
+
+                if (singleRow) {
+                    grid[row] = field;
+                }
+                else {
+                    if (!grid[row][column]) {
+                        grid[row][column] = [];
+                    }
+
+                    grid[row][column].push(field);
+                }
+
+                this.finalFieldStructure[key] = field;
+
+                if (singleRow) {
+                    row++;
+                    singleRow = false;
+                }
+            });
+
+            grid.map((value, i) => {
+
+                if (HC.helpers.isObject(value)) {
+                    gridElements.push(<div key={i} className="row">{value}</div>)
+                }
+                else {
+
+                    let columns = [];
+
+                    value.map((value, index) => {
+                        columns.push(<div key={index} className="col-sm">
+                            {value}
+                        </div>);
+                    });
+
+                    gridElements.push(<div key={i} className="row">
+                        {columns}
+                    </div>);
+                }
+
+            });
+
+            return gridElements;
         }
     }
 

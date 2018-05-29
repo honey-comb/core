@@ -45,7 +45,7 @@ export default class BaseField extends Component {
             value: null,
             hideDependant: false,
             loadingDisabled: false,
-            restrictOptionsTo: null
+            restrictOptionsTo: null,
         };
 
         if (this.props.config.dependencies) {
@@ -93,6 +93,7 @@ export default class BaseField extends Component {
             "form-group", {
                 "has-error": this.state.hasError,
                 "d-none": this.getHidden(),
+                "col": isNaN(this.props.config.column)
             }
         );
 
