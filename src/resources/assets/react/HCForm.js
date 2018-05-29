@@ -335,6 +335,7 @@ export default class HCForm extends Component {
                              language={this.state.language}
                              onLanguageChange={this.languageChange}
                              fullFormData={this.record}
+                             fieldList={this.refs}
                              submitData={this.submitData}
                              availableLanguages={this.state.formData.availableLanguages}/>;
     }
