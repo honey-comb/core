@@ -44,12 +44,15 @@ export default class BaseField extends Component {
             hasError: false,
             value: null,
             hideDependant: false,
-            loadingDisabled: false
+            loadingDisabled: false,
+            restrictOptionsTo: null
         };
 
         if (this.props.config.dependencies) {
             this.state.hideDependant = true;
         }
+
+        this.onStage = false;
 
         this.contentChange = this.contentChange.bind(this);
         this.validate = this.validate.bind(this);
@@ -80,6 +83,8 @@ export default class BaseField extends Component {
             this.setValue(this.props.config.value);
 
         HC.react.enableFaIcons();
+
+        this.onStage = true;
     }
 
     render() {
