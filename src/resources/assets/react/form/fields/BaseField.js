@@ -399,7 +399,18 @@ export default class BaseField extends Component {
         return list;
     }
 
+    restrictOptionsTo(value) {
+
+        this.state.restrictOptionsTo = value;
+        this.setState(this.state);
+    }
+
     getOptions() {
+
+        if (this.state.restrictOptionsTo) {
+            return this.state.restrictOptionsTo;
+        }
+
         if (this.state.options)
             return this.state.options;
 
