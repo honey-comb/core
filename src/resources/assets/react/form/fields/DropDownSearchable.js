@@ -47,8 +47,10 @@ export default class DropDownSearchable extends BaseField {
         }
 
         let params = {
-            params: {q: input}
+            params: this.dependencyValues
         };
+
+        params.params.q = input;
 
         if (this.dataLoadingSource) {
             this.dataLoadingSource.cancel();
