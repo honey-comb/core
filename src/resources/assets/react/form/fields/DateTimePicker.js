@@ -22,21 +22,20 @@ export default class DateTimePicker extends BaseField {
     }
 
     getInput() {
-        return (
-            <DatePicker
-                firstDayOFWeek={this.state.firstDayOFWeek}
-                isShowTime={this.state.showTime}
-                format={this.state.format}
-                onChange={this.handleSelectionChange.bind(this)}
-                value={this.state.value}
-                isDisabled={this.getDisabled()}
-                readOnly={this.props.config.readonly}
-                disabledDate={
-                    time => this.validateDate(time)
-                }
-                ref="inputField"
-            />
-        );
+
+        return <DatePicker
+            firstDayOFWeek={this.state.firstDayOFWeek}
+            isShowTime={this.state.showTime}
+            format={this.state.format}
+            onChange={this.handleSelectionChange.bind(this)}
+            value={this.state.value}
+            isDisabled={this.getDisabled()}
+            readOnly={this.props.config.readonly}
+            disabledDate={
+                time => this.validateDate(time)
+            }
+            ref="inputField"
+        />;
     }
 
     /**
@@ -46,7 +45,12 @@ export default class DateTimePicker extends BaseField {
      */
     setValue(value) {
 
-        this.state.value = new Date(value);
+        if (value === '') {
+            this.state.value = null;
+        }
+        else {
+            this.state.value = new Date(value);
+        }
 
         this.validate();
     }
