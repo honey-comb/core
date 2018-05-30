@@ -43,6 +43,17 @@ class HCForgotPasswordControllerTest extends TestCase
 
     /**
      * @test
+     * @group auth
+     * @throws \Exception
+     */
+    public function it_must_return_true(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Move test to project
+     *
      * @group forgotPassword
      * @throws \Illuminate\Container\EntryNotFoundException
      */
@@ -69,7 +80,8 @@ class HCForgotPasswordControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * Move test to project
+     *
      * @group forgotPassword
      * @throws \Illuminate\Container\EntryNotFoundException
      */

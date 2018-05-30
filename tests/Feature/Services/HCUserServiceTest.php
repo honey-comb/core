@@ -32,13 +32,13 @@ namespace Tests\Feature\Controllers;
 use HoneyComb\Core\Events\Admin\HCUserCreated;
 use HoneyComb\Core\Events\Admin\HCUserUpdated;
 use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Notifications\HCActivationLink;
 use HoneyComb\Core\Notifications\HCAdminWelcomeEmail;
 use HoneyComb\Core\Services\HCUserService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -70,6 +70,7 @@ class HCUserServiceTest extends TestCase
         $userData = [
             'email' => 'hello@bum.lt',
             'password' => '123456789',
+            'is_active' => 0,
         ];
 
         $roles = [];
@@ -78,6 +79,7 @@ class HCUserServiceTest extends TestCase
         $initialDispatcher = Event::getFacadeRoot();
 
         Event::fake();
+        Notification::fake();
         Model::setEventDispatcher($initialDispatcher);
 
         /** @var HCUser $userRecord */
@@ -87,9 +89,20 @@ class HCUserServiceTest extends TestCase
             return $e->user->id === $userRecord->id;
         });
 
+        // Assert a notification was not sent...
+        Notification::assertNotSentTo(
+            [$userRecord], HCAdminWelcomeEmail::class
+        );
+        Notification::assertSentTo(
+            [$userRecord], HCActivationLink::class
+        );
+
         $this->assertInstanceOf(HCUser::class, $userRecord);
 
-        $this->assertDatabaseHas('hc_user', array_except($userData, 'password'));
+        $this->assertDatabaseHas('hc_user', [
+            'email' => 'hello@bum.lt',
+            'activated_at' => null,
+        ]);
     }
 
     /**
@@ -101,6 +114,7 @@ class HCUserServiceTest extends TestCase
         $userData = [
             'email' => 'hello@bum.lt',
             'password' => '123456789',
+            'is_active' => 0,
         ];
 
         $roles = [];
@@ -121,11 +135,11 @@ class HCUserServiceTest extends TestCase
             function ($notification) use ($userRecord) {
                 $message = $notification->toMail($userRecord)->toArray();
 
-            $this->assertContains('You have successfully registered!', $message['subject']);
-            $this->assertContains('Congratulations!', $message['greeting']);
+                $this->assertContains('You have successfully registered!', $message['subject']);
+                $this->assertContains('Congratulations!', $message['greeting']);
 
-            return true;
-        });
+                return true;
+            });
 
         Event::assertDispatched(HCUserCreated::class, function ($e) use ($userRecord) {
             return $e->user->id === $userRecord->id;
@@ -133,7 +147,10 @@ class HCUserServiceTest extends TestCase
 
         $this->assertInstanceOf(HCUser::class, $userRecord);
 
-        $this->assertDatabaseHas('hc_user', array_except($userData, 'password'));
+        $this->assertDatabaseHas('hc_user', [
+            'email' => 'hello@bum.lt',
+            'activated_at' => null,
+        ]);
 
 //        Mail::assertSent(HCAdminWelcomeEmail::class, 2);
     }
@@ -149,7 +166,7 @@ class HCUserServiceTest extends TestCase
             'password' => '123456789',
         ];
 
-        $userId =  '1';
+        $userId = '1';
 
         $roles = [];
         $personalData = [];
@@ -160,7 +177,7 @@ class HCUserServiceTest extends TestCase
         Model::setEventDispatcher($initialDispatcher);
 
         /** @var HCUser $userRecord */
-        $userRecord = $this->getTestClassInstance()->updateUser( $userId, $userData,  $roles,  $personalData);
+        $userRecord = $this->getTestClassInstance()->updateUser($userId, $userData, $roles, $personalData);
 
         Event::assertDispatched(HCUserUpdated::class, function ($e) use ($userRecord) {
 

@@ -46,11 +46,23 @@ class HCAuthControllerTest extends TestCase
      * @group auth
      * @throws \Exception
      */
+    public function it_must_return_true(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Move test to project
+     *
+     * @group auth
+     * @throws \Exception
+     */
     public function it_must_register_new_user(): void
     {
         $userData = [
             'email' => 'hello@gmail.com',
             'password' => '123456789',
+            'is_active' => '0',
         ];
 
         $response = $this->json('POST', route('auth.register'), $userData);
@@ -66,7 +78,8 @@ class HCAuthControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * Move test to project
+     *
      * @group auth
      * @throws \Exception
      */
@@ -89,7 +102,8 @@ class HCAuthControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * Move test to project
+     *
      * @group auth
      * @throws \Exception
      */
@@ -112,7 +126,8 @@ class HCAuthControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * Move test to project
+     *
      * @group auth
      * @throws \Exception
      */
@@ -138,7 +153,8 @@ class HCAuthControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * Move test to project
+     *
      * @group auth
      * @throws \Exception
      */
@@ -163,7 +179,8 @@ class HCAuthControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * Move test to project
+     *
      * @group auth
      * @throws \Exception
      */
@@ -188,7 +205,8 @@ class HCAuthControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * Move test to project
+     *
      * @group auth
      * @throws \Illuminate\Container\EntryNotFoundException
      */
