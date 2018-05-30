@@ -168,7 +168,7 @@ export default class BaseField extends Component {
 
     getDisabled() {
 
-        return (this.props.config.disabled || this.state.loadingDisabled);
+        return (this.props.config.disabled || this.state.loadingDisabled || this.state.disabled);
     }
 
     /**
