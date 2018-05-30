@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2018 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: info@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -112,7 +112,6 @@ class HCUserResource extends ResourceCollection
      */
     public function __construct(HCUser $model)
     {
-
         parent::__construct($model);
 
         $this->userId = $model->id;
@@ -121,12 +120,12 @@ class HCUserResource extends ResourceCollection
         $this->lastLogin = $model->last_login;
         $this->lastVisited = $model->last_visited;
         $this->lastActivity = $model->last_activity;
-        $this->firstName = $model->personal->first_name;
-        $this->lastName = $model->personal->last_name;
-        $this->photoId = $model->personal->photo_id;
-        $this->description = $model->personal->description;
-        $this->phone = $model->personal->phone;
-        $this->address = $model->personal->address;
+        $this->firstName = optional($model->personal)->first_name;
+        $this->lastName = optional($model->personal)->last_name;
+        $this->photoId = optional($model->personal)->photo_id;
+        $this->description = optional($model->personal)->description;
+        $this->phone = optional($model->personal)->phone;
+        $this->address = optional($model->personal)->address;
         $this->roles = $model->roles->pluck('id');
     }
 
