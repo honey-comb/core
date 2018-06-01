@@ -195,6 +195,7 @@ export default class DropDownList extends BaseField {
         }
 
         this.setState(this.state);
+        this.triggerChange();
     }
 }
 

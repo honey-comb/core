@@ -160,6 +160,7 @@ export default class DropDownSearchable extends BaseField {
         }
 
         this.setState(this.state);
+        this.triggerChange();
     }
 }
 
