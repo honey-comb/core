@@ -423,16 +423,24 @@ export default class BaseField extends Component {
 
     loadOptions() {
 
-        this.setState({loadingDisabled: true});
+        if (this.canLoadOptions())
+        {
+            this.setState({loadingDisabled: true});
 
-        axios.get(this.props.config.url, {params: this.dependencyValues})
-            .then(res => {
-                this.setState({
-                    loadingDisabled: false,
-                    options: res.data
+            axios.get(this.props.config.url, {params: this.dependencyValues})
+                .then(res => {
+                    this.setState({
+                        loadingDisabled: false,
+                        options: res.data
+                    });
+                    this.validate();
                 });
-                this.validate();
-            });
+        }
+    }
+
+    canLoadOptions ()
+    {
+        return true;
     }
 
     addNewOption(obj) {

@@ -1,7 +1,6 @@
 import React from 'react';
 import BaseField from "./BaseField";
-import {DatePicker} from "element-react";
-import {i18n} from 'element-react'
+import {DatePicker, i18n} from "element-react";
 import locale from './locale/lt'
 
 export default class DateTimePicker extends BaseField {
@@ -23,6 +22,11 @@ export default class DateTimePicker extends BaseField {
 
     getInput() {
 
+        if (this.getValue() && this.validateDate(new Date(this.getValue()))) {
+            this.state.value = null;
+            this.changeHappened = true;
+        }
+
         return <DatePicker
             firstDayOFWeek={this.state.firstDayOFWeek}
             isShowTime={this.state.showTime}
@@ -36,6 +40,13 @@ export default class DateTimePicker extends BaseField {
             }
             ref="inputField"
         />;
+    }
+
+    componentDidUpdate() {
+        if (this.changeHappened) {
+            this.triggerChange();
+            this.changeHappened = false;
+        }
     }
 
     /**
@@ -66,6 +77,7 @@ export default class DateTimePicker extends BaseField {
      * @returns {boolean}
      */
     validateDate(time) {
+
         const config = this.props.config.disabled ? this.props.config.disabled : this.getOptions().disabled;
         let disable = false;
 
@@ -99,6 +111,8 @@ export default class DateTimePicker extends BaseField {
             if (config.days.indexOf(time.getFullYear() + '-' + time.getFullMonth() + '-' + time.getFullDay()) >= 0)
                 return true;
         }
+
+        return disable;
     }
 
     /**
@@ -106,9 +120,12 @@ export default class DateTimePicker extends BaseField {
      * @param date
      */
     handleSelectionChange(date) {
+
         this.state.value = date;
         this.setState(this.state);
-        this.validate();
+        this.validate(true);
+
+        this.triggerChange();
     }
 
     /**

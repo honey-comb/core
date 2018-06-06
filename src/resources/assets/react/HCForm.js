@@ -422,6 +422,7 @@ export default class HCForm extends Component {
                 }
             });
         }
+
         //TODO: check if changed field is in dependencies, if not do not update components
 
         //running through fields which has dependencies
