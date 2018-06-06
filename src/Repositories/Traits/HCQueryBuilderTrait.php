@@ -95,7 +95,11 @@ trait HCQueryBuilderTrait
                 if (is_array($value)) {
                     $query->whereIn($fieldName, $value);
                 } else {
-                    $query->where($fieldName, '=', $value);
+                    if ($value === 'NOT_NULL') {
+                        $query->whereNotNull($fieldName);
+                    } else {
+                        $query->where($fieldName, '=', $value);
+                    }
                 }
             }
         }
