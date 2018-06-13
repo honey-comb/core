@@ -35,10 +35,15 @@ trait HCQueryBuilderTrait
      * @param Request $request
      * @param array $columns
      * @param bool $merge
+     * @param bool $defaultOrder
      * @return Builder
      */
-    protected function createBuilderQuery(Request $request, array $columns = [], bool $merge = true): Builder
-    {
+    protected function createBuilderQuery(
+        Request $request,
+        array $columns = [],
+        bool $merge = true,
+        bool $defaultOrder = true
+    ): Builder {
         if ($merge) {
             $availableFields = array_merge($this->getModel()::getFillableFields(), $columns);
 
@@ -62,7 +67,9 @@ trait HCQueryBuilderTrait
         $builder = $this->search($builder, $request);
 
         // set order
-        $builder = $this->orderData($builder, $request, $availableFields);
+        if ($defaultOrder) {
+            $builder = $this->orderData($builder, $request, $availableFields);
+        }
 
         return $builder;
     }
