@@ -545,3 +545,11 @@ select.form-control:not([size]):not([multiple]) {
 #admin-form > .hc-form {
   padding: 15px;
 }
+
+#sortable-tree
+{
+  .btn-warning
+  {
+    margin-left: 10px;
+  }
+}
