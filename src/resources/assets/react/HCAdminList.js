@@ -4,7 +4,6 @@ import Pagination from "rc-pagination";
 
 import Actions from './admin-list/Actions';
 import Settings from './admin-list/Settings';
-import SimpleList from './admin-list/SimpleList';
 
 import axios from "axios/index";
 import Select from 'rc-select';
@@ -102,16 +101,8 @@ export default class HCAdminListView extends Component {
                     onSortOrderUpdate={this.onSortOrderUpdate}
                     reload={this.reload}
                 />
-                <Pagination selectComponentClass={Select}
-                            showSizeChanger
-                            showTotal={(total, range) => `${range[0]} - ${range[1]} of ${total} items`}
-                            onShowSizeChange={this.onShowSizeChange}
-                            defaultCurrent={1}
-                            total={this.state.records.total}
-                            current={this.state.records.current_page}
-                            pageSize={this.state.records.per_page}
-                            pageSizeOptions={this.state.pageSizeOptions}
-                            onChange={this.onShowSizeChange}/>
+
+                {this.getPagination()}
             </div>
         </div>
     }
@@ -275,5 +266,24 @@ export default class HCAdminListView extends Component {
             return (this.props.config.actions.indexOf('forceDelete') === -1 && this.props.config.actions.indexOf('restore') === -1);
         else
             return (this.props.config.actions.indexOf('delete') === -1 && this.props.config.actions.indexOf('merge') === -1 && this.props.config.actions.indexOf('clone') === -1);
+    }
+
+    getPagination() {
+
+        if (this.props.config.disablePagination)
+        {
+            return '';
+        }
+
+        return <Pagination selectComponentClass={Select}
+                    showSizeChanger
+                    showTotal={(total, range) => `${range[0]} - ${range[1]} of ${total} items`}
+                    onShowSizeChange={this.onShowSizeChange}
+                    defaultCurrent={1}
+                    total={this.state.records.total}
+                    current={this.state.records.current_page}
+                    pageSize={this.state.records.per_page}
+                    pageSizeOptions={this.state.pageSizeOptions}
+                    onChange={this.onShowSizeChange}/>
     }
 }
