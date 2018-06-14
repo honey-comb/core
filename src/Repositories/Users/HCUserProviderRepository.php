@@ -64,7 +64,7 @@ class HCUserProviderRepository extends HCBaseRepository
             'user_provider_id' => $providerUserId,
             'provider' => $provider,
             'email' => $email,
-            'profile_url' => $profileUrl,
+            'profile_url' => $profileUrl = null,
             'response' => $providerData,
         ]);
     }
