@@ -78,7 +78,7 @@ export default class DateTimePicker extends BaseField {
      */
     validateDate(time) {
 
-        const config = this.props.config.disabled ? this.props.config.disabled : this.getOptions().disabled;
+        const config = this.props.config.disabledDays ? this.props.config.disabledDays : this.getOptions().disabled;
         let disable = false;
 
         time.addHours(-time.getTimezoneOffset() / 60);
