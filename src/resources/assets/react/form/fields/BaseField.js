@@ -161,6 +161,11 @@ export default class BaseField extends Component {
                 this.loadOptions();
     }
 
+    listenedChange (field)
+    {
+
+    }
+
     getHidden() {
 
         return (this.props.config.hidden || this.state.hideDependant || (this.props.tab && this.props.tab !== this.props.config.tab));

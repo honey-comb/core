@@ -48,6 +48,7 @@ export default class HCForm extends Component {
 
         this.opacity = 0;
         this.dependencyFields = null;
+        this.listenTo = null;
 
         this.getFields = this.getFields.bind(this);
         this.getFieldsFiltered = this.getFieldsFiltered.bind(this);
@@ -419,6 +420,26 @@ export default class HCForm extends Component {
             Object.keys(this.state.formData.structure).map((item) => {
                 if (this.state.formData.structure[item].dependencies) {
                     this.dependencyFields[item] = (this.state.formData.structure[item]);
+                }
+            });
+        }
+
+        if (!this.listenTo) {
+            this.listenTo = {};
+
+            Object.keys(this.state.formData.structure).map((item) => {
+                if (this.state.formData.structure[item].listenTo) {
+                    this.listenTo[item] = this.state.formData.structure[item].listenTo;
+                }
+            });
+        }
+        else {
+            Object.keys(this.listenTo).map((key) => {
+
+                console.log(this.listenTo[key], fieldChanged);
+
+                if (this.listenTo[key].indexOf(fieldChanged) >= 0) {
+                    this.refs[key].listenedChange(fieldChanged);
                 }
             });
         }
