@@ -553,3 +553,8 @@ select.form-control:not([size]):not([multiple]) {
     margin-left: 10px;
   }
 }
+
+.treeview-menu > li > a
+{
+  font-size: var(--main-font-size);
+}
