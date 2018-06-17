@@ -32,7 +32,9 @@ class HCBaseController extends Controller
      */
     protected function getActions(string $prefix, array $except = []): array
     {
-        $actions[] = 'search';
+        if (!in_array('_search', $except)) {
+            $actions[] = 'search';
+        }
 
         if (!in_array('_create', $except) && auth()->user()->can($prefix . '_create')) {
             $actions[] = 'new';

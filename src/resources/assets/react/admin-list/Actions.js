@@ -80,7 +80,8 @@ export default class Actions extends Component {
 
         if (this.props.config.filters) {
             return [
-                <HCForm key={0} ref="form" structure={this.props.config.filters} onSelectionChange={this.filterAction}/>,
+                <HCForm key={0} ref="form" structure={this.props.config.filters}
+                        onSelectionChange={this.filterAction}/>,
                 <button key={1} ref="clear" onClick={this.reset} className="btn btn-danger">
                     <FontAwesomeIcon icon={HC.helpers.faIcon('times')}/>
                 </button>
@@ -92,7 +93,10 @@ export default class Actions extends Component {
 
     reset(inner) {
         this.params = {};
-        this.refs.searchField.value = "";
+
+        if (this.refs.searchField) {
+            this.refs.searchField.value = "";
+        }
 
         if (this.refs.form)
             this.refs.form.reset();
@@ -107,6 +111,9 @@ export default class Actions extends Component {
      * @returns {*}
      */
     getSearchField() {
+
+        if (this.props.config.actions.indexOf('search') === -1)
+            return '';
 
         return <div key="first">
             <input className="form-control input-bg"
@@ -219,8 +226,7 @@ export default class Actions extends Component {
 
     newAction() {
 
-        if (this.props.config.options && this.props.config.options.separatePage)
-        {
+        if (this.props.config.options && this.props.config.options.separatePage) {
             window.location.href = window.location.href + '/create';
             return;
         }
