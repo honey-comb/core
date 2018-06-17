@@ -72,13 +72,15 @@ export default class HCForm extends Component {
             'has-tabs': tabs !== ''
         });
 
+        this.buttons = this.getButtons();
+
         return <div ref="formHolder" id={this.state.id} className="hc-form">
             {tabs}
             <div className={formClasses}>
                 {this.getStructuredFormFields()}
             </div>
             <div className="footer">
-                {this.getButtons()}
+                {this.buttons}
             </div>
         </div>;
     }
@@ -228,7 +230,16 @@ export default class HCForm extends Component {
     fillForm() {
 
         if (Object.keys(this.existingRecord).length > 0) {
+
+            let formDisabledByRecord = this.isFormDisabled();
+
+            if (formDisabledByRecord) {
+                this.setState({formDisabled: true});
+            }
+
             Object.keys(this.finalFieldStructure).map((key, i) => {
+
+                this.refs[key].formDisabledByRecord = formDisabledByRecord;
 
                 let value = this.existingRecord[key];
 
@@ -255,6 +266,21 @@ export default class HCForm extends Component {
                 }
             });
         }
+    }
+
+    isFormDisabled() {
+        let disabled = false;
+
+        if (this.state.formData.disableFormBy) {
+            Object.keys(this.state.formData.disableFormBy).map((value, i) => {
+
+                if (this.existingRecord[value] === this.state.formData.disableFormBy[value]) {
+                    disabled = true;
+                }
+            });
+        }
+
+        return disabled;
     }
 
     /**
@@ -435,8 +461,6 @@ export default class HCForm extends Component {
         }
         else {
             Object.keys(this.listenTo).map((key) => {
-
-                console.log(this.listenTo[key], fieldChanged);
 
                 if (this.listenTo[key].indexOf(fieldChanged) >= 0) {
                     this.refs[key].listenedChange(fieldChanged);

@@ -161,20 +161,36 @@ export default class BaseField extends Component {
                 this.loadOptions();
     }
 
-    listenedChange (field)
-    {
+    /**
+     *
+     * @param field
+     */
+    listenedChange(field) {
 
     }
 
+    /**
+     *
+     * @returns {*|boolean}
+     */
     getHidden() {
 
         return (this.props.config.hidden || this.state.hideDependant || (this.props.tab && this.props.tab !== this.props.config.tab));
     }
 
+    /**
+     *
+     * @returns {*|boolean}
+     */
     getDisabled() {
 
-        return (this.props.config.disabled || this.state.loadingDisabled || this.state.disabled);
+        if (this.props.config.disabled || this.state.loadingDisabled || this.state.disabled || this.formDisabledByRecord) {
+            return true;
+        }
+
+        return false;
     }
+
 
     /**
      * Creating label div
@@ -428,8 +444,7 @@ export default class BaseField extends Component {
 
     loadOptions() {
 
-        if (this.canLoadOptions())
-        {
+        if (this.canLoadOptions()) {
             this.setState({loadingDisabled: true});
 
             axios.get(this.props.config.url, {params: this.dependencyValues})
@@ -443,8 +458,7 @@ export default class BaseField extends Component {
         }
     }
 
-    canLoadOptions ()
-    {
+    canLoadOptions() {
         return true;
     }
 
