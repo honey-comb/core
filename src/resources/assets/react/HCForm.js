@@ -612,7 +612,7 @@ export default class HCForm extends Component {
      */
     deleteData() {
 
-        HC.react.loader.delete(this.state.formData.storageUrl + '/' + this.props.config.recordId, null, null, true);
+        HC.react.loader.delete(this.state.formData.storageUrl + '/' + this.props.config.recordId, null, this.handleSubmitComplete);
     }
 
     /**
