@@ -56,8 +56,8 @@ export default class HCForm extends Component {
         this.submitData = this.submitData.bind(this);
         this.languageChange = this.languageChange.bind(this);
         this.updateDependencies = this.updateDependencies.bind(this);
-        this.handleSubmitComplete = this.handleSubmitComplete.bind(this);
-        this.handleSubmitError = this.handleSubmitError.bind(this);
+        this.handleRequestSuccess = this.handleRequestSuccess.bind(this);
+        this.handleRequestFailure = this.handleRequestFailure.bind(this);
         this.getStructuredFormFields = this.getStructuredFormFields.bind(this);
         this.changeTab = this.changeTab.bind(this);
         this.deleteData = this.deleteData.bind(this);
@@ -617,7 +617,7 @@ export default class HCForm extends Component {
      */
     deleteData() {
 
-        HC.react.loader.delete(this.state.formData.storageUrl + '/' + this.props.config.recordId, null, this.handleSubmitComplete);
+        HC.react.loader.delete(this.state.formData.storageUrl + '/' + this.props.config.recordId, null, this.handleRequestSuccess);
     }
 
     /**
@@ -641,11 +641,11 @@ export default class HCForm extends Component {
         this.setState({formDisabled: true});
 
         if (!callbackSuccess || !HC.helpers.isFunction(callbackSuccess)) {
-            callbackSuccess = this.handleSubmitComplete;
+            callbackSuccess = this.handleRequestSuccess;
         }
 
         if (!callbackFailure || !HC.helpers.isFunction(callbackSuccess)) {
-            callbackFailure = this.handleSubmitError;
+            callbackFailure = this.handleRequestFailure;
         }
 
         if (this.props.config.recordId)
@@ -698,7 +698,7 @@ export default class HCForm extends Component {
      * After submit completed redirect
      * @param r
      */
-    handleSubmitComplete(r) {
+    handleRequestSuccess(r) {
 
         if (r.success) {
             if (r.redirectUrl) {
@@ -710,11 +710,13 @@ export default class HCForm extends Component {
                 this.props.config.createdCallback.call(this.props.config.createdCallbackScope, r.data);
             }
 
-            this.props.formClosed();
+            if (this.props.formClosed) {
+                this.props.formClosed();
+            }
         }
     }
 
-    handleSubmitError() {
+    handleRequestFailure() {
         this.setState({formDisabled: false});
     }
 
