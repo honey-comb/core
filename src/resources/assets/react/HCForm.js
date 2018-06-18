@@ -269,6 +269,11 @@ export default class HCForm extends Component {
     }
 
     isFormDisabled() {
+
+        if (this.state.formData.formDisabled === true) {
+            return true;
+        }
+
         let disabled = false;
 
         if (this.state.formData.disableFormBy) {
