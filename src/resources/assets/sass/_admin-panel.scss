@@ -421,7 +421,7 @@ input[type="color"] {
   padding: 0 2px;
 }
 
-.el-picker-panel.time-select, .el-time-panel, .el-date-picker {
+.el-picker-panel.time-select, .el-time-panel, .el-date-picker, .el-picker-panel, .el-date-range-picker {
   z-index: 2200 !important;
 }
 
@@ -463,14 +463,6 @@ select.form-control:not([size]):not([multiple]) {
     > th {
       font-weight: 600;
     }
-  }
-}
-
-.el-date-table > tbody > .el-date-table__row {
-  > td.available:first-child,
-  > td.available:last-child {
-    color: white;
-    background-color: indianred;
   }
 }
 
@@ -557,4 +549,10 @@ select.form-control:not([size]):not([multiple]) {
 .treeview-menu > li > a
 {
   font-size: var(--main-font-size);
+}
+
+.el-picker-panel td.prev-month, .el-date-range-picker td.prev-month,
+.el-picker-panel td.next-month, .el-date-range-picker td.next-month
+{
+  color: #ccc;
 }
