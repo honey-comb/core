@@ -453,7 +453,13 @@ export default class BaseField extends Component {
                         loadingDisabled: false,
                         options: res.data
                     });
-                    this.validate();
+
+                    if (HC.helpers.isString(res.data) || !isNaN(res.data)) {
+                        this.setValue(res.data);
+                    }
+                    else {
+                        this.validate();
+                    }
                 });
         }
     }
