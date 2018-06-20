@@ -17,6 +17,7 @@ export default class HCSortableTree extends HCAdminListCore {
         this.state.treeData = [];
         this.innerChange = false;
         this.treeIndexing = [];
+        this.labelKey = this.props.config.labelKey ? this.props.config.labelKey : 'label';
 
         this.expandAll = this.expandAll.bind(this);
         this.collapseAll = this.collapseAll.bind(this);
@@ -81,7 +82,7 @@ export default class HCSortableTree extends HCAdminListCore {
                 this.treeIndexing.push(value['id']);
 
                 let menu = {
-                    title: value['label'],
+                    title: HC.helpers.pathIndex(value, this.labelKey),
                     subtitle: value['url'],
                     id: value['id'],
                     expanded: true,
@@ -156,8 +157,6 @@ export default class HCSortableTree extends HCAdminListCore {
 
         if (node.path.length === 1) {
             data.parent = null;
-
-            console.log(node);
 
             node.treeData.map((value, i) => {
                 data.children[i] = value.id;
