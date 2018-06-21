@@ -4,6 +4,7 @@ import Url from "./types/Url";
 import List from "./types/List";
 import Copy from "./types/Copy";
 import DateTime from "./types/DateTime";
+import Action from "./types/Action";
 
 let classNames = require('classnames');
 
@@ -24,6 +25,7 @@ export default class TBCell extends Component {
         };
 
         this.disableUpdate = false;
+        this.reloadAfterPatch = false;
 
         this.getCheckBox = this.getCheckBox.bind(this);
         this.updateStrict = this.updateStrict.bind(this);
@@ -59,8 +61,7 @@ export default class TBCell extends Component {
         if (!this.props.update || this.disableUpdate)
             return;
 
-        if (this.props.config.options && this.props.config.options.separatePage)
-        {
+        if (this.props.config.options && this.props.config.options.separatePage) {
             window.location.href = window.location.href + '/edit/' + this.props.id;
             return;
         }
@@ -112,6 +113,13 @@ export default class TBCell extends Component {
             case 'time' :
 
                 return this.getTime();
+
+            case 'action' :
+
+                this.reloadAfterPatch = true;
+                this.state.url = this.props.config.url + '/' + this.props.id;
+                this.disableUpdate = true;
+                return this.getAction();
         }
 
         return "";
@@ -147,8 +155,7 @@ export default class TBCell extends Component {
                      recordUpdatedScope={this}/>
     }
 
-    getTime ()
-    {
+    getTime() {
         return <DateTime key={this.id}
                          value={this.state.value}
                          config={this.props.options}/>
@@ -161,6 +168,13 @@ export default class TBCell extends Component {
             value={this.state.value}
             config={this.props.options}
         />
+    }
+
+    getAction() {
+        return <Action key={this.id}
+                       id={this.props.id}
+                       config={this.props.options}
+                       onChange={this.updateStrict}/>
     }
 
     updateStrict() {
@@ -179,6 +193,10 @@ export default class TBCell extends Component {
                     value: value,
                     disabled: false,
                 });
+
+                if (this.reloadAfterPatch) {
+                    this.props.reload(true);
+                }
             }).catch(error => {
             this.setState({
                 value: !value,

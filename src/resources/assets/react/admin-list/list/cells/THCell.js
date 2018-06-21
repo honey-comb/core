@@ -9,13 +9,19 @@ export default class THCell extends Component {
         super(props);
 
         this.state = {
+            className: classNames("sorting", {
+                "active": props.active,
+                'd-none': !HC.helpers.isFunction(this.props.onSortOrderChange)
+            }),
             flip: undefined,
-        }
+
+        };
     }
 
     componentWillUpdate(nextProps, nextState) {
         this.state.className = classNames("sorting", {
-            "active": nextProps.active
+            "active": nextProps.active,
+            'd-none': !HC.helpers.isFunction(this.props.onSortOrderChange)
         });
 
         if (nextProps.active === false)
@@ -23,6 +29,7 @@ export default class THCell extends Component {
     }
 
     render() {
+
         return <th tabIndex="0" style={{width: this.props.cellWidth + '%'}}>
             <div className={this.state.className}>
                 <FontAwesomeIcon onClick={(e) => {
@@ -33,7 +40,7 @@ export default class THCell extends Component {
 
                     this.props.onSortOrderChange(this.props.field);
                 }}
-                                 icon={HC.helpers.faIcon("sort-amount-down" )} flip={this.state.flip}/>
+                                 icon={HC.helpers.faIcon("sort-amount-down")} flip={this.state.flip}/>
             </div>
             <div>{this.props.label}</div>
         </th>

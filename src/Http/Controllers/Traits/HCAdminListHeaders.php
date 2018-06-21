@@ -171,4 +171,20 @@ trait HCAdminListHeaders
             'label' => $label,
         ];
     }
+
+    /**
+     * @param string $label
+     * @param string $url
+     * @param string $icon
+     * @return array
+     */
+    protected function headerAction(string $label, string $url, string $icon)
+    {
+        return [
+            'type' => 'action',
+            'label' => $label,
+            'url' => $url,
+            'icon' => $icon
+        ];
+    }
 }
