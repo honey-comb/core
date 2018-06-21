@@ -3,21 +3,20 @@ import THCell from "./cells/THCell";
 
 export default class THRow extends Component {
 
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
 
         this.state = {
             sort_by: "",
             sort_order: "",
-            thFields:[]
+            thFields: []
         };
 
+        this.sortOn = this.props.onSortOrderUpdate ? true : false;
         this.onSortOrderChange = this.onSortOrderChange.bind(this);
     }
 
-    render ()
-    {
+    render() {
         return <tr role="row">
             <th hidden={this.props.hideCheckBox}
                 className="main-checkbox">
@@ -27,14 +26,14 @@ export default class THRow extends Component {
                        onChange={this.props.invertAll}/>
             </th>
             {Object.keys(this.props.headers).map((item, i) => (
-                <THCell label={this.props.headers[item].label}
-                        cellWidth={this.props.headers[item].cellWidth}
-                        key={item}
-                        field={item}
-                        update={this.props.update}
-                        active={this.state.thFields[item]}
+                    <THCell label={this.props.headers[item].label}
+                            cellWidth={this.props.headers[item].cellWidth}
+                            key={item}
+                            field={item}
+                            update={this.props.update}
+                            active={this.state.thFields[item]}
 
-                        onSortOrderChange={this.onSortOrderChange}/>
+                            onSortOrderChange={this.sortOn ? this.onSortOrderChange : null}/>
                 )
             )}
         </tr>
@@ -44,19 +43,17 @@ export default class THRow extends Component {
      * sorting order update
      * @param key
      */
-    onSortOrderChange (key)
-    {
+    onSortOrderChange(key) {
+
         this.state.thFields[this.state.sort_by] = false;
 
-        if (this.state.sort_by === key)
-        {
-            if(this.state.sort_order === "asc")
+        if (this.state.sort_by === key) {
+            if (this.state.sort_order === "asc")
                 this.state.sort_order = "desc";
             else
                 this.state.sort_order = "asc";
         }
-        else
-        {
+        else {
             this.state.sort_by = key;
             this.state.sort_order = "asc";
         }
