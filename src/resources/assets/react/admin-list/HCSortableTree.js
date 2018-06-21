@@ -44,6 +44,7 @@ export default class HCSortableTree extends HCAdminListCore {
             <div id="sortable-tree" style={{height: this.state.listHeight}}>
                 <SortableTree
                     treeData={this.state.treeData}
+                    maxDepth={this.props.config.maxDepth}
                     onChange={treeData => {
 
                         this.innerChange = true;
