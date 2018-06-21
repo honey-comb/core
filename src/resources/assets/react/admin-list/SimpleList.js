@@ -1,5 +1,5 @@
 import React from 'react';
-import TDRow from "./list/TBRow";
+import TBRow from "./list/TBRow";
 import THRow from "./list/THRow";
 import HCAdminListCore from "./list/HCAdminListCore";
 
@@ -128,7 +128,7 @@ export default class SimpleList extends HCAdminListCore {
         this.state.rows = [];
 
         this.props.records.data.map((item, i) => (
-            this.state.rows.push(<TDRow key={i}
+            this.state.rows.push(<TBRow key={i}
                                         record={item}
                                         update={this.state.update}
                                         config={this.props.config}
