@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 const uuid = require('uuid/v4');
 
 export default class HCAdminListCore extends Component {
@@ -25,20 +26,21 @@ export default class HCAdminListCore extends Component {
         this.handleResize = this.handleResize.bind(this);
     }
 
-    componentDidMount ()
-    {
+    componentDidMount() {
+        if (this.props.disableResize) {
+            return;
+        }
+
         window.addEventListener('resize', this.handleResize);
         this.calculateListHeight(window.innerHeight);
     }
 
-    handleResize (e)
-    {
+    handleResize(e) {
         this.calculateListHeight(e.currentTarget.innerHeight);
     }
 
-    calculateListHeight (height)
-    {
+    calculateListHeight(height) {
         height -= this.bottomMargin;
-        this.setState({listHeight:height});
+        this.setState({listHeight: height});
     }
 }
