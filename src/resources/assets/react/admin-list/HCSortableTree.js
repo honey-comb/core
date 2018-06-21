@@ -172,6 +172,8 @@ export default class HCSortableTree extends HCAdminListCore {
             });
         }
 
+        this.innerChange = false;
+
         HC.react.loader.patch(this.props.config.url, data, this.props.reload);
     }
 }
