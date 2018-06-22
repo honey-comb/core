@@ -1,7 +1,6 @@
 import React from 'react';
 import BaseField from "./BaseField";
-import {DateRangePicker, i18n} from "element-react";
-import locale from './locale/lt'
+import {DateRangePicker} from "element-react";
 
 export default class HCDateRangePicker extends BaseField {
 
@@ -14,11 +13,10 @@ export default class HCDateRangePicker extends BaseField {
 
     getInput() {
 
-        if (this.getValue() && this.validateDate(new Date(this.getValue()))) {
+        if (!this.getValue()) {
             this.state.value = null;
             this.changeHappened = true;
         }
-
 
         return <DateRangePicker
             format={this.state.format}
@@ -51,7 +49,9 @@ export default class HCDateRangePicker extends BaseField {
             this.state.value = null;
         }
         else {
-            this.state.value = new Date(value);
+            this.setState({
+                value: [new Date(value.from), new Date(value.to)]
+            });
         }
 
         this.validate();
@@ -127,8 +127,5 @@ export default class HCDateRangePicker extends BaseField {
         return this.state.value;
     }
 }
-//TODO move this one to globals somewhere
-i18n.use(locale);
 
 HC.formFields.register('dateRangePicker', HCDateRangePicker);
-
