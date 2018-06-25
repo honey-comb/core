@@ -61,7 +61,7 @@
 
                         <li @if($item['route'] == request()->route()->getName()) class="active" @endif>
 
-                            <a href="{{ route($item['route']) }}">
+                            <a href="{{ route($item['route']) }}" target="{{ isset($item['target']) ? $item['target'] : '_self' }}">
                                 @if(isset($item['skipList']))
 
                                     @if(isset($item['iconPath']) && ! empty($item['iconPath']))
@@ -90,7 +90,7 @@
             @else
 
                 {{--show without dropdown--}}
-                <a href="{{ route($item['route']) }}">
+                <a href="{{ route($item['route']) }}" target="{{ isset($item['target']) ? $item['target'] : '_self' }}">
                     @if(isset($item['iconPath']) && ! empty($item['iconPath']))
                         <img src="{{ $item['iconPath'] }}"
                              width="15"
