@@ -18,7 +18,7 @@ export default class TBCell extends Component {
         this.cellClasses = '';
 
         this.state = {
-            url: this.props.url + '/' + this.props.id,
+            url: this.props.config.url + '/' + this.props.id,
             internalUpdate: false,
             value: this.props.value,
             disabled: false
