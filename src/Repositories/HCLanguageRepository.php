@@ -32,8 +32,6 @@ use HoneyComb\Core\Models\HCLanguage;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Class HCLanguageRepository
@@ -92,7 +90,7 @@ class HCLanguageRepository extends HCBaseRepository
         return $this->createBuilderQuery($request)->get()->map(function ($record) {
             return [
                 'id' => $record->id,
-                'language' => $record->language
+                'language' => $record->language,
             ];
         });
     }

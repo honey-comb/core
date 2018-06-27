@@ -89,7 +89,7 @@ class HCUserRegisterForm extends HCBaseForm
                     'type' => 'password',
                     'label' => trans('HCCore::user.login.password'),
                     'required' => 1,
-                ]
+                ],
         ];
     }
 }

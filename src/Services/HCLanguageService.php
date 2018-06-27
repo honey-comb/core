@@ -67,7 +67,7 @@ class HCLanguageService
      * @param HCLanguageRequest $request
      * @param string $languageId
      */
-    public function update (HCLanguageRequest $request, string $languageId)
+    public function update(HCLanguageRequest $request, string $languageId)
     {
         $this->getRepository()->update($request->getStrictUpdateValues(), $languageId);
     }

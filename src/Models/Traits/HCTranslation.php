@@ -54,7 +54,8 @@ trait HCTranslation
      */
     public function translation(): HasOne
     {
-        return $this->hasOne($this->getTranslationClass(), 'record_id', 'id')->where('language_code', app()->getLocale());
+        return $this->hasOne($this->getTranslationClass(), 'record_id', 'id')->where('language_code',
+            app()->getLocale());
     }
 
     /**
@@ -94,8 +95,8 @@ trait HCTranslation
     /**
      * @return string
      */
-    public function getTranslationClass ()
+    public function getTranslationClass()
     {
-        return  get_class($this) . 'Translation';
+        return get_class($this) . 'Translation';
     }
 }

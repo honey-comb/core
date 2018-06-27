@@ -58,7 +58,7 @@ class HCUserRequest extends FormRequest
     {
         $photo = $this->input('photo_id');
 
-        if (is_array($photo) && ! $photo) {
+        if (is_array($photo) && !$photo) {
             $photo = null;
         }
 

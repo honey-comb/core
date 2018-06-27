@@ -89,7 +89,7 @@ trait HCAdminListHeaders
             'height' => $height,
             'viewUrl' => route('resource.get', '/'),
             'editUrl' => $showEdit ? route('admin.api.form-manager', ['resource-edit']) : null,
-            'hideDelete' => true
+            'hideDelete' => true,
         ];
     }
 
@@ -184,7 +184,7 @@ trait HCAdminListHeaders
             'type' => 'action',
             'label' => $label,
             'url' => $url,
-            'icon' => $icon
+            'icon' => $icon,
         ];
     }
 }

@@ -54,7 +54,7 @@ class HCUpdate extends Command
         $this->call('hc:permissions');
         $this->call('hc:forms');
         $this->call('hc:admin-menu');
-        $this->call('vendor:publish',['--tag' => 'hc-assets',  '--force' => true]);
+        $this->call('vendor:publish', ['--tag' => 'hc-assets', '--force' => true]);
         $this->call('hc:project-size');
     }
 

@@ -6,7 +6,6 @@ namespace HoneyComb\Core\Repositories\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 /**
@@ -55,7 +54,7 @@ trait HCQueryBuilderTrait
         }
 
         $builder = $this->getModel()::select($availableFields)
-            ->where(function(Builder $query) use ($request, $availableFields) {
+            ->where(function (Builder $query) use ($request, $availableFields) {
                 // add request filtering
                 $this->filterByRequestParameters($query, $request, $availableFields);
             });
@@ -216,7 +215,7 @@ trait HCQueryBuilderTrait
     {
         $fields = $this->getModel()::getFillableFields();
 
-        return $query->where(function(Builder $query) use ($fields, $phrase) {
+        return $query->where(function (Builder $query) use ($fields, $phrase) {
             foreach ($fields as $key => $field) {
                 $method = $key == 0 ? 'where' : 'orWhere';
 
@@ -244,7 +243,7 @@ trait HCQueryBuilderTrait
 
         return $query->join($t, "$r.id", "=", "$t.record_id")
             ->where($t . '.language_code', app()->getLocale())
-            ->where(function(Builder $query) use ($t, $rf, $tf, $phrase) {
+            ->where(function (Builder $query) use ($t, $rf, $tf, $phrase) {
 
                 $fields = array_merge($rf, $tf);
                 $count = 0;

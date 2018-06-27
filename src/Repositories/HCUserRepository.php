@@ -35,7 +35,6 @@ use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -156,7 +155,7 @@ class HCUserRepository extends HCBaseRepository
         return $this->createBuilderQuery($request)->get()->map(function ($record) {
             return [
                 'id' => $record->id,
-                'label' => $record->email
+                'label' => $record->email,
             ];
         });
     }

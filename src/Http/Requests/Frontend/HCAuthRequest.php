@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Requests\Frontend;
 
@@ -44,7 +44,7 @@ class HCAuthRequest extends FormRequest
     public function getInputData(): array
     {
         $data = [
-        'email' => $this->input('email'),
+            'email' => $this->input('email'),
         ];
 
         if ($this->input('password')) {

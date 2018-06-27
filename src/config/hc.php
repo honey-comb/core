@@ -12,8 +12,8 @@ return [
     | You can add custom domain for admin routes.
     |
     */
-    'admin_domain' => env ('HC_ADMIN_DOMAIN', ''),
-    
+    'admin_domain' => env('HC_ADMIN_DOMAIN', ''),
+
     /*
     |--------------------------------------------------------------------------
     | Admin url prefix for all admin routes

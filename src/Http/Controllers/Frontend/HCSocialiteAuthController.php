@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
-use HoneyComb\Core\Events\Frontend\HCSocialiteAuthUserLoggedIn;
 use GuzzleHttp\Client;
+use HoneyComb\Core\Events\Frontend\HCSocialiteAuthUserLoggedIn;
 use HoneyComb\Core\Services\HCUserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
