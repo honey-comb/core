@@ -233,14 +233,14 @@ class HCCreateSuperAdminCommand extends Command
             // add sa role
             $user->assignRoleBySlug(HCRoleRepository::ROLE_SA);
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $exception) {
             $this->connection->rollBack();
 
-            logger()->error($e->getMessage(), $e->getTrace());
+            report($exception);
 
             $this->error('Super admin role doesn\'t exists!');
             $this->info('error:');
-            $this->error($e->getMessage());
+            $this->error($exception->getMessage());
 
             exit;
         }
@@ -288,12 +288,12 @@ class HCCreateSuperAdminCommand extends Command
 
                 try {
                     $adminExists->assignRoleBySlug(HCRoleRepository::ROLE_SA);
-                } catch (\Exception $e) {
+                } catch (\Throwable $exception) {
                     $this->connection->rollBack();
 
-                    logger()->error($e->getMessage(), $e->getTrace());
+                    report($exception);
 
-                    $this->error($e->getMessage());
+                    $this->error($exception->getMessage());
                     exit;
                 }
 

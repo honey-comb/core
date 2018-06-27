@@ -192,13 +192,13 @@ class HCAuthController extends HCBaseController
      * User registration
      *
      * @param HCAuthRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      * @throws \Exception
      */
-    public function register(HCAuthRequest $request)
+    public function register(HCAuthRequest $request): JsonResponse
     {
         if (!config('hc.allow_registration')) {
-            throw new \Exception();
+            throw new \Exception('Can\'t register');
         }
 
         $this->connection->beginTransaction();
@@ -210,8 +210,10 @@ class HCAuthController extends HCBaseController
                 $request->getRoles()
             );
 
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $this->connection->rollback();
+
+            report($exception);
 
             return $this->response->error($exception->getMessage());
         }
@@ -220,11 +222,10 @@ class HCAuthController extends HCBaseController
 
         session(['activation_message' => trans('HCCore::user.activation.activate_account')]);
 
-        if ($this->redirectUrl) {
-            return response(['success' => true, 'redirectUrl' => $this->redirectUrl]);
-        } else {
-            return response(['success' => true, 'redirectUrl' => route('auth.login')]);
-        }
+        return response()->json([
+            'success' => true,
+            'redirectUrl' => $this->redirectUrl ?? route('auth.login'),
+        ]);
     }
 
     /**
@@ -247,8 +248,9 @@ class HCAuthController extends HCBaseController
     /**
      * Show activation page
      *
+     * @param Request $request
      * @param string $token
-     * @return View
+     * @return \Illuminate\Contracts\View\Factory|RedirectResponse|\Illuminate\Routing\Redirector|View
      * @throws \Exception
      */
     public function showActivation(Request $request, string $token)
@@ -256,14 +258,15 @@ class HCAuthController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-
             $this->activation->activateUser($token);
             $this->connection->commit();
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $exception) {
             $this->connection->rollBack();
 
-            return view('HCCore::auth.activation', ['token' => $token, 'message' => $e->getMessage()]);
+            report($exception);
+
+            return view('HCCore::auth.activation', ['token' => $token, 'message' => $exception->getMessage()]);
         }
 
         return redirect($request->url());
@@ -271,9 +274,8 @@ class HCAuthController extends HCBaseController
 
     /**
      * Active user account
-     *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      * @throws \Exception
      */
     public function activate(Request $request): RedirectResponse
@@ -284,10 +286,12 @@ class HCAuthController extends HCBaseController
             $user = $this->activation->activateUser(
                 $request->input('token')
             );
-        } catch (\Exception $e) {
+        } catch (\Throwable $exception) {
             $this->connection->rollback();
 
-            return redirect()->back()->withErrors($e->getMessage());
+            report($exception);
+
+            return redirect()->back()->withErrors($exception->getMessage());
         }
 
         event(new HCUserActivated($user));

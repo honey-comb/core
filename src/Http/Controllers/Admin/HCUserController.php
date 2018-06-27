@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the 'Software'), to deal
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -12,7 +12,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -20,18 +20,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Admin;
 
+use HoneyComb\Core\Events\Admin\HCUserForceDeleted;
 use HoneyComb\Core\Events\Admin\HCUserRestored;
 use HoneyComb\Core\Events\Admin\HCUserSoftDeleted;
-use HoneyComb\Core\Events\Admin\HCUserForceDeleted;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
 use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
@@ -135,7 +135,8 @@ class HCUserController extends HCBaseController
             $this->connection->commit();
         } catch (\Throwable $exception) {
             $this->connection->rollBack();
-            logger()->error($exception->getMessage(), $exception->getTrace());
+
+            report($exception);
 
             return $this->response->error($exception->getMessage());
         }
@@ -171,6 +172,8 @@ class HCUserController extends HCBaseController
 
         } catch (\Throwable $exception) {
             $this->connection->rollBack();
+
+            report($exception);
 
             return $this->response->error($exception->getMessage());
         }
@@ -228,8 +231,10 @@ class HCUserController extends HCBaseController
             $deleted = $this->service->getRepository()->deleteSoft($request->getListIds());
 
             $this->connection->commit();
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $this->connection->rollBack();
+
+            report($exception);
 
             return $this->response->error($exception->getMessage());
         }
@@ -254,8 +259,10 @@ class HCUserController extends HCBaseController
             event(new HCUserForceDeleted($deletedUsers));
 
             $this->connection->commit();
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $this->connection->rollBack();
+
+            report($exception);
 
             return $this->response->error($exception->getMessage());
         }
@@ -278,8 +285,10 @@ class HCUserController extends HCBaseController
             event(new HCUserRestored($restoredUsers));
 
             $this->connection->commit();
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $this->connection->rollBack();
+
+            report($exception);
 
             return $this->response->error($exception->getMessage());
         }

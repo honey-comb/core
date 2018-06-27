@@ -219,7 +219,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
 
                     cache()->put('hc-permissions', $permissions, $expiresAt);
                 }
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $msg = $e->getMessage();
 
                 if ($e->getCode() != 1045) {
