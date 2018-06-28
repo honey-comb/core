@@ -31,7 +31,7 @@ namespace HoneyComb\Core\Services;
 
 use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
 use HoneyComb\Core\Repositories\HCLanguageRepository;
-use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
+use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
 
 /**
  * Class HCUserService

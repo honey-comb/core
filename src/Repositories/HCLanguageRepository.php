@@ -29,8 +29,8 @@ namespace HoneyComb\Core\Repositories;
 
 use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
 use HoneyComb\Core\Models\HCLanguage;
-use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
+use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
 use Illuminate\Database\Eloquent\Collection;
 
 /**

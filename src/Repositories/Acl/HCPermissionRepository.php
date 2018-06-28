@@ -30,8 +30,8 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Repositories\Acl;
 
 use HoneyComb\Core\Models\Acl\HCAclPermission;
-use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
+use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
 
 /**
  * Class HCPermissionRepository
