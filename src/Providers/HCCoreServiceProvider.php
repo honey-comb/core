@@ -150,11 +150,13 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         $this->app->register(HCResourceServiceProvider::class);
 
         $this->mergeConfigFrom(
-            $this->packagePath('config/hc.php'), 'hc'
+            $this->packagePath('config/hc.php'),
+            'hc'
         );
 
         $this->mergeConfigFrom(
-            $this->packagePath('config/services.php'), 'services'
+            $this->packagePath('config/services.php'),
+            'services'
         );
 
         $this->registerRepositories();
@@ -220,11 +222,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
                     cache()->put('hc-permissions', $permissions, $expiresAt);
                 }
             } catch (\Throwable $e) {
-                $msg = $e->getMessage();
-
-                if ($e->getCode() != 1045) {
-                    throw new \Exception($msg);
-                }
+                report($e);
             }
         }
 
