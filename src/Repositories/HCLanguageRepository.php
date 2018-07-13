@@ -29,10 +29,9 @@ namespace HoneyComb\Core\Repositories;
 
 use HoneyComb\Core\Models\HCLanguage;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
+use HoneyComb\Starter\Enum\BoolEnum;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Class HCLanguageRepository
@@ -41,6 +40,19 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class HCLanguageRepository extends HCBaseRepository
 {
     use HCQueryBuilderTrait;
+
+    /**
+     * @var string
+     */
+    protected $feCacheKey = '_hc_fe_languages';
+
+    /**
+     * @return string
+     */
+    public function getFeCacheKey(): string
+    {
+        return $this->feCacheKey;
+    }
 
     /**
      * @return string
@@ -61,13 +73,15 @@ class HCLanguageRepository extends HCBaseRepository
     }
 
     /**
-     * Get all available admin languages
+     * Get all available frontend languages
      *
      * @return Collection
      */
     public function getFrontEndActiveLanguages(): Collection
     {
-        return $this->makeQuery()->where('front_end', '1')->get();
+        return cache()->remember($this->getFeCacheKey(), 60 * 24 * 7, function () {
+            return $this->makeQuery()->where('front_end', BoolEnum::yes()->id())->get();
+        });
     }
 
     /**

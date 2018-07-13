@@ -69,6 +69,8 @@ class HCLanguageService
      */
     public function update (HCLanguageRequest $request, string $languageId)
     {
+        cache()->forget($this->getRepository()->getFeCacheKey());
+
         $this->getRepository()->update($request->getStrictUpdateValues(), $languageId);
     }
 }
