@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 namespace HoneyComb\Core\Repositories;
 
 use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
 use HoneyComb\Core\Models\HCLanguage;
+use HoneyComb\Starter\Enum\BoolEnum;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
 use Illuminate\Database\Eloquent\Collection;
@@ -42,11 +43,24 @@ class HCLanguageRepository extends HCBaseRepository
     use HCQueryBuilderTrait;
 
     /**
+     * @var string
+     */
+    protected $feCacheKey = '_hc_fe_languages';
+
+    /**
      * @return string
      */
     public function model(): string
     {
         return HCLanguage::class;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFeCacheKey(): string
+    {
+        return $this->feCacheKey;
     }
 
     /**
@@ -63,10 +77,13 @@ class HCLanguageRepository extends HCBaseRepository
      * Get all available admin languages
      *
      * @return Collection
+     * @throws \Exception
      */
     public function getFrontEndActiveLanguages(): Collection
     {
-        return $this->makeQuery()->where('front_end', '1')->get();
+        return cache()->remember($this->getFeCacheKey(), 60 * 24 * 7, function () {
+            return $this->makeQuery()->where('front_end', BoolEnum::yes()->id())->get();
+        });
     }
 
     /**
