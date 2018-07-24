@@ -91,7 +91,7 @@ class HCLanguageController extends HCBaseController
             'url' => route('admin.api.language'),
             'form' => route('admin.api.form-manager', ['language']),
             'headers' => $this->getTableColumns(),
-            'actions' => [],
+            'actions' => ['search'],
         ];
 
         return view('HCCore::admin.service.index', ['config' => $config]);
