@@ -33,7 +33,6 @@ class HCProjectSize extends Command
      */
     public function handle(): void
     {
-        $this->calculateDisk();
         $this->calculateDB();
     }
 

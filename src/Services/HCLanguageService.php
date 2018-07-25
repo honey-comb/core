@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2018 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -40,11 +40,11 @@ use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
 class HCLanguageService
 {
     use HCQueryBuilderTrait;
+
     /**
      * @var HCLanguageRepository
      */
     protected $repository;
-
 
     /**
      * HCUserService constructor.
@@ -66,9 +66,12 @@ class HCLanguageService
     /**
      * @param HCLanguageRequest $request
      * @param string $languageId
+     * @throws \Exception
      */
     public function update(HCLanguageRequest $request, string $languageId)
     {
+        cache()->forget($this->getRepository()->getFeCacheKey());
+
         $this->getRepository()->update($request->getStrictUpdateValues(), $languageId);
     }
 }
