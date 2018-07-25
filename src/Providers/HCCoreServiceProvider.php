@@ -109,6 +109,8 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
     {
         parent::boot($router);
 
+        $this->loadViews();
+
         $this->registerGateItems(app()->make(Gate::class));
 
         if (!in_array($this->packageName, config('hc.ignoreDefaultMiddleware'))) {
