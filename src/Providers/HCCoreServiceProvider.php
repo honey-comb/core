@@ -113,9 +113,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
 
         $this->registerGateItems(app()->make(Gate::class));
 
-        if (!in_array($this->packageName, config('hc.ignoreDefaultMiddleware'))) {
-            $this->registerMiddleware($router);
-        }
+        $this->registerMiddleware($router);
     }
 
     /**
@@ -196,13 +194,31 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
      */
     private function registerMiddleware(Router $router): void
     {
-        $router->aliasMiddleware('acl', HCACLPermissionsMiddleware::class);
-        $router->aliasMiddleware('auth', HCACLAuthenticate::class);
-        $router->aliasMiddleware('multiLang', HCCheckSelectedFrontEndLanguage::class);
+        $ignore = config('hc.ignoreDefaultMiddleware.' . $this->packageName, []);
 
-        $router->pushMiddleWareToGroup('web', HCACLAdminMenu::class);
-        $router->pushMiddleWareToGroup('web', HCLogLastActivity::class);
-        $router->pushMiddleWareToGroup('web', HCCheckSelectedAdminLanguage::class);
+        if (!in_array(HCACLPermissionsMiddleware::class, $ignore)) {
+            $router->aliasMiddleware('acl', HCACLPermissionsMiddleware::class);
+        }
+
+        if (!in_array(HCACLAuthenticate::class, $ignore)) {
+            $router->aliasMiddleware('auth', HCACLAuthenticate::class);
+        }
+
+        if (!in_array(HCCheckSelectedFrontEndLanguage::class, $ignore)) {
+            $router->aliasMiddleware('multiLang', HCCheckSelectedFrontEndLanguage::class);
+        }
+
+        if (!in_array(HCACLAdminMenu::class, $ignore)) {
+            $router->pushMiddleWareToGroup('web', HCACLAdminMenu::class);
+        }
+
+        if (!in_array(HCLogLastActivity::class, $ignore)) {
+            $router->pushMiddleWareToGroup('web', HCLogLastActivity::class);
+        }
+
+        if (!in_array(HCCheckSelectedAdminLanguage::class, $ignore)) {
+            $router->pushMiddleWareToGroup('web', HCCheckSelectedAdminLanguage::class);
+        }
     }
 
 
