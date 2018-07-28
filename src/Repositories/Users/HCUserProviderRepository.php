@@ -56,7 +56,7 @@ class HCUserProviderRepository extends HCBaseRepository
         string $providerUserId,
         string $provider,
         string $email,
-        string $profileUrl,
+        string $profileUrl = null,
         string $providerData
     ): HCUserProvider {
         return $this->makeQuery()->create([
@@ -64,7 +64,7 @@ class HCUserProviderRepository extends HCBaseRepository
             'user_provider_id' => $providerUserId,
             'provider' => $provider,
             'email' => $email,
-            'profile_url' => $profileUrl = null,
+            'profile_url' => $profileUrl,
             'response' => $providerData,
         ]);
     }
