@@ -466,8 +466,7 @@ export default class HCForm extends Component {
         }
         else {
             Object.keys(this.listenTo).map((key) => {
-
-                if (this.listenTo[key].indexOf(fieldChanged) >= 0) {
+                if (this.refs[key]) {
                     this.refs[key].listenedChange(fieldChanged);
                 }
             });
