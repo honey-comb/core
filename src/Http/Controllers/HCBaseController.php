@@ -32,6 +32,8 @@ class HCBaseController extends Controller
      */
     protected function getActions(string $prefix, array $except = []): array
     {
+        $actions = [];
+        
         if (!in_array('_search', $except)) {
             $actions[] = 'search';
         }
