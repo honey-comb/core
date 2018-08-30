@@ -89,6 +89,7 @@ class HCUserLoginForm extends HCBaseForm
                     'type' => 'password',
                     'label' => trans('HCCore::user.login.password'),
                     'required' => 1,
+                    'minLength' => 6,
                 ],
             'remember' =>
                 [

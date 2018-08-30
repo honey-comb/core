@@ -195,7 +195,7 @@ class HCCreateSuperAdminCommand extends Command
             'password' => $password,
             'password_confirmation' => $passwordAgain,
         ], [
-            'password' => 'required|min:5|confirmed',
+            'password' => 'required|min:6|confirmed',
         ]);
 
         if ($validator->fails()) {

@@ -107,7 +107,7 @@ class HCUserRequest extends FormRequest
 
                 return [
                     'email' => 'required|email|unique:hc_user,email|min:5',
-                    'password' => 'required|min:5',
+                    'password' => 'required|min:6',
                     'roles' => 'required|exists:hc_acl_role,id',
                 ];
 
@@ -119,8 +119,8 @@ class HCUserRequest extends FormRequest
                     'email' => 'required|email|min:5|unique:hc_user,email,' . $userId,
                     'roles' => 'required|exists:hc_acl_role,id',
                     'photo_id' => 'nullable|exists:hc_resource,id',
-                    'password' => 'nullable|min:5|confirmed',
-                    'password_confirmation' => 'required_with:password|nullable|min:5',
+                    'password' => 'nullable|min:6|confirmed',
+                    'password_confirmation' => 'required_with:password|nullable|min:6',
                 ];
 
             case 'PATCH':
