@@ -32,6 +32,7 @@ namespace HoneyComb\Core\Models;
 use Carbon\Carbon;
 use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Models\Traits\HCActivateUser;
+use HoneyComb\Core\Models\Traits\HCUserNotification;
 use HoneyComb\Core\Models\Traits\HCUserRoles;
 use HoneyComb\Core\Models\Users\HCUserActivation;
 use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
@@ -88,7 +89,7 @@ use Illuminate\Support\Collection;
  */
 class HCUser extends HCUuidSoftModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, Notifiable, HCUserRoles, HCActivateUser;
+    use Authenticatable, Authorizable, CanResetPassword, Notifiable, HCUserRoles, HCActivateUser, HCUserNotification;
 
     /**
      * The database table used by the model.
