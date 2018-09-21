@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Models\Traits;
 
+use HoneyComb\Core\Models\Users\HCUserNotificationSubscriptionType;
 use HoneyComb\Core\Models\Users\HCUserNotificationType;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -39,31 +40,38 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 trait HCUserNotificationSubscription
 {
     /**
-     * A user may have multiple notifications.
+     * A user may have multiple subscriptions.
      *
      * @return BelongsToMany
      */
     public function notification_subscriptions(): BelongsToMany
     {
-        return $this->belongsToMany(HCUserNotificationType::class, 'hc_user_notification', 'user_id', 'type_id');
+        return $this->belongsToMany(
+            HCUserNotificationSubscriptionType::class,
+            'hc_user_notification_subscription',
+            'user_id',
+            'type_id',
+            'id',
+            'id'
+        );
     }
 
     /**
-     * Create notifications for user
+     * Create subscriptions for user
      *
-     * @param array $notifications - notification ids
+     * @param array $subscriptions - subscription ids
      */
-    public function assignNotifications(array $notifications): void
+    public function assignNotificationSubscriptions(array $subscriptions): void
     {
-        if (!empty($notifications)) {
-            $this->notifications()->sync($notifications);
+        if (filled($subscriptions)) {
+            $this->notification_subscriptions()->sync($subscriptions);
         }
     }
 
     /**
      * @return array
      */
-    public function notification_list(): array
+    public function notification_subscription_list(): array
     {
         return $this->notifications()->map(function ($item) {
             return [

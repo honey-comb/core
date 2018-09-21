@@ -85,6 +85,6 @@ class HCUserNotificationSubscription extends HCModel
      */
     public function type(): HasOne
     {
-        return $this->hasOne(HCUserNotificationType::class, 'id', 'type_id');
+        return $this->hasOne(HCUserNotificationSubscriptionType::class, 'id', 'type_id');
     }
 }

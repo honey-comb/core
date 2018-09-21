@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHcUserNotificationTable extends Migration
+class CreateHcUserNotificationSubscriptionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateHcUserNotificationTable extends Migration
      */
     public function up()
     {
-        Schema::create('hc_user_notification', function (Blueprint $table) {
+        Schema::create('hc_user_notification_subscription', function (Blueprint $table) {
             $table->increments('count');
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
@@ -25,7 +25,7 @@ class CreateHcUserNotificationTable extends Migration
             $table->foreign('user_id')->references('id')->on('hc_user')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
 
-            $table->foreign('type_id')->references('id')->on('hc_user_notification_type')
+            $table->foreign('type_id')->references('id')->on('hc_user_notification_subscription_type')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
