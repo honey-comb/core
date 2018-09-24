@@ -25,34 +25,41 @@
  * http://www.interactivesolutions.lt
  */
 
-declare(strict_types = 1);
-
-namespace HoneyComb\Core\Models\Traits;
+namespace HoneyComb\Core\Repositories;
 
 use HoneyComb\Core\Models\Users\HCUserNotificationSubscriptionType;
-use HoneyComb\Core\Models\Users\HCUserNotificationType;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use HoneyComb\Starter\Repositories\HCBaseRepository;
+use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
+use Illuminate\Support\Collection;
 
 /**
- * Trait HCUserNotificationSubscription
- * @package HoneyComb\Core\Models\Traits
+ * Class HCUserNotificationSubscriptionTypeRepository
+ * @package HoneyComb\Core\Repositories
  */
-trait HCUserNotificationSubscription
+class HCUserNotificationSubscriptionTypeRepository extends HCBaseRepository
 {
+    use HCQueryBuilderTrait;
+
     /**
-     * A user may have multiple subscriptions.
-     *
-     * @return BelongsToMany
+     * @return string
      */
-    public function notificationSubscriptions(): BelongsToMany
+    public function model(): string
     {
-        return $this->belongsToMany(
-            HCUserNotificationSubscriptionType::class,
-            'hc_user_notification_subscription',
-            'user_id',
-            'type_id',
-            'id',
-            'id'
-        );
+        return HCUserNotificationSubscriptionType::class;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getOptions(): Collection
+    {
+        return $this->makeQuery()
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'label' => trans($item->translation_key),
+                ];
+            });
     }
 }

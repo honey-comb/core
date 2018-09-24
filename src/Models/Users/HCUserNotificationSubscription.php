@@ -40,12 +40,17 @@ class HCUserNotificationSubscription extends HCModel
     /**
      * @var string
      */
-    protected $table = 'hc_user_notification_subscription';
+    protected $primaryKey = 'count';
+
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
 
     /**
      * @var string
      */
-    protected $primaryKey = 'count';
+    protected $table = 'hc_user_notification_subscription';
 
     /**
      * Fillable fields
