@@ -17,7 +17,7 @@ return [
     'index' => 'Titulinis',
     'filter' => 'Filtras',
     'administration' => 'Administracija',
-    'dev_env' => 'Vystymo aplink',
+    'dev_env' => 'VYSTYMOJI APLINKA',
     'general' => 'Bendras',
     'translations' => 'Vertimai',
     'dimensions' => 'Dimensijos',

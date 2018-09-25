@@ -191,17 +191,13 @@ class HCUserForm extends HCBaseForm
                 'type' => 'password',
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.passwords.new'),
-                'properties' => [
-                    'strength' => '1' // case 0: much, case 1: 4 symbols, case 2: 6 symbols
-                ],
+                'minLength' => 6,
             ],
             $prefix . 'password_confirmation' => [
                 'type' => 'password',
                 'tabID' => trans('HCCore::core.general'),
                 'label' => trans('HCCore::user.passwords.new_again'),
-                'properties' => [
-                    'strength' => '1' // case 0: much, case 1: 4 symbols, case 2: 6 symbols
-                ],
+                'minLength' => 6,
             ],
             $prefix . 'is_active' => [
                 'tabID' => trans('HCCore::core.general'),

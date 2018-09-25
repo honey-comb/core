@@ -466,8 +466,7 @@ export default class HCForm extends Component {
         }
         else {
             Object.keys(this.listenTo).map((key) => {
-
-                if (this.listenTo[key].indexOf(fieldChanged) >= 0) {
+                if (this.refs[key]) {
                     this.refs[key].listenedChange(fieldChanged);
                 }
             });
@@ -507,14 +506,22 @@ export default class HCForm extends Component {
                                 hideList[targetKey] = false;
                             }
                             else {
-                                //TODO check if record item is Array and compare with multiple
-                                //TODO move all validation of object->id/value to single function
                                 if (HC.helpers.isObject(scope.record[targetKey])) {
                                     if (config.value.indexOf(scope.record[targetKey].id) >= 0) {
                                         hideList[targetKey] = false;
                                     }
                                 }
-                                else {
+                                else if (HC.helpers.isArray(scope.record[targetKey])) {
+
+                                    scope.record[targetKey].map((value, i) => {
+
+                                        if (config.value.indexOf(value) >= 0) {
+                                            hideList[targetKey] = false;
+                                        }
+                                    })
+
+                                } else {
+
                                     if (config.value.indexOf(scope.record[targetKey]) >= 0) {
                                         hideList[targetKey] = false;
                                     }
@@ -524,6 +531,8 @@ export default class HCForm extends Component {
                         } else if (HC.helpers.isArray(config)) {
 
                             if (config.length > 0) {
+
+                                console.log('HERE - 2');
 
                                 if (HC.helpers.isObject(scope.record[targetKey])) {
 

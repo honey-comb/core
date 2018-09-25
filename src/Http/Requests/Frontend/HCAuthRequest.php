@@ -33,7 +33,7 @@ class HCAuthRequest extends FormRequest
             case 'POST':
                 return [
                     'email' => 'required|email|unique:hc_user,email|min:5',
-                    'password' => 'required|min:5',
+                    'password' => 'required|min:6',
 //                    'roles' => 'required|exists:hc_acl_role,id'
                 ];
         }

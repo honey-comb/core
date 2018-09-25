@@ -75,15 +75,19 @@ return [
 
     /*
     |---------------------------------------------------------------------------
-    | List of middleware to ignore
+    | List of middleware to ignore by honeycomb package name
     |---------------------------------------------------------------------------
     |
     | Enter package name which you can find in his ServiceProvider
-    | i.e. HCCoreServiceProvider -> $packageName property
+    | i.e.:
+    |
+    |    'HCCore' => [
+    |        \HoneyComb\Core\Http\Middleware\HCCheckSelectedFrontEndLanguage::class,
+    |    ]
     |
     */
     'ignoreDefaultMiddleware' => [
-        //
+
     ],
 
 ];
