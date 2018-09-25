@@ -50,6 +50,7 @@ class HCSocialiteAuthController extends Controller
      * @param Request $request
      * @return RedirectResponse
      * @throws \Illuminate\Container\EntryNotFoundException
+     * @throws \Exception
      */
     public function handleProviderCallback(Request $request): RedirectResponse
     {
@@ -66,14 +67,14 @@ class HCSocialiteAuthController extends Controller
             return $this->deAuthorize($user);
         }
 
-        // TODO Event HCSocialiteAuthUserLoggedIn not tested! Facebook force to use HTTPS
-        event(new HCSocialiteAuthUserLoggedIn($user, $request->segment(3)));
-
         auth()->login(
             $this->service->createOrUpdateUserProvider($user, $request->segment(3))
         );
 
         auth()->user()->updateLastLogin();
+
+        // TODO Event HCSocialiteAuthUserLoggedIn not tested! Facebook force to use HTTPS
+        event(new HCSocialiteAuthUserLoggedIn(auth()->user(), $request->segment(3)));
 
         return redirect(session('url.intended', url('/')));
     }
