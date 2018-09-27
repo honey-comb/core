@@ -39,6 +39,6 @@ class CreateHcUserNotificationSubscriptionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hc_user_notification');
+        Schema::dropIfExists('hc_user_notification_subscription');
     }
 }

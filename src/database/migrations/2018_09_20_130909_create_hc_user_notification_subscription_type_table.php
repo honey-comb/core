@@ -31,6 +31,6 @@ class CreateHcUserNotificationSubscriptionTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hc_user_notification_type');
+        Schema::dropIfExists('hc_user_notification_subscription_type');
     }
 }
