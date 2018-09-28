@@ -39,6 +39,7 @@ use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCPersonalInfoRepository;
 use HoneyComb\Core\Repositories\Users\HCUserProviderRepository;
 use HoneyComb\Resources\Services\HCResourceService;
+use HoneyComb\Starter\Enum\BoolEnum;
 use Laravel\Socialite\Two\User;
 
 /**
@@ -231,7 +232,7 @@ class HCUserService
                     $userData = [
                         'email' => $providerUser->getEmail(),
                         'password' => str_random(10),
-                        'activated_at' => Carbon::now()->toDateTimeString(),
+                        'is_active' => BoolEnum::yes()->id(),
                     ];
 
                     $personalData = $this->parseNameFromSocialite($providerUser);
@@ -249,8 +250,8 @@ class HCUserService
                 (string)$providerUser->getId(),
                 $provider,
                 $providerUser->getEmail(),
-                $this->getProviderProfileUrl($providerUser, $provider),
-                json_encode($providerUser->getRaw())
+                json_encode($providerUser->getRaw()),
+                $this->getProviderProfileUrl($providerUser, $provider)
             );
 
             return $user;

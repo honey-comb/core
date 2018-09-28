@@ -51,17 +51,17 @@ class HCUserProviderRepository extends HCBaseRepository
      * @param string $providerUserId
      * @param string $provider
      * @param string $email
-     * @param string $profileUrl
      * @param string $providerData
-     * @return mixed
+     * @param string|null $profileUrl
+     * @return HCUserProvider
      */
     public function createProvider(
         string $userId,
         string $providerUserId,
         string $provider,
         string $email,
-        string $profileUrl,
-        string $providerData
+        string $providerData,
+        string $profileUrl = null
     ): HCUserProvider {
         return $this->makeQuery()->create([
             'user_id' => $userId,
