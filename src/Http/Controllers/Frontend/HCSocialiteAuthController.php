@@ -49,7 +49,6 @@ class HCSocialiteAuthController extends Controller
      *
      * @param Request $request
      * @return RedirectResponse
-     * @throws \Illuminate\Container\EntryNotFoundException
      * @throws \Exception
      */
     public function handleProviderCallback(Request $request): RedirectResponse
@@ -57,7 +56,7 @@ class HCSocialiteAuthController extends Controller
         if (!$request->filled('code')) {
             logger()->info('Facebook: ' . $request->input('error') . ' : ' . $request->input('error_reason'));
 
-            return redirect()->route('auth.login');
+            return redirect()->route(config('hc.social_redirect_error_route', 'auth.login'));
         }
 
         /** @var User $user */
@@ -100,6 +99,6 @@ class HCSocialiteAuthController extends Controller
             ]
         );
 
-        return redirect()->route('auth.login');
+        return redirect()->route(config('hc.social_redirect_error_route', 'auth.login'));
     }
 }

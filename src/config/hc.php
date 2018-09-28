@@ -90,4 +90,13 @@ return [
 
     ],
 
+    /*
+    |---------------------------------------------------------------------------
+    | Social redirect route
+    |---------------------------------------------------------------------------
+    |
+    | Enter redirect route after facebook, google and etc login
+    |
+    */
+    'social_redirect_error_route' => 'auth.login',
 ];
