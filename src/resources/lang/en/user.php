@@ -30,6 +30,7 @@ return [
     'title' => 'Users',
     'name' => 'Users',
     'email' => 'Email',
+    'notification_email' => 'Notification email',
     'first_name' => 'First name',
     'last_name' => 'Last name',
     'description' => 'Description',

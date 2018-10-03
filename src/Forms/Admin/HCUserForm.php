@@ -187,6 +187,11 @@ class HCUserForm extends HCBaseForm
                 'required' => 1,
                 'requiredVisible' => 1,
             ],
+            $prefix . 'notification_email' => [
+                'type' => 'email',
+                'tabID' => trans('HCCore::core.general'),
+                'label' => trans('HCCore::user.notification_email'),
+            ],
             $prefix . 'password' => [
                 'type' => 'password',
                 'tabID' => trans('HCCore::core.general'),
