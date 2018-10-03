@@ -70,10 +70,13 @@ class HCSocialiteAuthController extends Controller
             $this->service->createOrUpdateUserProvider($user, $request->segment(3))
         );
 
-        auth()->user()->updateLastLogin();
+        /** @var \HoneyComb\Core\Models\HCUser $user */
+        $user = auth()->user();
+
+        $user->updateLastLogin();
 
         // TODO Event HCSocialiteAuthUserLoggedIn not tested! Facebook force to use HTTPS
-        event(new HCSocialiteAuthUserLoggedIn(auth()->user(), $request->segment(3)));
+        event(new HCSocialiteAuthUserLoggedIn($user, $request->segment(3)));
 
         return redirect(session('url.intended', url('/')));
     }
