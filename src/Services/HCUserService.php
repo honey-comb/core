@@ -284,6 +284,7 @@ class HCUserService
      * @param string $provider
      * @return array
      * @throws \Exception
+     * @throws \Throwable
      */
     private function getPhoto(User $providerUser, array $personalData, string $provider): array
     {
@@ -333,7 +334,7 @@ class HCUserService
      * @return null|string
      * @throws \Exception
      */
-    private function getProviderProfileUrl(User $providerUser, $provider): ? string
+    private function getProviderProfileUrl(User $providerUser, $provider): ?string
     {
         $profileUrl = null;
 
@@ -364,5 +365,17 @@ class HCUserService
         }
 
         return $profileUrl;
+    }
+
+    /**
+     * @param string $userId
+     * @return string
+     */
+    public function getNotificationEmail(string $userId): string
+    {
+        /** @var HCUser $user */
+        $user = $this->repository->findOrFail($userId);
+
+        return $user->getNotificationEmail();
     }
 }
