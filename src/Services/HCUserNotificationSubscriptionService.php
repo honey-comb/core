@@ -29,6 +29,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Services;
 
+use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionRepository;
 use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionTypeRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -47,26 +49,49 @@ class HCUserNotificationSubscriptionService
      * @var HCUserNotificationSubscriptionTypeRepository
      */
     private $typeRepository;
+    /**
+     * @var HCUserNotificationSubscriptionRepository
+     */
+    private $repository;
 
     /**
      * HCUserNotificationSubscriptionService constructor.
      * @param HCUserRepository $userRepository
+     * @param HCUserNotificationSubscriptionRepository $repository
      * @param HCUserNotificationSubscriptionTypeRepository $typeRepository
      */
     public function __construct(
         HCUserRepository $userRepository,
+        HCUserNotificationSubscriptionRepository $repository,
         HCUserNotificationSubscriptionTypeRepository $typeRepository
     ) {
         $this->userRepository = $userRepository;
         $this->typeRepository = $typeRepository;
+        $this->repository = $repository;
     }
 
     /**
-     * @return HCUserNotificationSubscriptionService
+     * @return HCUserNotificationSubscriptionRepository
      */
-    public function getRepository(): HCUserNotificationSubscriptionService
+    public function getRepository(): HCUserNotificationSubscriptionRepository
     {
         return $this->repository;
+    }
+
+    /**
+     * @return HCUserNotificationSubscriptionTypeRepository
+     */
+    public function getTypeRepository(): HCUserNotificationSubscriptionTypeRepository
+    {
+        return $this->typeRepository;
+    }
+
+    /**
+     * @return HCUserRepository
+     */
+    public function getUserRepository(): HCUserRepository
+    {
+        return $this->userRepository;
     }
 
     /**
@@ -79,7 +104,7 @@ class HCUserNotificationSubscriptionService
     {
         $this->validate($subscriptions);
 
-        $user = $this->userRepository->findOrFail($userId);
+        $user = $this->getUserRepository()->findOrFail($userId);
 
         $user->notificationSubscriptions()->sync($subscriptions);
     }
@@ -89,7 +114,7 @@ class HCUserNotificationSubscriptionService
      */
     public function clearSubscriptions(string $userId): void
     {
-        $user = $this->userRepository->findOrFail($userId);
+        $user = $this->getUserRepository()->findOrFail($userId);
 
         $user->notificationSubscriptions()->detach();
     }
@@ -103,7 +128,7 @@ class HCUserNotificationSubscriptionService
     {
         $this->validate($subscriptionTypeId);
 
-        $user = $this->userRepository->findOrFail($userId);
+        $user = $this->getUserRepository()->findOrFail($userId);
 
         $user->notificationSubscriptions()->syncWithoutDetaching($subscriptionTypeId);
     }
@@ -114,7 +139,7 @@ class HCUserNotificationSubscriptionService
      */
     public function removeSubscription(string $userId, $subscriptionTypeId): void
     {
-        $user = $this->userRepository->findOrFail($userId);
+        $user = $this->getUserRepository()->findOrFail($userId);
 
         $user->notificationSubscriptions()->detach($subscriptionTypeId);
     }
@@ -125,7 +150,7 @@ class HCUserNotificationSubscriptionService
      */
     public function getSubscriptions(string $userId): Collection
     {
-        $user = $this->userRepository->findOrFail($userId);
+        $user = $this->getUserRepository()->findOrFail($userId);
 
         return $user->notificationSubscriptions;
     }
@@ -145,6 +170,24 @@ class HCUserNotificationSubscriptionService
     }
 
     /**
+     * @param array $typeIds
+     * @return Collection
+     */
+    public function getUsersBySubscriptionTypes(array $typeIds): Collection
+    {
+        return $this->getUserRepository()
+            ->makeQuery()
+            ->with('notificationSubscriptions')
+            ->whereHas('notificationSubscriptions', function ($query) use ($typeIds) {
+                $query->whereIn('id', $typeIds);
+            })
+            ->get()
+            ->each(function (HCUser $user) {
+                $user->append('subscription_types');
+            });
+    }
+
+    /**
      * @param $search
      * @throws \Exception
      */
@@ -152,14 +195,15 @@ class HCUserNotificationSubscriptionService
     {
         $search = array_wrap($search);
 
-        $subscriptios = $this->typeRepository
+        $subscriptios = $this->getTypeRepository()
             ->makeQuery()
             ->pluck('id')
             ->toArray();
 
-        foreach ($search as $subscription){
-            if(!in_array($subscription, $subscriptios)){
-                throw new \Exception(trans('HCCore::subscriptions.message.subscription_does_not_exist', ['subscription' => $subscription]));
+        foreach ($search as $subscription) {
+            if (!in_array($subscription, $subscriptios)) {
+                throw new \Exception(trans('HCCore::subscriptions.message.subscription_does_not_exist',
+                    ['subscription' => $subscription]));
             }
         }
     }

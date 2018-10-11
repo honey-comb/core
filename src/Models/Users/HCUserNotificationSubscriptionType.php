@@ -27,7 +27,9 @@
 
 namespace HoneyComb\Core\Models\Users;
 
+use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Starter\Models\HCModel;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class HCUserNotificationSubscriptionType
@@ -56,7 +58,7 @@ class HCUserNotificationSubscriptionType extends HCModel
      */
     protected $fillable = [
         'id',
-        'translation_key'
+        'translation_key',
     ];
 
     /**
@@ -72,4 +74,17 @@ class HCUserNotificationSubscriptionType extends HCModel
     protected $casts = [
         'created_at' => 'datetime',
     ];
+
+    /**
+     * @return BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            HCUser::class,
+            'hc_user_notification_subscription',
+            'user_id',
+            'type_id'
+        );
+    }
 }
