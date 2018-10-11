@@ -106,6 +106,11 @@ class HCUserResource extends ResourceCollection
     private $address;
 
     /**
+     * @var null|string
+     */
+    private $notificationEmail;
+
+    /**
      * HCUserResource constructor.
      *
      * @param HCUser $model
@@ -122,6 +127,7 @@ class HCUserResource extends ResourceCollection
         $this->lastActivity = $model->last_activity;
         $this->firstName = optional($model->personal)->first_name;
         $this->lastName = optional($model->personal)->last_name;
+        $this->notificationEmail = optional($model->personal)->notification_email;
         $this->photoId = optional($model->personal)->photo_id;
         $this->description = optional($model->personal)->description;
         $this->phone = optional($model->personal)->phone;
@@ -295,6 +301,15 @@ class HCUserResource extends ResourceCollection
             'phone' => $this->getPhone(),
             'address' => $this->getAddress(),
             'roles' => $this->getRoles(),
+            'notification_email' => $this->getNotificationEmail(),
         ];
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getNotificationEmail(): ?string
+    {
+        return $this->notificationEmail;
     }
 }

@@ -63,6 +63,7 @@ class HCUserPersonalInfo extends HCModel
         'description',
         'phone',
         'address',
+        'notification_email',
     ];
 
     /**

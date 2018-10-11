@@ -69,6 +69,7 @@ class HCUserRequest extends FormRequest
             'description' => $this->input('description'),
             'phone' => $this->input('phone'),
             'address' => $this->input('address'),
+            'notification_email' => $this->input('notification_email'),
         ];
     }
 
@@ -120,6 +121,7 @@ class HCUserRequest extends FormRequest
                     'roles' => 'required|exists:hc_acl_role,id',
                     'photo_id' => 'nullable|exists:hc_resource,id',
                     'password' => 'nullable|min:6|confirmed',
+                    'notification_email' => 'nullable|email',
                     'password_confirmation' => 'required_with:password|nullable|min:6',
                 ];
 

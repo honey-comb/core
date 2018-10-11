@@ -139,7 +139,7 @@ class HCUserRepository extends HCBaseRepository
                 $query->select('id', 'name as label');
             },
             'personal' => function (HasOne $query) {
-                $query->select('user_id', 'first_name', 'last_name', 'photo_id', 'description', 'phone', 'address');
+                $query->select('user_id', 'first_name', 'last_name', 'photo_id', 'description', 'phone', 'address', 'notification_email');
             },
         ]);
 

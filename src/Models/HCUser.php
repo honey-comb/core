@@ -226,4 +226,27 @@ class HCUser extends HCUuidSoftModel implements AuthenticatableContract, Authori
     {
         return $this->hasMany(HCUserProvider::class, 'user_id', 'id');
     }
+
+    /**
+     * @return string
+     */
+    public function getNotificationEmail(): string
+    {
+        if (empty($this->personal->notification_email)) {
+            return $this->email;
+        }
+
+        return $this->personal->notification_email;
+    }
+
+    /**
+     * Route notifications for the mail channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return string
+     */
+    public function routeNotificationForMail($notification)
+    {
+        return $this->getNotificationEmail();
+    }
 }
