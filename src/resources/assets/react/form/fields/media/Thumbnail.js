@@ -158,7 +158,7 @@ export default class Thumbnail extends Component {
      * @returns {string}
      */
     previewUrl() {
-        return '/preview/' + this.state.width + 'x' + this.state.height + '/' + this.state.mediaId + '.jpg';
+        return '/storage/preview/' + this.state.width + 'x' + this.state.height + '/' + this.state.mediaId + '.jpg';
     }
 
     /**
