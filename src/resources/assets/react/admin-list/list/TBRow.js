@@ -22,10 +22,9 @@ export default class TBRow extends Component {
         let selectedClass = this.state.selected ? "selected" : "";
 
         return <tr id={this.props.record.id} className={selectedClass}>
-            <td hidden={this.props.hideCheckBox}
-                onClick={this.handleRowCheckBoxClick}>
+            <td hidden={this.props.hideCheckBox}>
                 <input type="checkbox"
-                       checked={this.state.selected}/>
+                       checked={this.state.selected} onChange={this.handleRowCheckBoxClick}/>
             </td>
 
             {Object.keys(this.props.config.headers).map((item, i) => (
