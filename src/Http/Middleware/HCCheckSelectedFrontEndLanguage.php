@@ -124,7 +124,8 @@ class HCCheckSelectedFrontEndLanguage
     private function getRedirectUrl(Request $request, string $appLocale): string
     {
         $segments = $request->segments();
-        $segments[0] = $appLocale;
+        $segments = str_replace(["\r", "\n"], '', $segments);
+        $segments = array_prepend($segments, $appLocale);
 
         // domain
         $url = $request->root();
