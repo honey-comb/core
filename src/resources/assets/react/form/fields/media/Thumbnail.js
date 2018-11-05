@@ -147,7 +147,7 @@ export default class Thumbnail extends Component {
      * @returns {*}
      */
     thumbnailView() {
-        return <div className="thumbnail"><img src={this.previewUrl()} onError={(e) => {
+        return <div className="thumbnail"><img src={this.previewUrl()} width={this.state.width} height={this.state.height} onError={(e) => {
             e.target.onerror = null;
             e.target.src = this.resourceUrl()
         }}/></div>
