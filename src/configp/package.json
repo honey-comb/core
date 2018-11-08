@@ -10,6 +10,8 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^11.1.1",
+    "@ckeditor/ckeditor5-react": "^1.0.0",
     "@fortawesome/fontawesome": "^1.1.0",
     "@fortawesome/fontawesome-free-brands": "^5.0.2",
     "@fortawesome/fontawesome-free-regular": "^5.0.2",
