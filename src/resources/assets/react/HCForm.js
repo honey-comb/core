@@ -709,6 +709,8 @@ export default class HCForm extends Component {
      */
     handleRequestSuccess(r) {
 
+        this.setState({formDisabled: false});
+        
         if (r.success) {
             if (r.redirectUrl) {
                 document.location.href = r.redirectUrl;
