@@ -18,8 +18,8 @@ export default class Thumbnail extends Component {
             loadedId: null,
             hideDelete: this.props.config.hideDelete,
             hideEdit: this.props.config.hideEdit,
-            width: this.props.config.width ? this.props.config.width : 90,
-            height: this.props.config.height ? this.props.config.height : 90,
+            width: this.props.config.width ? this.props.config.width : 100,
+            height: this.props.config.height ? this.props.config.height : 100,
         };
 
         if (!this.props.config.editUrl) {
