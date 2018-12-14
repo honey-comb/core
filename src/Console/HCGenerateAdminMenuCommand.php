@@ -83,6 +83,7 @@ class HCGenerateAdminMenuCommand extends Command
     {
         $this->comment('Scanning menu items..');
         $this->generateMenu();
+        $this->info('Menu items: ' . count($this->adminMenuHolder));
         $this->comment('-');
     }
 
@@ -97,11 +98,51 @@ class HCGenerateAdminMenuCommand extends Command
             $file = json_decode(file_get_contents($filePath), true);
 
             if (isset($file['adminMenu'])) {
-                $this->adminMenuHolder = array_merge($this->adminMenuHolder, $file['adminMenu']);
+                if (str_contains($filePath, 'app/hc-config.json')) {
+                    // merge project level menu items or override package
+                    $projectMenu = $this->overridePackageItems($file);
+
+                    $this->adminMenuHolder = array_merge($this->adminMenuHolder, $projectMenu);
+                } else {
+                    $this->adminMenuHolder = array_merge($this->adminMenuHolder, $file['adminMenu']);
+                }
             }
         }
 
         cache()->forget('hc-admin-menu');
         cache()->put('hc-admin-menu', $this->adminMenuHolder, Carbon::now()->addYear(2));
+    }
+
+    /**
+     * @param array $file
+     */
+    private function overridePackageItems(array $file): array
+    {
+        $projectItems = $file['adminMenu'];
+        $toRemove = [];
+
+        foreach ($this->adminMenuHolder as $key => $menuItem) {
+            // find existing project and package menu item by route
+            $found = array_first($projectItems, function (array $item) use ($menuItem) {
+                return $menuItem['route'] === $item['route'];
+            });
+
+            if ($found) {
+                // replace existing
+                $this->adminMenuHolder[$key] = $found;
+                $toRemove[] = $found['route'];
+            }
+        }
+
+        if ($toRemove) {
+            // remove from project menu items
+            foreach ($projectItems as $key => $projectItem) {
+                if (in_array($projectItem['route'], $toRemove)) {
+                    array_forget($projectItems, $key);
+                }
+            }
+        }
+
+        return $projectItems;
     }
 }
