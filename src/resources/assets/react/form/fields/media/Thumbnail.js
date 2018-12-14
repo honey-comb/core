@@ -117,6 +117,13 @@ export default class Thumbnail extends Component {
 
         let formData = new FormData();
         formData.append('file', this.props.file);
+
+        if (this.props.config.previewSizes) {
+            this.props.config.previewSizes.forEach(function (value) {
+                formData.append('previewSizes[]', value);
+            });
+        }
+
         axios.post(this.props.config.uploadUrl, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
