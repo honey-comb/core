@@ -41,6 +41,7 @@ use HoneyComb\Core\Notifications\HCAdminWelcomeEmail;
 use HoneyComb\Core\Notifications\HCResetPassword;
 use HoneyComb\Starter\Models\HCUuidSoftModel;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -89,7 +90,7 @@ use Illuminate\Support\Collection;
  */
 class HCUser extends HCUuidSoftModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, Notifiable, HCUserRoles, HCActivateUser, HCUserNotificationSubscription;
+    use Authenticatable, Authorizable, CanResetPassword, Notifiable, MustVerifyEmail, HCUserRoles, HCActivateUser, HCUserNotificationSubscription;
 
     /**
      * The database table used by the model.
@@ -132,7 +133,6 @@ class HCUser extends HCUuidSoftModel implements AuthenticatableContract, Authori
         'activated_at',
         'last_login',
         'last_activity',
-
     ];
 
     /**
