@@ -29,13 +29,13 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Forms\Frontend;
 
-use HoneyComb\Starter\Forms\HCBaseForm;
+use HoneyComb\Starter\Forms\HCForm;
 
 /**
  * Class HCUserLoginForm
  * @package HoneyComb\Core\Forms\Frontend
  */
-class HCUserLoginForm extends HCBaseForm
+class HCUserLoginForm extends HCForm
 {
     /**
      * Creating form

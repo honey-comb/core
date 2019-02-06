@@ -29,13 +29,13 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Forms\Frontend;
 
-use HoneyComb\Starter\Forms\HCBaseForm;
+use HoneyComb\Starter\Forms\HCForm;
 
 /**
  * Class HCPasswordResetForm
  * @package HoneyComb\Core\Forms\Frontend
  */
-class HCPasswordResetForm extends HCBaseForm
+class HCPasswordResetForm extends HCForm
 {
     /**
      * Creating form
