@@ -57,7 +57,6 @@ class HCCheckSelectedAdminLanguage
      * @param Request $request
      * @param Closure $next
      * @return mixed
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function handle(Request $request, Closure $next)
     {

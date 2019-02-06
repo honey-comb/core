@@ -54,7 +54,6 @@ use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
 use HoneyComb\Core\Services\Acl\HCRoleService;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
-use HoneyComb\Resources\Providers\HCResourceServiceProvider;
 use HoneyComb\Starter\Providers\HCBaseServiceProvider;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Routing\Router;
@@ -124,10 +123,6 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         parent::registerPublishes();
 
         $this->publishes([
-            $this->packagePath('./configp') => './',
-        ], 'hc-config');
-
-        $this->publishes([
             $this->packagePath('resources/assets') => resource_path('assets/honey-comb'),
         ], 'hc-assets');
 
@@ -145,9 +140,6 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         if (class_exists(LaravelLogViewerServiceProvider::class)) {
             $this->app->register(LaravelLogViewerServiceProvider::class);
         }
-
-        $this->app->register(HCComposerServiceProvider::class);
-        $this->app->register(HCResourceServiceProvider::class);
 
         $this->mergeConfigFrom(
             $this->packagePath('config/hc.php'),

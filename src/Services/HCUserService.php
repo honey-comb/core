@@ -38,7 +38,6 @@ use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCPersonalInfoRepository;
 use HoneyComb\Core\Repositories\Users\HCUserProviderRepository;
-use HoneyComb\Resources\Services\HCResourceService;
 use HoneyComb\Starter\Enum\BoolEnum;
 use Laravel\Socialite\Two\User;
 
@@ -69,20 +68,13 @@ class HCUserService
     protected $userProviderRepository;
 
     /**
-     * @var HCResourceService
-     */
-    protected $resourceService;
-
-    /**
      * HCUserService constructor.
-     * @param HCResourceService $resourceService
      * @param HCUserRepository $repository
      * @param HCPersonalInfoRepository $personalRepository
      * @param HCRoleRepository $roleRepository
      * @param HCUserProviderRepository $userProviderRepository
      */
     public function __construct(
-        HCResourceService $resourceService,
         HCUserRepository $repository,
         HCPersonalInfoRepository $personalRepository,
         HCRoleRepository $roleRepository,
@@ -92,7 +84,6 @@ class HCUserService
         $this->personalInfoRepository = $personalRepository;
         $this->roleRepository = $roleRepository;
         $this->userProviderRepository = $userProviderRepository;
-        $this->resourceService = $resourceService;
     }
 
     /**
@@ -321,8 +312,7 @@ class HCUserService
         }
 
         if ($avatarUrl) {
-            $photo = $this->resourceService->download($avatarUrl);
-            $personalData['photo_id'] = array_get($photo, 'id');
+            $personalData['photo'] = $avatarUrl;
         }
 
         return $personalData;

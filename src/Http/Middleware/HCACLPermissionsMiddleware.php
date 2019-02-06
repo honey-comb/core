@@ -46,7 +46,6 @@ class HCAclPermissionsMiddleware
      * @param Closure $next
      * @param null $permission
      * @return mixed
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function handle(Request $request, Closure $next, $permission = null)
     {

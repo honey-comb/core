@@ -30,8 +30,11 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Middleware;
 
 use Closure;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class HCAclAuthenticate
@@ -45,8 +48,7 @@ class HCAclAuthenticate
      * @param Request $request
      * @param Closure $next
      * @param null $guard
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|mixed|\Symfony\Component\HttpFoundation\Response
-     * @throws \Illuminate\Container\EntryNotFoundException
+     * @return ResponseFactory|RedirectResponse|mixed|Response
      */
     public function handle(Request $request, Closure $next, $guard = null)
     {

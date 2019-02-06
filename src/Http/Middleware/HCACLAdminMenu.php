@@ -31,6 +31,7 @@ namespace HoneyComb\Core\Http\Middleware;
 
 use Closure;
 use HoneyComb\Core\Services\HCAdminMenuService;
+use Illuminate\Container\EntryNotFoundException;
 use Illuminate\Http\Request;
 
 /**
@@ -59,7 +60,7 @@ class HCAclAdminMenu
      * @param Request $request
      * @param Closure $next
      * @return mixed
-     * @throws \Illuminate\Container\EntryNotFoundException
+     * @throws EntryNotFoundException
      * @throws \Exception
      */
     public function handle(Request $request, Closure $next)

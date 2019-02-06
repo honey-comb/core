@@ -57,7 +57,7 @@ class HCCheckSelectedFrontEndLanguage
      * @param Request $request
      * @param Closure $next
      * @return mixed
-     * @throws \Illuminate\Container\EntryNotFoundException
+     * @throws \Exception
      */
     public function handle(Request $request, Closure $next)
     {
