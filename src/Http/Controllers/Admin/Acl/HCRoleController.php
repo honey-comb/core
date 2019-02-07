@@ -33,7 +33,7 @@ use HoneyComb\Core\Events\Admin\Acl\HCRolePermissionUpdated;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Requests\Admin\HCRoleRequest;
 use HoneyComb\Core\Services\Acl\HCRoleService;
-use HoneyComb\Starter\Helpers\HCFrontendResponse;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
@@ -48,16 +48,16 @@ class HCRoleController extends HCBaseController
      */
     protected $service;
     /**
-     * @var HCFrontendResponse
+     * @var HCResponse
      */
     protected $response;
 
     /**
      * HCRoleController constructor.
      * @param HCRoleService $service
-     * @param HCFrontendResponse $response
+     * @param HCResponse $response
      */
-    public function __construct(HCRoleService $service, HCFrontendResponse $response)
+    public function __construct(HCRoleService $service, HCResponse $response)
     {
         $this->service = $service;
         $this->response = $response;

@@ -25,45 +25,35 @@
  * http://www.interactivesolutions.lt
  */
 
-namespace HoneyComb\Core\Events\frontend;
+namespace HoneyComb\Core\Events;
 
 use HoneyComb\Core\Models\HCUser;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 /**
- * Class HCSocialiteAuthUserLoggedIn
- * @package HoneyComb\Core\Events\frontend\HCSocialiteAuthUserLoggedIn
+ * Class HCUserUpdated
+ * @package HoneyComb\Core\Events
  */
-class HCSocialiteAuthUserLoggedIn
+class HCUserUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * @var HCUser
      */
-    private $user;
+    public $user;
 
     /**
-     * @var string
-     */
-    private $provider;
-
-
-    /**
-     * HCSocialiteAuthUserLoggedIn constructor.
+     * Create a new event instance.
+     *
      * @param HCUser $user
-     * @param string $provider
      */
-    public function __construct(HCUser $user, string $provider)
+    public function __construct(HCUser $user)
     {
         $this->user = $user;
-        $this->provider = $provider;
     }
 
     /**
@@ -71,7 +61,7 @@ class HCSocialiteAuthUserLoggedIn
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn()
+    public function broadcastOn($id)
     {
         return new PrivateChannel('channel-name');
     }

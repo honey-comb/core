@@ -36,7 +36,7 @@ use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
 use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
 use HoneyComb\Core\Services\HCUserService;
-use HoneyComb\Starter\Helpers\HCFrontendResponse;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
@@ -60,7 +60,7 @@ class HCUserController extends HCBaseController
     protected $service;
 
     /**
-     * @var HCFrontendResponse
+     * @var HCResponse
      */
     protected $response;
 
@@ -68,9 +68,9 @@ class HCUserController extends HCBaseController
      * HCUsersController constructor.
      * @param Connection $connection
      * @param HCUserService $service
-     * @param HCFrontendResponse $response
+     * @param HCResponse $response
      */
-    public function __construct(Connection $connection, HCUserService $service, HCFrontendResponse $response)
+    public function __construct(Connection $connection, HCUserService $service, HCResponse $response)
     {
         $this->connection = $connection;
         $this->service = $service;
@@ -214,7 +214,7 @@ class HCUserController extends HCBaseController
     public function getById(string $recordId): JsonResponse
     {
         return response()->json(
-            $this->service->getRepository()->getRecordById($recordId)
+            $this->service->getUserById($recordId)
         );
     }
 
@@ -228,7 +228,7 @@ class HCUserController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $deleted = $this->service->getRepository()->deleteSoft($request->getListIds());
+            $this->service->deleteSoft($request->getListIds());
 
             $this->connection->commit();
         } catch (\Throwable $exception) {
@@ -238,8 +238,6 @@ class HCUserController extends HCBaseController
 
             return $this->response->error($exception->getMessage());
         }
-
-        event(new HCUserSoftDeleted($deleted));
 
         return $this->response->success('Successfully deleted');
     }
@@ -254,9 +252,7 @@ class HCUserController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $deletedUsers = $this->service->getRepository()->deleteForce($request->getListIds());
-
-            event(new HCUserForceDeleted($deletedUsers));
+            $this->service->deleteForce($request->getListIds());
 
             $this->connection->commit();
         } catch (\Throwable $exception) {
@@ -280,9 +276,7 @@ class HCUserController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $restoredUsers = $this->service->getRepository()->restore($request->getListIds());
-
-            event(new HCUserRestored($restoredUsers));
+            $this->service->restore($request->getListIds());
 
             $this->connection->commit();
         } catch (\Throwable $exception) {

@@ -79,7 +79,7 @@ class HCUserRepositoryTest extends TestCase
         $expected = factory(HCUser::class)->create();
 
         // execute function getById
-        $user = $this->getTestClassInstance()->getById($expected->id);
+        $user = $this->getTestClassInstance()->findById($expected->id);
 
         // assert created user id is equal to returned from getById response
         $this->assertEquals($expected->id, $user->id);
@@ -91,9 +91,9 @@ class HCUserRepositoryTest extends TestCase
      */
     public function it_must_return_null_if_user_is_not_found_by_id(): void
     {
-        $user = $this->getTestClassInstance()->getById('custom-id');
+        $this->expectException(ModelNotFoundException::class);
 
-        $this->assertNull($user);
+        $this->getTestClassInstance()->findById('custom-id');
     }
 
     /**
@@ -104,7 +104,7 @@ class HCUserRepositoryTest extends TestCase
     {
         $expectedPersonalInfo = factory(HCUserPersonalInfo::class)->create();
 
-        $userInfo = $this->getTestClassInstance()->getByIdWithPersonal($expectedPersonalInfo->user_id);
+        $userInfo = $this->getTestClassInstance()->findById($expectedPersonalInfo->user_id);
 
         $this->assertEquals($expectedPersonalInfo->user_id, $userInfo->personal->user_id);
         $this->assertEquals($expectedPersonalInfo->first_name, $userInfo->personal->first_name);
@@ -120,7 +120,7 @@ class HCUserRepositoryTest extends TestCase
     {
         $this->expectException(ModelNotFoundException::class);
 
-        $this->getTestClassInstance()->getByIdWithPersonal('custom-id');
+        $this->getTestClassInstance()->findById('custom-id', ['personal']);
     }
 
 
@@ -151,13 +151,11 @@ class HCUserRepositoryTest extends TestCase
             'deleted_at' => new Carbon(),
         ]);
 
-        $restoredUser = $this->getTestClassInstance()->restore([$expected->id]);
+        $this->getTestClassInstance()->restore([$expected->id]);
 
-        $userId = head($restoredUser);
+        $this->assertDatabaseHas('hc_user', ['id' => $expected->id, 'deleted_at' => null]);
 
-        $this->assertDatabaseHas('hc_user', ['id' => $userId, 'deleted_at' => null]);
-
-        $this->assertNotSame($expected, HCUser::find($userId));
+        $this->assertNotSame($expected, HCUser::find($expected->id));
     }
 
     /**

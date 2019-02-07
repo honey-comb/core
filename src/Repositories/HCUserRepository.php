@@ -28,13 +28,9 @@
 namespace HoneyComb\Core\Repositories;
 
 use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
-use HoneyComb\Core\Http\Resources\HCUserResource;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 
 /**
@@ -55,20 +51,14 @@ class HCUserRepository extends HCBaseRepository
 
     /**
      * @param string $userId
-     * @return HCUser|Model|null
+     * @param array $with
+     * @return HCUser
      */
-    public function getById(string $userId): ? HCUser
+    public function findById(string $userId, array $with = []): HCUser
     {
-        return $this->makeQuery()->find($userId);
-    }
-
-    /**
-     * @param string $userId
-     * @return HCUser|Model|null
-     */
-    public function getByIdWithPersonal(string $userId): ? HCUser
-    {
-        return $this->makeQuery()->with('personal')->where('id', '=', $userId)->firstOrFail();
+        return $this->makeQuery()->with($with)
+            ->where('id', $userId)
+            ->firstOrFail();
     }
 
     /**
@@ -123,27 +113,6 @@ class HCUserRepository extends HCBaseRepository
         }
 
         return $deleted;
-    }
-
-    /**
-     * @param string $userId
-     * @return HCUserResource
-     */
-    public function getRecordById(string $userId): HCUserResource
-    {
-        /** @var HCUser $record */
-        $record = $this->getById($userId);
-
-        $record->load([
-            'roles' => function (BelongsToMany $query) {
-                $query->select('id', 'name as label');
-            },
-            'personal' => function (HasOne $query) {
-                $query->select('user_id', 'first_name', 'last_name', 'photo_id', 'description', 'phone', 'address', 'notification_email');
-            },
-        ]);
-
-        return new HCUserResource($record);
     }
 
     /**

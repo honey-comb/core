@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2018 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,51 +20,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
-namespace HoneyComb\Core\Events\Admin;
+namespace HoneyComb\Core\Http\Requests;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class HCUserSoftDeleted
- * @package HoneyComb\Core\Events\Admin
+ * Class HCAuthRegisterRequest
+ * @package HoneyComb\Core\Http\Requests
  */
-class HCUserSoftDeleted
+class HCAuthRegisterRequest extends FormRequest
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
     /**
-     * @var array
-     */
-    public $deletedUsers;
-
-    /**
-     * Create a new event instance.
+     * Determine if the user is authorized to make this request.
      *
-     * @return void
+     * @return bool
      */
-    public function __construct(array $deletedUsers)
+    public function authorize(): bool
     {
-        $this->deletedUsers = $deletedUsers;
+        return true;
     }
 
     /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return array
      */
-    public function broadcastOn()
+    public function rules(): array
     {
-        return new PrivateChannel('channel-name');
+        return [
+            'provider' => 'required|in:email',
+            'email' => 'required|string|email|unique:hc_user,email',
+            'password' => 'required|string',
+        ];
     }
 }

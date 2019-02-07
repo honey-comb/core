@@ -32,6 +32,8 @@ namespace HoneyComb\Core\Services;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
+use HoneyComb\Starter\Exceptions\HCException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Class HCUserActivationService
@@ -91,10 +93,10 @@ class HCUserActivationService
             throw new \Exception(trans('HCCore::user.activation.bad_token'));
         }
 
-        $user = $this->hcUserRepository->getById($activation->user_id);
-
-        if (is_null($user)) {
-            throw new \Exception(trans('HCCore::user.activation.user_not_found'));
+        try {
+            $user = $this->hcUserRepository->findById($activation->user_id);
+        } catch (ModelNotFoundException $exception) {
+            throw new HCException(trans('HCCore::user.activation.user_not_found'));
         }
 
         // activate user

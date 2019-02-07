@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2018 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,52 +20,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
+declare(strict_types = 1);
 
-namespace HoneyComb\Core\Events\Admin;
+namespace HoneyComb\Core\DTO;
 
-use HoneyComb\Core\Models\HCUser;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Carbon;
+use HoneyComb\Starter\DTO\HCBaseDTO;
+use Laravel\Passport\PersonalAccessTokenResult;
 
 /**
- * Class HCUserUpdated
- * @package HoneyComb\Core\Events\Admin
+ * Class HCTokenDTO
+ * @package HoneyComb\Core\DTO
  */
-class HCUserUpdated
+class HCTokenDTO extends HCBaseDTO
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    /**
+     * @var PersonalAccessTokenResult
+     */
+    private $token;
 
     /**
-     * @var HCUser
+     * HCTokenDTO constructor.
+     * @param PersonalAccessTokenResult $token
      */
-    public $user;
-
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct(HCUser $user)
+    public function __construct(PersonalAccessTokenResult $token)
     {
-        $this->user = $user;
+        $this->token = $token;
     }
 
     /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return array
+     * @throws \Exception
      */
-    public function broadcastOn($id)
+    protected function jsonData(): array
     {
-        return new PrivateChannel('channel-name');
+        return [
+            'token_type' => 'Bearer',
+            'access_token' => $this->token->accessToken,
+            'expires_at' => Carbon::parse($this->token->token->expires_at)->toDateTimeString(),
+        ];
     }
 }

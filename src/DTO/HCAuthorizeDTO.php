@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2018 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,50 +20,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
+declare(strict_types = 1);
 
-namespace HoneyComb\Core\Events\Admin;
+namespace HoneyComb\Core\DTO;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Starter\DTO\HCBaseDTO;
+use Laravel\Passport\PersonalAccessTokenResult;
 
 /**
- * Class HCUserRestored
- * @package HoneyComb\Core\Events\Admin
+ * Class HCAuthorizeDTO
+ * @package HoneyComb\Core\DTO
  */
-class HCUserRestored
+class HCAuthorizeDTO extends HCBaseDTO
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    /**
+     * @var HCUser
+     */
+    private $user;
 
     /**
-     * @var array
+     * @var PersonalAccessTokenResult
      */
-    public $record;
+    private $token;
 
     /**
-     * HCUserRestored constructor.
-     * @param array $userIds
+     * WAuthorizeDTO constructor.
+     * @param HCUser $user
+     * @param PersonalAccessTokenResult $token
      */
-    public function __construct(array $record)
+    public function __construct(HCUser $user, PersonalAccessTokenResult $token)
     {
-        $this->record = $record;
+        $this->user = $user;
+        $this->token = $token;
     }
 
     /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return array
+     * @throws \Exception
      */
-    public function broadcastOn()
+    protected function jsonData(): array
     {
-        return new PrivateChannel('channel-name');
+        $data = (new HCUserDTO($this->user))->getAuthorizeData();
+        $data['token'] = (new HCTokenDTO($this->token))->toArray();
+
+        return $data;
     }
 }

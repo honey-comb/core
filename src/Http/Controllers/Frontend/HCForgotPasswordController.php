@@ -30,7 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
 use HoneyComb\Core\Http\Controllers\HCBaseController;
-use HoneyComb\Starter\Helpers\HCFrontendResponse;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -55,15 +55,15 @@ class HCForgotPasswordController extends HCBaseController
     use SendsPasswordResetEmails;
 
     /**
-     * @var HCFrontendResponse
+     * @var HCResponse
      */
     protected $response;
 
     /**
      * Create a new controller instance.
-     * @param HCFrontendResponse $response
+     * @param HCResponse $response
      */
-    public function __construct(HCFrontendResponse $response)
+    public function __construct(HCResponse $response)
     {
         $this->middleware('guest');
 
@@ -82,10 +82,11 @@ class HCForgotPasswordController extends HCBaseController
     /**
      * Get the response for a successful password reset link.
      *
+     * @param Request $request
      * @param  string $response
      * @return string
      */
-    protected function sendResetLinkResponse($response)
+    protected function sendResetLinkResponse(Request $request, $response)
     {
         return $this->response->success(trans($response));
     }

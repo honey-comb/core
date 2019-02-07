@@ -31,8 +31,9 @@ namespace HoneyComb\Core\Http\Controllers\Frontend;
 
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Repositories\HCLanguageRepository;
-use HoneyComb\Starter\Helpers\HCFrontendResponse;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Database\Connection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -47,7 +48,7 @@ class HCLanguageController extends HCBaseController
     protected $connection;
 
     /**
-     * @var HCFrontendResponse
+     * @var HCResponse
      */
     protected $response;
 
@@ -60,12 +61,12 @@ class HCLanguageController extends HCBaseController
      * HCUsersController constructor.
      * @param Connection $connection
      * @param HCLanguageRepository $languageRepository
-     * @param HCFrontendResponse $response
+     * @param HCResponse $response
      */
     public function __construct(
         Connection $connection,
         HCLanguageRepository $languageRepository,
-        HCFrontendResponse $response
+        HCResponse $response
     ) {
         $this->connection = $connection;
         $this->response = $response;
@@ -78,8 +79,7 @@ class HCLanguageController extends HCBaseController
      * @param Request $request
      * @param string $location
      * @param string $lang
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Container\EntryNotFoundException
+     * @return JsonResponse
      */
     public function change(Request $request, string $location, string $lang)
     {

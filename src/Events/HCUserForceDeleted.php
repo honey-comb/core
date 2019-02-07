@@ -25,19 +25,16 @@
  * http://www.interactivesolutions.lt
  */
 
-namespace HoneyComb\Core\Events\Admin;
+namespace HoneyComb\Core\Events;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 /**
  * Class HCUserForceDeleted
- * @package HoneyComb\Core\Events\Admin
+ * @package HoneyComb\Core\Events
  */
 class HCUserForceDeleted
 {
@@ -51,7 +48,7 @@ class HCUserForceDeleted
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param array $users
      */
     public function __construct(array $users)
     {

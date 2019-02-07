@@ -54,6 +54,7 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Laravel\Passport\HasApiTokens;
 
 /**
  * Class HCUser
@@ -66,13 +67,12 @@ use Illuminate\Support\Collection;
  * @property Carbon|null $deleted_at
  * @property string $email
  * @property string $password
- * @property string|null $activated_at
+ * @property Carbon|null $activated_at
  * @property string|null $remember_token
- * @property string|null $last_login
- * @property string|null $last_visited
- * @property string|null $last_activity
+ * @property Carbon|null $last_login
+ * @property Carbon|null $last_activity
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
- * @property-read \HoneyComb\Core\Models\Users\HCUserPersonalInfo $personal
+ * @property-read HCUserPersonalInfo $personal
  * @property-read Collection|HCAclRole[] $roles
  * @method static Builder|HCUser whereActivatedAt($value)
  * @method static Builder|HCUser whereCount($value)
@@ -88,9 +88,12 @@ use Illuminate\Support\Collection;
  * @method static Builder|HCUser whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class HCUser extends HCUuidSoftModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class HCUser extends HCUuidSoftModel implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, Notifiable, MustVerifyEmail, HCUserRoles, HCActivateUser, HCUserNotificationSubscription;
+    use Authenticatable, Authorizable, CanResetPassword, Notifiable, MustVerifyEmail, HasApiTokens, HCUserRoles, HCActivateUser, HCUserNotificationSubscription;
 
     /**
      * The database table used by the model.

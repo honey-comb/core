@@ -30,7 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Controllers\Frontend;
 
 use HoneyComb\Core\Http\Controllers\HCBaseController;
-use HoneyComb\Starter\Helpers\HCFrontendResponse;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -63,15 +63,15 @@ class HCResetPasswordController extends HCBaseController
     protected $redirectTo = '/';
 
     /**
-     * @var HCFrontendResponse
+     * @var HCResponse
      */
     protected $response;
 
     /**
      * Create a new controller instance.
-     * @param HCFrontendResponse $response
+     * @param HCResponse $response
      */
-    public function __construct(HCFrontendResponse $response)
+    public function __construct(HCResponse $response)
     {
         $this->middleware('guest');
 
@@ -98,11 +98,11 @@ class HCResetPasswordController extends HCBaseController
     /**
      * Get the response for a successful password reset.
      *
+     * @param Request $request
      * @param string $response
      * @return JsonResponse
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
-    protected function sendResetResponse($response): JsonResponse
+    protected function sendResetResponse(Request $request, $response): JsonResponse
     {
         return response()->json([
             'success' => true,

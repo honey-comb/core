@@ -38,6 +38,16 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * Class HCUserPersonalInfo
  *
+ * @property string $user_id
+ * @property string|null $first_name
+ * @property string|null $last_name
+ * @property string|null $photo
+ * @property string|null $photo_id
+ * @property string|null $description
+ * @property string|null $phone
+ * @property string|null $address
+ * @property string|null $notification_email
+ *
  * @package HoneyComb\Core\Models\Users
  */
 class HCUserPersonalInfo extends HCModel
@@ -60,6 +70,7 @@ class HCUserPersonalInfo extends HCModel
         'first_name',
         'last_name',
         'photo_id',
+        'photo',
         'description',
         'phone',
         'address',

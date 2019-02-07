@@ -33,7 +33,7 @@ use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
 use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
 use HoneyComb\Core\Services\HCLanguageService;
-use HoneyComb\Starter\Helpers\HCFrontendResponse;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -53,7 +53,7 @@ class HCLanguageController extends HCBaseController
     protected $connection;
 
     /**
-     * @var HCFrontendResponse
+     * @var HCResponse
      */
     protected $response;
 
@@ -65,12 +65,12 @@ class HCLanguageController extends HCBaseController
     /**
      * HCUsersController constructor.
      * @param Connection $connection
-     * @param HCFrontendResponse $response
+     * @param HCResponse $response
      * @param HCLanguageService $service
      */
     public function __construct(
         Connection $connection,
-        HCFrontendResponse $response,
+        HCResponse $response,
         HCLanguageService $service
     ) {
 

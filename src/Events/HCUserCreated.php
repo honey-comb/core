@@ -1,16 +1,16 @@
 <?php
 
-namespace HoneyComb\Core\Events\Admin;
+namespace HoneyComb\Core\Events;
 
 use HoneyComb\Core\Models\HCUser;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Queue\SerializesModels;
 
 /**
  * Class HCUserCreated
- * @package HoneyComb\Core\Events\Admin
+ * @package HoneyComb\Core\Events
  */
 class HCUserCreated
 {
@@ -23,7 +23,8 @@ class HCUserCreated
     /**
      * Create a new event instance.
      *
-     * @param \HoneyComb\Core\Models\HCUser $user
+     * HCUserCreated constructor.
+     * @param HCUser $user
      */
     public function __construct(HCUser $user)
     {
