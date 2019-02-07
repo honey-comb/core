@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,22 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Forms\Frontend;
+namespace HoneyComb\Core\Forms\Password;
 
 use HoneyComb\Starter\Forms\HCForm;
 
 /**
- * Class HCUserLoginForm
- * @package HoneyComb\Core\Forms\Frontend
+ * Class HCPasswordRemindForm
+ * @package HoneyComb\Core\Forms\Password
  */
-class HCUserLoginForm extends HCForm
+class HCPasswordRemindForm extends HCForm
 {
     /**
      * Creating form
@@ -46,56 +46,49 @@ class HCUserLoginForm extends HCForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            'storageUrl' => route('auth.login'),
+            'storageUrl' => route('v1.api.password.remind'),
             'buttons' => [
                 'submit' => [
-                    'label' => trans('HCCore::core.buttons.login'),
+                    'label' => trans('HCCore::core.buttons.submit'),
                 ],
             ],
             'structure' => $this->getStructure($edit),
         ];
 
-        return $form;
-    }
 
-    /**
-     * Get Edit structure
-     *
-     * @param string $prefix
-     * @return array
-     */
-    public function getStructureEdit(string $prefix): array
-    {
-        return [];
+        if ($this->multiLanguage) {
+            $form['availableLanguages'] = getHCContentLanguages();
+        }
+
+        if (!$edit) {
+            return $form;
+        }
+
+        return $form;
     }
 
     /**
      * Get new structure
      *
-     * @param string $prefix
      * @return array
      */
-    public function getStructureNew(string $prefix): array
+    public function getStructureNew(): array
     {
         return [
-            'email' =>
-                [
-                    'type' => 'singleLine',
-                    'label' => trans('HCCore::user.login.email'),
-                    'required' => 1,
-                ],
-            'password' =>
-                [
-                    'type' => 'password',
-                    'label' => trans('HCCore::user.login.password'),
-                    'required' => 1,
-                    'minLength' => 6,
-                ],
-            'remember' =>
-                [
-                    'type' => 'checkBoxList',
-                    'options' => [['id' => '1', 'label' => trans('HCCore::user.login.remember')]],
-                ],
+            'email' => $this->makeField(trans('HCCore::user.login.email'))
+                ->email()
+                ->isRequired()
+                ->toArray(),
         ];
+    }
+
+    /**
+     * Get Edit structure
+     *
+     * @return array
+     */
+    public function getStructureEdit(): array
+    {
+        return [];
     }
 }

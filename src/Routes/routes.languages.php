@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,31 +20,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Controllers\Admin;
+Route::domain(config('hc.admin_domain'))
+    ->middleware('auth:api')
+    ->prefix('v1/api/languages')
+    ->group(function () {
+        Route::get('/', 'HCLanguageController@index')
+            ->name('v1.api.users.languages.index')
+            ->middleware('acl:honey_comb_core_language_list');
 
-use HoneyComb\Core\Http\Controllers\HCBaseController;
-use Illuminate\View\View;
+        Route::get('list', 'HCLanguageController@getListPaginate')
+            ->name('v1.api.users.languages.list')
+            ->middleware('acl:honey_comb_core_language_list');
 
-/**
- * Class HCAdminController
- * @package HoneyComb\Core\Http\Controllers\Admin
- */
-class HCAdminController extends HCBaseController
-{
-    /**
-     * Admin dashboard
-     *
-     * @return View
-     */
-    public function index(): View
-    {
-        return view('HCCore::admin.dashboard');
-    }
-}
+        Route::get('options', 'HCLanguageController@getOptions')
+            ->name('v1.api.users.languages.options');
+
+        Route::patch('{id}', 'HCLanguageController@patch')
+            ->name('v1.api.users.languages.update.strict')
+            ->middleware('acl:honey_comb_core_language_update');
+    });

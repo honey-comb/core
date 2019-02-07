@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,19 +27,19 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Controllers\Admin\Acl;
+namespace HoneyComb\Core\Http\Controllers\Acl;
 
-use HoneyComb\Core\Events\Admin\Acl\HCRolePermissionUpdated;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
-use HoneyComb\Core\Http\Requests\Admin\HCRoleRequest;
+use HoneyComb\Core\Http\Requests\HCRoleRequest;
 use HoneyComb\Core\Services\Acl\HCRoleService;
+use HoneyComb\Starter\Exceptions\HCException;
 use HoneyComb\Starter\Helpers\HCResponse;
+use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\View\View;
 
 /**
  * Class HCRoleController
- * @package HoneyComb\Core\Http\Controllers\Admin\Acl
+ * @package HoneyComb\Core\Http\Controllers\Acl
  */
 class HCRoleController extends HCBaseController
 {
@@ -51,24 +51,30 @@ class HCRoleController extends HCBaseController
      * @var HCResponse
      */
     protected $response;
+    /**
+     * @var Connection
+     */
+    private $connection;
 
     /**
      * HCRoleController constructor.
+     * @param Connection $connection
      * @param HCRoleService $service
      * @param HCResponse $response
      */
-    public function __construct(HCRoleService $service, HCResponse $response)
+    public function __construct(Connection $connection, HCRoleService $service, HCResponse $response)
     {
         $this->service = $service;
         $this->response = $response;
+        $this->connection = $connection;
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return View
+     * @return JsonResponse
      */
-    public function index(): View
+    public function index(): JsonResponse
     {
         $config = [
             'title' => trans('HCCore::acl_access.page_title'),
@@ -77,32 +83,28 @@ class HCRoleController extends HCBaseController
             'updateUrl' => route('admin.acl.role.update.permissions'),
         ];
 
-        return view('HCCore::admin.roles', ['config' => $config]);
+        return $this->response->success('OK', $config);
     }
 
     /**
-     * Update role permissions
-     *
      * @param HCRoleRequest $request
      * @return JsonResponse
+     * @throws \Exception
      */
     public function updatePermissions(HCRoleRequest $request): JsonResponse
     {
+        $this->connection->beginTransaction();
+
         try {
             $message = $this->service->updateRolePermissions(
                 $request->input('role_id'),
                 $request->input('permission_id')
             );
 
-            event(
-                new HCRolePermissionUpdated(
-                    $request->input('role_id'),
-                    $request->input('permission_id'),
-                    $message
-                )
-            );
+            $this->connection->commit();
+        } catch (HCException $exception) {
+            $this->connection->rollBack();
 
-        } catch (\Throwable $exception) {
             report($exception);
 
             return $this->response->error($exception->getMessage());

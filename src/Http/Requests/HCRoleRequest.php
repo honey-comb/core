@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,23 +20,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-Route::domain(config('hc.admin_domain'))
-    ->prefix(config('hc.admin_url'))
-    ->namespace('Admin\Acl')
-    ->middleware(['web', 'auth'])
-    ->group(function () {
-        Route::get('users/roles', 'HCRoleController@index')
-            ->name('admin.acl.role.index')
-            ->middleware('acl:honey_comb_core_acl_role_list');
+namespace HoneyComb\Core\Http\Requests;
 
-        Route::put('api/users/roles/permissions', 'HCRoleController@updatePermissions')
-            ->name('admin.acl.role.update.permissions')
-            ->middleware('acl:honey_comb_core_acl_role_update');
-    });
+use Illuminate\Foundation\Http\FormRequest;
+
+/**
+ * Class HCRoleRequest
+ * @package HoneyComb\Core\Http\Requests
+ */
+class HCRoleRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            'role_id' => 'required|exists:hc_acl_role,id',
+            'permission_id' => 'required|exists:hc_acl_permission,id',
+        ];
+    }
+}

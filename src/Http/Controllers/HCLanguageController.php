@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,28 +20,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Controllers\Admin;
+namespace HoneyComb\Core\Http\Controllers;
 
-use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
-use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
+use HoneyComb\Core\Http\Requests\HCLanguageRequest;
 use HoneyComb\Core\Services\HCLanguageService;
 use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 /**
  * Class HCLanguageController
- * @package HoneyComb\Core\Http\Controllers\Admin
+ * @package HoneyComb\Core\Http\Controllers
  */
 class HCLanguageController extends HCBaseController
 {
@@ -80,11 +78,11 @@ class HCLanguageController extends HCBaseController
     }
 
     /**
-     * Admin panel page view
+     * Admin panel page config
      *
-     * @return View
+     * @return JsonResponse
      */
-    public function index(): View
+    public function index(): JsonResponse
     {
         $config = [
             'title' => trans('HCCore::language.page_title'),
@@ -94,40 +92,18 @@ class HCLanguageController extends HCBaseController
             'actions' => ['search'],
         ];
 
-        return view('HCCore::admin.service.index', ['config' => $config]);
-    }
-
-    /**
-     * Get admin page table columns settings
-     *
-     * @return array
-     */
-    public function getTableColumns(): array
-    {
-        $columns = [
-            'language_family' => $this->headerText(trans('HCCore::language.language_family')),
-            'language' => $this->headerText(trans('HCCore::language.language')),
-            'native_name' => $this->headerText(trans('HCCore::language.native_name')),
-            'iso_639_1' => $this->headerText(trans('HCCore::language.iso_639_1')),
-            'iso_639_2' => $this->headerText(trans('HCCore::language.iso_639_2')),
-            'front_end' => $this->headerCheckBox(trans('HCCore::language.front_end')),
-            'back_end' => $this->headerCheckBox(trans('HCCore::language.back_end')),
-            'content' => $this->headerCheckBox(trans('HCCore::language.content')),
-        ];
-
-        return $columns;
+        return $this->response->success('OK', $config);
     }
 
     /**
      * Creating data list
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function getListPaginate(Request $request): JsonResponse
     {
-        return response()->json(
-            $this->service->getRepository()->getListPaginate($request)
-        );
+        return $this->response->success('OK', $this->service->getRepository()->getListPaginate($request));
     }
 
     /**
@@ -136,6 +112,7 @@ class HCLanguageController extends HCBaseController
      * @param HCLanguageRequest $request
      * @param string $languageId
      * @return JsonResponse
+     * @throws \Exception
      */
     public function patch(HCLanguageRequest $request, string $languageId): JsonResponse
     {
@@ -151,8 +128,27 @@ class HCLanguageController extends HCBaseController
      */
     public function getOptions(HCLanguageRequest $request): JsonResponse
     {
-        return response()->json(
-            $this->service->getRepository()->getOptions($request)
-        );
+        return $this->response->success('OK', $this->service->getRepository()->getOptions($request));
+    }
+
+    /**
+     * Get admin page table columns settings
+     *
+     * @return array
+     */
+    protected function getTableColumns(): array
+    {
+        $columns = [
+            'language_family' => $this->headerText(trans('HCCore::language.language_family')),
+            'language' => $this->headerText(trans('HCCore::language.language')),
+            'native_name' => $this->headerText(trans('HCCore::language.native_name')),
+            'iso_639_1' => $this->headerText(trans('HCCore::language.iso_639_1')),
+            'iso_639_2' => $this->headerText(trans('HCCore::language.iso_639_2')),
+            'front_end' => $this->headerCheckBox(trans('HCCore::language.front_end')),
+            'back_end' => $this->headerCheckBox(trans('HCCore::language.back_end')),
+            'content' => $this->headerCheckBox(trans('HCCore::language.content')),
+        ];
+
+        return $columns;
     }
 }

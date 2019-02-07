@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,87 +20,74 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Forms\Frontend;
+namespace HoneyComb\Core\Forms;
 
 use HoneyComb\Starter\Forms\HCForm;
 
 /**
- * Class HCPasswordRemindForm
- * @package HoneyComb\Core\Forms\Frontend
+ * Class HCUserLoginForm
+ * @package HoneyComb\Core\Forms
  */
-class HCPasswordRemindForm extends HCForm
+class HCUserLoginForm extends HCForm
 {
     /**
      * Creating form
      *
      * @param bool $edit
      * @return array
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function createForm(bool $edit = false): array
     {
         $form = [
-            'storageUrl' => route('users.password.remind.post'),
+            'storageUrl' => route('v1.api.login'),
             'buttons' => [
                 'submit' => [
-                    'label' => trans('HCCore::core.buttons.submit'),
+                    'label' => trans('HCCore::core.buttons.login'),
                 ],
             ],
             'structure' => $this->getStructure($edit),
         ];
 
-
-        if ($this->multiLanguage) {
-            $form['availableLanguages'] = getHCContentLanguages();
-        }
-
-        if (!$edit) {
-            return $form;
-        }
-
         return $form;
-    }
-
-    /**
-     * Get new structure
-     *
-     * @param string $prefix
-     * @return array
-     */
-    public function getStructureNew(string $prefix): array
-    {
-        return [
-            'email' =>
-                [
-                    "type" => "email",
-                    "fieldId" => "email",
-                    "label" => trans('HCCore::user.login.email'),
-                    "editType" => 0,
-                    "required" => 1,
-                    "requiredVisible" => 0,
-                    "properties" => [
-                        "style" => "varchar",
-                        "maxlength" => "197",
-                    ],
-                ],
-        ];
     }
 
     /**
      * Get Edit structure
      *
-     * @param string $prefix
      * @return array
      */
-    public function getStructureEdit(string $prefix): array
+    public function getStructureEdit(): array
     {
         return [];
+    }
+
+    /**
+     * Get new structure
+     *
+     * @return array
+     */
+    public function getStructureNew(): array
+    {
+        return [
+            'email' => $this->makeField(trans('HCCore::user.login.email'))
+                ->email()
+                ->isRequired()
+                ->toArray(),
+            'password' => $this->makeField(trans('HCCore::user.login.password'))
+                ->password()
+                ->setMinLength(6)
+                ->isRequired()
+                ->toArray(),
+            'remember' => $this->makeField(trans('HCCore::user.login.remember'))
+                ->checkbox()
+                ->toArray(),
+        ];
     }
 }

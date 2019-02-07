@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,23 +27,21 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Controllers\Admin;
+namespace HoneyComb\Core\Http\Controllers;
 
 use HoneyComb\Core\Events\Admin\HCUserForceDeleted;
 use HoneyComb\Core\Events\Admin\HCUserRestored;
 use HoneyComb\Core\Events\Admin\HCUserSoftDeleted;
-use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
-use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
+use HoneyComb\Core\Http\Requests\HCUserRequest;
 use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\View\View;
 
 /**
  * Class HCUserController
- * @package HoneyComb\Core\Http\Controllers\Admin
+ * @package HoneyComb\Core\Http\Controllers
  */
 class HCUserController extends HCBaseController
 {
@@ -78,11 +76,11 @@ class HCUserController extends HCBaseController
     }
 
     /**
-     * Admin panel page view
+     * Admin panel page config
      *
-     * @return View
+     * @return JsonResponse
      */
-    public function index(): View
+    public function index(): JsonResponse
     {
         $config = [
             'title' => trans('HCCore::user.page_title'),
@@ -92,24 +90,7 @@ class HCUserController extends HCBaseController
             'actions' => $this->getActions('honey_comb_core_user'),
         ];
 
-        return view('HCCore::admin.service.index', ['config' => $config]);
-    }
-
-    /**
-     * Get admin page table columns settings
-     *
-     * @return array
-     */
-    public function getTableColumns(): array
-    {
-        $columns = [
-            'email' => $this->headerText(trans('HCCore::user.email')),
-            'last_login' => $this->headerText(trans('HCCore::user.last_login')),
-            'last_activity' => $this->headerText(trans('HCCore::user.last_activity')),
-            'activated_at' => $this->headerText(trans('HCCore::user.activated_at')),
-        ];
-
-        return $columns;
+        return $this->response->success('OK', $config);
     }
 
     /**
@@ -188,9 +169,7 @@ class HCUserController extends HCBaseController
      */
     public function getListPaginate(HCUserRequest $request): JsonResponse
     {
-        return response()->json(
-            $this->service->getRepository()->getListPaginate($request)
-        );
+        return $this->response->success('OK', $this->service->getRepository()->getListPaginate($request));
     }
 
     /**
@@ -200,9 +179,7 @@ class HCUserController extends HCBaseController
      */
     public function getOptions(HCUserRequest $request): JsonResponse
     {
-        return response()->json(
-            $this->service->getRepository()->getOptions($request)
-        );
+        return $this->response->success('OK', $this->service->getRepository()->getOptions($request));
     }
 
     /**
@@ -213,9 +190,7 @@ class HCUserController extends HCBaseController
      */
     public function getById(string $recordId): JsonResponse
     {
-        return response()->json(
-            $this->service->getUserById($recordId)
-        );
+        return $this->response->success('OK', $this->service->getUserById($recordId));
     }
 
     /**
@@ -288,5 +263,22 @@ class HCUserController extends HCBaseController
         }
 
         return $this->response->success('Successfully restored');
+    }
+
+    /**
+     * Get admin page table columns settings
+     *
+     * @return array
+     */
+    protected function getTableColumns(): array
+    {
+        $columns = [
+            'email' => $this->headerText(trans('HCCore::user.email')),
+            'last_login' => $this->headerText(trans('HCCore::user.last_login')),
+            'last_activity' => $this->headerText(trans('HCCore::user.last_activity')),
+            'activated_at' => $this->headerText(trans('HCCore::user.activated_at')),
+        ];
+
+        return $columns;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -46,7 +46,7 @@ class HCUserRegisterForm extends HCForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            'storageUrl' => route('auth.register'),
+            'storageUrl' => route('v1.api.register'),
             'buttons' => [
                 'submit' => [
                     'label' => trans('HCCore::core.buttons.register'),
@@ -61,10 +61,9 @@ class HCUserRegisterForm extends HCForm
     /**
      * Get Edit structure
      *
-     * @param string $prefix
      * @return array
      */
-    public function getStructureEdit(string $prefix): array
+    public function getStructureEdit(): array
     {
         return [];
     }
@@ -72,24 +71,23 @@ class HCUserRegisterForm extends HCForm
     /**
      * Get new structure
      *
-     * @param string $prefix
      * @return array
      */
-    public function getStructureNew(string $prefix): array
+    public function getStructureNew(): array
     {
         return [
-            'email' =>
-                [
-                    'type' => 'email',
-                    'label' => trans('HCCore::user.login.email'),
-                    'required' => 1,
-                ],
-            'password' =>
-                [
-                    'type' => 'password',
-                    'label' => trans('HCCore::user.login.password'),
-                    'required' => 1,
-                ],
+            'email' => $this->makeField(trans('HCCore::user.login.email'))
+                ->email()
+                ->isRequired()
+                ->toArray(),
+            'password' => $this->makeField(trans('HCCore::user.login.password'))
+                ->password()
+                ->isRequired()
+                ->toArray(),
+            'password_confirmation' => $this->makeField(trans('HCCore::user.passwords.new_again'))
+                ->password()
+                ->isRequired()
+                ->toArray(),
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,18 +29,21 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers;
 
+use GuzzleHttp\Client;
 use HoneyComb\Core\DTO\HCAuthorizeDTO;
 use HoneyComb\Core\Events\HCSocialiteAuthUserLoggedIn;
-use HoneyComb\Starter\Exceptions\HCException;
-use HoneyComb\Starter\Helpers\HCResponse;
 use HoneyComb\Core\Http\Requests\HCAuthLoginRequest;
 use HoneyComb\Core\Http\Requests\HCAuthRegisterRequest;
 use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
-use GuzzleHttp\Client;
+use HoneyComb\Starter\Exceptions\HCException;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Database\Connection;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
 
@@ -50,6 +53,8 @@ use Laravel\Socialite\Two\User;
  */
 class HCAuthController extends HCBaseController
 {
+    use AuthenticatesUsers;
+
     /**
      * @var Connection
      */
@@ -64,21 +69,28 @@ class HCAuthController extends HCBaseController
      * @var HCUserService
      */
     private $userService;
+    /**
+     * @var HCUserActivationService
+     */
+    private $activationService;
 
     /**
      * WBannerController constructor.
      * @param Connection $connection
      * @param HCResponse $response
      * @param HCUserService $userService
+     * @param HCUserActivationService $activationService
      */
     public function __construct(
         Connection $connection,
         HCResponse $response,
-        HCUserService $userService
+        HCUserService $userService,
+        HCUserActivationService $activationService
     ) {
         $this->connection = $connection;
         $this->response = $response;
         $this->userService = $userService;
+        $this->activationService = $activationService;
     }
 
     /**
@@ -91,6 +103,15 @@ class HCAuthController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
+            // If the class is using the ThrottlesLogins trait, we can automatically throttle
+            // the login attempts for this application. We'll key this by the username and
+            // the IP address of the client making these requests into this application.
+            if ($this->hasTooManyLoginAttempts($request)) {
+                $this->fireLockoutEvent($request);
+
+                $this->sendLockoutResponse($request);
+            }
+
             if ($request->isSocialProvider()) {
                 $user = $this->getSocialUser(
                     $request->input('access_token'),
@@ -100,18 +121,31 @@ class HCAuthController extends HCBaseController
                 /** @var HCUser $user */
                 $user = $this->userService->getRepository()->findOrFail($user->id);
 
-                event(new HCSocialiteAuthUserLoggedIn($user,  $request->input('provider')));
+                event(new HCSocialiteAuthUserLoggedIn($user, $request->input('provider')));
             } else {
                 if (!auth()->attempt($request->only(['email', 'password']))) {
-                    return $this->response->error(trans('auth.bad_credentials'), [], 401);
+                    throw new HCException(trans('auth.bad_credentials'));
                 }
 
                 $user = $request->user();
             }
 
+            if ($user->isNotActivated()) {
+                throw new HCException($this->activationService->sendActivationMail($user));
+            }
+
             $token = $user->createToken('Personal Access Token');
 
             $this->connection->commit();
+        } catch (ValidationException $exception) {
+            $this->connection->rollback();
+
+            // If the login attempt was unsuccessful we will increment the number of attempts
+            // to login and redirect the user back to the login form. Of course, when this
+            // user surpasses their maximum number of attempts they will get locked out.
+            $this->incrementLoginAttempts($request);
+
+            return $this->response->error($exception->getMessage(), $exception->errors());
         } catch (HCException $exception) {
             $this->connection->rollback();
 
@@ -166,6 +200,7 @@ class HCAuthController extends HCBaseController
      * @param string $accessToken
      * @param string $provider
      * @return HCUser
+     * @throws HCException
      * @throws \Throwable
      */
     private function getSocialUser(string $accessToken, string $provider): HCUser
@@ -183,7 +218,6 @@ class HCAuthController extends HCBaseController
         return $this->userService->createOrUpdateUserProvider($user, $provider);
     }
 
-
     /**
      * @param Request $request
      * @return JsonResponse
@@ -196,6 +230,35 @@ class HCAuthController extends HCBaseController
         $user->token()->revoke();
 
         return $this->response->success('Successfully logged out');
+    }
+
+    /**
+     * Active user account
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function activate(Request $request): JsonResponse
+    {
+        $this->connection->beginTransaction();
+
+        try {
+            $user = $this->activationService->activateUser(
+                $request->input('token')
+            );
+
+            $token = $user->createToken('Personal Access Token');
+
+            $this->connection->commit();
+        } catch (\Throwable $exception) {
+            $this->connection->rollback();
+
+            report($exception);
+
+            return $this->response->error($exception->getMessage());
+        }
+
+        return $this->response->success('OK', (new HCAuthorizeDTO($user, $token))->toArray());
     }
 
     /**

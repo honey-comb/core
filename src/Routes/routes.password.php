@@ -27,20 +27,13 @@
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Database\Seeds;
+Route::domain(config('hc.admin_domain'))
+    ->prefix('v1/api/password')
+    ->namespace('Password')
+    ->group(function () {
+        Route::post('remind', 'HCForgotPasswordController@sendResetLinkEmail')
+            ->name('v1.api.password.remind');
 
-use Illuminate\Database\Seeder;
-
-class HCCoreSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
-        $this->call(HCUserRolesSeed::class);
-        $this->call(HCLanguageSeed::class);
-    }
-}
+        Route::post('reset', 'HCResetPasswordController@reset')
+            ->name('v1.api.password.reset');
+    });

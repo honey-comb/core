@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,26 +20,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-Route::prefix('password')
-    ->middleware('web')
-    ->namespace('Frontend')
+Route::domain(config('hc.admin_domain'))
+    ->prefix('v1/api')
     ->group(function () {
-        Route::get('remind', 'HCForgotPasswordController@showLinkRequestForm')
-            ->name('users.password.remind')
-            ->middleware('guest');
+        Route::get('logout', 'HCAuthController@logout')
+            ->name('v1.api.logout')
+            ->middleware('auth:api');
 
-        Route::post('remind', 'HCForgotPasswordController@sendResetLinkEmail')->name('users.password.remind.post');
+        Route::post('login', 'HCAuthController@login')
+            ->name('v1.api.login');
 
-        Route::get('reset/{token}', 'HCResetPasswordController@showResetForm')
-            ->name('users.password.reset')
-            ->middleware('guest');
+        Route::post('register', 'HCAuthController@register')
+            ->name('v1.api.register');
 
-        Route::post('reset', 'HCResetPasswordController@reset')->name('users.password.reset.post');
+        Route::post('activation', 'HCAuthController@activate')
+            ->name('v1.api.activation');
     });

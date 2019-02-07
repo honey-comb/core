@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 innovationbase
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Services;
 
-use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
+use HoneyComb\Core\Http\Requests\HCLanguageRequest;
 use HoneyComb\Core\Repositories\HCLanguageRepository;
 use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
 

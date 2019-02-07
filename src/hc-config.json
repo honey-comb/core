@@ -5,46 +5,34 @@
     "namespace": "HoneyComb\\Core"
   },
   "formData": {
-    "user": "HoneyComb\\Core\\Forms\\Admin\\HCUserForm",
-    "user-login": "HoneyComb\\Core\\Forms\\Frontend\\HCUserLoginForm",
-    "user-register": "HoneyComb\\Core\\Forms\\Frontend\\HCUserRegisterForm",
-    "password-remind": "HoneyComb\\Core\\Forms\\Frontend\\HCPasswordRemindForm",
-    "password-reset": "HoneyComb\\Core\\Forms\\Frontend\\HCPasswordResetForm"
+    "user": "HoneyComb\\Core\\Forms\\HCUserForm",
+    "user-login": "HoneyComb\\Core\\Forms\\HCUserLoginForm",
+    "user-register": "HoneyComb\\Core\\Forms\\HCUserRegisterForm",
+    "password-remind": "HoneyComb\\Core\\Forms\\Password\\HCPasswordRemindForm",
+    "password-reset": "HoneyComb\\Core\\Forms\\Password\\HCPasswordResetForm"
   },
   "adminMenu": [
     {
-      "route": "admin.user.index",
-      "parent": "admin.index",
+      "route": "v1.api.users.index",
       "translation": "HCCore::user.page_title",
       "icon": "users",
       "aclPermission": "honey_comb_core_user_list"
     },
     {
-      "route": "admin.acl.role.index",
-      "parent": "admin.user.index",
+      "route": "v1.api.users.roles.index",
       "translation": "HCCore::acl_roles.page_title",
       "icon": "user-md",
       "aclPermission": "honey_comb_core_acl_role_list"
     },
     {
-      "route": "admin.language.index",
-      "parent": "admin.index",
+      "route": "v1.api.languages.index",
       "translation": "HCCore::language.page_title",
       "icon": "language",
       "aclPermission": "honey_comb_core_language_list"
     }
   ],
   "seeder": "HoneyComb\\Core\\Database\\Seeds\\HCCoreSeeder",
-  "routes": [
-    "Routes/Admin/routes.admin.php",
-    "Routes/Admin/routes.logs.php",
-    "Routes/Admin/routes.roles.php",
-    "Routes/Admin/routes.users.php",
-    "Routes/Admin/routes.languages.php",
-    "Routes/Frontend/routes.auth.php",
-    "Routes/Frontend/routes.password.php",
-    "Routes/Frontend/routes.languages.php"
-  ],
+  "routes": [],
   "acl": {
     "permissions": [
       {

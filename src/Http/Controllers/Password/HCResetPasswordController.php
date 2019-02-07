@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,39 +20,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
-namespace HoneyComb\Core\Http\Controllers\Frontend;
+namespace HoneyComb\Core\Http\Controllers\Password;
 
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Starter\Helpers\HCResponse;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /**
- * Class HCForgotPasswordController
- * @package HoneyComb\Core\Http\Controllers\Frontend
+ * Class HCResetPasswordController
+ * @package HoneyComb\Core\Http\Controllers\Password
  */
-class HCForgotPasswordController extends HCBaseController
+class HCResetPasswordController extends HCBaseController
 {
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
     |--------------------------------------------------------------------------
     |
-    | This controller is responsible for handling password reset emails and
-    | includes a trait which assists in sending these notifications from
-    | your application to your users. Feel free to explore this trait.
+    | This controller is responsible for handling password reset requests
+    | and uses a simple trait to include this behavior. You're free to
+    | explore this trait and override any methods you wish to tweak.
     |
     */
 
-    use SendsPasswordResetEmails;
+    use ResetsPasswords;
+
+    /**
+     * Where to redirect users after resetting their password.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/';
 
     /**
      * @var HCResponse
@@ -71,34 +79,29 @@ class HCForgotPasswordController extends HCBaseController
     }
 
     /**
-     * Display the form to request a password reset link.
-     * @return View
+     * Get the response for a successful password reset.
+     *
+     * @param Request $request
+     * @param string $response
+     * @return JsonResponse
      */
-    public function showLinkRequestForm(): View
+    protected function sendResetResponse(Request $request, $response): JsonResponse
     {
-        return view('HCCore::password.remind');
+        return response()->json([
+            'success' => true,
+            'message' => trans($response),
+            'redirectUrl' => session('url.intended', url('/')),
+        ]);
     }
 
     /**
-     * Get the response for a successful password reset link.
+     * Get the response for a failed password reset.
      *
      * @param Request $request
-     * @param  string $response
-     * @return string
+     * @param string $response
+     * @return JsonResponse
      */
-    protected function sendResetLinkResponse(Request $request, $response)
-    {
-        return $this->response->success(trans($response));
-    }
-
-    /**
-     * Get the response for a failed password reset link.
-     *
-     * @param Request $request
-     * @param $response
-     * @return string;
-     */
-    protected function sendResetLinkFailedResponse(Request $request, $response)
+    protected function sendResetFailedResponse(Request $request, $response): JsonResponse
     {
         return $this->response->error(trans($response));
     }

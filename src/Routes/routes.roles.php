@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,30 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
 Route::domain(config('hc.admin_domain'))
-    ->prefix(config('hc.admin_url'))
-    ->namespace('Admin')
-    ->middleware(['web', 'auth'])
+    ->namespace('Acl')
+    ->middleware('auth:api')
+    ->prefix('v1/api/users/roles')
     ->group(function () {
-        Route::get('languages', 'HCLanguageController@index')
-            ->name('admin.language.index')
-            ->middleware('acl:honey_comb_core_language_list');
+        Route::get('/', 'HCRoleController@index')
+            ->name('v1.api.users.roles.index')
+            ->middleware('acl:honey_comb_core_acl_role_list');
 
-        Route::get('api/languages', 'HCLanguageController@getListPaginate')
-            ->name('admin.api.language')
-            ->middleware('acl:honey_comb_core_language_list');
-
-        Route::get('api/languages/options', 'HCLanguageController@getOptions')
-            ->name('admin.api.language.options');
-
-        Route::patch('api/languages/{id}', 'HCLanguageController@patch')
-            ->name('admin.api.language.update.strict')
-            ->middleware('acl:honey_comb_core_language_update');
+        Route::put('permissions', 'HCRoleController@updatePermissions')
+            ->name('v1.api.users.index.roles.update.permissions')
+            ->middleware('acl:honey_comb_core_acl_role_update');
     });
