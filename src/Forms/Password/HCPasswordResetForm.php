@@ -49,7 +49,7 @@ class HCPasswordResetForm extends HCForm
             'storageUrl' => route('v1.api.password.reset'),
             'buttons' => [
                 'submit' => [
-                    'label' => trans('HCCore::core.buttons.submit'),
+                    'label' => trans('HCCore::users.button.submit'),
                 ],
             ],
             'structure' => $this->getStructure($edit),
@@ -74,15 +74,15 @@ class HCPasswordResetForm extends HCForm
     public function getStructureNew(): array
     {
         return [
-            'email' => $this->makeField(trans('HCCore::user.login.email'))
+            'email' => $this->makeField(trans('HCCore::users.label.email'))
                 ->email()
                 ->isRequired()
                 ->toArray(),
-            'password' => $this->makeField(trans('HCCore::user.password.new'))
+            'password' => $this->makeField(trans('HCCore::users.label.new_password'))
                 ->password()
                 ->isRequired()
                 ->toArray(),
-            'password_confirmation' => $this->makeField(trans('HCCore::user.passwords.new_again'))
+            'password_confirmation' => $this->makeField(trans('HCCore::users.label.new_password_confirmation'))
                 ->password()
                 ->isRequired()
                 ->toArray(),

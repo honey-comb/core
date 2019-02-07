@@ -49,7 +49,7 @@ class HCPasswordRemindForm extends HCForm
             'storageUrl' => route('v1.api.password.remind'),
             'buttons' => [
                 'submit' => [
-                    'label' => trans('HCCore::core.buttons.submit'),
+                    'label' => trans('HCCore::users.button.submit'),
                 ],
             ],
             'structure' => $this->getStructure($edit),
@@ -75,7 +75,7 @@ class HCPasswordRemindForm extends HCForm
     public function getStructureNew(): array
     {
         return [
-            'email' => $this->makeField(trans('HCCore::user.login.email'))
+            'email' => $this->makeField(trans('HCCore::users.label.email'))
                 ->email()
                 ->isRequired()
                 ->toArray(),

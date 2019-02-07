@@ -84,7 +84,7 @@ class HCUserController extends HCBaseController
     {
         $config = [
             'title' => trans('HCCore::user.page_title'),
-            'url' => route('admin.api.user'),
+            'url' => route('v1.api.admin.users.list'),
             'form' => route('admin.api.form-manager', ['user']),
             'headers' => $this->getTableColumns(),
             'actions' => $this->getActions('honey_comb_core_user'),
@@ -122,7 +122,7 @@ class HCUserController extends HCBaseController
             return $this->response->error($exception->getMessage());
         }
 
-        return $this->response->success('Created', $record);
+        return $this->response->success(trans('HCCore::users.message.user_updated'), $record);
     }
 
     /**
@@ -159,7 +159,7 @@ class HCUserController extends HCBaseController
             return $this->response->error($exception->getMessage());
         }
 
-        return $this->response->success('Updated', $record);
+        return $this->response->success(trans('HCCore::users.message.user_updated'), $record);
     }
 
     /**
@@ -214,7 +214,7 @@ class HCUserController extends HCBaseController
             return $this->response->error($exception->getMessage());
         }
 
-        return $this->response->success('Successfully deleted');
+        return $this->response->success(trans('HCCore::users.message.user_deleted'));
     }
 
     /**
@@ -238,7 +238,7 @@ class HCUserController extends HCBaseController
             return $this->response->error($exception->getMessage());
         }
 
-        return $this->response->success('Successfully deleted');
+        return $this->response->success(trans('HCCore::users.message.user_deleted'));
     }
 
     /**
@@ -262,7 +262,7 @@ class HCUserController extends HCBaseController
             return $this->response->error($exception->getMessage());
         }
 
-        return $this->response->success('Successfully restored');
+        return $this->response->success(trans('HCCore::users.message.user_restored'));
     }
 
     /**
@@ -273,10 +273,10 @@ class HCUserController extends HCBaseController
     protected function getTableColumns(): array
     {
         $columns = [
-            'email' => $this->headerText(trans('HCCore::user.email')),
-            'last_login' => $this->headerText(trans('HCCore::user.last_login')),
-            'last_activity' => $this->headerText(trans('HCCore::user.last_activity')),
-            'activated_at' => $this->headerText(trans('HCCore::user.activated_at')),
+            'email' => $this->headerText(trans('HCCore::users.label.email')),
+            'last_login' => $this->headerText(trans('HCCore::users.label.last_login')),
+            'last_activity' => $this->headerText(trans('HCCore::users.label.last_activity')),
+            'activated_at' => $this->headerText(trans('HCCore::users.label.activated_at')),
         ];
 
         return $columns;

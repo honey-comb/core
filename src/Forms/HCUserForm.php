@@ -79,15 +79,21 @@ class HCUserForm extends HCForm
     public function getStructureNew(): array
     {
         return [
-            'email' => $this->makeField(trans('HCCore::user.email'), true)
+            'email' => $this->makeField(trans('HCCore::users.label.email'), true)
                 ->email()
                 ->toArray(),
-            'password' => $this->makeField(trans('HCCore::user.register.password'), true)
+            'password' => $this->makeField(trans('HCCore::users.label.password'), true)
                 ->password()
                 ->toArray(),
-            'is_active' => $this->makeField(trans('HCCore::user.active'))->checkbox()->toArray(),
-            'send_welcome_email' => $this->makeField(trans('HCCore::user.send_welcome_email'))->checkbox()->toArray(),
-            'send_password' => $this->makeField(trans('HCCore::user.send_password'))->checkbox()->toArray(),
+            'is_active' => $this->makeField(trans('HCCore::users.label.is_active'))
+                ->checkbox()
+                ->toArray(),
+            'send_welcome_email' => $this->makeField(trans('HCCore::users.label.send_welcome_email'))
+                ->checkbox()
+                ->toArray(),
+            'send_password' => $this->makeField(trans('HCCore::users.label.send_password'))
+                ->checkbox()
+                ->toArray(),
             'roles' => $this->roles(),
         ];
     }
@@ -97,7 +103,7 @@ class HCUserForm extends HCForm
      */
     private function roles(): array
     {
-        return $this->makeField(trans('HCCore::user.role_groups'))
+        return $this->makeField(trans('HCCore::users.label.role_groups'))
             ->checkboxList()
             ->setOptions($this->roleRepository->getRolesForUserCreation())
             ->toArray();
@@ -109,40 +115,46 @@ class HCUserForm extends HCForm
     public function getStructureEdit(): array
     {
         return [
-            'first_name' => $this->makeField(trans('HCCore::user.first_name'), true)->toArray(),
-            'last_name' => $this->makeField(trans('HCCore::user.last_name'), true)->toArray(),
-            'phone' => $this->makeField(trans('HCCore::user.phone'))->toArray(),
-            'description' => $this->makeField(trans('HCCore::user.description'))
+            'first_name' => $this->makeField(trans('HCCore::users.label.first_name'))
+                ->isRequired()
+                ->toArray(),
+            'last_name' => $this->makeField(trans('HCCore::users.label.last_name'))
+                ->isRequired()
+                ->toArray(),
+            'phone' => $this->makeField(trans('HCCore::users.label.phone'))
+                ->toArray(),
+            'description' => $this->makeField(trans('HCCore::users.label.description'))
                 ->textArea()
                 ->toArray(),
-            'address' => $this->makeField(trans('HCCore::user.address'))
+            'address' => $this->makeField(trans('HCCore::users.label.address'))
                 ->textArea()
                 ->toArray(),
-            'email' => $this->makeField(trans('HCCore::user.email'), true)
+            'email' => $this->makeField(trans('HCCore::users.label.email'))
+                ->email()
+                ->isRequired()
+                ->toArray(),
+            'notification_email' => $this->makeField(trans('HCCore::users.label.notification_email'))
                 ->email()
                 ->toArray(),
-            'notification_email' => $this->makeField(trans('HCCore::user.notification_email'))
-                ->email()
-                ->toArray(),
-            'password' => $this->makeField(trans('HCCore::user.passwords.new'))
+            'password' => $this->makeField(trans('HCCore::users.label.new_password'))
                 ->password()
                 ->setMinLength(6)
                 ->toArray(),
-            'password_confirmation' => $this->makeField(trans('HCCore::user.passwords.new_again'))
+            'password_confirmation' => $this->makeField(trans('HCCore::users.label.new_password_confirmation'))
                 ->password()
                 ->setMinLength(6)
                 ->toArray(),
-            'is_active' => $this->makeField(trans('HCCore::user.active'))
+            'is_active' => $this->makeField(trans('HCCore::users.label.is_active'))
                 ->checkbox()
                 ->toArray(),
             'roles' => $this->roles(),
-            'last_login' => $this->makeField(trans('HCCore::user.last_login'))
+            'last_login' => $this->makeField(trans('HCCore::users.label.last_login'))
                 ->isReadOnly()
                 ->toArray(),
-            'last_activity' => $this->makeField(trans('HCCore::user.last_activity'))
+            'last_activity' => $this->makeField(trans('HCCore::users.label.last_activity'))
                 ->isReadOnly()
                 ->toArray(),
-            'activated_at' => $this->makeField(trans('HCCore::user.activation.activated_at'))
+            'activated_at' => $this->makeField(trans('HCCore::users.label.activated_at'))
                 ->isReadOnly()
                 ->toArray(),
         ];

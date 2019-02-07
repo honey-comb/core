@@ -49,7 +49,7 @@ class HCUserLoginForm extends HCForm
             'storageUrl' => route('v1.api.login'),
             'buttons' => [
                 'submit' => [
-                    'label' => trans('HCCore::core.buttons.login'),
+                    'label' => trans('HCCore::users.button.login'),
                 ],
             ],
             'structure' => $this->getStructure($edit),
@@ -76,16 +76,16 @@ class HCUserLoginForm extends HCForm
     public function getStructureNew(): array
     {
         return [
-            'email' => $this->makeField(trans('HCCore::user.login.email'))
+            'email' => $this->makeField(trans('HCCore::users.label.email'))
                 ->email()
                 ->isRequired()
                 ->toArray(),
-            'password' => $this->makeField(trans('HCCore::user.login.password'))
+            'password' => $this->makeField(trans('HCCore::users.label.password'))
                 ->password()
                 ->setMinLength(6)
                 ->isRequired()
                 ->toArray(),
-            'remember' => $this->makeField(trans('HCCore::user.login.remember'))
+            'remember' => $this->makeField(trans('HCCore::users.label.remember'))
                 ->checkbox()
                 ->toArray(),
         ];

@@ -49,7 +49,7 @@ class HCUserRegisterForm extends HCForm
             'storageUrl' => route('v1.api.register'),
             'buttons' => [
                 'submit' => [
-                    'label' => trans('HCCore::core.buttons.register'),
+                    'label' => trans('HCCore::users.button.register'),
                 ],
             ],
             'structure' => $this->getStructure($edit),
@@ -76,15 +76,15 @@ class HCUserRegisterForm extends HCForm
     public function getStructureNew(): array
     {
         return [
-            'email' => $this->makeField(trans('HCCore::user.login.email'))
+            'email' => $this->makeField(trans('HCCore::users.label.email'))
                 ->email()
                 ->isRequired()
                 ->toArray(),
-            'password' => $this->makeField(trans('HCCore::user.login.password'))
+            'password' => $this->makeField(trans('HCCore::users.label.password'))
                 ->password()
                 ->isRequired()
                 ->toArray(),
-            'password_confirmation' => $this->makeField(trans('HCCore::user.passwords.new_again'))
+            'password_confirmation' => $this->makeField(trans('HCCore::users.label.password_confirmation'))
                 ->password()
                 ->isRequired()
                 ->toArray(),
