@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 Route::domain(config('hc.admin_domain'))
     ->prefix('v1/api')
+    ->middleware('api')
     ->group(function () {
         Route::get('logout', 'HCAuthController@logout')
             ->name('v1.api.logout')
