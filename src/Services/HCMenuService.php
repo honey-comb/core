@@ -113,8 +113,8 @@ class HCMenuService
         $branch = [];
 
         foreach ($elements as $element) {
-            $element['path'] = route($element['route']);
-            $element['label'] = trans($element['translation']);
+            $element['path'] = route($element['route'], null, false);
+            $element['label'] = trans(array_pull($element, 'translation'));
 
             $parent = array_get($element, 'parent');
 
