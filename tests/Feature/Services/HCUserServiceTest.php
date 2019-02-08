@@ -83,7 +83,7 @@ class HCUserServiceTest extends TestCase
         Model::setEventDispatcher($initialDispatcher);
 
         /** @var HCUser $userRecord */
-        $userRecord = $this->getTestClassInstance()->createUser($userData, $roles, $personalData, false, false);
+        $userRecord = $this->getTestClassInstance()->createUser($userData, $personalData, $roles, false, false);
 
         Event::assertDispatched(HCUserCreated::class, function ($e) use ($userRecord) {
             return $e->user->id === $userRecord->id;
@@ -129,7 +129,7 @@ class HCUserServiceTest extends TestCase
         Model::setEventDispatcher($initialDispatcher);
 
         /** @var HCUser $userRecord */
-        $userRecord = $this->getTestClassInstance()->createUser($userData, $roles, $personalData, true, true);
+        $userRecord = $this->getTestClassInstance()->createUser($userData, $personalData, $roles, true, true);
 
         Notification::assertSentTo($userRecord, HCAdminWelcomeEmail::class,
             function ($notification) use ($userRecord) {

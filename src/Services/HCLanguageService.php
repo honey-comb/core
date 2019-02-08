@@ -70,7 +70,7 @@ class HCLanguageService
      */
     public function update(HCLanguageRequest $request, string $languageId)
     {
-        cache()->forget($this->getRepository()->getFeCacheKey());
+        cache()->forget($this->getRepository()->getInterfaceCacheKey());
 
         $this->getRepository()->update($request->getStrictUpdateValues(), $languageId);
     }

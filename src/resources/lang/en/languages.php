@@ -40,4 +40,8 @@ return [
         'back_end' => 'Back end',
         'content' => 'Content',
     ],
+
+    'message' => [
+        'lang_updated' => 'Successfully updated!',
+    ],
 ];

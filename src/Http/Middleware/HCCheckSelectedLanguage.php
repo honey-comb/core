@@ -30,42 +30,48 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Middleware;
 
 use Closure;
-use HoneyComb\Core\Services\HCAdminMenuService;
-use Illuminate\Container\EntryNotFoundException;
+use HoneyComb\Core\Repositories\HCLanguageRepository;
 use Illuminate\Http\Request;
 
 /**
- * Class HCAclAdminMenu
+ * Class HCCheckSelectedLanguage
  * @package HoneyComb\Core\Http\Middleware
  */
-class HCAclAdminMenu
+class HCCheckSelectedLanguage
 {
     /**
-     * @var HCAdminMenuService
+     * @var HCLanguageRepository
      */
-    private $adminMenuService;
+    private $languageRepository;
 
     /**
-     * HCAclAdminMenu constructor.
-     * @param HCAdminMenuService $adminMenuService
+     * HCCheckSelectedAdminLanguage constructor.
+     * @param HCLanguageRepository $languageRepository
      */
-    public function __construct(HCAdminMenuService $adminMenuService)
+    public function __construct(HCLanguageRepository $languageRepository)
     {
-        $this->adminMenuService = $adminMenuService;
+        $this->languageRepository = $languageRepository;
     }
 
     /**
-     * Handle an incoming request.
-     *
      * @param Request $request
      * @param Closure $next
      * @return mixed
-     * @throws EntryNotFoundException
      * @throws \Exception
      */
     public function handle(Request $request, Closure $next)
     {
-        $this->adminMenuService->generate($request);
+        if ($request->headers->has(config('hc.header_language_key'))) {
+            $enabled = $this->languageRepository->getInterfaceActiveLanguages();
+
+            $locale = $request->headers->get(config('hc.header_language_key'));
+
+            if (!$enabled->contains('iso_639_1', $locale)) {
+                $locale = config('app.locale');
+            }
+
+            app()->setLocale($locale);
+        }
 
         return $next($request);
     }

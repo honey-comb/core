@@ -41,28 +41,11 @@ use Illuminate\Notifications\Notification;
 class HCAdminWelcomeEmail extends Notification
 {
     /**
-     * The password reset token.
-     *
-     * @var string
-     */
-    public $authRoute;
-
-    /**
      * Send password holder
      *
      * @var
      */
     private $sendPassword;
-
-    /**
-     * Create a notification instance.
-     *
-     * @param $authRoute
-     */
-    public function __construct(string $authRoute = 'auth.index')
-    {
-        $this->authRoute = $authRoute;
-    }
 
     /**
      * Get the notification's delivery channels.
@@ -93,8 +76,6 @@ class HCAdminWelcomeEmail extends Notification
         if ($this->sendPassword) {
             $message->line(trans('HCCore::mail.welcome.show_password', ['password' => $this->sendPassword]));
         }
-
-        $message->action(trans('HCCore::mail.welcome.login_link'), route($this->authRoute));
 
         if (is_null($notifiable->activated_at)) {
             $message->line(trans('HCCore::mail.welcome.activation_required'));

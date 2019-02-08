@@ -147,12 +147,12 @@ class HCUserService
                 'is_active' => BoolEnum::yes()->id(),
             ],
             [
-                $defaultRole,
-            ],
-            [
                 'first_name' => $firstName,
                 'last_name' => $lastName,
                 'photo' => $photo,
+            ],
+            [
+                $defaultRole,
             ]
         );
 

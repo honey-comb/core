@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Middleware;
 
 use Closure;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -43,6 +44,20 @@ use Symfony\Component\HttpFoundation\Response;
 class HCAclAuthenticate
 {
     /**
+     * @var HCResponse
+     */
+    private $response;
+
+    /**
+     * HCAclAuthenticate constructor.
+     * @param HCResponse $response
+     */
+    public function __construct(HCResponse $response)
+    {
+        $this->response = $response;
+    }
+
+    /**
      * Handle an incoming request.
      *
      * @param Request $request
@@ -53,13 +68,12 @@ class HCAclAuthenticate
     public function handle(Request $request, Closure $next, $guard = null)
     {
         if (auth()->guard($guard)->guest()) {
-            if ($request->ajax()) {
-                return response()->json('Unauthorized.', JsonResponse::HTTP_UNAUTHORIZED);
-            } else {
-                return redirect()->guest(
-                    config('hc.auth_redirect')
-                );
-            }
+            return $this->response->error(
+                trans('HCCore::core.error.unauthenticated'),
+                [],
+                null,
+                JsonResponse::HTTP_UNAUTHORIZED
+            );
         }
 
         return $next($request);

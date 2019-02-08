@@ -25,54 +25,36 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
-namespace HoneyComb\Core\Http\Middleware;
-
-use Closure;
-use HoneyComb\Core\Repositories\HCLanguageRepository;
-use Illuminate\Http\Request;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
- * Class HCCheckSelectedAdminLanguage
- * @package HoneyComb\Core\Http\Middleware
+ * Class AddInterfaceFieldToHcLanguageTable
  */
-class HCCheckSelectedAdminLanguage
+class AddInterfaceFieldToHcLanguageTable extends Migration
 {
     /**
-     * @var HCLanguageRepository
+     * Run the migrations.
+     *
+     * @return void
      */
-    private $languageRepository;
-
-    /**
-     * HCCheckSelectedAdminLanguage constructor.
-     * @param HCLanguageRepository $languageRepository
-     */
-    public function __construct(HCLanguageRepository $languageRepository)
+    public function up(): void
     {
-        $this->languageRepository = $languageRepository;
+        Schema::table('hc_language', function (Blueprint $table) {
+            $table->boolean('interface')->default(0)->after('content');
+        });
     }
 
     /**
-     * @param Request $request
-     * @param Closure $next
-     * @return mixed
+     * Reverse the migrations.
+     *
+     * @return void
      */
-    public function handle(Request $request, Closure $next)
+    public function down(): void
     {
-        if ($request->segment(1) == config('hc.admin_url')) {
-
-            $enabled = $this->languageRepository->getAdminActiveLanguages();
-
-            $locale = session()->get('back-end');
-
-            if (!$enabled->contains('iso_639_1', $locale)) {
-                $locale = config('app.locale');
-            }
-
-            app()->setLocale($locale);
-        }
-
-        return $next($request);
+        Schema::table('hc_language', function (Blueprint $table) {
+            $table->dropColumn('interface');
+        });
     }
 }

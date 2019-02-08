@@ -50,7 +50,7 @@ trait HCExceptionHandlerTrait
     protected function unauthenticated($request, AuthenticationException $exception): JsonResponse
     {
         return app(HCResponse::class)
-            ->error(trans('HCCore::core.error.unauthenticated'), null, null, 401);
+            ->error(trans('HCCore::core.error.unauthenticated'), [], null, JsonResponse::HTTP_UNAUTHORIZED);
     }
 
     /**

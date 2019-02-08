@@ -45,7 +45,7 @@ class HCLanguageRepository extends HCBaseRepository
     /**
      * @var string
      */
-    protected $feCacheKey = '_hc_fe_languages';
+    protected $interfaceCacheKey = '_hc_interface_languages';
 
     /**
      * @return string
@@ -58,44 +58,22 @@ class HCLanguageRepository extends HCBaseRepository
     /**
      * @return string
      */
-    public function getFeCacheKey(): string
+    public function getInterfaceCacheKey(): string
     {
-        return $this->feCacheKey;
+        return $this->interfaceCacheKey;
     }
 
     /**
-     * Get all available admin languages
-     *
-     * @return Collection
-     */
-    public function getAdminActiveLanguages(): Collection
-    {
-        return $this->makeQuery()->where('back_end', '1')->get();
-    }
-
-    /**
-     * Get all available admin languages
+     * Get all available interface languages
      *
      * @return Collection
      * @throws \Exception
      */
-    public function getFrontEndActiveLanguages(): Collection
+    public function getInterfaceActiveLanguages(): Collection
     {
-        return cache()->remember($this->getFeCacheKey(), 60 * 24 * 7, function () {
-            return $this->makeQuery()->where('front_end', BoolEnum::yes()->id())->get();
+        return cache()->remember($this->getInterfaceCacheKey(), 60 * 24 * 7, function () {
+            return $this->makeQuery()->where('interface', BoolEnum::yes()->id())->get();
         });
-    }
-
-    /**
-     * Check if given language is available to access
-     *
-     * @param string $lang
-     * @param string $location
-     * @return bool
-     */
-    public function isAvailableForChange(string $lang, string $location): bool
-    {
-        return $this->makeQuery()->where(['iso_639_1' => $lang, $location => 1])->exists();
     }
 
     /**

@@ -58,6 +58,7 @@ class HCLogLastActivity
         $lastActive = $request->session()->get('_lastActive');
 
         if ($time && (is_null($lastActive) || Carbon::now()->gt($lastActive))) {
+            // TODO remove. Update last activity, when refreshing token (API)
             $request->session()->forget('_lastActive');
             $request->session()->put('_lastActive', Carbon::now()->addMinutes($time));
 

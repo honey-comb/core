@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Middleware;
 
 use Closure;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -40,6 +41,20 @@ use Illuminate\Http\Request;
 class HCAclPermissionsMiddleware
 {
     /**
+     * @var HCResponse
+     */
+    private $response;
+
+    /**
+     * HCAclPermissionsMiddleware constructor.
+     * @param HCResponse $response
+     */
+    public function __construct(HCResponse $response)
+    {
+        $this->response = $response;
+    }
+
+    /**
      * Handle an incoming request.
      *
      * @param Request $request
@@ -49,14 +64,14 @@ class HCAclPermissionsMiddleware
      */
     public function handle(Request $request, Closure $next, $permission = null)
     {
-        if (count($request->segments()) == 1 && $request->segment(1) == config('hc.admin_url')) {
-            $access = true;
-        } else {
-            $access = $request->user()->can($permission);
-        }
-
-        if (!$access) {
-            abort(JsonResponse::HTTP_UNAUTHORIZED);
+        if (auth()->guard('api')->guest() || $request->user()->cant($permission)) {
+//            abort(JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->response->error(
+                trans('HCCore::core.error.unauthenticated'),
+                [],
+                null,
+                JsonResponse::HTTP_UNAUTHORIZED
+            );
         }
 
         return $next($request);

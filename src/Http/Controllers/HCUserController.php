@@ -107,8 +107,8 @@ class HCUserController extends HCBaseController
         try {
             $record = $this->service->createUser(
                 $request->getUserInput(),
-                $request->getRoles(),
                 $request->getPersonalData(),
+                $request->getRoles(),
                 $request->filled('send_welcome_email'),
                 $request->filled('send_password')
             );

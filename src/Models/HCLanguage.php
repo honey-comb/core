@@ -59,6 +59,7 @@ class HCLanguage extends HCUuidSoftModel
         'front_end',
         'back_end',
         'content',
+        'interface',
     ];
 
 }

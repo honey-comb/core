@@ -118,7 +118,7 @@ class HCLanguageController extends HCBaseController
     {
         $this->service->update($request, $languageId);
 
-        return $this->response->success('Updated');
+        return $this->response->success(trans('HCCore::languages.message.lang_updated'));
     }
 
     /**

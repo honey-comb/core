@@ -36,12 +36,9 @@ use HoneyComb\Core\Console\HCProjectSize;
 use HoneyComb\Core\Console\HCScanRolePermissionsCommand;
 use HoneyComb\Core\Console\HCSeedCommand;
 use HoneyComb\Core\Console\HCUpdate;
-use HoneyComb\Core\Http\Middleware\HCAclAdminMenu;
 use HoneyComb\Core\Http\Middleware\HCAclAuthenticate;
 use HoneyComb\Core\Http\Middleware\HCAclPermissionsMiddleware;
-use HoneyComb\Core\Http\Middleware\HCCheckSelectedAdminLanguage;
-use HoneyComb\Core\Http\Middleware\HCCheckSelectedFrontEndLanguage;
-use HoneyComb\Core\Http\Middleware\HCLogLastActivity;
+use HoneyComb\Core\Http\Middleware\HCCheckSelectedLanguage;
 use HoneyComb\Core\Models\Acl\HCAclPermission;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
@@ -54,7 +51,6 @@ use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
 use HoneyComb\Core\Services\Acl\HCRoleService;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
-use HoneyComb\Starter\Exceptions\HCException;
 use HoneyComb\Starter\Providers\HCBaseServiceProvider;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Routing\Router;
@@ -62,7 +58,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider;
-use Symfony\Component\Debug\ExceptionHandler;
 
 /**
  * Class HCCoreServiceProvider
@@ -194,24 +189,8 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
             $router->aliasMiddleware('acl', HCACLPermissionsMiddleware::class);
         }
 
-        if (!in_array(HCACLAuthenticate::class, $ignore)) {
-            $router->aliasMiddleware('auth', HCACLAuthenticate::class);
-        }
-
-        if (!in_array(HCCheckSelectedFrontEndLanguage::class, $ignore)) {
-            $router->aliasMiddleware('multiLang', HCCheckSelectedFrontEndLanguage::class);
-        }
-
-        if (!in_array(HCACLAdminMenu::class, $ignore)) {
-            $router->pushMiddleWareToGroup('web', HCACLAdminMenu::class);
-        }
-
-        if (!in_array(HCLogLastActivity::class, $ignore)) {
-            $router->pushMiddleWareToGroup('web', HCLogLastActivity::class);
-        }
-
-        if (!in_array(HCCheckSelectedAdminLanguage::class, $ignore)) {
-            $router->pushMiddleWareToGroup('web', HCCheckSelectedAdminLanguage::class);
+        if (!in_array(HCCheckSelectedLanguage::class, $ignore)) {
+            $router->pushMiddleWareToGroup('api', HCCheckSelectedLanguage::class);
         }
     }
 
