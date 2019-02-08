@@ -123,14 +123,14 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
     protected function registerPublishes(): void
     {
         parent::registerPublishes();
-
-        $this->publishes([
-            $this->packagePath('resources/assets') => resource_path('assets/honey-comb'),
-        ], 'hc-assets');
-
-        $this->publishes([
-            $this->packagePath('resources/public') => public_path('honey-comb'),
-        ], 'public');
+//
+//        $this->publishes([
+//            $this->packagePath('resources/assets') => resource_path('assets/honey-comb'),
+//        ], 'hc-assets');
+//
+//        $this->publishes([
+//            $this->packagePath('resources/public') => public_path('honey-comb'),
+//        ], 'public');
     }
 
     /**

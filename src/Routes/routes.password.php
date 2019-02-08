@@ -28,8 +28,9 @@
 declare(strict_types = 1);
 
 Route::domain(config('hc.admin_domain'))
-    ->prefix('v1/api/password')
     ->namespace('Password')
+    ->middleware('api')
+    ->prefix('v1/api/password')
     ->group(function () {
         Route::post('remind', 'HCForgotPasswordController@sendResetLinkEmail')
             ->name('v1.api.password.remind');
