@@ -40,7 +40,7 @@ class HCAuthLoginRequest extends FormRequest
      */
     public function isEmailProvider(): bool
     {
-        return $this->input('provider') == 'email';
+        return $this->input('provider', 'email') == 'email';
     }
 
     /**
@@ -82,17 +82,16 @@ class HCAuthLoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->input('provider') == 'email') {
+        if (!$this->isEmailProvider()) {
             return [
-                'provider' => 'required|in:email',
-                'email' => 'required|string|email|exists:hc_user,email',
-                'password' => 'required|string',
+                'provider' => 'required|in:facebook,google,linkedin',
+                'access_token' => 'required|string',
             ];
         }
 
         return [
-            'provider' => 'required|in:facebook,google,linkedin',
-            'access_token' => 'required|string',
+            'email' => 'required|string|email|exists:hc_user,email',
+            'password' => 'required|string',
         ];
     }
 }

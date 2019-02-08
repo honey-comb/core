@@ -28,7 +28,7 @@
 declare(strict_types = 1);
 
 Route::domain(config('hc.admin_domain'))
-    ->middleware('auth:api')
+    ->middleware(['api', 'auth:api'])
     ->prefix('v1/api/languages')
     ->group(function () {
         Route::get('/', 'HCLanguageController@index')

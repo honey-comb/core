@@ -214,7 +214,7 @@ class HCCreateSuperAdminCommand extends Command
     {
         $this->connection->beginTransaction();
         try {
-            $user = $this->userService->createUser(
+            $this->userService->createUser(
                 [
                     'email' => $this->email,
                     'password' => $this->password,

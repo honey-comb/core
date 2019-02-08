@@ -28,8 +28,8 @@
 declare(strict_types = 1);
 
 Route::domain(config('hc.admin_domain'))
+    ->middleware(['api', 'auth:api'])
     ->namespace('Acl')
-    ->middleware('auth:api')
     ->prefix('v1/api/users/roles')
     ->group(function () {
         Route::get('/', 'HCRoleController@index')

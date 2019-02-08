@@ -64,8 +64,7 @@ class HCAclPermissionsMiddleware
      */
     public function handle(Request $request, Closure $next, $permission = null)
     {
-        if (auth()->guard('api')->guest() || $request->user()->cant($permission)) {
-//            abort(JsonResponse::HTTP_UNAUTHORIZED);
+        if (auth()->guest() || $request->user()->cant($permission)) {
             return $this->response->error(
                 trans('HCCore::core.error.unauthenticated'),
                 [],

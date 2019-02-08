@@ -72,8 +72,6 @@ trait HCExceptionHandlerTrait
      */
     protected function convertExceptionToArray(Exception $exception): array
     {
-        $message = trans('HCCore::core.error.server_error');
-
         $errors = [
             'exception' => get_class($exception),
             'file' => $exception->getFile(),
@@ -85,7 +83,7 @@ trait HCExceptionHandlerTrait
 
         return [
             'success' => false,
-            'message' => $exception->getMessage() ?: $message,
+            'message' => $exception->getMessage() ?: 'Server error',
             'errors' => config('app.debug') ? $errors : [],
             'redirectUrl' => null,
         ];

@@ -123,11 +123,12 @@ class HCAuthController extends HCBaseController
 
                 event(new HCSocialiteAuthUserLoggedIn($user, $request->input('provider')));
             } else {
-                if (!auth()->attempt($request->only(['email', 'password']))) {
+                // TODO find better way
+                if (!auth()->guard('web')->attempt($request->only(['email', 'password']))) {
                     throw new HCException(trans('HCCore::users.error.auth_bad_credentials'));
                 }
 
-                $user = $request->user();
+                $user = auth()->guard('web')->user();
             }
 
             if ($user->isNotActivated()) {

@@ -119,7 +119,8 @@ class HCRoleRepository extends HCBaseRepository
     {
         return $this->makeQuery()
             ->where('slug', '=', $slug)
-            ->value('id');
+            ->firstOrFail()
+            ->id;
     }
 
     /**
