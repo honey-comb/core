@@ -7,15 +7,11 @@
   "authors": [
     {
       "name": "Mantas Paulauskas",
-      "email": "mp@interactivesolutions.lt"
+      "email": "mantopastas@gmail.com"
     },
     {
-      "name": "Jevgenij Dmitrijev",
-      "email": "jd@interactivesolutions.lt"
-    },
-    {
-      "name": "Vytautas Rimeikis",
-      "email": "vytautas.rimeikis@gmail.com"
+      "name": "Žygimantas Gylys",
+      "email": "zygimantas.gylys@gmail.com"
     }
   ],
   "require": {
@@ -23,8 +19,6 @@
     "laravel/framework": "5.7.*",
     "laravel/passport": "^7.1",
     "laravel/socialite": "^4.0",
-    "rap2hpoutre/laravel-log-viewer": "^0.14",
-    "spatie/laravel-cookie-consent": "^2.2",
     "honey-comb/starter": "0.3.*",
     "honey-comb/resources": "0.5.*"
   },
