@@ -46,7 +46,6 @@ class HCAdminMenuService
     /**
      * @param Request $request
      * @throws \Exception
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function generate(Request $request): void
     {

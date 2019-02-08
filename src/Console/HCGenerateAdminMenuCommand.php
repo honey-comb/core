@@ -108,7 +108,6 @@ class HCGenerateAdminMenuCommand extends Command
                 }
             }
         }
-        dd($this->adminMenuHolder);
 
         cache()->forget('hc-admin-menu');
         cache()->put('hc-admin-menu', $this->adminMenuHolder, Carbon::now()->addYear(2));
@@ -116,6 +115,7 @@ class HCGenerateAdminMenuCommand extends Command
 
     /**
      * @param array $file
+     * @return array
      */
     private function overridePackageItems(array $file): array
     {

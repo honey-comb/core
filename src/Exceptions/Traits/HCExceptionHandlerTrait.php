@@ -33,6 +33,7 @@ use Exception;
 use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 
 /**
