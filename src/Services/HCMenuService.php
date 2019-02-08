@@ -30,13 +30,12 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Services;
 
 use HoneyComb\Core\Models\HCUser;
-use Illuminate\Http\Request;
 
 /**
- * Class HCAdminMenuService
+ * Class HCMenuService
  * @package HoneyComb\Core\Services
  */
-class HCAdminMenuService
+class HCMenuService
 {
     /**
      * @var array
@@ -44,38 +43,31 @@ class HCAdminMenuService
     protected $itemsWithoutParent = [];
 
     /**
-     * @param Request $request
+     * @return array
      * @throws \Exception
      */
-    public function generate(Request $request): void
+    public function getList(): array
     {
-        if (!auth()->check()) {
-            return;
+        if (!cache()->has('hc-admin-menu')) {
+            // parse admin menus from config and cache it
+            \Artisan::call('hc:admin-menu');
         }
 
-        if ($request->segment(1) == config('hc.admin_url') && $request->segment(2) != 'api') {
-            if (!cache()->has('hc-admin-menu')) {
-                // parse admin menus from config and cache it
-                \Artisan::call('hc:admin-menu');
-            }
+        // get menu items from cache
+        $menu = cache()->get('hc-admin-menu');
 
-            // get menu items from cache
-            $menu = cache()->get('hc-admin-menu');
+        // get accessible menu items
+        $menuAccessible = $this->getAccessibleMenuItems($menu);
 
-            // get accessible menu items
-            $menuAccessible = $this->getAccessibleMenuItems($menu);
+        // format set menu items which have parent path to their parent as child
+        $menu = $this->buildMenuTree($menuAccessible, '', true);
 
-            // format set menu items which have parent path to their parent as child
-            $menu = $this->buildMenuTree($menuAccessible, '', true);
+        // sort menu
+        $menu = $this->sortByWeight(
+            array_merge($menu, $this->buildMenuWithoutExistingParent($menuAccessible))
+        );
 
-            // sort menu
-            $menu = $this->sortByWeight(
-                array_merge($menu, $this->buildMenuWithoutExistingParent($menuAccessible))
-            );
-
-            // add admin menu as global variable in blades
-            view()->share('adminMenu', $menu);
-        }
+        return $menu;
     }
 
 
@@ -121,6 +113,9 @@ class HCAdminMenuService
         $branch = [];
 
         foreach ($elements as $element) {
+            $element['path'] = route($element['route']);
+            $element['label'] = trans($element['translation']);
+
             $parent = array_get($element, 'parent');
 
             if ($parent == $parentRoute) {
