@@ -26,6 +26,10 @@
  */
 
 return [
+    'title' => [
+        'list' => 'Vartotojai',
+    ],
+
     'label' => [
         'email' => 'El. paštas',
         'password' => 'Slaptažodis',
@@ -53,11 +57,26 @@ return [
         'send_welcome_email' => 'Išsiųsti pasveikimo pranešimą',
     ],
 
+    'error' => [
+        'auth_bad_credentials' => 'Neteisingi prisijungimo duomenys',
+        'auth_throttle' => 'Perdaug bandymų prisijungti. Bandykite po :seconds sec.',
+    ],
+
     'message' => [
         'user_created' => 'Sėkmingai sukurtas!',
         'user_updated' => 'Sėkmingai atnaujintas!',
         'user_deleted' => 'Sėkmingai ištrintas!',
         'user_restored' => 'Sėkmingai atkurtas!',
+        'logged_out' => 'Sėkmingai atsijungta!',
+
+        'activation_check_email' => 'Prašome pasitikrinti el. paštą dėl aktyvavimo nuorodos',
+        'activation_resent_link' => 'Mes jums pakartotinai išsiuntėme aktyvacijos nuorodą. Prašoma pasitikrinti el. paštą.',
+        'activation_bad_token' => 'Kažkas negerai su duotu kodu. Prašome pasitikrinti el. paštą dėl tinkamo kodo.',
+        'activation_user_not_found' => 'Kažkas negerai su jūsų paskyra, prašome bandyti prisijungti arba registruotis iš naujo.',
+    ],
+
+    'validation' => [
+        'email_required' => 'El. paštas yra privalomas!',
     ],
 
     'button' => [

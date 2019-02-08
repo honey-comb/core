@@ -77,10 +77,10 @@ class HCRoleController extends HCBaseController
     public function index(): JsonResponse
     {
         $config = [
-            'title' => trans('HCCore::acl_access.page_title'),
+            'title' => trans('HCCore::roles.title.list'),
             'roles' => json_encode($this->service->getRolesWithPermissions()),
             'permissions' => json_encode($this->service->getAllPermissions()),
-            'updateUrl' => route('admin.acl.role.update.permissions'),
+            'updateUrl' => route('v1.api.users.roles.update_permissions'),
         ];
 
         return $this->response->success('OK', $config);

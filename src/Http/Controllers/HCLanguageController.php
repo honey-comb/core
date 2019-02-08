@@ -85,9 +85,9 @@ class HCLanguageController extends HCBaseController
     public function index(): JsonResponse
     {
         $config = [
-            'title' => trans('HCCore::language.page_title'),
-            'url' => route('admin.api.language'),
-            'form' => route('admin.api.form-manager', ['language']),
+            'title' => trans('HCCore::languages.title.list'),
+            'url' => route('v1.api.languages.list'),
+            'form' => route('v1.api.form-manager', ['language']),
             'headers' => $this->getTableColumns(),
             'actions' => ['search'],
         ];
@@ -139,14 +139,14 @@ class HCLanguageController extends HCBaseController
     protected function getTableColumns(): array
     {
         $columns = [
-            'language_family' => $this->headerText(trans('HCCore::language.language_family')),
-            'language' => $this->headerText(trans('HCCore::language.language')),
-            'native_name' => $this->headerText(trans('HCCore::language.native_name')),
-            'iso_639_1' => $this->headerText(trans('HCCore::language.iso_639_1')),
-            'iso_639_2' => $this->headerText(trans('HCCore::language.iso_639_2')),
-            'front_end' => $this->headerCheckBox(trans('HCCore::language.front_end')),
-            'back_end' => $this->headerCheckBox(trans('HCCore::language.back_end')),
-            'content' => $this->headerCheckBox(trans('HCCore::language.content')),
+            'language_family' => $this->headerText(trans('HCCore::languages.label.language_family')),
+            'language' => $this->headerText(trans('HCCore::languages.label.language')),
+            'native_name' => $this->headerText(trans('HCCore::languages.label.native_name')),
+            'iso_639_1' => $this->headerText(trans('HCCore::languages.label.iso_639_1')),
+            'iso_639_2' => $this->headerText(trans('HCCore::languages.label.iso_639_2')),
+            'front_end' => $this->headerCheckBox(trans('HCCore::languages.label.front_end')),
+            'back_end' => $this->headerCheckBox(trans('HCCore::languages.label.back_end')),
+            'content' => $this->headerCheckBox(trans('HCCore::languages.label.content')),
         ];
 
         return $columns;

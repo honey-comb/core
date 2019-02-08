@@ -26,6 +26,10 @@
  */
 
 return [
+    'title' => [
+        'list' => 'Users',
+    ],
+
     'label' => [
         'email' => 'Email',
         'password' => 'Password',
@@ -53,11 +57,26 @@ return [
         'send_welcome_email' => 'Send welcome email',
     ],
 
+    'error' => [
+        'auth_bad_credentials' => 'Bad credentials',
+        'auth_throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    ],
+
     'message' => [
         'user_created' => 'Successfully created!',
         'user_updated' => 'Successfully updated!',
         'user_deleted' => 'Successfully deleted!',
         'user_restored' => 'Successfully restored',
+        'logged_out' => 'Successfully logged out',
+
+        'activation_check_email' => 'Check your email for activation link',
+        'activation_resent_link' => 'We have resent a new activation link for your account. Please check your email.',
+        'activation_bad_token' => 'There is a problem with a given token. Please check your email for correct token',
+        'activation_user_not_found' => 'Something went wrong with user account, please try again to login or register.',
+    ],
+
+    'validation' => [
+        'email_required' => 'Email is required!',
     ],
 
     'button' => [

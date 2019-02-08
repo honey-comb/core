@@ -124,7 +124,7 @@ class HCAuthController extends HCBaseController
                 event(new HCSocialiteAuthUserLoggedIn($user, $request->input('provider')));
             } else {
                 if (!auth()->attempt($request->only(['email', 'password']))) {
-                    throw new HCException(trans('auth.bad_credentials'));
+                    throw new HCException(trans('HCCore::users.error.auth_bad_credentials'));
                 }
 
                 $user = $request->user();
@@ -145,7 +145,7 @@ class HCAuthController extends HCBaseController
             // user surpasses their maximum number of attempts they will get locked out.
             $this->incrementLoginAttempts($request);
 
-            return $this->response->error($exception->getMessage(), $exception->errors());
+            return $this->response->error(trans('HCCore::users.error.auth_invalid_data'), $exception->errors());
         } catch (HCException $exception) {
             $this->connection->rollback();
 
@@ -155,7 +155,7 @@ class HCAuthController extends HCBaseController
 
             report($exception);
 
-            return $this->response->error(trans('project.server_error'));
+            return $this->response->error(trans('HCCore::core.error.server_error'));
         }
 
         $user->updateLastLogin();
@@ -183,12 +183,16 @@ class HCAuthController extends HCBaseController
             $token = $user->createToken('Personal Access Token');
 
             $this->connection->commit();
+        } catch (ValidationException $exception) {
+            $this->connection->rollback();
+
+            return $this->response->error(trans('HCCore::users.error.auth_invalid_data'), $exception->errors());
         } catch (\Throwable $exception) {
             $this->connection->rollback();
 
             report($exception);
 
-            return $this->response->error(trans('project.server_error'));
+            return $this->response->error(trans('HCCore::core.error.server_error'));
         }
 
         $user->updateLastLogin();
@@ -212,7 +216,7 @@ class HCAuthController extends HCBaseController
                 $this->deAuthorize($user);
             }
 
-            throw new HCException('Email is required');
+            throw new HCException(trans('HCCore::users.validation.email_required'));
         }
 
         return $this->userService->createOrUpdateUserProvider($user, $provider);
@@ -229,7 +233,7 @@ class HCAuthController extends HCBaseController
         $user->updateLastActivity();
         $user->token()->revoke();
 
-        return $this->response->success('Successfully logged out');
+        return $this->response->success(trans('HCCore::users.message.logged_out'));
     }
 
     /**
@@ -259,6 +263,22 @@ class HCAuthController extends HCBaseController
         }
 
         return $this->response->success('OK', (new HCAuthorizeDTO($user, $token))->toArray());
+    }
+
+    /**
+     * Redirect the user after determining they are locked out.
+     *
+     * @param Request $request
+     */
+    protected function sendLockoutResponse(Request $request)
+    {
+        $seconds = $this->limiter()->availableIn(
+            $this->throttleKey($request)
+        );
+
+        throw ValidationException::withMessages([
+            $this->username() => [trans('HCCore::users.error.auth_throttle', ['seconds' => $seconds])],
+        ])->status(429);
     }
 
     /**

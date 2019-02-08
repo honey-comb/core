@@ -54,6 +54,7 @@ use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
 use HoneyComb\Core\Services\Acl\HCRoleService;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
+use HoneyComb\Starter\Exceptions\HCException;
 use HoneyComb\Starter\Providers\HCBaseServiceProvider;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Routing\Router;
@@ -61,6 +62,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider;
+use Symfony\Component\Debug\ExceptionHandler;
 
 /**
  * Class HCCoreServiceProvider

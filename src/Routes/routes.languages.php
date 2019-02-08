@@ -32,17 +32,17 @@ Route::domain(config('hc.admin_domain'))
     ->prefix('v1/api/languages')
     ->group(function () {
         Route::get('/', 'HCLanguageController@index')
-            ->name('v1.api.users.languages.index')
+            ->name('v1.api.languages.index')
             ->middleware('acl:honey_comb_core_language_list');
 
         Route::get('list', 'HCLanguageController@getListPaginate')
-            ->name('v1.api.users.languages.list')
+            ->name('v1.api.languages.list')
             ->middleware('acl:honey_comb_core_language_list');
 
         Route::get('options', 'HCLanguageController@getOptions')
-            ->name('v1.api.users.languages.options');
+            ->name('v1.api.languages.options');
 
         Route::patch('{id}', 'HCLanguageController@patch')
-            ->name('v1.api.users.languages.update.strict')
+            ->name('v1.api.languages.update.strict')
             ->middleware('acl:honey_comb_core_language_update');
     });

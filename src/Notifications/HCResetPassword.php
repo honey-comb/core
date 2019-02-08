@@ -76,10 +76,10 @@ class HCResetPassword extends Notification
     {
         return (new MailMessage)
             ->view('HCCore::emails.template')
-            ->subject(trans('HCCore::password.subject'))
-            ->line(trans('HCCore::password.first_line'))
-            ->action(trans('HCCore::password.action'), url('password/reset', $this->token))
-            ->line(trans('HCCore::password.second_line'));
+            ->subject(trans('HCCore::mail.password.subject'))
+            ->line(trans('HCCore::mail.password.first_line'))
+            ->action(trans('HCCore::mail.password.action'), url('password/reset', $this->token))
+            ->line(trans('HCCore::mail.password.second_line'));
     }
 
     /**

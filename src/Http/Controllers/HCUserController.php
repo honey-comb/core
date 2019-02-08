@@ -83,9 +83,9 @@ class HCUserController extends HCBaseController
     public function index(): JsonResponse
     {
         $config = [
-            'title' => trans('HCCore::user.page_title'),
-            'url' => route('v1.api.admin.users.list'),
-            'form' => route('admin.api.form-manager', ['user']),
+            'title' => trans('HCCore::users.title.list'),
+            'url' => route('v1.api.users.list'),
+            'form' => route('v1.api.form-manager', ['user']),
             'headers' => $this->getTableColumns(),
             'actions' => $this->getActions('honey_comb_core_user'),
         ];

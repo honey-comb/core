@@ -76,9 +76,9 @@ class HCActivationLink extends Notification
     {
         return (new MailMessage)
             ->view('HCCore::emails.template')
-            ->subject(trans('HCCore::user.activation.mail.subject'))
-            ->line(trans('HCCore::user.activation.mail.text', ['email' => $notifiable->email]))
-            ->action(trans('HCCore::user.activation.activate'), route('auth.activation', $this->token));
+            ->subject(trans('HCCore::mail.activation.subject'))
+            ->line(trans('HCCore::mail.activation.text', ['email' => $notifiable->email]))
+            ->action(trans('HCCore::mail.activation.button'), route('auth.activation', $this->token));
     }
 
     /**

@@ -37,6 +37,6 @@ Route::domain(config('hc.admin_domain'))
             ->middleware('acl:honey_comb_core_acl_role_list');
 
         Route::put('permissions', 'HCRoleController@updatePermissions')
-            ->name('v1.api.users.index.roles.update.permissions')
+            ->name('v1.api.users.roles.update_permissions')
             ->middleware('acl:honey_comb_core_acl_role_update');
     });

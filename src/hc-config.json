@@ -14,19 +14,19 @@
   "adminMenu": [
     {
       "route": "v1.api.users.index",
-      "translation": "HCCore::user.page_title",
+      "translation": "HCCore::users.title.list",
       "icon": "users",
       "aclPermission": "honey_comb_core_user_list"
     },
     {
       "route": "v1.api.users.roles.index",
-      "translation": "HCCore::acl_roles.page_title",
+      "translation": "HCCore::roles.title.list",
       "icon": "user-md",
       "aclPermission": "honey_comb_core_acl_role_list"
     },
     {
       "route": "v1.api.languages.index",
-      "translation": "HCCore::language.page_title",
+      "translation": "HCCore::languages.title.list",
       "icon": "language",
       "aclPermission": "honey_comb_core_language_list"
     }
@@ -37,7 +37,7 @@
     "permissions": [
       {
         "name": "admin.acl.role",
-        "controller": "HoneyComb\\Core\\Http\\Controllers\\Admin\\Acl\\HCRoleController",
+        "controller": "HoneyComb\\Core\\Http\\Controllers\\Acl\\HCRoleController",
         "actions": [
           "honey_comb_core_acl_role_list",
           "honey_comb_core_acl_role_create",
@@ -48,7 +48,7 @@
       },
       {
         "name": "admin.user",
-        "controller": "HoneyComb\\Core\\Http\\Controllers\\Admin\\HCUserController",
+        "controller": "HoneyComb\\Core\\Http\\Controllers\\HCUserController",
         "actions": [
           "honey_comb_core_user_list",
           "honey_comb_core_user_create",
@@ -59,7 +59,7 @@
       },
       {
         "name": "admin.languages",
-        "controller": "HoneyComb\\Core\\Http\\Controllers\\Admin\\HCLanguageController",
+        "controller": "HoneyComb\\Core\\Http\\Controllers\\HCLanguageController",
         "actions": [
           "honey_comb_core_language_list",
           "honey_comb_core_language_update"

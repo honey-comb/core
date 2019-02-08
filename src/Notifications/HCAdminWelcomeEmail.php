@@ -85,19 +85,19 @@ class HCAdminWelcomeEmail extends Notification
     {
         $message = (new MailMessage)
             ->view('HCCore::emails.template')
-            ->subject(trans('HCCore::user.welcome_email.subject'))
-            ->greeting(trans('HCCore::user.welcome_email.greeting'))
-            ->line(trans('HCCore::user.welcome_email.text'))
-            ->line(trans('HCCore::user.welcome_email.show_email', ['email' => $notifiable->email]));
+            ->subject(trans('HCCore::mail.welcome.subject'))
+            ->greeting(trans('HCCore::mail.welcome.greeting'))
+            ->line(trans('HCCore::mail.welcome.text'))
+            ->line(trans('HCCore::mail.welcome.show_email', ['email' => $notifiable->email]));
 
         if ($this->sendPassword) {
-            $message->line(trans('HCCore::user.welcome_email.show_password', ['password' => $this->sendPassword]));
+            $message->line(trans('HCCore::mail.welcome.show_password', ['password' => $this->sendPassword]));
         }
 
-        $message->action(trans('HCCore::user.welcome_email.login_link'), route($this->authRoute));
+        $message->action(trans('HCCore::mail.welcome.login_link'), route($this->authRoute));
 
         if (is_null($notifiable->activated_at)) {
-            $message->line(trans('HCCore::user.welcome_email.activation_required'));
+            $message->line(trans('HCCore::mail.welcome.activation_required'));
         }
 
         return $message;

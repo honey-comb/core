@@ -33,6 +33,7 @@ use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionRepository;
 use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionTypeRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
+use HoneyComb\Starter\Exceptions\HCException;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -121,8 +122,8 @@ class HCUserNotificationSubscriptionService
 
     /**
      * @param string $userId
-     * @param string|array $subscriptionTypeId
-     * @throws \Exception
+     * @param $subscriptionTypeId
+     * @throws HCException
      */
     public function addSubscription(string $userId, $subscriptionTypeId): void
     {
@@ -189,7 +190,7 @@ class HCUserNotificationSubscriptionService
 
     /**
      * @param $search
-     * @throws \Exception
+     * @throws HCException
      */
     protected function validate($search): void
     {
@@ -202,8 +203,12 @@ class HCUserNotificationSubscriptionService
 
         foreach ($search as $subscription) {
             if (!in_array($subscription, $subscriptios)) {
-                throw new \Exception(trans('HCCore::subscriptions.message.subscription_does_not_exist',
-                    ['subscription' => $subscription]));
+                throw new HCException(
+                    trans(
+                        'HCCore::subscriptions.message.subscription_does_not_exist',
+                        ['subscription' => $subscription]
+                    )
+                );
             }
         }
     }

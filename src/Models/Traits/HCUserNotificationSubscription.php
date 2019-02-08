@@ -39,7 +39,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 trait HCUserNotificationSubscription
 {
-
     /**
      * Get user subscribed type ids
      * @return array
@@ -50,6 +49,7 @@ trait HCUserNotificationSubscription
             ->pluck('id')
             ->toArray();
     }
+
     /**
      * A user may have multiple subscriptions.
      *
