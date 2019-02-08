@@ -29,12 +29,17 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Password;
 
+use HoneyComb\Core\DTO\HCAuthorizeDTO;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
+use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Starter\Helpers\HCResponse;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 /**
  * Class HCResetPasswordController
@@ -63,6 +68,11 @@ class HCResetPasswordController extends HCBaseController
     protected $redirectTo = '/';
 
     /**
+     * @var HCUser
+     */
+    protected $user;
+
+    /**
      * @var HCResponse
      */
     protected $response;
@@ -79,6 +89,64 @@ class HCResetPasswordController extends HCBaseController
     }
 
     /**
+     * Reset the given user's password.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function reset(Request $request)
+    {
+        $request->validate($this->rules(), $this->validationErrorMessages());
+
+        $user = null;
+
+        // Here we will attempt to reset the user's password. If it is successful we
+        // will update the password on an actual user model and persist it to the
+        // database. Otherwise we will parse the error and return the response.
+        $response = $this->broker()->reset(
+            $this->credentials($request),
+            function ($user, $password) {
+                $this->resetPassword($user, $password);
+            }
+        );
+
+        $user = (new HCAuthorizeDTO(
+            $this->user,
+            $this->user->createToken('Personal Access Token'))
+        )->toArray();
+
+        // If the password was successfully reset, we will redirect the user back to
+        // the application's home authenticated view. If there is an error we can
+        // redirect them back to where they came from with their error message.
+        if ($response == Password::PASSWORD_RESET) {
+            return $this->response->success(trans($response), $user);
+        } else {
+            return $this->response->error(trans($response));
+        }
+    }
+
+    /**
+     * Reset the given user's password.
+     *
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword $user
+     * @param  string $password
+     * @return void
+     * @throws \Exception
+     */
+    protected function resetPassword($user, $password)
+    {
+        $user->password = Hash::make($password);
+
+        $user->setRememberToken(Str::random(60));
+
+        $user->save();
+
+        event(new PasswordReset($user));
+
+        $this->user = $user;
+    }
+
+    /**
      * Get the response for a successful password reset.
      *
      * @param Request $request
@@ -87,7 +155,7 @@ class HCResetPasswordController extends HCBaseController
      */
     protected function sendResetResponse(Request $request, $response): JsonResponse
     {
-        return response()->json([
+        return $this->response->success('OK', [
             'success' => true,
             'message' => trans($response),
             'redirectUrl' => session('url.intended', url('/')),
