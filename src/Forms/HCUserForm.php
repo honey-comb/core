@@ -61,7 +61,7 @@ class HCUserForm extends HCForm
     public function createForm(bool $edit = false): array
     {
         $form = [
-            'storageUrl' => route('admin.api.user'),
+            'storageUrl' => route('v1.api.users.create'),
             'buttons' => [
                 'submit' => [
                     'label' => $this->getSubmitLabel($edit),

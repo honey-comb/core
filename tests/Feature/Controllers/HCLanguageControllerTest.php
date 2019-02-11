@@ -31,8 +31,8 @@ namespace Tests\Feature\Controllers;
 
 use HoneyComb\Core\Http\Controllers\HCLanguageController;
 use HoneyComb\Core\Http\Requests\HCLanguageRequest;
-use HoneyComb\Core\Models\HCLanguage;
 use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Starter\Models\HCLanguage;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\JsonResponse;
@@ -74,7 +74,7 @@ class HCLanguageControllerTest extends TestCase
 
         $expectedLanguage = factory(HCLanguage::class)->create();
 
-        $response = $this->actingAs($expectedUser)->json('GET', route('admin.api.language.options'));
+        $response = $this->actingAs($expectedUser)->json('GET', route('v1.api.languages.options'));
 
         $response->assertResponseOk();
 

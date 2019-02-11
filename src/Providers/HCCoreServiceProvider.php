@@ -36,7 +36,6 @@ use HoneyComb\Core\Console\HCProjectSize;
 use HoneyComb\Core\Console\HCScanRolePermissionsCommand;
 use HoneyComb\Core\Console\HCSeedCommand;
 use HoneyComb\Core\Console\HCUpdate;
-use HoneyComb\Core\Http\Middleware\HCAclAuthenticate;
 use HoneyComb\Core\Http\Middleware\HCAclPermissionsMiddleware;
 use HoneyComb\Core\Http\Middleware\HCCheckSelectedLanguage;
 use HoneyComb\Core\Models\Acl\HCAclPermission;
@@ -44,7 +43,6 @@ use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCBaseRepository;
-use HoneyComb\Core\Repositories\HCLanguageRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCPersonalInfoRepository;
 use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
@@ -230,7 +228,6 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         $this->app->singleton(HCPermissionRepository::class);
         $this->app->singleton(HCPersonalInfoRepository::class);
         $this->app->singleton(HCUserActivationRepository::class);
-        $this->app->singleton(HCLanguageRepository::class);
     }
 
     /**

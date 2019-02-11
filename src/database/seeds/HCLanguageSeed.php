@@ -29,7 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Database\Seeds;
 
-use HoneyComb\Core\Repositories\HCLanguageRepository;
+use HoneyComb\Starter\Repositories\HCLanguageRepository;
 use Illuminate\Database\Seeder;
 
 class HCLanguageSeed extends Seeder

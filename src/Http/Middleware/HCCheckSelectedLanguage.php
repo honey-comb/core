@@ -30,7 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Middleware;
 
 use Closure;
-use HoneyComb\Core\Repositories\HCLanguageRepository;
+use HoneyComb\Starter\Repositories\HCLanguageRepository;
 use Illuminate\Http\Request;
 
 /**

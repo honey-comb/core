@@ -38,7 +38,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(\HoneyComb\Core\Models\HCLanguage::class, function (Faker $faker) {
+$factory->define(\HoneyComb\Starter\Models\HCLanguage::class, function (Faker $faker) {
 
     return [
         'language_family' => $faker->country,

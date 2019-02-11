@@ -30,8 +30,8 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Controllers;
 
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
-use HoneyComb\Core\Http\Requests\HCLanguageRequest;
-use HoneyComb\Core\Services\HCLanguageService;
+use HoneyComb\Starter\Http\Requests\HCLanguageRequest;
+use HoneyComb\Starter\Services\HCLanguageService;
 use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;

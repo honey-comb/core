@@ -51,7 +51,7 @@ class HCUserControllerTest extends TestCase
     {
         $expectedUser = factory(HCUser::class)->create();
 
-        $response = $this->actingAs($expectedUser)->json('GET', route('admin.api.user.options'));
+        $response = $this->actingAs($expectedUser)->json('GET', route('v1.api.users.options'));
 
         $response->assertResponseOk();
 
