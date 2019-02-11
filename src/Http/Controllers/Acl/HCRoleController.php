@@ -47,10 +47,12 @@ class HCRoleController extends HCBaseController
      * @var HCRoleService
      */
     protected $service;
+
     /**
      * @var HCResponse
      */
     protected $response;
+
     /**
      * @var Connection
      */

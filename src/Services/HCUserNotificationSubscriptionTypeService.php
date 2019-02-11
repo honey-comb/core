@@ -48,9 +48,8 @@ class HCUserNotificationSubscriptionTypeService
      * HCUserNotificationSubscriptionTypeService constructor.
      * @param HCUserNotificationSubscriptionTypeRepository $repository
      */
-    public function __construct(
-        HCUserNotificationSubscriptionTypeRepository $repository
-    ) {
+    public function __construct(HCUserNotificationSubscriptionTypeRepository $repository)
+    {
         $this->repository = $repository;
     }
 

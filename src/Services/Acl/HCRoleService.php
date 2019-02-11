@@ -45,6 +45,7 @@ class HCRoleService
      * @var HCRoleRepository
      */
     protected $roleRepository;
+
     /**
      * @var HCPermissionRepository
      */
@@ -72,7 +73,8 @@ class HCRoleService
             ->with('permissions')
             ->notSuperAdmin()
             ->orderBy('name')
-            ->get()->map(function (HCAclRole $role) {
+            ->get()
+            ->map(function (HCAclRole $role) {
                 return [
                     'id' => $role->id,
                     'role' => $role->name,

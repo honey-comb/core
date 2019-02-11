@@ -46,10 +46,12 @@ class HCUserNotificationSubscriptionService
      * @var HCUserRepository
      */
     private $userRepository;
+
     /**
      * @var HCUserNotificationSubscriptionTypeRepository
      */
     private $typeRepository;
+
     /**
      * @var HCUserNotificationSubscriptionRepository
      */
@@ -196,13 +198,13 @@ class HCUserNotificationSubscriptionService
     {
         $search = array_wrap($search);
 
-        $subscriptios = $this->getTypeRepository()
+        $subscriptions = $this->getTypeRepository()
             ->makeQuery()
             ->pluck('id')
             ->toArray();
 
         foreach ($search as $subscription) {
-            if (!in_array($subscription, $subscriptios)) {
+            if (!in_array($subscription, $subscriptions)) {
                 throw new HCException(
                     trans(
                         'HCCore::subscriptions.message.subscription_does_not_exist',

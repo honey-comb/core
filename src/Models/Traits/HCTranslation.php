@@ -50,19 +50,20 @@ trait HCTranslation
 
     /**
      * Single translation only
+     *
      * @return HasOne
      */
     public function translation(): HasOne
     {
-        return $this->hasOne($this->getTranslationClass(), 'record_id', 'id')->where('language_code',
-            app()->getLocale());
+        return $this->hasOne($this->getTranslationClass(), 'record_id', 'id')
+            ->where('language_code', app()->getLocale());
     }
 
     /**
      * Update translations
      *
      * @param array $data
-     * @return \Illuminate\Database\Eloquent\Model|null|object|static
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function updateTranslation(array $data)
     {

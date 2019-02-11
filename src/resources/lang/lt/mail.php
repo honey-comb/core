@@ -29,7 +29,7 @@ return [
     'activation' => [
         'subject' => 'Paskyros patvirtinimas',
         'from' => 'Administratorius',
-        'text' => 'Norint prisijungti jūs turite patvirtinti savo el. pašto adresą <strong>:email</strong>',
+        'text' => 'Norint prisijungti jūs turite patvirtinti savo el. pašto adresą **:email**',
         'button' => 'Aktyvuoti',
     ],
 

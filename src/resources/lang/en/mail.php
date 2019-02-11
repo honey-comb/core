@@ -29,7 +29,7 @@ return [
     'activation' => [
         'subject' => 'Account confirmation',
         'from' => 'Administrator',
-        'text' => 'In order to login you have to verify your email address <strong>:email</strong>',
+        'text' => 'In order to login you have to verify your email address **:email**',
         'button' => 'Activate',
     ],
 

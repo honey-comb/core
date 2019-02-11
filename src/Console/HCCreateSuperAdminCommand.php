@@ -82,6 +82,7 @@ class HCCreateSuperAdminCommand extends Command
      * @var HCUserService
      */
     private $userService;
+
     /**
      * @var HCRoleRepository
      */

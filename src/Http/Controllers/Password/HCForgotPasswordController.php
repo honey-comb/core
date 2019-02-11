@@ -33,7 +33,6 @@ use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 /**
  * Class HCForgotPasswordController

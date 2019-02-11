@@ -32,6 +32,10 @@ namespace HoneyComb\Core\Console;
 use HoneyComb\Starter\Helpers\HCConfigParseHelper;
 use Illuminate\Console\Command;
 
+/**
+ * Class HCSeedCommand
+ * @package HoneyComb\Core\Console
+ */
 class HCSeedCommand extends Command
 {
     /**
@@ -75,7 +79,6 @@ class HCSeedCommand extends Command
         $seeds = [];
 
         foreach ($filePaths as $filePath) {
-
             $file = json_decode(file_get_contents($filePath), true);
 
             if (isset($file['seeder'])) {

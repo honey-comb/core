@@ -345,6 +345,7 @@ class HCUserService
      *
      * @param array $userIds
      * @return void
+     * @throws \Exception
      */
     public function deleteForce(array $userIds): void
     {

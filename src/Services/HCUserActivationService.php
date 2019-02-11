@@ -46,6 +46,7 @@ class HCUserActivationService
      * @var HCUserActivationRepository
      */
     protected $hcUserActivationRepository;
+
     /**
      * @var HCUserRepository
      */

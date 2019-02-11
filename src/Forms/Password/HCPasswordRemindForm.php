@@ -42,6 +42,7 @@ class HCPasswordRemindForm extends HCForm
      *
      * @param bool $edit
      * @return array
+     * @throws \ReflectionException
      */
     public function createForm(bool $edit = false): array
     {
