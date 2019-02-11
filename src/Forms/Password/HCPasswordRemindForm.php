@@ -57,7 +57,7 @@ class HCPasswordRemindForm extends HCForm
 
 
         if ($this->multiLanguage) {
-            $form['availableLanguages'] = getHCContentLanguages();
+            $form['availableLanguages'] = $this->getContentLanguages();
         }
 
         if (!$edit) {

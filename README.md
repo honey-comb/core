@@ -126,5 +126,4 @@ Run Artisan commands
     php artisan hc:permissions
     php artisan hc:forms
     php artisan hc:admin-menu   
-    php artisan hc:project-size
     php artisan hc:super-admin

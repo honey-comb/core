@@ -25,11 +25,14 @@
  * https://innovationbase.eu
  */
 
-
 namespace HoneyComb\Core\Console;
 
 use Illuminate\Console\Command;
 
+/**
+ * Class HCUpdate
+ * @package HoneyComb\Core\Console
+ */
 class HCUpdate extends Command
 {
     /**
@@ -46,7 +49,10 @@ class HCUpdate extends Command
      */
     protected $description = 'Updating honeycomb project and packages';
 
-    public function handle()
+    /**
+     * @throws \Exception
+     */
+    public function handle(): void
     {
         $this->call('migrate');
         $this->call('hc:seed');
@@ -55,7 +61,5 @@ class HCUpdate extends Command
         $this->call('hc:forms');
         $this->call('hc:admin-menu');
         $this->call('vendor:publish', ['--tag' => 'hc-assets', '--force' => true]);
-        $this->call('hc:project-size');
     }
-
 }

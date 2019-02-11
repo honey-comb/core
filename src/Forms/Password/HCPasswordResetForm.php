@@ -42,6 +42,7 @@ class HCPasswordResetForm extends HCForm
      *
      * @param bool $edit
      * @return array
+     * @throws \ReflectionException
      */
     public function createForm(bool $edit = false): array
     {
@@ -56,7 +57,7 @@ class HCPasswordResetForm extends HCForm
         ];
 
         if ($this->multiLanguage) {
-            $form['availableLanguages'] = getHCContentLanguages();
+            $form['availableLanguages'] = $this->getContentLanguages();
         }
 
         if (!$edit) {

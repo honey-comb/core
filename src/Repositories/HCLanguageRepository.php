@@ -89,4 +89,26 @@ class HCLanguageRepository extends HCBaseRepository
             ];
         });
     }
+
+    /**
+     * @return Collection
+     * @throws \ReflectionException
+     */
+    public function getContentLanguages(): Collection
+    {
+        return $this->makeQuery()
+            ->where('content', BoolEnum::yes()->id())
+            ->get();
+    }
+
+    /**
+     * @return Collection
+     * @throws \ReflectionException
+     */
+    public function getInterfaceLanguages(): Collection
+    {
+        return $this->makeQuery()
+            ->where('interface', BoolEnum::yes()->id())
+            ->get();
+    }
 }

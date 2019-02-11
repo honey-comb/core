@@ -74,4 +74,27 @@ class HCLanguageService
 
         $this->getRepository()->update($request->getStrictUpdateValues(), $languageId);
     }
+
+    /**
+     * @param string|null $currentLanguage
+     * @return array
+     * @throws \ReflectionException
+     */
+    public function getFilteredContentLanguages(string $currentLanguage = null): array
+    {
+        $languages = $this->getRepository()
+            ->getContentLanguages()
+            ->pluck('iso_639_1')
+            ->toArray();
+
+        if(!$currentLanguage || !in_array($languages, $currentLanguage)){
+            return $languages;
+        }
+
+        $filtered = array_diff($languages, [$currentLanguage]);
+
+        array_unshift($filtered, $currentLanguage);
+
+       return $filtered;
+    }
 }
