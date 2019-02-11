@@ -226,6 +226,8 @@ class HCAuthController extends HCBaseController
     /**
      * @param Request $request
      * @return JsonResponse
+     *
+     * @throws \Exception
      */
     public function logout(Request $request): JsonResponse
     {

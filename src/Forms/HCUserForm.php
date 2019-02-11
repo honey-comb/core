@@ -79,11 +79,13 @@ class HCUserForm extends HCForm
     public function getStructureNew(): array
     {
         return [
-            'email' => $this->makeField(trans('HCCore::users.label.email'), true)
+            'email' => $this->makeField(trans('HCCore::users.label.email'))
                 ->email()
+                ->isRequired()
                 ->toArray(),
-            'password' => $this->makeField(trans('HCCore::users.label.password'), true)
+            'password' => $this->makeField(trans('HCCore::users.label.password'))
                 ->password()
+                ->isRequired()
                 ->toArray(),
             'is_active' => $this->makeField(trans('HCCore::users.label.is_active'))
                 ->checkbox()

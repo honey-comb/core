@@ -144,7 +144,6 @@ class HCUserRequest extends FormRequest
                 return [
                     'email' => 'required|email|min:5|unique:hc_user,email,' . $userId,
                     'roles' => 'required|exists:hc_acl_role,id',
-                    'photo_id' => 'nullable|exists:hc_resource,id',
                     'password' => 'nullable|min:6|confirmed',
                     'notification_email' => 'nullable|email',
                     'password_confirmation' => 'required_with:password|nullable|min:6',

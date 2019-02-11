@@ -47,16 +47,22 @@ class HCAuthorizeDTO extends HCBaseDTO
      * @var PersonalAccessTokenResult
      */
     private $token;
+    /**
+     * @var array
+     */
+    private $config;
 
     /**
      * WAuthorizeDTO constructor.
      * @param HCUser $user
      * @param PersonalAccessTokenResult $token
+     * @param array $config
      */
-    public function __construct(HCUser $user, PersonalAccessTokenResult $token)
+    public function __construct(HCUser $user, PersonalAccessTokenResult $token, array $config = [])
     {
         $this->user = $user;
         $this->token = $token;
+        $this->config = $config;
     }
 
     /**
@@ -67,6 +73,7 @@ class HCAuthorizeDTO extends HCBaseDTO
     {
         $data = (new HCUserDTO($this->user))->getAuthorizeData();
         $data['token'] = (new HCTokenDTO($this->token))->toArray();
+        $data['config'] = $this->config;
 
         return $data;
     }

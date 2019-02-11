@@ -31,6 +31,10 @@ namespace HoneyComb\Core\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 
+/**
+ * Class HCCoreSeeder
+ * @package HoneyComb\Core\Database\Seeds
+ */
 class HCCoreSeeder extends Seeder
 {
     /**
@@ -38,9 +42,8 @@ class HCCoreSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call(HCUserRolesSeed::class);
-        $this->call(HCLanguageSeed::class);
     }
 }
