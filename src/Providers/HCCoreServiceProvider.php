@@ -32,7 +32,6 @@ namespace HoneyComb\Core\Providers;
 use HoneyComb\Core\Console\HCCreateSuperAdminCommand;
 use HoneyComb\Core\Console\HCGenerateAdminMenuCommand;
 use HoneyComb\Core\Console\HCGenerateFormsCommand;
-use HoneyComb\Core\Console\HCProjectSize;
 use HoneyComb\Core\Console\HCScanRolePermissionsCommand;
 use HoneyComb\Core\Console\HCSeedCommand;
 use HoneyComb\Core\Console\HCUpdate;
@@ -77,7 +76,6 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         HCGenerateFormsCommand::class,
         HCCreateSuperAdminCommand::class,
         HCSeedCommand::class,
-        HCProjectSize::class,
         HCUpdate::class,
     ];
 
