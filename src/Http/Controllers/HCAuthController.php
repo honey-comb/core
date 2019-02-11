@@ -70,10 +70,12 @@ class HCAuthController extends HCBaseController
      * @var HCUserService
      */
     private $userService;
+
     /**
      * @var HCUserActivationService
      */
     private $activationService;
+
     /**
      * @var HCMenuService
      */
