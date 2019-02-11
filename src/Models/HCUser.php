@@ -149,6 +149,7 @@ class HCUser extends HCUuidSoftModel implements
      * Update last login timestamp
      *
      * @param null|string $time
+     * @throws \Exception
      */
     public function updateLastLogin(string $time = null): void
     {
@@ -163,6 +164,7 @@ class HCUser extends HCUuidSoftModel implements
      * Update last activity timestamp
      *
      * @param null|string $time
+     * @throws \Exception
      */
     public function updateLastActivity(string $time = null): void
     {

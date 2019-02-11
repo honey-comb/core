@@ -113,8 +113,16 @@ class HCUserService
                 $query->select('id', 'name as label');
             },
             'personal' => function (HasOne $query) {
-                $query->select('user_id', 'first_name', 'last_name', 'photo_id', 'description', 'phone', 'address',
-                    'notification_email');
+                $query->select([
+                    'user_id',
+                    'first_name',
+                    'last_name',
+                    'photo_id',
+                    'description',
+                    'phone',
+                    'address',
+                    'notification_email',
+                ]);
             },
         ];
         $user = $this->getRepository()->findById($userId, $with);
@@ -128,6 +136,8 @@ class HCUserService
      * @param string|null $firstName
      * @param string|null $lastName
      * @param string|null $photo
+     * @param bool $sendWelcomeEmail
+     * @param bool $sendPassword
      * @return HCUser
      * @throws \ReflectionException
      */
@@ -136,7 +146,9 @@ class HCUserService
         string $password,
         string $firstName = null,
         string $lastName = null,
-        string $photo = null
+        string $photo = null,
+        bool $sendWelcomeEmail = true,
+        bool $sendPassword = true
     ): HCUser {
         $defaultRole = $this->roleRepository->getRoleUserId();
 
@@ -153,7 +165,9 @@ class HCUserService
             ],
             [
                 $defaultRole,
-            ]
+            ],
+            $sendWelcomeEmail,
+            $sendPassword
         );
 
         return $this->getRepository()->findOrFail($user->id);
@@ -166,6 +180,7 @@ class HCUserService
      * @param $sendWelcomeEmail
      * @param $sendPassword
      * @return HCUser
+     * @throws \Exception
      */
     public function createUser(
         array $userData,
@@ -176,7 +191,7 @@ class HCUserService
     ): HCUser {
         $password = $userData['password'];
 
-        if ($userData['is_active'] == 1) {
+        if ($userData['is_active'] == BoolEnum::yes()->id()) {
             $userData['activated_at'] = Carbon::now();
         }
 

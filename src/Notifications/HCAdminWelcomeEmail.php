@@ -24,15 +24,12 @@
  * E-mail: hello@innovationbase.eu
  * https://innovationbase.eu
  */
-
 declare(strict_types = 1);
-
 
 namespace HoneyComb\Core\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-
 
 /**
  * Class HCAdminWelcomeEmail
@@ -67,7 +64,6 @@ class HCAdminWelcomeEmail extends Notification
     public function toMail($notifiable)
     {
         $message = (new MailMessage)
-            ->view('HCCore::emails.template')
             ->subject(trans('HCCore::mail.welcome.subject'))
             ->greeting(trans('HCCore::mail.welcome.greeting'))
             ->line(trans('HCCore::mail.welcome.text'))
