@@ -116,11 +116,11 @@ return [
 
     /*
     |---------------------------------------------------------------------------
-    | Social redirect route
+    | Cache keys
     |---------------------------------------------------------------------------
     |
-    | Enter redirect route after facebook, google and etc login
+    | HC cache keys
     |
     */
-    'social_redirect_error_route' => 'auth.login',
+    'admin_menu_cache_key' => ENV('HC_ADMIN_MENU_CACHE_KEY', '_hc_admin_menu_cache_key'),
 ];

@@ -35,6 +35,7 @@ use HoneyComb\Core\Events\HCSocialiteAuthUserLoggedIn;
 use HoneyComb\Core\Http\Requests\HCAuthLoginRequest;
 use HoneyComb\Core\Http\Requests\HCAuthRegisterRequest;
 use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Services\HCMenuService;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Exceptions\HCException;
@@ -73,6 +74,10 @@ class HCAuthController extends HCBaseController
      * @var HCUserActivationService
      */
     private $activationService;
+    /**
+     * @var HCMenuService
+     */
+    private $menuService;
 
     /**
      * WBannerController constructor.
@@ -80,17 +85,20 @@ class HCAuthController extends HCBaseController
      * @param HCResponse $response
      * @param HCUserService $userService
      * @param HCUserActivationService $activationService
+     * @param HCMenuService $menuService
      */
     public function __construct(
         Connection $connection,
         HCResponse $response,
         HCUserService $userService,
-        HCUserActivationService $activationService
+        HCUserActivationService $activationService,
+        HCMenuService $menuService
     ) {
         $this->connection = $connection;
         $this->response = $response;
         $this->userService = $userService;
         $this->activationService = $activationService;
+        $this->menuService = $menuService;
     }
 
     /**
@@ -160,8 +168,9 @@ class HCAuthController extends HCBaseController
         }
 
         $user->updateLastLogin();
+        $config = $this->getUserConfig($user);
 
-        return $this->response->success('OK', (new HCAuthorizeDTO($user, $token))->toArray());
+        return $this->response->success('OK', (new HCAuthorizeDTO($user, $token, $config))->toArray());
     }
 
     /**
@@ -197,8 +206,9 @@ class HCAuthController extends HCBaseController
         }
 
         $user->updateLastLogin();
+        $config = $this->getUserConfig($user);
 
-        return $this->response->success('OK', (new HCAuthorizeDTO($user, $token))->toArray());
+        return $this->response->success('OK', (new HCAuthorizeDTO($user, $token, $config))->toArray());
     }
 
     /**
@@ -282,6 +292,18 @@ class HCAuthController extends HCBaseController
         throw ValidationException::withMessages([
             $this->username() => [trans('HCCore::users.error.auth_throttle', ['seconds' => $seconds])],
         ])->status(429);
+    }
+
+    /**
+     * @param HCUser $user
+     * @return array
+     * @throws \Exception
+     */
+    protected function getUserConfig(HCUser $user): array
+    {
+        return [
+            'menu' => $this->menuService->getList($user),
+        ];
     }
 
     /**

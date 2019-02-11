@@ -109,8 +109,8 @@ class HCGenerateAdminMenuCommand extends Command
             }
         }
 
-        cache()->forget('hc-admin-menu');
-        cache()->put('hc-admin-menu', $this->adminMenuHolder, Carbon::now()->addYear(2));
+        cache()->forget(config('hc.admin_menu_cache_key'));
+        cache()->put(config('hc.admin_menu_cache_key'), $this->adminMenuHolder, Carbon::now()->addYear(2));
     }
 
     /**

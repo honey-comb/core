@@ -32,6 +32,7 @@ namespace HoneyComb\Core\Http\Controllers\Password;
 use HoneyComb\Core\DTO\HCAuthorizeDTO;
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Models\HCUser;
+use HoneyComb\Core\Services\HCMenuService;
 use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -75,16 +76,22 @@ class HCResetPasswordController extends HCBaseController
      * @var HCResponse
      */
     protected $response;
+    /**
+     * @var HCMenuService
+     */
+    private $menuService;
 
     /**
      * Create a new controller instance.
      * @param HCResponse $response
+     * @param HCMenuService $menuService
      */
-    public function __construct(HCResponse $response)
+    public function __construct(HCResponse $response, HCMenuService $menuService)
     {
         $this->middleware('guest');
 
         $this->response = $response;
+        $this->menuService = $menuService;
     }
 
     /**
@@ -114,13 +121,15 @@ class HCResetPasswordController extends HCBaseController
      * @param Request $request
      * @param string $response
      * @return JsonResponse
+     * @throws \Exception
      */
     protected function sendResetResponse(Request $request, $response): JsonResponse
     {
         $user = (new HCAuthorizeDTO(
             $this->user,
-            $this->user->createToken('Personal Access Token'))
-        )->toArray();
+            $this->user->createToken('Personal Access Token'),
+            $this->getUserConfig($this->user)
+        ))->toArray();
 
         return $this->response->success(trans($response), $user);
     }
@@ -135,5 +144,17 @@ class HCResetPasswordController extends HCBaseController
     protected function sendResetFailedResponse(Request $request, $response): JsonResponse
     {
         return $this->response->error(trans($response));
+    }
+
+    /**
+     * @param HCUser $user
+     * @return array
+     * @throws \Exception
+     */
+    protected function getUserConfig(HCUser $user): array
+    {
+        return [
+            'menu' => $this->menuService->getList($user),
+        ];
     }
 }

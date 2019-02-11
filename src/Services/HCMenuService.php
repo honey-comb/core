@@ -43,21 +43,22 @@ class HCMenuService
     protected $itemsWithoutParent = [];
 
     /**
+     * @param HCUser $user
      * @return array
      * @throws \Exception
      */
-    public function getList(): array
+    public function getList(HCUser $user): array
     {
-        if (!cache()->has('hc-admin-menu')) {
+        if (!cache()->has(config('hc.admin_menu_cache_key'))) {
             // parse admin menus from config and cache it
             \Artisan::call('hc:admin-menu');
         }
 
         // get menu items from cache
-        $menu = cache()->get('hc-admin-menu');
+        $menu = cache()->get(config('hc.admin_menu_cache_key'));
 
         // get accessible menu items
-        $menuAccessible = $this->getAccessibleMenuItems($menu);
+        $menuAccessible = $this->getAccessibleMenuItems($user, $menu);
 
         // format set menu items which have parent path to their parent as child
         $menu = $this->buildMenuTree($menuAccessible, '', true);
@@ -143,14 +144,12 @@ class HCMenuService
     /**
      * Filter acl permissions
      *
-     * @param $menus
+     * @param HCUser $user
+     * @param array $menus
      * @return array
      */
-    private function getAccessibleMenuItems($menus): array
+    private function getAccessibleMenuItems(HCUser $user, array $menus): array
     {
-        /** @var HCUser $user */
-        $user = auth()->user();
-
         foreach ($menus as $key => $menu) {
             if (!array_key_exists('aclPermission', $menu) || $user->cannot($menu['aclPermission'])) {
                 unset($menus[$key]);
