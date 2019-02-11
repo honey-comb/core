@@ -178,7 +178,7 @@ class HCAuthController extends HCBaseController
                 $request->input('email'),
                 $request->input('password'),
                 $request->input('first_name'),
-                $request->input('last_name') ? $request->input('last_name') : ''
+                $request->input('last_name')
             );
 
             $token = $user->createToken('Personal Access Token');

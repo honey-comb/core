@@ -51,9 +51,8 @@ class HCAuthRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'provider' => 'required|in:email',
             'email' => 'required|string|email|unique:hc_user,email',
-            'password' => 'required|string',
+            'password' => 'required|confirmed|min:6',
         ];
     }
 }
