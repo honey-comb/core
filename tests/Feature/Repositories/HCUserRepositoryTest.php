@@ -34,7 +34,6 @@ use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Models\Users\HCUserPersonalInfo;
 use HoneyComb\Core\Repositories\HCUserRepository;
-use HoneyComb\Core\Services\HCUserService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabase;

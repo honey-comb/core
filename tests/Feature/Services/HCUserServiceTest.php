@@ -29,8 +29,8 @@ declare(strict_types = 1);
 
 namespace Tests\Feature\Controllers;
 
-use HoneyComb\Core\Events\Admin\HCUserCreated;
-use HoneyComb\Core\Events\Admin\HCUserUpdated;
+use HoneyComb\Core\Events\HCUserCreated;
+use HoneyComb\Core\Events\HCUserUpdated;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Notifications\HCActivationLink;
 use HoneyComb\Core\Notifications\HCAdminWelcomeEmail;
