@@ -76,7 +76,7 @@ class HCResetPasswordController extends HCBaseController
      * @var HCResponse
      */
     protected $response;
-    
+
     /**
      * @var HCMenuService
      */
