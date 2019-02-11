@@ -41,11 +41,16 @@ use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCBaseRepository;
+use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionRepository;
+use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionTypeRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCPersonalInfoRepository;
 use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
+use HoneyComb\Core\Repositories\Users\HCUserProviderRepository;
 use HoneyComb\Core\Services\Acl\HCRoleService;
 use HoneyComb\Core\Services\HCUserActivationService;
+use HoneyComb\Core\Services\HCUserNotificationSubscriptionService;
+use HoneyComb\Core\Services\HCUserNotificationSubscriptionTypeService;
 use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Http\Middleware\HCCurrentLanguage;
 use HoneyComb\Starter\Providers\HCBaseServiceProvider;
@@ -54,7 +59,6 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
-use Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider;
 
 /**
  * Class HCCoreServiceProvider
@@ -204,7 +208,10 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         $this->app->singleton(HCRoleRepository::class);
         $this->app->singleton(HCPermissionRepository::class);
         $this->app->singleton(HCPersonalInfoRepository::class);
+        $this->app->singleton(HCUserProviderRepository::class);
         $this->app->singleton(HCUserActivationRepository::class);
+        $this->app->singleton(HCUserNotificationSubscriptionRepository::class);
+        $this->app->singleton(HCUserNotificationSubscriptionTypeRepository::class);
     }
 
     /**
@@ -213,7 +220,9 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
     private function registerServices(): void
     {
         $this->app->singleton(HCUserService::class);
-        $this->app->singleton(HCUserActivationService::class);
         $this->app->singleton(HCRoleService::class);
+        $this->app->singleton(HCUserActivationService::class);
+        $this->app->singleton(HCUserNotificationSubscriptionService::class);
+        $this->app->singleton(HCUserNotificationSubscriptionTypeService::class);
     }
 }
