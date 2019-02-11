@@ -36,17 +36,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Class HCUserPersonalInfo
  *
+ * @package HoneyComb\Core\Models\Users
+ * @property int $count
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * @property string $user_id
  * @property string|null $first_name
  * @property string|null $last_name
- * @property string|null $photo
  * @property string|null $photo_id
+ * @property string|null $photo
  * @property string|null $description
  * @property string|null $phone
  * @property string|null $address
  * @property string|null $notification_email
- *
- * @package HoneyComb\Core\Models\Users
+ * @property-read HCUser $user
+ * @mixin \Eloquent
  */
 class HCUserPersonalInfo extends HCModel
 {

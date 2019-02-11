@@ -36,6 +36,7 @@ use HoneyComb\Starter\Models\HCModel;
  * @property int $count
  * @property string $user_id
  * @property string $token
+ * @mixin \Eloquent
  */
 class HCUserRole extends HCModel
 {

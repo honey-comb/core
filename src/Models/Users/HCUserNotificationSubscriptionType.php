@@ -36,8 +36,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @package HoneyComb\Core\Models\Users
  * @property int $count
- * @property string $user_id
- * @property string $token
+ * @property Carbon $created_at
+ * @property string $id
+ * @property string $translation_key
+ * @mixin \Eloquent
  */
 class HCUserNotificationSubscriptionType extends HCModel
 {

@@ -34,6 +34,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * Class HCUserNotificationSubscription
  * @package HoneyComb\Core\Models\Users
+ * @property int $count
+ * @property Carbon $created_at
+ * @property string $user_id
+ * @property string $type_id
+ * @mixin \Eloquent
  */
 class HCUserNotificationSubscription extends HCModel
 {

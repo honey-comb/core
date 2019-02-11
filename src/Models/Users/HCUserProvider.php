@@ -35,7 +35,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class HCUserProvider
+ *
  * @package HoneyComb\Core\Models\Users
+ * @property string $id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon|null $deleted_at
+ * @property string $user_id
+ * @property string|null $user_provider_id
+ * @property string $provider
+ * @property string|null $profile_url
+ * @property string|null $email
+ * @property string|null $response
+ * @property-read HCUser $user
+ * @mixin \Eloquent
  */
 class HCUserProvider extends HCUuidSoftModel
 {
