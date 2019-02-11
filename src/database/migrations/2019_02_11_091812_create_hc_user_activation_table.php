@@ -25,16 +25,14 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateHcUserPasswordResetsTable
+ * Class CreateHcUserActivationTable
  */
-class CreateHcUserPasswordResetTable extends Migration
+class CreateHcUserActivationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,10 +41,18 @@ class CreateHcUserPasswordResetTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('hc_user_password_reset', function (Blueprint $table) {
-            $table->string('email')->index();
+        Schema::create('hc_user_activation', function (Blueprint $table) {
+            $table->increments('count');
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+
+            $table->uuid('user_id');
             $table->string('token')->index();
-            $table->datetime('created_at');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('hc_user')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
         });
     }
 
@@ -57,6 +63,6 @@ class CreateHcUserPasswordResetTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hc_user_password_reset');
+        Schema::dropIfExists('hc_user_activation');
     }
 }

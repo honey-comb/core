@@ -25,16 +25,14 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class CreateHcAclRolesTable
+ * Class CreateHcAclPermissionTable
  */
-class CreateHcAclRoleTable extends Migration
+class CreateHcAclPermissionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,15 +41,16 @@ class CreateHcAclRoleTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('hc_acl_role', function (Blueprint $table) {
+        Schema::create('hc_acl_permission', function (Blueprint $table) {
             $table->increments('count');
             $table->uuid('id')->unique();
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('deleted_at')->nullable();
 
-            $table->string('name', 36)->unique();
-            $table->string('slug', 768)->unique();
+            $table->string('name', 768);
+            $table->text('controller');
+            $table->string('action', 768)->unique();
         });
     }
 
@@ -62,6 +61,6 @@ class CreateHcAclRoleTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hc_acl_role');
+        Schema::dropIfExists('hc_acl_permission');
     }
 }

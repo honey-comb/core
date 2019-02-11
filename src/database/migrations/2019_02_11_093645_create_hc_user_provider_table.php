@@ -25,13 +25,14 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPhotoIdAndDescriptionFieldsToHcUserPersonalInfoTable extends Migration
+/**
+ * Class CreateHcUserProviderTable
+ */
+class CreateHcUserProviderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -40,11 +41,25 @@ class AddPhotoIdAndDescriptionFieldsToHcUserPersonalInfoTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('hc_user_personal_info', function (Blueprint $table) {
-            $table->uuid('photo_id')->nullable();
-            $table->text('description')->nullable();
+        Schema::create('hc_user_provider', function (Blueprint $table) {
+            $table->increments('count');
+            $table->uuid('id')->unique();
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('deleted_at')->nullable();
 
-            $table->foreign('photo_id')->references('id')->on('hc_resource')->onUpdate('CASCADE')->onDelete('SET NULL');
+            $table->uuid('user_id');
+            $table->string('user_provider_id')->nullable();
+            $table->enum('provider', ['facebook', 'twitter', 'linkedin', 'google', 'github', 'bitbucket']);
+            $table->string('profile_url')->nullable();
+            $table->string('email')->nullable();
+            $table->text('response')->nullable();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('hc_user')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
         });
     }
 
@@ -55,10 +70,6 @@ class AddPhotoIdAndDescriptionFieldsToHcUserPersonalInfoTable extends Migration
      */
     public function down(): void
     {
-        Schema::table('hc_user_personal_info', function (Blueprint $table) {
-            $table->dropForeign(['photo_id']);
-
-            $table->dropColumn(['photo_id', 'description']);
-        });
+        Schema::dropIfExists('hc_user_provider');
     }
 }

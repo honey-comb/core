@@ -25,16 +25,14 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class AddUpdatedAtFieldToHcUserNotificationSubscriptionTypeTable
+ * Class CreateHcAclRoleTable
  */
-class AddUpdatedAtFieldToHcUserNotificationSubscriptionTypeTable extends Migration
+class CreateHcAclRoleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,8 +41,15 @@ class AddUpdatedAtFieldToHcUserNotificationSubscriptionTypeTable extends Migrati
      */
     public function up(): void
     {
-        Schema::table('hc_user_notification_subscription_type', function (Blueprint $table) {
+        Schema::create('hc_acl_role', function (Blueprint $table) {
+            $table->increments('count');
+            $table->uuid('id')->unique();
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('deleted_at')->nullable();
+
+            $table->string('name', 36)->unique();
+            $table->string('slug', 768)->unique();
         });
     }
 
@@ -55,8 +60,6 @@ class AddUpdatedAtFieldToHcUserNotificationSubscriptionTypeTable extends Migrati
      */
     public function down(): void
     {
-        Schema::table('hc_user_notification_subscription_type', function (Blueprint $table) {
-            $table->dropColumn('updated_at');
-        });
+        Schema::dropIfExists('hc_acl_role');
     }
 }

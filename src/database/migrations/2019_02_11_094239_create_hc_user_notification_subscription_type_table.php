@@ -25,16 +25,14 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateHcAclPermissionsTable
+ * Class CreateHcUserNotificationSubscriptionTypeTable
  */
-class CreateHcAclPermissionTable extends Migration
+class CreateHcUserNotificationSubscriptionTypeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,16 +41,13 @@ class CreateHcAclPermissionTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('hc_acl_permission', function (Blueprint $table) {
+        Schema::create('hc_user_notification_subscription_type', function (Blueprint $table) {
             $table->increments('count');
-            $table->uuid('id')->unique();
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->datetime('deleted_at')->nullable();
 
-            $table->string('name', 768);
-            $table->text('controller');
-            $table->string('action', 768)->unique();
+            $table->string('id')->unique();
+            $table->string('translation_key')->index();
         });
     }
 
@@ -63,6 +58,6 @@ class CreateHcAclPermissionTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hc_acl_permission');
+        Schema::dropIfExists('hc_user_notification_subscription_type');
     }
 }

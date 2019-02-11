@@ -25,16 +25,14 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateHcUserActivationsTable
+ * Class CreateHcAclRolePermissionConnectionTable
  */
-class CreateHcUserActivationTable extends Migration
+class CreateHcAclRolePermissionConnectionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,15 +41,26 @@ class CreateHcUserActivationTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('hc_user_activation', function (Blueprint $table) {
+        Schema::create('hc_acl_role_permission_connection', function (Blueprint $table) {
             $table->increments('count');
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
-            $table->uuid('user_id');
-            $table->string('token')->index();
+            $table->uuid('role_id');
+            $table->uuid('permission_id');
 
-            $table->foreign('user_id')->references('id')->on('hc_user')
-                ->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->unique(['role_id', 'permission_id']);
+
+            $table->foreign('role_id')
+                ->references('id')
+                ->on('hc_acl_role')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
+
+            $table->foreign('permission_id')
+                ->references('id')
+                ->on('hc_acl_permission')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
         });
     }
 
@@ -62,6 +71,6 @@ class CreateHcUserActivationTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hc_user_activation');
+        Schema::dropIfExists('hc_acl_role_permission_connection');
     }
 }

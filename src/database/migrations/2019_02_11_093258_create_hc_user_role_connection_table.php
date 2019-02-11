@@ -25,16 +25,14 @@
  * https://innovationbase.eu
  */
 
-declare(strict_types = 1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Class CreateHcUserRolesTable
+ * Class CreateHcUserRoleConnectionTable
  */
-class CreateHcUserRoleTable extends Migration
+class CreateHcUserRoleConnectionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -52,11 +50,17 @@ class CreateHcUserRoleTable extends Migration
 
             $table->unique(['user_id', 'role_id']);
 
-            $table->foreign('user_id')->references('id')->on('hc_user')
-                ->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('hc_user')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
 
-            $table->foreign('role_id')->references('id')->on('hc_acl_role')
-                ->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('role_id')
+                ->references('id')
+                ->on('hc_acl_role')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
         });
     }
 

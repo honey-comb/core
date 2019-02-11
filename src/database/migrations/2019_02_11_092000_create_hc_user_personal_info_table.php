@@ -25,11 +25,14 @@
  * https://innovationbase.eu
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class CreateHcUserProvider extends Migration
+/**
+ * Class CreateHcUserPersonalInfoTable
+ */
+class CreateHcUserPersonalInfoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -38,21 +41,30 @@ class CreateHcUserProvider extends Migration
      */
     public function up(): void
     {
-        Schema::create('hc_user_provider', function (Blueprint $table) {
+        Schema::create('hc_user_personal_info', function (Blueprint $table) {
             $table->increments('count');
-            $table->uuid('id')->unique();
             $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->datetime('deleted_at')->nullable();
 
-            $table->string('user_id', 36);
-            $table->string('user_provider_id')->nullable();
-            $table->enum('provider', ['facebook', 'twitter', 'linkedin', 'google', 'github', 'bitbucket']);
-            $table->string('profile_url')->nullable();
-            $table->string('email')->nullable();
-            $table->text('response')->nullable();
+            $table->uuid('user_id');
 
-            $table->foreign('user_id')->references('id')->on('hc_user')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+
+            $table->uuid('photo_id')->nullable();
+            $table->string('photo')->nullable();
+
+            $table->text('description')->nullable();
+            $table->string('phone', 50)->nullable();
+            $table->text('address')->nullable();
+
+            $table->string('notification_email')->nullable();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('hc_user')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
         });
     }
 
@@ -63,6 +75,6 @@ class CreateHcUserProvider extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hc_user_provider');
+        Schema::dropIfExists('hc_user_personal_info');
     }
 }
