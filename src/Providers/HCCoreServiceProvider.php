@@ -37,7 +37,6 @@ use HoneyComb\Core\Console\HCScanRolePermissionsCommand;
 use HoneyComb\Core\Console\HCSeedCommand;
 use HoneyComb\Core\Console\HCUpdate;
 use HoneyComb\Core\Http\Middleware\HCAclPermissionsMiddleware;
-use HoneyComb\Core\Http\Middleware\HCCheckSelectedLanguage;
 use HoneyComb\Core\Models\Acl\HCAclPermission;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
@@ -49,6 +48,7 @@ use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
 use HoneyComb\Core\Services\Acl\HCRoleService;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserService;
+use HoneyComb\Starter\Http\Middleware\HCCurrentLanguage;
 use HoneyComb\Starter\Providers\HCBaseServiceProvider;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Routing\Router;
@@ -113,29 +113,8 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
     /**
      *
      */
-    protected function registerPublishes(): void
-    {
-        parent::registerPublishes();
-//
-//        $this->publishes([
-//            $this->packagePath('resources/assets') => resource_path('assets/honey-comb'),
-//        ], 'hc-assets');
-//
-//        $this->publishes([
-//            $this->packagePath('resources/public') => public_path('honey-comb'),
-//        ], 'public');
-    }
-
-    /**
-     *
-     */
     public function register(): void
     {
-        // register LogViewer service provider
-        if (class_exists(LaravelLogViewerServiceProvider::class)) {
-            $this->app->register(LaravelLogViewerServiceProvider::class);
-        }
-
         $this->mergeConfigFrom(
             $this->packagePath('config/hc.php'),
             'hc'
@@ -187,8 +166,8 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
             $router->aliasMiddleware('acl', HCACLPermissionsMiddleware::class);
         }
 
-        if (!in_array(HCCheckSelectedLanguage::class, $ignore)) {
-            $router->pushMiddleWareToGroup('api', HCCheckSelectedLanguage::class);
+        if (!in_array(HCCurrentLanguage::class, $ignore)) {
+            $router->pushMiddleWareToGroup('api', HCCurrentLanguage::class);
         }
     }
 

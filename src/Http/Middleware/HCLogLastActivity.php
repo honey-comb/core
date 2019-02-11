@@ -46,6 +46,7 @@ class HCLogLastActivity
      * @param Request $request
      * @param Closure $next
      * @return mixed
+     * @throws \Exception
      */
     public function handle(Request $request, Closure $next)
     {

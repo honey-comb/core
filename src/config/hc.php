@@ -107,20 +107,13 @@ return [
     | i.e.:
     |
     |    'HCCore' => [
-    |        \HoneyComb\Core\Http\Middleware\HCCheckSelectedLanguage::class,
+    |        \HoneyComb\Starter\Http\Middleware\HCCurrentLanguage::class,
     |    ]
     |
     */
     'ignoreDefaultMiddleware' => [
 
     ],
-
-    /*
-    |---------------------------------------------------------------------------
-    | Header language key
-    |---------------------------------------------------------------------------
-    */
-    'header_language_key' => env('HC_HEADER_LANGUAGE_KEY', 'hc-lang'),
 
     /*
     |---------------------------------------------------------------------------
