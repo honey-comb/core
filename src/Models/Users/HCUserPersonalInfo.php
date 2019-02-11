@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -30,15 +30,27 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Models\Users;
 
 use HoneyComb\Core\Models\HCUser;
-use HoneyComb\Resources\Models\HCResource;
 use HoneyComb\Starter\Models\HCModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class HCUserPersonalInfo
  *
  * @package HoneyComb\Core\Models\Users
+ * @property int $count
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property string $user_id
+ * @property string|null $first_name
+ * @property string|null $last_name
+ * @property string|null $photo_id
+ * @property string|null $photo
+ * @property string|null $description
+ * @property string|null $phone
+ * @property string|null $address
+ * @property string|null $notification_email
+ * @property-read HCUser $user
+ * @mixin \Eloquent
  */
 class HCUserPersonalInfo extends HCModel
 {
@@ -60,6 +72,7 @@ class HCUserPersonalInfo extends HCModel
         'first_name',
         'last_name',
         'photo_id',
+        'photo',
         'description',
         'phone',
         'address',
@@ -80,15 +93,5 @@ class HCUserPersonalInfo extends HCModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(HCUser::class, 'user_id', 'id');
-    }
-
-    /**
-     * User has photo
-     *
-     * @return HasOne
-     */
-    public function photo(): HasOne
-    {
-        return $this->hasOne(HCResource::class, 'id', 'photo_id');
     }
 }

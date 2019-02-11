@@ -1,4 +1,29 @@
 <?php
+/**
+ * @copyright 2019 innovationbase
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
+ */
 
 declare(strict_types = 1);
 
@@ -31,7 +56,7 @@ return [
     |--------------------------------------------------------------------------
     |
      */
-    'admin_skin' => "skin-blue",
+    'admin_skin' => 'skin-blue',
 
     /*
     |--------------------------------------------------------------------------
@@ -49,7 +74,6 @@ return [
     |---------------------------------------------------------------------------
     */
     'auth_redirect' => 'auth/login',
-
 
     /*
     |---------------------------------------------------------------------------
@@ -82,21 +106,21 @@ return [
     | i.e.:
     |
     |    'HCCore' => [
-    |        \HoneyComb\Core\Http\Middleware\HCCheckSelectedFrontEndLanguage::class,
+    |        \HoneyComb\Starter\Http\Middleware\HCCurrentLanguage::class,
     |    ]
     |
     */
     'ignoreDefaultMiddleware' => [
-
+        //
     ],
 
     /*
     |---------------------------------------------------------------------------
-    | Social redirect route
+    | Cache keys
     |---------------------------------------------------------------------------
     |
-    | Enter redirect route after facebook, google and etc login
+    | HC cache keys
     |
     */
-    'social_redirect_error_route' => 'auth.login',
+    'admin_menu_cache_key' => ENV('HC_ADMIN_MENU_CACHE_KEY', '_hc_admin_menu_cache_key'),
 ];

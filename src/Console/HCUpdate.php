@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,16 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: info@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
-
 
 namespace HoneyComb\Core\Console;
 
 use Illuminate\Console\Command;
 
+/**
+ * Class HCUpdate
+ * @package HoneyComb\Core\Console
+ */
 class HCUpdate extends Command
 {
     /**
@@ -46,7 +49,10 @@ class HCUpdate extends Command
      */
     protected $description = 'Updating honeycomb project and packages';
 
-    public function handle()
+    /**
+     * @throws \Exception
+     */
+    public function handle(): void
     {
         $this->call('migrate');
         $this->call('hc:seed');
@@ -55,7 +61,5 @@ class HCUpdate extends Command
         $this->call('hc:forms');
         $this->call('hc:admin-menu');
         $this->call('vendor:publish', ['--tag' => 'hc-assets', '--force' => true]);
-        $this->call('hc:project-size');
     }
-
 }

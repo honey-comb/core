@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -41,6 +41,7 @@ use HoneyComb\Core\Notifications\HCAdminWelcomeEmail;
 use HoneyComb\Core\Notifications\HCResetPassword;
 use HoneyComb\Starter\Models\HCUuidSoftModel;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -53,6 +54,7 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Laravel\Passport\HasApiTokens;
 
 /**
  * Class HCUser
@@ -65,13 +67,12 @@ use Illuminate\Support\Collection;
  * @property Carbon|null $deleted_at
  * @property string $email
  * @property string $password
- * @property string|null $activated_at
+ * @property Carbon|null $activated_at
  * @property string|null $remember_token
- * @property string|null $last_login
- * @property string|null $last_visited
- * @property string|null $last_activity
+ * @property Carbon|null $last_login
+ * @property Carbon|null $last_activity
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
- * @property-read \HoneyComb\Core\Models\Users\HCUserPersonalInfo $personal
+ * @property-read HCUserPersonalInfo $personal
  * @property-read Collection|HCAclRole[] $roles
  * @method static Builder|HCUser whereActivatedAt($value)
  * @method static Builder|HCUser whereCount($value)
@@ -87,9 +88,12 @@ use Illuminate\Support\Collection;
  * @method static Builder|HCUser whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class HCUser extends HCUuidSoftModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class HCUser extends HCUuidSoftModel implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, Notifiable, HCUserRoles, HCActivateUser, HCUserNotificationSubscription;
+    use Authenticatable, Authorizable, CanResetPassword, Notifiable, MustVerifyEmail, HasApiTokens, HCUserRoles, HCActivateUser, HCUserNotificationSubscription;
 
     /**
      * The database table used by the model.
@@ -132,7 +136,6 @@ class HCUser extends HCUuidSoftModel implements AuthenticatableContract, Authori
         'activated_at',
         'last_login',
         'last_activity',
-
     ];
 
     /**
@@ -146,6 +149,7 @@ class HCUser extends HCUuidSoftModel implements AuthenticatableContract, Authori
      * Update last login timestamp
      *
      * @param null|string $time
+     * @throws \Exception
      */
     public function updateLastLogin(string $time = null): void
     {
@@ -160,6 +164,7 @@ class HCUser extends HCUuidSoftModel implements AuthenticatableContract, Authori
      * Update last activity timestamp
      *
      * @param null|string $time
+     * @throws \Exception
      */
     public function updateLastActivity(string $time = null): void
     {

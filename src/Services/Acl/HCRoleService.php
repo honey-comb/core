@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -32,6 +32,7 @@ namespace HoneyComb\Core\Services\Acl;
 use HoneyComb\Core\Models\Acl\HCAclRole;
 use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
+use HoneyComb\Starter\Exceptions\HCException;
 use Illuminate\Support\Collection;
 
 /**
@@ -44,6 +45,7 @@ class HCRoleService
      * @var HCRoleRepository
      */
     protected $roleRepository;
+
     /**
      * @var HCPermissionRepository
      */
@@ -67,11 +69,12 @@ class HCRoleService
      */
     public function getRolesWithPermissions(): Collection
     {
-        $roles = $this->roleRepository->makeQuery()
+        return $this->roleRepository->makeQuery()
             ->with('permissions')
             ->notSuperAdmin()
             ->orderBy('name')
-            ->get()->map(function (HCAclRole $role) {
+            ->get()
+            ->map(function (HCAclRole $role) {
                 return [
                     'id' => $role->id,
                     'role' => $role->name,
@@ -79,8 +82,6 @@ class HCRoleService
                     'permissions' => $role->permissions->pluck('id')->all(),
                 ];
             });
-
-        return $roles;
     }
 
     /**
@@ -104,25 +105,23 @@ class HCRoleService
             $permissions = collect([]);
         }
 
-        $permissions = $permissions->sortBy('name')->groupBy('name');
-
-        return $permissions;
+        return $permissions->sortBy('name')->groupBy('name');
     }
 
     /**
      * @param string $roleId
      * @param string $permissionId
      * @return string
-     * @throws \Exception
+     * @throws HCException
      */
     public function updateRolePermissions(string $roleId, string $permissionId): string
     {
         if ($roleId == $this->roleRepository->getRoleSuperAdminId()) {
-            throw new \Exception(trans('HCCore::validator.roles.cant_update_super'));
+            throw new HCException(trans('HCCore::validator.roles.cant_update_super'));
         }
 
         if (!auth()->user()->hasRole([$this->roleRepository::ROLE_SA, $this->roleRepository::ROLE_PA])) {
-            throw new \Exception(trans('HCCore::validator.roles.cant_update_roles'));
+            throw new HCException(trans('HCCore::validator.roles.cant_update_roles'));
         }
 
         $message = $this->roleRepository->updateOrCreatePermission($roleId, $permissionId);
@@ -130,6 +129,14 @@ class HCRoleService
         // clear permissions and menu items cache!
         cache()->forget('hc-admin-menu');
         cache()->forget('hc-permissions');
+
+        event(
+            new HCRolePermissionUpdated(
+                $roleId,
+                $permissionId,
+                $message
+            )
+        );
 
         return $message;
     }

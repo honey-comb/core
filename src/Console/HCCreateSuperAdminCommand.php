@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -33,7 +33,6 @@ use Carbon\Carbon;
 use DB;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
-use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Enum\BoolEnum;
 use Illuminate\Console\Command;
@@ -75,11 +74,6 @@ class HCCreateSuperAdminCommand extends Command
     private $email;
 
     /**
-     * @var HCUserRepository
-     */
-    private $userRepository;
-
-    /**
      * @var Connection
      */
     private $connection;
@@ -90,20 +84,23 @@ class HCCreateSuperAdminCommand extends Command
     private $userService;
 
     /**
+     * @var HCRoleRepository
+     */
+    private $roleRepository;
+
+    /**
      * HCCreateSuperAdminCommand constructor.
      * @param Connection $connection
-     * @param HCUserRepository $userRepository
      * @param HCUserService $userService
-     * @throws \InvalidArgumentException
-     * @throws \Symfony\Component\Console\Exception\LogicException
+     * @param HCRoleRepository $roleRepository
      */
-    public function __construct(Connection $connection, HCUserRepository $userRepository, HCUserService $userService)
+    public function __construct(Connection $connection, HCUserService $userService, HCRoleRepository $roleRepository)
     {
         parent::__construct();
 
-        $this->userRepository = $userRepository;
         $this->connection = $connection;
         $this->userService = $userService;
+        $this->roleRepository = $roleRepository;
     }
 
     /**
@@ -217,28 +214,29 @@ class HCCreateSuperAdminCommand extends Command
     private function createAdmin(): void
     {
         $this->connection->beginTransaction();
-
         try {
-            $user = $this->userService->createUser(
+            $this->userService->createUser(
                 [
                     'email' => $this->email,
                     'password' => $this->password,
                     'is_active' => BoolEnum::yes()->id(),
                     'activated_at' => Carbon::now()->toDateTimeString(),
-                ], [], [
-                'first_name' => 'Super',
-                'last_name' => 'Admin',
-            ], false, false);
-
-            // add sa role
-            $user->assignRoleBySlug(HCRoleRepository::ROLE_SA);
-
+                ],
+                [
+                    'first_name' => 'Super',
+                    'last_name' => 'Admin',
+                    // TODO set admin default photo
+                ],
+                [
+                    $this->roleRepository->getRoleSuperAdminId(),
+                    $this->roleRepository->getRoleUserId()
+                ]
+            );
         } catch (\Throwable $exception) {
             $this->connection->rollBack();
 
             report($exception);
 
-            $this->error('Super admin role doesn\'t exists!');
             $this->info('error:');
             $this->error($exception->getMessage());
 
@@ -253,7 +251,7 @@ class HCCreateSuperAdminCommand extends Command
      */
     private function checkIfAdminExists(): void
     {
-        $adminExists = $this->userRepository->findOneBy(['email' => $this->email]);
+        $adminExists = $this->userService->getRepository()->findOneBy(['email' => $this->email]);
 
         if (!is_null($adminExists)) {
 

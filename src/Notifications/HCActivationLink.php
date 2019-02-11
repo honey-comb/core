@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -75,10 +75,9 @@ class HCActivationLink extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->view('HCCore::emails.template')
-            ->subject(trans('HCCore::user.activation.mail.subject'))
-            ->line(trans('HCCore::user.activation.mail.text', ['email' => $notifiable->email]))
-            ->action(trans('HCCore::user.activation.activate'), route('auth.activation', $this->token));
+            ->subject(trans('HCCore::mail.activation.subject'))
+            ->line(trans('HCCore::mail.activation.text', ['email' => $notifiable->email]))
+            ->action(trans('HCCore::mail.activation.button'), route('auth.activation', $this->token));
     }
 
     /**

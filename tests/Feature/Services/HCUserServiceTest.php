@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,17 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
 namespace Tests\Feature\Controllers;
 
-use HoneyComb\Core\Events\Admin\HCUserCreated;
-use HoneyComb\Core\Events\Admin\HCUserUpdated;
+use HoneyComb\Core\Events\HCUserCreated;
+use HoneyComb\Core\Events\HCUserUpdated;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Notifications\HCActivationLink;
 use HoneyComb\Core\Notifications\HCAdminWelcomeEmail;
@@ -83,7 +83,7 @@ class HCUserServiceTest extends TestCase
         Model::setEventDispatcher($initialDispatcher);
 
         /** @var HCUser $userRecord */
-        $userRecord = $this->getTestClassInstance()->createUser($userData, $roles, $personalData, false, false);
+        $userRecord = $this->getTestClassInstance()->createUser($userData, $personalData, $roles, false, false);
 
         Event::assertDispatched(HCUserCreated::class, function ($e) use ($userRecord) {
             return $e->user->id === $userRecord->id;
@@ -129,7 +129,7 @@ class HCUserServiceTest extends TestCase
         Model::setEventDispatcher($initialDispatcher);
 
         /** @var HCUser $userRecord */
-        $userRecord = $this->getTestClassInstance()->createUser($userData, $roles, $personalData, true, true);
+        $userRecord = $this->getTestClassInstance()->createUser($userData, $personalData, $roles, true, true);
 
         Notification::assertSentTo($userRecord, HCAdminWelcomeEmail::class,
             function ($notification) use ($userRecord) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,18 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
 namespace HoneyComb\Core\Services;
 
+use HoneyComb\Core\Events\HCUserActivated;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
+use HoneyComb\Starter\Exceptions\HCException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Class HCUserActivationService
@@ -43,6 +46,7 @@ class HCUserActivationService
      * @var HCUserActivationRepository
      */
     protected $hcUserActivationRepository;
+
     /**
      * @var HCUserRepository
      */
@@ -63,19 +67,18 @@ class HCUserActivationService
      * @param HCUser $user
      * @param int $resendAfter
      * @return string
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function sendActivationMail(HCUser $user, int $resendAfter = 24): string
     {
         if (!$this->shouldSend($user, $resendAfter)) {
-            return trans('HCCore::user.activation.check_email');
+            return trans('HCCore::users.message.activation_check_email');
         }
 
         $token = $this->createActivation($user->id);
 
         $user->sendActivationLinkNotification($token);
 
-        return trans('HCCore::user.activation.resent_activation');
+        return trans('HCCore::users.message.activation_resent_link');
     }
 
     /**
@@ -88,13 +91,13 @@ class HCUserActivationService
         $activation = $this->hcUserActivationRepository->getActivationByToken($token);
 
         if ($activation === null) {
-            throw new \Exception(trans('HCCore::user.activation.bad_token'));
+            throw new HCException(trans('HCCore::users.message.activation_bad_token'));
         }
 
-        $user = $this->hcUserRepository->getById($activation->user_id);
-
-        if (is_null($user)) {
-            throw new \Exception(trans('HCCore::user.activation.user_not_found'));
+        try {
+            $user = $this->hcUserRepository->findById($activation->user_id);
+        } catch (ModelNotFoundException $exception) {
+            throw new HCException(trans('HCCore::users.message.activation_user_not_found'));
         }
 
         // activate user
@@ -103,8 +106,7 @@ class HCUserActivationService
         // delete activation code
         $this->hcUserActivationRepository->deleteActivation($token);
 
-        // login user to the site
-        auth()->login($user);
+        event(new HCUserActivated($user));
 
         return $user;
     }
@@ -112,9 +114,8 @@ class HCUserActivationService
     /**
      * @param string $userId
      * @return string
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
-    public function createActivation(string $userId): string
+    protected function createActivation(string $userId): string
     {
         $activation = $this->hcUserActivationRepository->getActivation($userId);
 
@@ -129,7 +130,6 @@ class HCUserActivationService
     /**
      * @param string $userId
      * @return string
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     protected function createToken(string $userId): string
     {
@@ -142,7 +142,6 @@ class HCUserActivationService
 
     /**
      * @return string
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     protected function getToken(): string
     {
@@ -164,7 +163,6 @@ class HCUserActivationService
     /**
      * @param string $userId
      * @return string
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     protected function regenerateToken(string $userId): string
     {

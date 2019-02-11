@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -75,11 +75,10 @@ class HCResetPassword extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->view('HCCore::emails.template')
-            ->subject(trans('HCCore::password.subject'))
-            ->line(trans('HCCore::password.first_line'))
-            ->action(trans('HCCore::password.action'), url('password/reset', $this->token))
-            ->line(trans('HCCore::password.second_line'));
+            ->subject(trans('HCCore::mail.password.subject'))
+            ->line(trans('HCCore::mail.password.first_line'))
+            ->action(trans('HCCore::mail.password.action'), url('password/reset', $this->token))
+            ->line(trans('HCCore::mail.password.second_line'));
     }
 
     /**

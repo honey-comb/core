@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -33,6 +33,7 @@ use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionRepository;
 use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionTypeRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
+use HoneyComb\Starter\Exceptions\HCException;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -45,10 +46,12 @@ class HCUserNotificationSubscriptionService
      * @var HCUserRepository
      */
     private $userRepository;
+
     /**
      * @var HCUserNotificationSubscriptionTypeRepository
      */
     private $typeRepository;
+
     /**
      * @var HCUserNotificationSubscriptionRepository
      */
@@ -121,8 +124,8 @@ class HCUserNotificationSubscriptionService
 
     /**
      * @param string $userId
-     * @param string|array $subscriptionTypeId
-     * @throws \Exception
+     * @param $subscriptionTypeId
+     * @throws HCException
      */
     public function addSubscription(string $userId, $subscriptionTypeId): void
     {
@@ -189,21 +192,25 @@ class HCUserNotificationSubscriptionService
 
     /**
      * @param $search
-     * @throws \Exception
+     * @throws HCException
      */
     protected function validate($search): void
     {
         $search = array_wrap($search);
 
-        $subscriptios = $this->getTypeRepository()
+        $subscriptions = $this->getTypeRepository()
             ->makeQuery()
             ->pluck('id')
             ->toArray();
 
         foreach ($search as $subscription) {
-            if (!in_array($subscription, $subscriptios)) {
-                throw new \Exception(trans('HCCore::subscriptions.message.subscription_does_not_exist',
-                    ['subscription' => $subscription]));
+            if (!in_array($subscription, $subscriptions)) {
+                throw new HCException(
+                    trans(
+                        'HCCore::subscriptions.message.subscription_does_not_exist',
+                        ['subscription' => $subscription]
+                    )
+                );
             }
         }
     }

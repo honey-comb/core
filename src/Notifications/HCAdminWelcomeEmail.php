@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
-
 declare(strict_types = 1);
-
 
 namespace HoneyComb\Core\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-
 
 /**
  * Class HCAdminWelcomeEmail
@@ -41,28 +38,11 @@ use Illuminate\Notifications\Notification;
 class HCAdminWelcomeEmail extends Notification
 {
     /**
-     * The password reset token.
-     *
-     * @var string
-     */
-    public $authRoute;
-
-    /**
      * Send password holder
      *
      * @var
      */
     private $sendPassword;
-
-    /**
-     * Create a notification instance.
-     *
-     * @param $authRoute
-     */
-    public function __construct(string $authRoute = 'auth.index')
-    {
-        $this->authRoute = $authRoute;
-    }
 
     /**
      * Get the notification's delivery channels.
@@ -84,20 +64,17 @@ class HCAdminWelcomeEmail extends Notification
     public function toMail($notifiable)
     {
         $message = (new MailMessage)
-            ->view('HCCore::emails.template')
-            ->subject(trans('HCCore::user.welcome_email.subject'))
-            ->greeting(trans('HCCore::user.welcome_email.greeting'))
-            ->line(trans('HCCore::user.welcome_email.text'))
-            ->line(trans('HCCore::user.welcome_email.show_email', ['email' => $notifiable->email]));
+            ->subject(trans('HCCore::mail.welcome.subject'))
+            ->greeting(trans('HCCore::mail.welcome.greeting'))
+            ->line(trans('HCCore::mail.welcome.text'))
+            ->line(trans('HCCore::mail.welcome.show_email', ['email' => $notifiable->email]));
 
         if ($this->sendPassword) {
-            $message->line(trans('HCCore::user.welcome_email.show_password', ['password' => $this->sendPassword]));
+            $message->line(trans('HCCore::mail.welcome.show_password', ['password' => $this->sendPassword]));
         }
 
-        $message->action(trans('HCCore::user.welcome_email.login_link'), route($this->authRoute));
-
         if (is_null($notifiable->activated_at)) {
-            $message->line(trans('HCCore::user.welcome_email.activation_required'));
+            $message->line(trans('HCCore::mail.welcome.activation_required'));
         }
 
         return $message;

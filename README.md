@@ -7,14 +7,14 @@ HoneyComb CMS Core package for backend elements
 
 ## Attention
 
-This is part core package HoneyComb CMS package. It require `starter` and `resources` packages.
+This is part core package HoneyComb CMS package. It require `starter` package.
  
-If you want to use laravel version 5.5.* [use core package version 0.2.*](https://github.com/honey-comb/core/tree/5.5 "Core package version 0.2.*")
+If you want to use laravel version 5.6.* [use core package version 0.3.*](https://github.com/honey-comb/core/tree/5.6 "Core package version 0.3.*")
 
 ## Requirement
 
  - php: `^7.1`
- - laravel: `^5.6`
+ - laravel: `^5.7`
  - composer
  - npm
  
@@ -89,30 +89,6 @@ Make Laravel project react friendly
 Publishing assets only once
 
     php artisan vendor:publish --tag=hc-config --force
-    php artisan vendor:publish --tag=hc-assets
-    
-Install npm modules
-
-    npm install
-
-----
-```diff
-- *Do this if you do not own FontAwesome5 Pro License:
-```
-
-Inside `package.json` file remove:
-
-    "@fortawesome/fontawesome-pro-light": "*",
-    "@fortawesome/fontawesome-pro-regular": "*",
-    "@fortawesome/fontawesome-pro-solid": "*",
-    
-Inside `resources/assets/honey-comb/react/shared/hc/Globals.js` file change the FontAwesome5 prefix
-
-----
-    
-Build Front End application
-
-    npm run dev
     
 Remove default Laravel user migrations (if it is a clean project)
 
@@ -126,5 +102,4 @@ Run Artisan commands
     php artisan hc:permissions
     php artisan hc:forms
     php artisan hc:admin-menu   
-    php artisan hc:project-size
     php artisan hc:super-admin

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: info@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -30,7 +30,6 @@ declare(strict_types = 1);
 namespace Tests;
 
 use HoneyComb\Core\Providers\HCCoreServiceProvider;
-use HoneyComb\Resources\Providers\HCResourceServiceProvider;
 use Illuminate\Foundation\Application;
 
 /**
@@ -57,7 +56,6 @@ abstract class TestCase extends \Orchestra\Testbench\BrowserKit\TestCase
     {
         return [
             HCCoreServiceProvider::class,
-            HCResourceServiceProvider::class,
         ];
     }
 

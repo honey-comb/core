@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -32,36 +32,33 @@ namespace HoneyComb\Core\Providers;
 use HoneyComb\Core\Console\HCCreateSuperAdminCommand;
 use HoneyComb\Core\Console\HCGenerateAdminMenuCommand;
 use HoneyComb\Core\Console\HCGenerateFormsCommand;
-use HoneyComb\Core\Console\HCProjectSize;
 use HoneyComb\Core\Console\HCScanRolePermissionsCommand;
 use HoneyComb\Core\Console\HCSeedCommand;
 use HoneyComb\Core\Console\HCUpdate;
-use HoneyComb\Core\Http\Middleware\HCAclAdminMenu;
-use HoneyComb\Core\Http\Middleware\HCAclAuthenticate;
 use HoneyComb\Core\Http\Middleware\HCAclPermissionsMiddleware;
-use HoneyComb\Core\Http\Middleware\HCCheckSelectedAdminLanguage;
-use HoneyComb\Core\Http\Middleware\HCCheckSelectedFrontEndLanguage;
-use HoneyComb\Core\Http\Middleware\HCLogLastActivity;
 use HoneyComb\Core\Models\Acl\HCAclPermission;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCBaseRepository;
-use HoneyComb\Core\Repositories\HCLanguageRepository;
+use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionRepository;
+use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionTypeRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCPersonalInfoRepository;
 use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
+use HoneyComb\Core\Repositories\Users\HCUserProviderRepository;
 use HoneyComb\Core\Services\Acl\HCRoleService;
 use HoneyComb\Core\Services\HCUserActivationService;
+use HoneyComb\Core\Services\HCUserNotificationSubscriptionService;
+use HoneyComb\Core\Services\HCUserNotificationSubscriptionTypeService;
 use HoneyComb\Core\Services\HCUserService;
-use HoneyComb\Resources\Providers\HCResourceServiceProvider;
+use HoneyComb\Starter\Http\Middleware\HCCurrentLanguage;
 use HoneyComb\Starter\Providers\HCBaseServiceProvider;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
-use Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider;
 
 /**
  * Class HCCoreServiceProvider
@@ -83,7 +80,6 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         HCGenerateFormsCommand::class,
         HCCreateSuperAdminCommand::class,
         HCSeedCommand::class,
-        HCProjectSize::class,
         HCUpdate::class,
     ];
 
@@ -119,36 +115,8 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
     /**
      *
      */
-    protected function registerPublishes(): void
-    {
-        parent::registerPublishes();
-
-        $this->publishes([
-            $this->packagePath('./configp') => './',
-        ], 'hc-config');
-
-        $this->publishes([
-            $this->packagePath('resources/assets') => resource_path('assets/honey-comb'),
-        ], 'hc-assets');
-
-        $this->publishes([
-            $this->packagePath('resources/public') => public_path('honey-comb'),
-        ], 'public');
-    }
-
-    /**
-     *
-     */
     public function register(): void
     {
-        // register LogViewer service provider
-        if (class_exists(LaravelLogViewerServiceProvider::class)) {
-            $this->app->register(LaravelLogViewerServiceProvider::class);
-        }
-
-        $this->app->register(HCComposerServiceProvider::class);
-        $this->app->register(HCResourceServiceProvider::class);
-
         $this->mergeConfigFrom(
             $this->packagePath('config/hc.php'),
             'hc'
@@ -200,24 +168,8 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
             $router->aliasMiddleware('acl', HCACLPermissionsMiddleware::class);
         }
 
-        if (!in_array(HCACLAuthenticate::class, $ignore)) {
-            $router->aliasMiddleware('auth', HCACLAuthenticate::class);
-        }
-
-        if (!in_array(HCCheckSelectedFrontEndLanguage::class, $ignore)) {
-            $router->aliasMiddleware('multiLang', HCCheckSelectedFrontEndLanguage::class);
-        }
-
-        if (!in_array(HCACLAdminMenu::class, $ignore)) {
-            $router->pushMiddleWareToGroup('web', HCACLAdminMenu::class);
-        }
-
-        if (!in_array(HCLogLastActivity::class, $ignore)) {
-            $router->pushMiddleWareToGroup('web', HCLogLastActivity::class);
-        }
-
-        if (!in_array(HCCheckSelectedAdminLanguage::class, $ignore)) {
-            $router->pushMiddleWareToGroup('web', HCCheckSelectedAdminLanguage::class);
+        if (!in_array(HCCurrentLanguage::class, $ignore)) {
+            $router->pushMiddleWareToGroup('api', HCCurrentLanguage::class);
         }
     }
 
@@ -256,8 +208,10 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         $this->app->singleton(HCRoleRepository::class);
         $this->app->singleton(HCPermissionRepository::class);
         $this->app->singleton(HCPersonalInfoRepository::class);
+        $this->app->singleton(HCUserProviderRepository::class);
         $this->app->singleton(HCUserActivationRepository::class);
-        $this->app->singleton(HCLanguageRepository::class);
+        $this->app->singleton(HCUserNotificationSubscriptionRepository::class);
+        $this->app->singleton(HCUserNotificationSubscriptionTypeRepository::class);
     }
 
     /**
@@ -266,7 +220,9 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
     private function registerServices(): void
     {
         $this->app->singleton(HCUserService::class);
-        $this->app->singleton(HCUserActivationService::class);
         $this->app->singleton(HCRoleService::class);
+        $this->app->singleton(HCUserActivationService::class);
+        $this->app->singleton(HCUserNotificationSubscriptionService::class);
+        $this->app->singleton(HCUserNotificationSubscriptionTypeService::class);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: info@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -50,19 +50,20 @@ trait HCTranslation
 
     /**
      * Single translation only
+     *
      * @return HasOne
      */
     public function translation(): HasOne
     {
-        return $this->hasOne($this->getTranslationClass(), 'record_id', 'id')->where('language_code',
-            app()->getLocale());
+        return $this->hasOne($this->getTranslationClass(), 'record_id', 'id')
+            ->where('language_code', app()->getLocale());
     }
 
     /**
      * Update translations
      *
      * @param array $data
-     * @return \Illuminate\Database\Eloquent\Model|null|object|static
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function updateTranslation(array $data)
     {

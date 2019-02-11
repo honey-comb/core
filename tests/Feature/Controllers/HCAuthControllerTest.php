@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2018 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the 'Software'), to deal
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -12,7 +12,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -65,16 +65,13 @@ class HCAuthControllerTest extends TestCase
             'is_active' => '0',
         ];
 
-        $response = $this->json('POST', route('auth.register'), $userData);
+        $response = $this->json('POST', route('v1.api.register'), $userData);
 
         $response->assertResponseOk();
 
         $response->seeJsonEquals([
             'success' => true,
-            'redirectUrl' => route('auth.login'),
         ]);
-
-        $response->assertSessionHas('activation_message', trans('HCCore::user.activation.activate_account'));
     }
 
     /**
@@ -89,7 +86,7 @@ class HCAuthControllerTest extends TestCase
             'email' => 'hello@gmail.com',
         ];
 
-        $response = $this->json('POST', route('auth.register'), $userData);
+        $response = $this->json('POST', route('v1.api.register'), $userData);
 
         $response->seeJsonEquals([
             'message' => 'The given data was invalid.',
@@ -113,7 +110,7 @@ class HCAuthControllerTest extends TestCase
             'password' => '123456789',
         ];
 
-        $response = $this->json('POST', route('auth.register'), $userData);
+        $response = $this->json('POST', route('v1.api.register'), $userData);
 
         $response->seeJsonEquals([
             'message' => 'The given data was invalid.',
@@ -136,19 +133,19 @@ class HCAuthControllerTest extends TestCase
         $expectedUser = factory(HCUser::class)->create();
 
         $userData = [
+            'provider' => 'email',
             'email' => $expectedUser->email,
             'password' => 'secret',
         ];
 
         config(['auth.providers.users.model' => HCUser::class]);
 
-        $response = $this->json('POST', route('auth.login'), $userData);
+        $response = $this->json('POST', route('v1.api.login'), $userData);
         $response->assertResponseOk();
         $response->seeJsonEquals([
             'success' => true,
-            'redirectUrl' => url('/'),
             'data' => null,
-            'message' => 'Success',
+            'message' => 'OK',
         ]);
     }
 
@@ -163,18 +160,19 @@ class HCAuthControllerTest extends TestCase
         $expectedUser = factory(HCUser::class)->create();
 
         $userData = [
+            'provider' => 'email',
             'email' => $expectedUser->email,
             'password' => 'wrongPassword',
         ];
 
         config(['auth.providers.users.model' => HCUser::class]);
 
-        $response = $this->json('POST', route('auth.login'), $userData);
+        $response = $this->json('POST', route('v1.api.login'), $userData);
         $response->assertResponseStatus(400);
         $response->seeJsonEquals([
             'success' => false,
             'data' => null,
-            'message' => 'Blogi prisijungimo duomenys!',
+            'message' => trans('HCCore::users.error.auth_bad_credentials'),
         ]);
     }
 
@@ -189,18 +187,19 @@ class HCAuthControllerTest extends TestCase
         factory(HCUser::class)->create();
 
         $userData = [
+            'provider' => 'email',
             'email' => 'wrongMail@mail.com',
             'password' => 'secret',
         ];
 
         config(['auth.providers.users.model' => HCUser::class]);
 
-        $response = $this->json('POST', route('auth.login'), $userData);
+        $response = $this->json('POST', route('v1.api.login'), $userData);
         $response->assertResponseStatus(400);
+
         $response->seeJsonEquals([
             'success' => false,
-            'data' => null,
-            'message' => 'Blogi prisijungimo duomenys!',
+            'message' => trans('HCCore::users.error.auth_bad_credentials'),
         ]);
     }
 
@@ -208,7 +207,6 @@ class HCAuthControllerTest extends TestCase
      * Move test to project
      *
      * @group auth
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function it_must_logout_user(): void
     {
@@ -218,10 +216,9 @@ class HCAuthControllerTest extends TestCase
 
         config(['auth.providers.users.model' => HCUser::class]);
 
-        $response = $this->json('GET', route('auth.logout'));
+        $response = $this->json('GET', route('v1.api.logout'));
 
         $response->assertRedirectedTo('/');
         $response->assertResponseStatus(302);
-        $response->assertSessionHas('flash_notice', trans('HCCore::user.success.logout'));
     }
 }

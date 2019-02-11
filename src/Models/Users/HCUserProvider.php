@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -35,7 +35,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class HCUserProvider
+ *
  * @package HoneyComb\Core\Models\Users
+ * @property string $id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon|null $deleted_at
+ * @property string $user_id
+ * @property string|null $user_provider_id
+ * @property string $provider
+ * @property string|null $profile_url
+ * @property string|null $email
+ * @property string|null $response
+ * @property-read HCUser $user
+ * @mixin \Eloquent
  */
 class HCUserProvider extends HCUuidSoftModel
 {

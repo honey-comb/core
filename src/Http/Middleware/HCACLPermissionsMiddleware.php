@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Middleware;
 
 use Closure;
+use HoneyComb\Starter\Helpers\HCResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -40,24 +41,36 @@ use Illuminate\Http\Request;
 class HCAclPermissionsMiddleware
 {
     /**
+     * @var HCResponse
+     */
+    private $response;
+
+    /**
+     * HCAclPermissionsMiddleware constructor.
+     * @param HCResponse $response
+     */
+    public function __construct(HCResponse $response)
+    {
+        $this->response = $response;
+    }
+
+    /**
      * Handle an incoming request.
      *
      * @param Request $request
      * @param Closure $next
      * @param null $permission
      * @return mixed
-     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function handle(Request $request, Closure $next, $permission = null)
     {
-        if (count($request->segments()) == 1 && $request->segment(1) == config('hc.admin_url')) {
-            $access = true;
-        } else {
-            $access = $request->user()->can($permission);
-        }
-
-        if (!$access) {
-            abort(JsonResponse::HTTP_UNAUTHORIZED);
+        if (auth()->guest() || $request->user()->cant($permission)) {
+            return $this->response->error(
+                trans('HCCore::core.error.unauthenticated'),
+                [],
+                null,
+                JsonResponse::HTTP_UNAUTHORIZED
+            );
         }
 
         return $next($request);

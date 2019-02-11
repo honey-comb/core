@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers\Traits;
 
+/**
+ * Trait HCAdminListHeaders
+ * @package HoneyComb\Core\Http\Controllers\Traits
+ */
 trait HCAdminListHeaders
 {
     /**
@@ -77,18 +81,15 @@ trait HCAdminListHeaders
      * @param string $label
      * @param int $width
      * @param int $height
-     * @param bool $showEdit
      * @return array
      */
-    protected function headerImage(string $label, int $width = 100, int $height = 100, bool $showEdit = false): array
+    protected function headerImage(string $label, int $width = 100, int $height = 100): array
     {
         return $config = [
             'type' => 'image',
             'label' => $label,
             'width' => $width,
             'height' => $height,
-            'viewUrl' => route('resource.get', '/'),
-            'editUrl' => $showEdit ? route('admin.api.form-manager', ['resource-edit']) : null,
             'hideDelete' => true,
         ];
     }

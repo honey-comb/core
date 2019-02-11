@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 interactivesolutions
+ * @copyright 2019 innovationbase
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Contact InteractiveSolutions:
- * E-mail: hello@interactivesolutions.lt
- * http://www.interactivesolutions.lt
+ * Contact InnovationBase:
+ * E-mail: hello@innovationbase.eu
+ * https://innovationbase.eu
  */
 
 declare(strict_types = 1);
@@ -30,16 +30,23 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Services;
 
 use Carbon\Carbon;
-use HoneyComb\Core\Events\Admin\HCUserCreated;
-use HoneyComb\Core\Events\Admin\HCUserUpdated;
+use HoneyComb\Core\DTO\HCSocialProviderDTO;
+use HoneyComb\Core\DTO\HCUserDTO;
+use HoneyComb\Core\Events\HCUserActivated;
+use HoneyComb\Core\Events\HCUserCreated;
+use HoneyComb\Core\Events\HCUserForceDeleted;
+use HoneyComb\Core\Events\HCUserRestored;
+use HoneyComb\Core\Events\HCUserSoftDeleted;
+use HoneyComb\Core\Events\HCUserUpdated;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Core\Models\Users\HCUserProvider;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCPersonalInfoRepository;
 use HoneyComb\Core\Repositories\Users\HCUserProviderRepository;
-use HoneyComb\Resources\Services\HCResourceService;
 use HoneyComb\Starter\Enum\BoolEnum;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Socialite\Two\User;
 
 /**
@@ -69,20 +76,13 @@ class HCUserService
     protected $userProviderRepository;
 
     /**
-     * @var HCResourceService
-     */
-    protected $resourceService;
-
-    /**
      * HCUserService constructor.
-     * @param HCResourceService $resourceService
      * @param HCUserRepository $repository
      * @param HCPersonalInfoRepository $personalRepository
      * @param HCRoleRepository $roleRepository
      * @param HCUserProviderRepository $userProviderRepository
      */
     public function __construct(
-        HCResourceService $resourceService,
         HCUserRepository $repository,
         HCPersonalInfoRepository $personalRepository,
         HCRoleRepository $roleRepository,
@@ -92,7 +92,6 @@ class HCUserService
         $this->personalInfoRepository = $personalRepository;
         $this->roleRepository = $roleRepository;
         $this->userProviderRepository = $userProviderRepository;
-        $this->resourceService = $resourceService;
     }
 
     /**
@@ -104,25 +103,95 @@ class HCUserService
     }
 
     /**
+     * @param string $userId
+     * @return array
+     */
+    public function getUserById(string $userId): array
+    {
+        $with = [
+            'roles' => function (BelongsToMany $query) {
+                $query->select('id', 'name as label');
+            },
+            'personal' => function (HasOne $query) {
+                $query->select([
+                    'user_id',
+                    'first_name',
+                    'last_name',
+                    'photo_id',
+                    'description',
+                    'phone',
+                    'address',
+                    'notification_email',
+                ]);
+            },
+        ];
+        $user = $this->getRepository()->findById($userId, $with);
+
+        return (new HCUserDTO($user))->toArray();
+    }
+
+    /**
+     * @param string $email
+     * @param string $password
+     * @param string|null $firstName
+     * @param string|null $lastName
+     * @param string|null $photo
+     * @param bool $sendWelcomeEmail
+     * @param bool $sendPassword
+     * @return HCUser
+     * @throws \ReflectionException
+     */
+    public function registerUser(
+        string $email,
+        string $password,
+        string $firstName = null,
+        string $lastName = null,
+        string $photo = null,
+        bool $sendWelcomeEmail = true,
+        bool $sendPassword = true
+    ): HCUser {
+        $defaultRole = $this->roleRepository->getRoleUserId();
+
+        $user = $this->createUser(
+            [
+                'email' => $email,
+                'password' => $password,
+                'is_active' => BoolEnum::yes()->id(),
+            ],
+            [
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+                'photo' => $photo,
+            ],
+            [
+                $defaultRole,
+            ],
+            $sendWelcomeEmail,
+            $sendPassword
+        );
+
+        return $this->getRepository()->findOrFail($user->id);
+    }
+
+    /**
      * @param array $userData
      * @param array $roles
      * @param array $personalData
      * @param $sendWelcomeEmail
      * @param $sendPassword
      * @return HCUser
+     * @throws \Exception
      */
     public function createUser(
         array $userData,
-        array $roles,
         array $personalData = [],
+        array $roles = [],
         bool $sendWelcomeEmail = true,
         bool $sendPassword = true
     ): HCUser {
         $password = $userData['password'];
 
-        $userData['password'] = bcrypt($password);
-
-        if ($userData['is_active'] == 1) {
+        if ($userData['is_active'] == BoolEnum::yes()->id()) {
             $userData['activated_at'] = Carbon::now();
         }
 
@@ -145,12 +214,12 @@ class HCUserService
             }
         }
 
-        event(new HCUserCreated($user));
-
         // create user activation
         if (is_null($user->activated_at)) {
             $user->createTokenAndSendActivationCode();
         }
+
+        event(new HCUserCreated($user));
 
         return $user;
     }
@@ -172,9 +241,9 @@ class HCUserService
         $user = $this->repository->updateOrCreate(['id' => $userId], $userData);
         $this->personalInfoRepository->updateOrCreate(['user_id' => $userId], $personalData);
 
-        event(new HCUserUpdated($user));
-
         $user->assignRoles($roles);
+
+        event(new HCUserUpdated($user));
 
         return $user;
     }
@@ -189,6 +258,8 @@ class HCUserService
 
         if ($user->isNotActivated()) {
             $user->activate();
+
+            event(new HCUserActivated($user));
         }
     }
 
@@ -196,7 +267,7 @@ class HCUserService
      * @param User $providerUser
      * @param string $provider
      * @return HCUser
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function createOrUpdateUserProvider(User $providerUser, string $provider): HCUser
     {
@@ -206,39 +277,37 @@ class HCUserService
             'user_provider_id' => (string)$providerUser->getId(),
         ]);
 
+        $providerData = new HCSocialProviderDTO($provider, $providerUser);
+
         // user provider exists
         if ($userProvider) {
             $this->userProviderRepository->update([
-                'profile_url' => $this->getProviderProfileUrl($providerUser, $provider),
-                'response' => json_encode($providerUser->getRaw()),
-                'email' => $providerUser->getEmail(),
+                'profile_url' => $providerData->getProfileUrl(),
+                'response' => json_encode($providerData->getRawData()),
+                'email' => $providerData->getEmail(),
             ], $userProvider->id);
 
             return $userProvider->user;
         } else {
             // find existing user provider by email
             $userProvider = $this->userProviderRepository->makeQuery()
-                ->where('email', $providerUser->getEmail())
+                ->where('email', $providerData->getEmail())
                 ->where('provider', '!=', $provider)
                 ->first();
 
             if (is_null($userProvider)) {
 
                 // find user or create if nots exists
-                $user = $this->repository->findOneBy(['email' => $providerUser->getEmail()]);
+                $user = $this->repository->findOneBy(['email' => $providerData->getEmail()]);
 
                 if (is_null($user)) {
-
-                    $userData = [
-                        'email' => $providerUser->getEmail(),
-                        'password' => str_random(10),
-                        'is_active' => BoolEnum::yes()->id(),
-                    ];
-
-                    $personalData = $this->parseNameFromSocialite($providerUser);
-                    $personalData = $this->getPhoto($providerUser, $personalData, $provider);
-
-                    $user = $this->createUser($userData, [$this->roleRepository->getRoleUserId()], $personalData);
+                    $user = $this->registerUser(
+                        $providerData->getEmail(),
+                        str_random(10),
+                        $providerData->getFirstName(),
+                        $providerData->getLastName(),
+                        $providerData->getAvatarUrl()
+                    );
                 }
             } else {
                 // set user of found user provider
@@ -247,11 +316,11 @@ class HCUserService
 
             $this->userProviderRepository->createProvider(
                 $user->id,
-                (string)$providerUser->getId(),
+                (string)$providerData->getId(),
                 $provider,
-                $providerUser->getEmail(),
-                json_encode($providerUser->getRaw()),
-                $this->getProviderProfileUrl($providerUser, $provider)
+                $providerData->getEmail(),
+                json_encode($providerData->getRawData()),
+                $providerData->getProfileUrl()
             );
 
             return $user;
@@ -259,112 +328,42 @@ class HCUserService
     }
 
     /**
-     * Get first name and last late from socialite
+     * Soft delete users
      *
-     * @param User $providerUser
-     * @return array
+     * @param array $userIds
+     * @return void
      */
-    private function parseNameFromSocialite(User $providerUser): array
+    public function deleteSoft(array $userIds): void
     {
-        if ($providerUser->name) {
-            $name = explode(' ', $providerUser->name);
+        $deleted = $this->getRepository()->deleteSoft($userIds);
 
-            $firstName = array_get($name, '0');
-            $lastName = array_get($name, '1');
-        } else {
-            $firstName = $lastName = $providerUser->nickname;
-        }
-
-        return ['first_name' => $firstName, 'last_name' => $lastName];
+        event(new HCUserSoftDeleted($deleted));
     }
 
     /**
-     * @param User $providerUser
-     * @param array $personalData
-     * @param string $provider
-     * @return array
+     * Force delete users by given id
+     *
+     * @param array $userIds
+     * @return void
      * @throws \Exception
-     * @throws \Throwable
      */
-    private function getPhoto(User $providerUser, array $personalData, string $provider): array
+    public function deleteForce(array $userIds): void
     {
-        $avatarUrl = null;
+        $deleted = $this->getRepository()->deleteForce($userIds);
 
-        switch ($provider) {
-            case 'facebook':
-                $avatarUrl = $providerUser->avatar_original;
-                break;
-
-            case 'bitbucket':
-                $avatarUrl = $providerUser->avatar;
-
-                if ($avatarUrl) {
-                    $avatarUrl = str_replace('32', '500', $avatarUrl);
-                }
-                break;
-
-            case 'linkedin':
-                $avatarUrl = $providerUser->avatar_original;
-                break;
-
-            case 'github':
-                $avatarUrl = $providerUser->avatar;
-                break;
-
-            case 'google':
-                $avatarUrl = $providerUser->avatar_original;
-                break;
-
-            case 'twitter':
-                $avatarUrl = $providerUser->avatar;
-                break;
-        }
-
-        if ($avatarUrl) {
-            $photo = $this->resourceService->download($avatarUrl);
-            $personalData['photo_id'] = array_get($photo, 'id');
-        }
-
-        return $personalData;
+        event(new HCUserForceDeleted($deleted));
     }
 
     /**
-     * @param User $providerUser
-     * @param $provider
-     * @return null|string
-     * @throws \Exception
+     * Restore soft deleted users
+     *
+     * @param array $userIds
      */
-    private function getProviderProfileUrl(User $providerUser, $provider): ?string
+    public function restore(array $userIds): void
     {
-        $profileUrl = null;
+        $this->getRepository()->restore($userIds);
 
-        switch ($provider) {
-            case 'facebook':
-                $profileUrl = $providerUser->profileUrl;
-                break;
-
-            case 'bitbucket':
-                $profileUrl = array_get($providerUser->user, 'links.html.href');
-                break;
-
-            case 'linkedin':
-                $profileUrl = array_get($providerUser->user, 'publicProfileUrl');
-                break;
-
-            case 'github':
-                $profileUrl = array_get($providerUser->user, 'html_url');
-                break;
-
-            case 'google':
-                $profileUrl = array_get($providerUser->user, 'url');
-                break;
-
-            case 'twitter':
-                $profileUrl = null;
-                break;
-        }
-
-        return $profileUrl;
+        event(new HCUserRestored($userIds));
     }
 
     /**
