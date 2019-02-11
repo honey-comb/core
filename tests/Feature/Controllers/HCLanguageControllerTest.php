@@ -29,8 +29,8 @@ declare(strict_types = 1);
 
 namespace Tests\Feature\Controllers;
 
-use HoneyComb\Core\Http\Controllers\Admin\HCLanguageController;
-use HoneyComb\Core\Http\Requests\Admin\HCLanguageRequest;
+use HoneyComb\Core\Http\Controllers\HCLanguageController;
+use HoneyComb\Core\Http\Requests\HCLanguageRequest;
 use HoneyComb\Core\Models\HCLanguage;
 use HoneyComb\Core\Models\HCUser;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
@@ -50,9 +50,9 @@ class HCLanguageControllerTest extends TestCase
      * @test
      * @group lang
      */
-    public function it_must_enable_front_end_language_by_patch_method(): void
+    public function it_must_enable_interface_language_by_patch_method(): void
     {
-        $request = new HCLanguageRequest([], [], ['front_end' => 1]);
+        $request = new HCLanguageRequest([], [], ['interface' => 1]);
         $request->setMethod('PATCH');
 
         /** @var JsonResponse $response */

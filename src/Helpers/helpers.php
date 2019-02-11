@@ -315,7 +315,7 @@ if (!function_exists('getHCLanguagesOptions')) {
             return HCLanguage::select($columns)->get();
         }
 
-        $types = ['front_end', 'back_end', 'content'];
+        $types = ['content', 'interface'];
 
         if (!in_array($type, $types)) {
             throw new \Exception('Incorrect given type');
@@ -358,34 +358,6 @@ if (!function_exists('optimizeSingleTranslationOption')) {
     }
 }
 
-if (!function_exists('getHCFrontEndLanguages')) {
-
-    /**
-     * Getting available frontEnd languages
-     *
-     * @param bool $asArray
-     * @return mixed
-     */
-    function getHCFrontEndLanguages(bool $asArray = true)
-    {
-        return getHCLanguages('front_end', $asArray);
-    }
-}
-
-if (!function_exists('getHCBackEndLanguages')) {
-
-    /**
-     * Getting available backend languages
-     *
-     * @param bool $asArray
-     * @return mixed
-     */
-    function getHCBackEndLanguages(bool $asArray = true)
-    {
-        return getHCLanguages('back_end', $asArray);
-    }
-}
-
 if (!function_exists('getHCContentLanguages')) {
 
     /**
@@ -416,7 +388,7 @@ if (!function_exists('getHCLanguages')) {
     /**
      * Retrieving languages
      *
-     * @param string $key - front_end, back_end, content
+     * @param string $key - content, interface
      * @param bool $asArray
      * @return mixed
      */

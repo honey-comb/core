@@ -42,7 +42,7 @@ class HCLanguageRequest extends FormRequest
      *
      * @var array
      */
-    protected $strictUpdateKeys = ['content', 'front_end', 'back_end'];
+    protected $strictUpdateKeys = ['content', 'interface'];
 
     /**
      * Get only available to update fields
@@ -72,9 +72,8 @@ class HCLanguageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'front_end' => 'boolean',
-            'back_end' => 'boolean',
             'content' => 'boolean',
+            'interface' => 'boolean',
         ];
     }
 }

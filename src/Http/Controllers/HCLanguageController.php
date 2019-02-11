@@ -144,9 +144,8 @@ class HCLanguageController extends HCBaseController
             'native_name' => $this->headerText(trans('HCCore::languages.label.native_name')),
             'iso_639_1' => $this->headerText(trans('HCCore::languages.label.iso_639_1')),
             'iso_639_2' => $this->headerText(trans('HCCore::languages.label.iso_639_2')),
-            'front_end' => $this->headerCheckBox(trans('HCCore::languages.label.front_end')),
-            'back_end' => $this->headerCheckBox(trans('HCCore::languages.label.back_end')),
             'content' => $this->headerCheckBox(trans('HCCore::languages.label.content')),
+            'interface' => $this->headerCheckBox(trans('HCCore::languages.label.interface')),
         ];
 
         return $columns;

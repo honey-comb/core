@@ -36,9 +36,8 @@ return [
         'native_name' => 'Native name',
         'iso_639_1' => 'Iso 639 1',
         'iso_639_2' => 'Iso 639 2',
-        'front_end' => 'Front end',
-        'back_end' => 'Back end',
         'content' => 'Content',
+        'interface' => 'Interface',
     ],
 
     'message' => [

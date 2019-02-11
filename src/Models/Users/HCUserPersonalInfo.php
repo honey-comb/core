@@ -30,10 +30,8 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Models\Users;
 
 use HoneyComb\Core\Models\HCUser;
-use HoneyComb\Resources\Models\HCResource;
 use HoneyComb\Starter\Models\HCModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class HCUserPersonalInfo
@@ -91,15 +89,5 @@ class HCUserPersonalInfo extends HCModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(HCUser::class, 'user_id', 'id');
-    }
-
-    /**
-     * User has photo
-     *
-     * @return HasOne
-     */
-    public function photo(): HasOne
-    {
-        return $this->hasOne(HCResource::class, 'id', 'photo_id');
     }
 }

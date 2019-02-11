@@ -56,8 +56,6 @@ class HCLanguage extends HCUuidSoftModel
         'native_name',
         'iso_639_1',
         'iso_639_2',
-        'front_end',
-        'back_end',
         'content',
         'interface',
     ];
