@@ -13,10 +13,9 @@ If you want to use laravel version 5.6.* [use core package version 0.3.*](https:
 
 ## Requirement
 
- - php: `^7.1`
+ - php: `^7.1.3`
  - laravel: `^5.7`
  - composer
- - npm
  
  ## Installation
 
@@ -26,7 +25,7 @@ Begin by installing this package through Composer.
 ```json
 	{
 	    "require": {
-	        "honey-comb/core": "*"
+	        "honey-comb/core": "^0.4"
 	    }
 	}
 ```
@@ -37,10 +36,7 @@ or
 
 ## Laravel integration
 
-Firstly register the service provider and Facade by opening `config/app.php`
-
-    HoneyComb\Core\Providers\HCCoreServiceProvider::class,
-    
+ 
 To customize middleware:
 * disable middleware in hc.php file adding value to ignoreDefaultMiddleware property
 ```php
@@ -54,22 +50,36 @@ To customize middleware:
 Make sure to update the User controller in `config/auth.php`
 
 ```php
+'defaults' => [
+    'guard' => 'api',
+    'passwords' => 'users',
+],
+```
+
+```php
+'api' => [
+    'driver' => 'passport',
+    'provider' => 'users',
+],
+```
+
+```php
 'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => \HoneyComb\Core\Models\HCUser::class,
-        ],
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => \HoneyComb\Core\Models\HCUser::class,
     ],
+],
 ```
 
 ```php
 'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => 'hc_user_password_reset',
-            'expire' => 60,
-        ],
+    'users' => [
+        'provider' => 'users',
+        'table' => 'hc_user_password_reset',
+        'expire' => 60,
     ],
+],
 ```
 
 ### Database
@@ -79,16 +89,21 @@ We recomend to use `utf8mb4_unicode_520_ci` collation, so you can update it in `
 ```php
     'collation' => 'utf8mb4_unicode_520_ci'
 ```
+### Passport installation
+
+#### Migrations
+
+- In `AppServiceProvider` `register()` method add `\Laravel\Passport\Passport::ignoreMigrations();`
+- publish migrations `php artisan vendor:publish --tag=passport-migrations`
+- update `user_id` fields to `uuid` e.g. `$table->integer('user_id');` -> `$table->uuid('user_id');` in tables:
+  - `oauth_auth_codes`
+  - `oauth_access_tokens`
+  - `oauth_clients`
+
+#### Install
+`php artisan passport:install`
 
 ### Commands
-
-Make Laravel project react friendly
-
-    php artisan preset react
-    
-Publishing assets only once
-
-    php artisan vendor:publish --tag=hc-config --force
     
 Remove default Laravel user migrations (if it is a clean project)
 
@@ -103,3 +118,4 @@ Run Artisan commands
     php artisan hc:forms
     php artisan hc:admin-menu   
     php artisan hc:super-admin
+   
