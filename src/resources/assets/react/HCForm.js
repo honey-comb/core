@@ -324,6 +324,7 @@ export default class HCForm extends Component {
 
                     scope.setState(stateObject);
                     scope.fillForm();
+                    scope.updateDependencies();
 
                     if (scope.props.formDataLoaded) {
                         scope.props.formDataLoaded(response.editLabelKey ? HC.helpers.pathIndex(recordData, response.editLabelKey) : "Edit record");
