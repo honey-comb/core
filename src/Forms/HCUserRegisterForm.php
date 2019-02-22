@@ -45,35 +45,20 @@ class HCUserRegisterForm extends HCForm
      */
     public function createForm(bool $edit = false): array
     {
-        $form = [
+        return [
             'storageUrl' => route('v1.api.register'),
-            'buttons' => [
-                'submit' => [
-                    'label' => trans('HCCore::users.button.register'),
-                ],
-            ],
+            'buttons' => $this->getButtons($edit),
             'structure' => $this->getStructure($edit),
         ];
-
-        return $form;
     }
 
     /**
-     * Get Edit structure
+     * Get structure
      *
+     * @param bool $edit
      * @return array
      */
-    public function getStructureEdit(): array
-    {
-        return [];
-    }
-
-    /**
-     * Get new structure
-     *
-     * @return array
-     */
-    public function getStructureNew(): array
+    public function getStructure(bool $edit): array
     {
         return [
             'email' => $this->makeField(trans('HCCore::users.label.email'))
@@ -87,6 +72,19 @@ class HCUserRegisterForm extends HCForm
             'password_confirmation' => $this->makeField(trans('HCCore::users.label.password_confirmation'))
                 ->password()
                 ->isRequired()
+                ->toArray(),
+        ];
+    }
+
+    /**
+     * @param bool $edit
+     * @return array
+     */
+    public function getButtons(bool $edit): array
+    {
+        return [
+            $this->makeButton(trans('HCCore::users.button.register'))
+                ->submit()
                 ->toArray(),
         ];
     }

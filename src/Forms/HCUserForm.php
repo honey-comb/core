@@ -60,17 +60,11 @@ class HCUserForm extends HCForm
      */
     public function createForm(bool $edit = false): array
     {
-        $form = [
+        return [
             'storageUrl' => route('v1.api.users.create'),
-            'buttons' => [
-                'submit' => [
-                    'label' => $this->getSubmitLabel($edit),
-                ],
-            ],
+            'buttons' => $this->getButtons($edit),
             'structure' => $this->getStructure($edit),
         ];
-
-        return $form;
     }
 
     /**
@@ -98,17 +92,6 @@ class HCUserForm extends HCForm
                 ->toArray(),
             'roles' => $this->roles(),
         ];
-    }
-
-    /**
-     * @return array
-     */
-    private function roles(): array
-    {
-        return $this->makeField(trans('HCCore::users.label.role_groups'))
-            ->checkboxList()
-            ->setOptions($this->roleRepository->getRolesForUserCreation())
-            ->toArray();
     }
 
     /**
@@ -160,5 +143,16 @@ class HCUserForm extends HCForm
                 ->isReadOnly()
                 ->toArray(),
         ];
+    }
+
+    /**
+     * @return array
+     */
+    private function roles(): array
+    {
+        return $this->makeField(trans('HCCore::users.label.role_groups'))
+            ->checkboxList()
+            ->setOptions($this->roleRepository->getRolesForUserCreation())
+            ->toArray();
     }
 }

@@ -42,17 +42,12 @@ class HCPasswordResetForm extends HCForm
      *
      * @param bool $edit
      * @return array
-     * @throws \ReflectionException
      */
     public function createForm(bool $edit = false): array
     {
         $form = [
             'storageUrl' => route('v1.api.password.reset'),
-            'buttons' => [
-                'submit' => [
-                    'label' => trans('HCCore::users.button.submit'),
-                ],
-            ],
+            'buttons' => $this->getButtons($edit),
             'structure' => $this->getStructure($edit),
         ];
 
@@ -60,19 +55,16 @@ class HCPasswordResetForm extends HCForm
             $form['availableLanguages'] = $this->getContentLanguages();
         }
 
-        if (!$edit) {
-            return $form;
-        }
-
         return $form;
     }
 
     /**
-     * Get new structure
+     * Get structure
      *
+     * @param bool $edit
      * @return array
      */
-    public function getStructureNew(): array
+    public function getStructure(bool $edit): array
     {
         return [
             'email' => $this->makeField(trans('HCCore::users.label.email'))
@@ -96,12 +88,15 @@ class HCPasswordResetForm extends HCForm
     }
 
     /**
-     * Get Edit structure
-     *
+     * @param bool $edit
      * @return array
      */
-    public function getStructureEdit(): array
+    public function getButtons(bool $edit): array
     {
-        return [];
+        return [
+            $this->makeButton(trans('HCCore::users.button.submit'))
+                ->submit()
+                ->toArray(),
+        ];
     }
 }
