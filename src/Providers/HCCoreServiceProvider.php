@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Providers;
 
+use Barryvdh\Cors\HandleCors;
 use HoneyComb\Core\Console\HCCreateSuperAdminCommand;
 use HoneyComb\Core\Console\HCGenerateAdminMenuCommand;
 use HoneyComb\Core\Console\HCGenerateFormsCommand;
@@ -170,6 +171,10 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
 
         if (!in_array(HCCurrentLanguage::class, $ignore)) {
             $router->pushMiddleWareToGroup('api', HCCurrentLanguage::class);
+        }
+
+        if (!in_array(HandleCors::class, $ignore)) {
+            $router->pushMiddleWareToGroup('api', HandleCors::class);
         }
     }
 
