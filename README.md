@@ -14,7 +14,7 @@ If you want to use laravel version 5.5.* [use core package version 0.2.*](https:
 ## Requirement
 
  - php: `^7.1`
- - laravel: `^5.6`
+ - laravel: `5.6`
  - composer
  - npm
  
