@@ -38,18 +38,17 @@ use HoneyComb\Starter\Forms\HCForm;
 class HCUserRegisterForm extends HCForm
 {
     /**
-     * Creating form
-     *
-     * @param bool $edit
-     * @return array
+     * @var bool
      */
-    public function createForm(bool $edit = false): array
+    public $authCheck = false;
+
+    /**
+     * @param bool $edit
+     * @return string
+     */
+    public function getStorageUrl(bool $edit): string
     {
-        return [
-            'storageUrl' => route('v1.api.register'),
-            'buttons' => $this->getButtons($edit),
-            'structure' => $this->getStructure($edit),
-        ];
+        return route('v1.api.register');
     }
 
     /**

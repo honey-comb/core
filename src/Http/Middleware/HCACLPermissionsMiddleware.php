@@ -68,7 +68,6 @@ class HCAclPermissionsMiddleware
             return $this->response->error(
                 trans('HCCore::core.error.unauthenticated'),
                 [],
-                null,
                 JsonResponse::HTTP_UNAUTHORIZED
             );
         }

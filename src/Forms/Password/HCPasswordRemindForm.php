@@ -38,24 +38,17 @@ use HoneyComb\Starter\Forms\HCForm;
 class HCPasswordRemindForm extends HCForm
 {
     /**
-     * Creating form
-     *
-     * @param bool $edit
-     * @return array
+     * @var bool
      */
-    public function createForm(bool $edit = false): array
+    public $authCheck = false;
+
+    /**
+     * @param bool $edit
+     * @return string
+     */
+    public function getStorageUrl(bool $edit): string
     {
-        $form = [
-            'storageUrl' => route('v1.api.password.remind'),
-            'buttons' => $this->getButtons($edit),
-            'structure' => $this->getStructure($edit),
-        ];
-
-        if ($this->multiLanguage) {
-            $form['availableLanguages'] = $this->getContentLanguages();
-        }
-
-        return $form;
+        return route('v1.api.password.remind');
     }
 
     /**

@@ -46,6 +46,7 @@ class HCUserForm extends HCForm
     /**
      * HCUserForm constructor.
      * @param HCRoleRepository $roleRepository
+     * @throws \Exception
      */
     public function __construct(HCRoleRepository $roleRepository)
     {
@@ -53,18 +54,12 @@ class HCUserForm extends HCForm
     }
 
     /**
-     * Creating form
-     *
      * @param bool $edit
-     * @return array
+     * @return string
      */
-    public function createForm(bool $edit = false): array
+    public function getStorageUrl(bool $edit): string
     {
-        return [
-            'storageUrl' => route('v1.api.users.create'),
-            'buttons' => $this->getButtons($edit),
-            'structure' => $this->getStructure($edit),
-        ];
+        return route('v1.api.users.create');
     }
 
     /**

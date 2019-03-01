@@ -82,10 +82,8 @@ trait HCExceptionHandlerTrait
         ];
 
         return [
-            'success' => false,
             'message' => $exception->getMessage() ?: 'Server error',
             'errors' => config('app.debug') ? $errors : [],
-            'redirectUrl' => null,
         ];
     }
 }
