@@ -47,6 +47,8 @@ use HoneyComb\Core\Repositories\Users\HCUserProviderRepository;
 use HoneyComb\Starter\Enum\BoolEnum;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Two\User;
 
 /**
@@ -233,7 +235,7 @@ class HCUserService
      */
     public function updateUser(string $userId, array $userData, array $roles, array $personalData = []): HCUser
     {
-        if (array_has($userData, 'password')) {
+        if (Arr::has($userData, 'password')) {
             $userData['password'] = bcrypt($userData['password']);
         }
 
@@ -303,7 +305,7 @@ class HCUserService
                 if (is_null($user)) {
                     $user = $this->registerUser(
                         $providerData->getEmail(),
-                        str_random(10),
+                        Str::random(10),
                         $providerData->getFirstName(),
                         $providerData->getLastName(),
                         $providerData->getAvatarUrl()

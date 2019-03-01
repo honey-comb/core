@@ -34,6 +34,7 @@ use HoneyComb\Core\Repositories\Acl\HCPermissionRepository;
 use HoneyComb\Core\Repositories\Acl\HCRoleRepository;
 use HoneyComb\Starter\Helpers\HCConfigParseHelper;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 
 /**
  * Class HCScanRolePermissionsCommand
@@ -137,7 +138,7 @@ class HCScanRolePermissionsCommand extends Command
                 if (is_null($config)) {
                     $this->info('Invalid json file: ' . $filePath);
                 } else {
-                    $packageName = array_get($config, 'general.packageName');
+                    $packageName = Arr::get($config, 'general.packageName');
 
                     if (is_null($packageName)) {
                         $this->error('SKIPPING! Package must have a name! file: ' . $filePath);
@@ -147,7 +148,7 @@ class HCScanRolePermissionsCommand extends Command
                     if (array_key_exists('acl', $config)) {
                         $this->aclData[] = [
                             'packageName' => $packageName,
-                            'acl' => array_get($config, 'acl'),
+                            'acl' => Arr::get($config, 'acl'),
                         ];
                     }
                 }

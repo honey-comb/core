@@ -32,6 +32,8 @@ namespace HoneyComb\Core\Console;
 use Carbon\Carbon;
 use HoneyComb\Starter\Helpers\HCConfigParseHelper;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 /**
  * Class HCGenerateAdminMenuCommand
@@ -98,7 +100,7 @@ class HCGenerateAdminMenuCommand extends Command
             $file = json_decode(file_get_contents($filePath), true);
 
             if (isset($file['adminMenu'])) {
-                if (str_contains($filePath, 'app/hc-config.json')) {
+                if (Str::contains($filePath, 'app/hc-config.json')) {
                     // merge project level menu items or override package
                     $projectMenu = $this->overridePackageItems($file);
 
@@ -124,7 +126,7 @@ class HCGenerateAdminMenuCommand extends Command
 
         foreach ($this->adminMenuHolder as $key => $menuItem) {
             // find existing project and package menu item by route
-            $found = array_first($projectItems, function (array $item) use ($menuItem) {
+            $found = Arr::first($projectItems, function (array $item) use ($menuItem) {
                 return $menuItem['route'] === $item['route'];
             });
 
@@ -139,7 +141,7 @@ class HCGenerateAdminMenuCommand extends Command
             // remove from project menu items
             foreach ($projectItems as $key => $projectItem) {
                 if (in_array($projectItem['route'], $toRemove)) {
-                    array_forget($projectItems, $key);
+                    Arr::forget($projectItems, $key);
                 }
             }
         }

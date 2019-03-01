@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Services;
 
+use Illuminate\Support\Arr;
 use HoneyComb\Core\Models\HCUser;
 
 /**
@@ -115,9 +116,9 @@ class HCMenuService
 
         foreach ($elements as $element) {
             $element['path'] = route($element['route'], null, false);
-            $element['label'] = trans(array_pull($element, 'translation'));
+            $element['label'] = trans(Arr::pull($element, 'translation'));
 
-            $parent = array_get($element, 'parent');
+            $parent = Arr::get($element, 'parent');
 
             if ($parent == $parentRoute) {
                 $children = $this->buildMenuTree($elements, $element['route'], $fillIncorrect);
@@ -128,7 +129,7 @@ class HCMenuService
 
                 $branch[] = $element;
             } elseif (!is_null($parent) && $fillIncorrect) {
-                $value = array_first($elements, function ($value, $key) use ($parent) {
+                $value = Arr::first($elements, function ($value, $key) use ($parent) {
                     return $value['route'] == $parent;
                 }, false);
 

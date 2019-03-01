@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Services;
 
+use Illuminate\Support\Str;
 use HoneyComb\Core\Models\Users\HCUserNotificationSubscriptionType;
 use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionRepository;
 use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionTypeRepository;
@@ -70,7 +71,7 @@ class HCUserNotificationSubscriptionTypeService
     {
         return $this->repository
             ->create([
-                'id' => str_slug($id),
+                'id' => Str::slug($id),
                 'translation_key' => $translationKey,
             ]);
     }
@@ -82,7 +83,7 @@ class HCUserNotificationSubscriptionTypeService
      */
     public function updateType(string $id, string $translationKey): HCUserNotificationSubscriptionType
     {
-        return $this->repository->updateOrCreate(['id' => str_slug($id)], ['translation_key' => $translationKey]);
+        return $this->repository->updateOrCreate(['id' => Str::slug($id)], ['translation_key' => $translationKey]);
     }
 
     /**

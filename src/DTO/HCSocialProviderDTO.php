@@ -29,6 +29,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\DTO;
 
 use HoneyComb\Starter\DTO\HCBaseDTO;
+use Illuminate\Support\Arr;
 use Laravel\Socialite\Two\User;
 
 /**
@@ -100,7 +101,7 @@ class HCSocialProviderDTO extends HCBaseDTO
     {
         $name = explode(' ', $this->user->getName(), 2);
 
-        return array_get($name, '0');
+        return Arr::get($name, '0');
     }
 
     /**
@@ -110,7 +111,7 @@ class HCSocialProviderDTO extends HCBaseDTO
     {
         $name = explode(' ', $this->user->getName(), 2);
 
-        return array_get($name, '0');
+        return Arr::get($name, '0');
     }
 
     /**
@@ -159,19 +160,19 @@ class HCSocialProviderDTO extends HCBaseDTO
                 break;
 
             case 'bitbucket':
-                return array_get($this->user->user, 'links.html.href');
+                return Arr::get($this->user->user, 'links.html.href');
                 break;
 
             case 'linkedin':
-                return array_get($this->user->user, 'publicProfileUrl');
+                return Arr::get($this->user->user, 'publicProfileUrl');
                 break;
 
             case 'github':
-                return array_get($this->user->user, 'html_url');
+                return Arr::get($this->user->user, 'html_url');
                 break;
 
             case 'google':
-                return array_get($this->user->user, 'url');
+                return Arr::get($this->user->user, 'url');
                 break;
         }
 

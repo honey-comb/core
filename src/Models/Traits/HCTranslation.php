@@ -31,6 +31,7 @@ namespace HoneyComb\Core\Models\Traits;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Arr;
 
 /**
  * Trait HCTranslation
@@ -69,7 +70,7 @@ trait HCTranslation
     {
         $translation = $this->translations()->where([
             'record_id' => $this->id,
-            'language_code' => array_get($data, 'language_code'),
+            'language_code' => Arr::get($data, 'language_code'),
         ])->first();
 
         if (is_null($translation)) {
