@@ -57,7 +57,6 @@ use HoneyComb\Starter\Http\Middleware\HCCurrentLanguage;
 use HoneyComb\Starter\Providers\HCBaseServiceProvider;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 
@@ -190,11 +189,9 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
         if (!cache()->has('hc-permissions')) {
             try {
                 if (class_exists(HCAclPermission::class) && Schema::hasTable(HCAclPermission::getTableName())) {
-                    $expiresAt = Carbon::now()->addHour(12);
-
                     $permissions = HCAclPermission::with('roles')->get();
 
-                    cache()->put('hc-permissions', $permissions, $expiresAt);
+                    cache()->put('hc-permissions', $permissions, now()->addHour(12));
                 }
             } catch (\Throwable $e) {
                 report($e);

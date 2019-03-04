@@ -29,7 +29,6 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Console;
 
-use Carbon\Carbon;
 use HoneyComb\Starter\Helpers\HCConfigParseHelper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
@@ -112,7 +111,7 @@ class HCGenerateAdminMenuCommand extends Command
         }
 
         cache()->forget(config('hc.admin_menu_cache_key'));
-        cache()->put(config('hc.admin_menu_cache_key'), $this->adminMenuHolder, Carbon::now()->addYear(2));
+        cache()->put(config('hc.admin_menu_cache_key'), $this->adminMenuHolder, now()->addYear(2));
     }
 
     /**
