@@ -30,6 +30,7 @@ declare(strict_types = 1);
 namespace HoneyComb\Core\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 
 /**
  * Class HCUserRequest
@@ -50,7 +51,7 @@ class HCUserRequest extends FormRequest
         ];
 
         if ($this->input('password')) {
-            array_set($data, 'password', $this->input('password'));
+            Arr::set($data, 'password', $this->input('password'));
         }
 
         return $data;

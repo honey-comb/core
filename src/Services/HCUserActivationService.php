@@ -35,6 +35,7 @@ use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
 use HoneyComb\Starter\Exceptions\HCException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 
 /**
  * Class HCUserActivationService
@@ -145,7 +146,7 @@ class HCUserActivationService
      */
     protected function getToken(): string
     {
-        return hash_hmac('sha256', str_random(40), config('app.key'));
+        return hash_hmac('sha256', Str::random(40), config('app.key'));
     }
 
     /**

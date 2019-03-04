@@ -71,13 +71,14 @@ class HCActivationLink extends Notification
      *
      * @param  mixed $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function toMail($notifiable)
     {
         return (new MailMessage)
             ->subject(trans('HCCore::mail.activation.subject'))
             ->line(trans('HCCore::mail.activation.text', ['email' => $notifiable->email]))
-            ->action(trans('HCCore::mail.activation.button'), route('auth.activation', $this->token));
+            ->action(trans('HCCore::mail.activation.button'), route('auth.activation', ['token' => $this->token]));
     }
 
     /**

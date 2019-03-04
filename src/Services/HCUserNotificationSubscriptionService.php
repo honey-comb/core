@@ -35,6 +35,7 @@ use HoneyComb\Core\Repositories\HCUserNotificationSubscriptionTypeRepository;
 use HoneyComb\Core\Repositories\HCUserRepository;
 use HoneyComb\Starter\Exceptions\HCException;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 
 /**
  * Class HCUserNotificationSubscriptionService
@@ -196,7 +197,7 @@ class HCUserNotificationSubscriptionService
      */
     protected function validate($search): void
     {
-        $search = array_wrap($search);
+        $search = Arr::wrap($search);
 
         $subscriptions = $this->getTypeRepository()
             ->makeQuery()

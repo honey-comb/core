@@ -82,6 +82,21 @@ Make sure to update the User controller in `config/auth.php`
 ],
 ```
 
+Make sure to use a exceptions handler trait in `app/Exceptions/Handler.php`
+
+```php
+<?php
+
+namespace App\Exceptions;
+
+use HoneyComb\Core\Exceptions\Traits\HCExceptionHandlerTrait;
+
+class Handler extends ExceptionHandler
+{
+    use HCExceptionHandlerTrait;
+}
+```
+
 ### Database
 
 We recomend to use `utf8mb4_unicode_520_ci` collation, so you can update it in `config/database.php`
