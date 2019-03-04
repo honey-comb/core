@@ -102,11 +102,12 @@ class HCBaseController extends Controller
     }
 
     /**
+     * @param string $key
      * @param string $source
      * @return HCDataList
      */
-    public function makeDataList(string $source)
+    public function makeDataList(string $key, string $source)
     {
-        return new HCDataList($source);
+        return new HCDataList($key, $source);
     }
 }

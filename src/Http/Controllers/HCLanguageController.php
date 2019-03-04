@@ -135,7 +135,7 @@ class HCLanguageController extends HCBaseController
      */
     protected function getDataList(): HCDataList
     {
-        return $this->makeDataList(route('v1.api.languages.list'))
+        return $this->makeDataList('languages', route('v1.api.languages.list'))
             ->headerAddText('language_family', trans('HCCore::languages.label.language_family'))
             ->headerAddText('language', trans('HCCore::languages.label.language'))
             ->headerAddText('native_name', trans('HCCore::languages.label.native_name'))

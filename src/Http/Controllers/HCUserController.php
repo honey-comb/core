@@ -270,7 +270,7 @@ class HCUserController extends HCBaseController
      */
     protected function getDataList(): HCDataList
     {
-        return $this->makeDataList(route('v1.api.users.list'))
+        return $this->makeDataList('user', route('v1.api.users.list'))
             ->headerAddText('email', trans('HCCore::users.label.email'))
             ->headerAddText('last_login', trans('HCCore::users.label.last_activity'))
             ->headerAddText('last_activity', trans('HCCore::users.label.last_activity'))
