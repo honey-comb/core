@@ -29,6 +29,8 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers;
 
+use HoneyComb\Starter\Views\HCView;
+use HoneyComb\Starter\Views\HCDataList;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -43,21 +45,17 @@ class HCBaseController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * @var
-     */
-    protected $service;
-
-    /**
      * Getting allowed actions for admin view
      *
      * @param string $prefix
      * @param array $except
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    protected function getActions(string $prefix, array $except = []): array
+    protected function getUserActions(string $prefix, array $except = []): array
     {
         $actions = [];
-        
+
         if (!in_array('_search', $except)) {
             $actions[] = 'search';
         }
@@ -91,5 +89,24 @@ class HCBaseController extends Controller
         }
 
         return $actions;
+    }
+
+    /**
+     * @param string $key
+     * @param string|null $label
+     * @return HCView
+     */
+    public function makeView(string $key, string $label = null): HCView
+    {
+        return new HCView($key, $label);
+    }
+
+    /**
+     * @param string $source
+     * @return HCDataList
+     */
+    public function makeDataList(string $source)
+    {
+        return new HCDataList($source);
     }
 }

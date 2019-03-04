@@ -32,10 +32,10 @@ namespace HoneyComb\Core\Http\Controllers;
 use HoneyComb\Core\Events\Admin\HCUserForceDeleted;
 use HoneyComb\Core\Events\Admin\HCUserRestored;
 use HoneyComb\Core\Events\Admin\HCUserSoftDeleted;
-use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
 use HoneyComb\Core\Http\Requests\HCUserRequest;
 use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Helpers\HCResponse;
+use HoneyComb\Starter\Views\HCDataList;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
 
@@ -45,8 +45,6 @@ use Illuminate\Http\JsonResponse;
  */
 class HCUserController extends HCBaseController
 {
-    use HCAdminListHeaders;
-
     /**
      * @var Connection
      */
@@ -79,16 +77,15 @@ class HCUserController extends HCBaseController
      * Admin panel page config
      *
      * @return JsonResponse
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function index(): JsonResponse
     {
-        $config = [
-            'title' => trans('HCCore::users.title.list'),
-            'url' => route('v1.api.users.list'),
-            'form' => route('v1.api.form-manager', ['user']),
-            'headers' => $this->getTableColumns(),
-            'actions' => $this->getActions('honey_comb_core_user'),
-        ];
+        $config = $this->makeView('user-view', trans('HCCore::users.title.list'))
+            ->addForm('add-new', 'user')
+            ->addDataList($this->getDataList())
+            ->addActions($this->getUserActions('honey_comb_core_user'))
+            ->toArray();
 
         return $this->response->success('OK', $config);
     }
@@ -268,17 +265,15 @@ class HCUserController extends HCBaseController
     /**
      * Get admin page table columns settings
      *
-     * @return array
+     * @return HCDataList
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    protected function getTableColumns(): array
+    protected function getDataList(): HCDataList
     {
-        $columns = [
-            'email' => $this->headerText(trans('HCCore::users.label.email')),
-            'last_login' => $this->headerText(trans('HCCore::users.label.last_login')),
-            'last_activity' => $this->headerText(trans('HCCore::users.label.last_activity')),
-            'activated_at' => $this->headerText(trans('HCCore::users.label.activated_at')),
-        ];
-
-        return $columns;
+        return $this->makeDataList(route('v1.api.users.list'))
+            ->headerAddText('email', trans('HCCore::users.label.email'))
+            ->headerAddText('last_login', trans('HCCore::users.label.last_activity'))
+            ->headerAddText('last_activity', trans('HCCore::users.label.last_activity'))
+            ->headerAddText('activated_at', trans('HCCore::users.label.activated_at'));
     }
 }
