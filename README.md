@@ -82,6 +82,8 @@ Make sure to update the User controller in `config/auth.php`
 ],
 ```
 
+### Handlers
+
 Make sure to use a exceptions handler trait in `app/Exceptions/Handler.php`
 
 ```php
