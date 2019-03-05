@@ -50,7 +50,7 @@ trait HCExceptionHandlerTrait
     protected function unauthenticated($request, AuthenticationException $exception): JsonResponse
     {
         return app(HCResponse::class)
-            ->error(trans('HCCore::core.error.unauthenticated'), [], null, JsonResponse::HTTP_UNAUTHORIZED);
+            ->error(trans('HCCore::core.error.unauthenticated'), [], JsonResponse::HTTP_UNAUTHORIZED);
     }
 
     /**
@@ -61,7 +61,7 @@ trait HCExceptionHandlerTrait
     protected function invalidJson($request, ValidationException $exception): JsonResponse
     {
         return app(HCResponse::class)
-            ->error(trans('HCCore::core.error.invalid_data'), $exception->errors(), null, $exception->status);
+            ->error(trans('HCCore::core.error.invalid_data'), $exception->errors(), $exception->status);
     }
 
     /**
