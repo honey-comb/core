@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 
 import Pagination from "rc-pagination";
+import localeInfo from 'rc-pagination/lib/locale/en_US';
 
 import Actions from './admin-list/Actions';
 import Settings from './admin-list/Settings';
@@ -284,6 +285,8 @@ export default class HCAdminListView extends Component {
                     current={this.state.records.current_page}
                     pageSize={this.state.records.per_page}
                     pageSizeOptions={this.state.pageSizeOptions}
-                    onChange={this.onShowSizeChange}/>
+                    onChange={this.onShowSizeChange}
+                    locale={localeInfo}
+        />
     }
 }
