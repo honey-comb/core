@@ -28,6 +28,7 @@
 return [
 
     'error' => [
+        'forbidden' => 'Prieiga neleidžiama.',
         'unauthenticated' => 'Nepatvirtintas vartotojas.',
         'server_error' => 'Klaida. Bandykite dar kartą.',
         'invalid_data' => 'Nurodyti duomenys buvo neteisingi.',

@@ -66,9 +66,9 @@ class HCAclPermissionsMiddleware
     {
         if (auth()->guest() || $request->user()->cant($permission)) {
             return $this->response->error(
-                trans('HCCore::core.error.unauthenticated'),
+                trans('HCCore::core.error.forbidden'),
                 [],
-                JsonResponse::HTTP_UNAUTHORIZED
+                JsonResponse::HTTP_FORBIDDEN
             );
         }
 
