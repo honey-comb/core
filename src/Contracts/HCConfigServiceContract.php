@@ -25,21 +25,23 @@
  * https://innovationbase.eu
  */
 
-return [
+declare(strict_types = 1);
 
-    'label' => [
-        'dashboard' => 'Pagrindinis',
-        'login' => 'Prisijungti',
-        'register' => 'Registruotis',
-        'forget_password' => 'Atstatyti slaptažodį',
-        'reset_password' => 'Atstatyti slaptažodį',
-    ],
+namespace HoneyComb\Core\Contracts;
 
-    'error' => [
-        'forbidden' => 'Prieiga neleidžiama.',
-        'unauthenticated' => 'Nepatvirtintas vartotojas.',
-        'server_error' => 'Klaida. Bandykite dar kartą.',
-        'invalid_data' => 'Nurodyti duomenys buvo neteisingi.',
-    ],
+/**
+ * Interface HCConfigServiceContract
+ * @package HoneyComb\Core\Contracts
+ */
+interface HCConfigServiceContract
+{
+    /**
+     * @return array
+     */
+    public function getUserConfig(): array;
 
-];
+    /**
+     * @return array
+     */
+    public function getGuestConfig(): array;
+}
