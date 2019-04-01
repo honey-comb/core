@@ -49,6 +49,7 @@ use HoneyComb\Core\Repositories\Users\HCPersonalInfoRepository;
 use HoneyComb\Core\Repositories\Users\HCUserActivationRepository;
 use HoneyComb\Core\Repositories\Users\HCUserProviderRepository;
 use HoneyComb\Core\Services\Acl\HCRoleService;
+use HoneyComb\Core\Services\HCConfigService;
 use HoneyComb\Core\Services\HCUserActivationService;
 use HoneyComb\Core\Services\HCUserNotificationSubscriptionService;
 use HoneyComb\Core\Services\HCUserNotificationSubscriptionTypeService;
@@ -221,6 +222,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
      */
     private function registerServices(): void
     {
+        $this->app->singleton(HCConfigService::class);
         $this->app->singleton(HCUserService::class);
         $this->app->singleton(HCRoleService::class);
         $this->app->singleton(HCUserActivationService::class);

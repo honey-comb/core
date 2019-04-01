@@ -27,10 +27,19 @@
 
 return [
 
+    'label' => [
+        'dashboard' => 'Dashboard',
+        'login' => 'Login',
+        'register' => 'Register',
+        'forget_password' => 'Forget password',
+        'reset_password' => 'Reset password',
+    ],
+
     'error' => [
         'forbidden' => 'Access denied.',
         'unauthenticated' => 'Unauthenticated.',
         'server_error' => 'Error. Please try again.',
         'invalid_data' => 'The given data was invalid.',
     ],
+
 ];
