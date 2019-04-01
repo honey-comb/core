@@ -27,7 +27,7 @@
 
 namespace HoneyComb\Core\Repositories;
 
-use HoneyComb\Core\Http\Requests\Admin\HCUserRequest;
+use HoneyComb\Core\Http\Requests\HCUserRequest;
 use HoneyComb\Core\Models\HCUser;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
@@ -116,8 +116,8 @@ class HCUserRepository extends HCBaseRepository
     }
 
     /**
-     * @param \HoneyComb\Core\Http\Requests\Admin\HCUserRequest $request
-     * @return \Illuminate\Support\Collection
+     * @param HCUserRequest $request
+     * @return Collection
      */
     public function getOptions(HCUserRequest $request): Collection
     {
