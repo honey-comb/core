@@ -5,6 +5,7 @@ namespace HoneyComb\Core\Services;
 use HoneyComb\Core\Contracts\HCConfigServiceContract;
 use HoneyComb\Starter\Views\HCDataList;
 use HoneyComb\Starter\Views\HCView;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class HCConfigService
@@ -12,6 +13,22 @@ use HoneyComb\Starter\Views\HCView;
  */
 class HCConfigService implements HCConfigServiceContract
 {
+    /**
+     * @return bool
+     */
+    public function isAuthorized(): bool
+    {
+        return auth()->check();
+    }
+
+    /**
+     * @return Model|null
+     */
+    public function getUser(): ?Model
+    {
+        return auth()->user();
+    }
+
     /**
      * @return array
      */
@@ -35,7 +52,7 @@ class HCConfigService implements HCConfigServiceContract
     public function getUserConfig(): array
     {
         return $this->makeView('core')
-            ->addConfig('user', auth()->user())
+            ->addConfig('user', $this->getUser())
             ->addView($this->getDashBoardView())
             ->toArray();
     }

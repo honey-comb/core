@@ -38,7 +38,7 @@ class HCConfigController extends HCBaseController
     {
         $service = $this->getConfigService();
 
-        if (auth()->check()) {
+        if ($service->isAuthorized()) {
             return $this->response->success('OK', $service->getUserConfig());
         }
 

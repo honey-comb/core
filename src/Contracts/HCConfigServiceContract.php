@@ -29,12 +29,24 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Contracts;
 
+use Illuminate\Database\Eloquent\Model;
+
 /**
  * Interface HCConfigServiceContract
  * @package HoneyComb\Core\Contracts
  */
 interface HCConfigServiceContract
 {
+    /**
+     * @return bool
+     */
+    public function isAuthorized(): bool;
+
+    /**
+     * @return Model|null
+     */
+    public function getUser(): ?Model;
+
     /**
      * @return array
      */
