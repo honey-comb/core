@@ -85,7 +85,7 @@ class HCLanguageController extends HCBaseController
     {
         $config = $this->makeView('language-view', trans('HCCore::languages.title.list'))
             ->addFormSource('add-new', 'language')
-            ->addDataTable($this->getDataList())
+            ->addDataTable($this->getDataTable())
             ->setPermissions(['search'])
             ->toArray();
 
@@ -134,7 +134,7 @@ class HCLanguageController extends HCBaseController
      * @return HCDataTable
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    protected function getDataList(): HCDataTable
+    protected function getDataTable(): HCDataTable
     {
         return $this->makeDataTable('languages', route('v1.api.languages.list'))
             ->addHeader('language_family', trans('HCCore::languages.label.language_family'))
