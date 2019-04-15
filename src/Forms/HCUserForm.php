@@ -54,10 +54,10 @@ class HCUserForm extends HCForm
     }
 
     /**
-     * @param bool $edit
+     * @param string|null $type
      * @return string
      */
-    public function getStorageUrl(bool $edit): string
+    public function getStorageUrl(string $type = null): string
     {
         return route('v1.api.users.create');
     }

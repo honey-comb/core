@@ -3,7 +3,9 @@
 namespace HoneyComb\Core\Services;
 
 use HoneyComb\Core\Contracts\HCConfigServiceContract;
-use HoneyComb\Starter\Views\HCDataList;
+use HoneyComb\Starter\Contracts\HCDataTableContract;
+use HoneyComb\Starter\Contracts\HCViewContract;
+use HoneyComb\Starter\Views\HCDataTable;
 use HoneyComb\Starter\Views\HCView;
 use Illuminate\Database\Eloquent\Model;
 
@@ -58,66 +60,66 @@ class HCConfigService implements HCConfigServiceContract
     }
 
     /**
-     * @return HCView
+     * @return HCViewContract
      */
-    protected function getDashBoardView()
+    protected function getDashBoardView(): HCViewContract
     {
         return $this->makeView('dashboard', trans('HCCore::core.label.dashboard'));
     }
 
     /**
-     * @return HCView
+     * @return HCViewContract
      */
-    protected function getLoginView(): HCView
+    protected function getLoginView(): HCViewContract
     {
         return $this->makeView('login', trans('HCCore::core.label.login'))
-            ->addForm('login', 'user-login');
+            ->addFormSource('login', 'user-login');
     }
 
     /**
-     * @return HCView
+     * @return HCViewContract
      */
-    protected function getRegisterView(): HCView
+    protected function getRegisterView(): HCViewContract
     {
         return $this->makeView('register', trans('HCCore::core.label.register'))
-            ->addForm('register', 'user-register');
+            ->addFormSource('register', 'user-register');
     }
 
     /**
-     * @return HCView
+     * @return HCViewContract
      */
-    protected function getPasswordRemindView(): HCView
+    protected function getPasswordRemindView(): HCViewContract
     {
         return $this->makeView('password-remind', trans('HCCore::core.label.forget_password'))
-            ->addForm('password-remind', 'password-remind');
+            ->addFormSource('password-remind', 'password-remind');
     }
 
     /**
-     * @return HCView
+     * @return HCViewContract
      */
-    protected function getPasswordResetView(): HCView
+    protected function getPasswordResetView(): HCViewContract
     {
         return $this->makeView('password-reset', trans('HCCore::core.label.reset_password'))
-            ->addForm('password-reset', 'password-reset');
+            ->addFormSource('password-reset', 'password-reset');
     }
 
     /**
      * @param string $key
      * @param string|null $label
-     * @return HCView
+     * @return HCViewContract
      */
-    protected function makeView(string $key, string $label = null): HCView
+    protected function makeView(string $key, string $label = null): HCViewContract
     {
         return new HCView($key, $label);
     }
 
     /**
      * @param string $key
-     * @param string $source
-     * @return HCDataList
+     * @param string|null $source
+     * @return HCDataTableContract
      */
-    protected function makeDataList(string $key, string $source): HCDataList
+    protected function makeDataTable(string $key, string $source = null): HCDataTableContract
     {
-        return new HCDataList($key, $source);
+        return new HCDataTable($key, $source);
     }
 }

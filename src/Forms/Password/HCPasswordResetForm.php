@@ -43,10 +43,10 @@ class HCPasswordResetForm extends HCForm
     public $authCheck = false;
 
     /**
-     * @param bool $edit
+     * @param string|null $type
      * @return string
      */
-    public function getStorageUrl(bool $edit): string
+    public function getStorageUrl(string $type = null): string
     {
         return route('v1.api.password.reset');
     }
@@ -54,10 +54,10 @@ class HCPasswordResetForm extends HCForm
     /**
      * Get structure
      *
-     * @param bool $edit
+     * @param string|null $type
      * @return array
      */
-    public function getStructure(bool $edit): array
+    public function getStructure(string $type = null): array
     {
         return [
             'email' => $this->makeField(trans('HCCore::users.label.email'))
@@ -81,10 +81,10 @@ class HCPasswordResetForm extends HCForm
     }
 
     /**
-     * @param bool $edit
+     * @param string|null $type
      * @return array
      */
-    public function getButtons(bool $edit): array
+    public function getButtons(string $type = null): array
     {
         return [
             $this->makeButton(trans('HCCore::users.button.submit'))

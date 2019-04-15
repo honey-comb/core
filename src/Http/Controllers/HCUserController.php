@@ -35,7 +35,8 @@ use HoneyComb\Core\Events\Admin\HCUserSoftDeleted;
 use HoneyComb\Core\Http\Requests\HCUserRequest;
 use HoneyComb\Core\Services\HCUserService;
 use HoneyComb\Starter\Helpers\HCResponse;
-use HoneyComb\Starter\Views\HCDataList;
+use HoneyComb\Starter\Views\HCDataTable;
+use HoneyComb\Starter\Views\HCDataTableHeader;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
 
@@ -82,9 +83,9 @@ class HCUserController extends HCBaseController
     public function index(): JsonResponse
     {
         $config = $this->makeView('user-view', trans('HCCore::users.title.list'))
-            ->addForm('add-new', 'user')
-            ->addDataList($this->getDataList())
-            ->addActions($this->getUserActions('honey_comb_core_user'))
+            ->addFormSource('add-new', 'user')
+            ->addDataTable($this->getDataList())
+            ->setPermissions($this->getUserActions('honey_comb_core_user'))
             ->toArray();
 
         return $this->response->success('OK', $config);
@@ -265,15 +266,15 @@ class HCUserController extends HCBaseController
     /**
      * Get admin page table columns settings
      *
-     * @return HCDataList
+     * @return HCDataTable
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    protected function getDataList(): HCDataList
+    protected function getDataList(): HCDataTable
     {
-        return $this->makeDataList('user', route('v1.api.users.list'))
-            ->headerAddText('email', trans('HCCore::users.label.email'))
-            ->headerAddText('last_login', trans('HCCore::users.label.last_activity'))
-            ->headerAddText('last_activity', trans('HCCore::users.label.last_activity'))
-            ->headerAddText('activated_at', trans('HCCore::users.label.activated_at'));
+        return $this->makeDataTable('user', route('v1.api.users.list'))
+            ->addHeader('email', trans('HCCore::users.label.email'))
+            ->addHeader('last_login', trans('HCCore::users.label.last_login'))
+            ->addHeader('last_activity', trans('HCCore::users.label.last_activity'))
+            ->addHeader('activated_at', trans('HCCore::users.label.activated_at'));
     }
 }

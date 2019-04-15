@@ -29,8 +29,12 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Core\Http\Controllers;
 
+use HoneyComb\Starter\Contracts\HCDataTableContract;
+use HoneyComb\Starter\Contracts\HCDataTableHeaderContract;
+use HoneyComb\Starter\Contracts\HCViewContract;
+use HoneyComb\Starter\Views\HCDataTableHeader;
 use HoneyComb\Starter\Views\HCView;
-use HoneyComb\Starter\Views\HCDataList;
+use HoneyComb\Starter\Views\HCDataTable;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -94,9 +98,9 @@ class HCBaseController extends Controller
     /**
      * @param string $key
      * @param string|null $label
-     * @return HCView
+     * @return HCViewContract
      */
-    public function makeView(string $key, string $label = null): HCView
+    protected function makeView(string $key, string $label = null): HCViewContract
     {
         return new HCView($key, $label);
     }
@@ -104,10 +108,10 @@ class HCBaseController extends Controller
     /**
      * @param string $key
      * @param string $source
-     * @return HCDataList
+     * @return HCDataTableContract
      */
-    public function makeDataList(string $key, string $source)
+    protected function makeDataTable(string $key, string $source): HCDataTableContract
     {
-        return new HCDataList($key, $source);
+        return new HCDataTable($key, $source);
     }
 }

@@ -32,7 +32,8 @@ namespace HoneyComb\Core\Http\Controllers;
 use HoneyComb\Starter\Helpers\HCResponse;
 use HoneyComb\Starter\Http\Requests\HCLanguageRequest;
 use HoneyComb\Starter\Services\HCLanguageService;
-use HoneyComb\Starter\Views\HCDataList;
+use HoneyComb\Starter\Views\HCDataTable;
+use HoneyComb\Starter\Views\HCDataTableHeader;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -83,9 +84,9 @@ class HCLanguageController extends HCBaseController
     public function index(): JsonResponse
     {
         $config = $this->makeView('language-view', trans('HCCore::languages.title.list'))
-            ->addForm('add-new', 'language')
-            ->addDataList($this->getDataList())
-            ->addActions(['search'])
+            ->addFormSource('add-new', 'language')
+            ->addDataTable($this->getDataTable())
+            ->setPermissions(['search'])
             ->toArray();
 
         return $this->response->success('OK', $config);
@@ -130,18 +131,22 @@ class HCLanguageController extends HCBaseController
     /**
      * Get admin page table columns settings
      *
-     * @return HCDataList
+     * @return HCDataTable
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    protected function getDataList(): HCDataList
+    protected function getDataTable(): HCDataTable
     {
-        return $this->makeDataList('languages', route('v1.api.languages.list'))
-            ->headerAddText('language_family', trans('HCCore::languages.label.language_family'))
-            ->headerAddText('language', trans('HCCore::languages.label.language'))
-            ->headerAddText('native_name', trans('HCCore::languages.label.native_name'))
-            ->headerAddText('iso_639_1', trans('HCCore::languages.label.iso_639_1'))
-            ->headerAddText('iso_639_2', trans('HCCore::languages.label.iso_639_2'))
-            ->headerAddCheckbox('is_content', trans('HCCore::languages.label.content'))
-            ->headerAddCheckbox('is_interface', trans('HCCore::languages.label.interface'));
+        return $this->makeDataTable('languages', route('v1.api.languages.list'))
+            ->addHeader('language_family', trans('HCCore::languages.label.language_family'))
+            ->addHeader('language', trans('HCCore::languages.label.language'))
+            ->addHeader('native_name', trans('HCCore::languages.label.native_name'))
+            ->addHeader('iso_639_1', trans('HCCore::languages.label.iso_639_1'))
+            ->addHeader('iso_639_2', trans('HCCore::languages.label.iso_639_2'))
+            ->addHeader('is_content', trans('HCCore::languages.label.content'), function (HCDataTableHeader $header) {
+                return $header->checkbox();
+            })
+            ->addHeader('is_interface', trans('HCCore::languages.label.interface'), function (HCDataTableHeader $header) {
+                return $header->checkbox()->url(false)->addProperty('test', 'value');
+            });
     }
 }
