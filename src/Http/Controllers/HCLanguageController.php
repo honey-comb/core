@@ -146,7 +146,7 @@ class HCLanguageController extends HCBaseController
                 return $header->checkbox();
             })
             ->addHeader('is_interface', trans('HCCore::languages.label.interface'), function (HCDataTableHeader $header) {
-                return $header->checkbox();
+                return $header->checkbox()->url(false)->addProperty('test', 'value');
             });
     }
 }
