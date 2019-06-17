@@ -573,28 +573,28 @@
         },
         {
             "name": "honey-comb/starter",
-            "version": "0.3.0",
+            "version": "0.3.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/honey-comb/starter.git",
-                "reference": "3b58ffe0990c515168af0e2af643ea0251e95f17"
+                "reference": "f6cafffb0ced6b6fe9dd602f8e0dc1c464d43c30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/honey-comb/starter/zipball/3b58ffe0990c515168af0e2af643ea0251e95f17",
-                "reference": "3b58ffe0990c515168af0e2af643ea0251e95f17",
+                "url": "https://api.github.com/repos/honey-comb/starter/zipball/f6cafffb0ced6b6fe9dd602f8e0dc1c464d43c30",
+                "reference": "f6cafffb0ced6b6fe9dd602f8e0dc1c464d43c30",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.3",
-                "laravel/framework": "5.7.*",
+                "laravel/framework": "^5.7",
                 "php": "^7.1.3",
                 "ramsey/uuid": "^3.8"
             },
             "require-dev": {
-                "codedungeon/phpunit-result-printer": "^0.19",
+                "codedungeon/phpunit-result-printer": "^0.26",
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench-browser-kit": "^3.6",
+                "orchestra/testbench-browser-kit": "^3.7",
                 "phpunit/phpunit": "~7.0"
             },
             "type": "library",
@@ -636,7 +636,7 @@
                 "laravel",
                 "starter"
             ],
-            "time": "2019-02-11T15:27:09+00:00"
+            "time": "2019-05-31T13:26:47+00:00"
         },
         {
             "name": "laravel/framework",
