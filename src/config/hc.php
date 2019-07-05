@@ -131,4 +131,14 @@ return [
     |
     */
     'admin_menu_cache_key' => ENV('HC_ADMIN_MENU_CACHE_KEY', '_hc_admin_menu_cache_key'),
+
+    /*
+    |---------------------------------------------------------------------------
+    | Permissions
+    |---------------------------------------------------------------------------
+    |
+    | Enable acl permissions
+    |
+    */
+    'enable_permissions' => true,
 ];

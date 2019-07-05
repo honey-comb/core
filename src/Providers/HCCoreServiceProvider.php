@@ -141,19 +141,21 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
      */
     private function registerGateItems(Gate $gate): void
     {
-        $gate->before(function (HCUser $user) {
-            if ($user->isSuperAdmin()) {
-                return true;
-            }
-        });
+        if (config('hc.enable_permissions')) {
+            $gate->before(function (HCUser $user) {
+                if ($user->isSuperAdmin()) {
+                    return true;
+                }
+            });
 
-        $permissions = $this->getPermissions();
+            $permissions = $this->getPermissions();
 
-        if (!is_null($permissions)) {
-            foreach ($permissions as $permission) {
-                $gate->define($permission->action, function (HCUser $user) use ($permission) {
-                    return $user->hasPermission($permission);
-                });
+            if (!is_null($permissions)) {
+                foreach ($permissions as $permission) {
+                    $gate->define($permission->action, function (HCUser $user) use ($permission) {
+                        return $user->hasPermission($permission);
+                    });
+                }
             }
         }
     }
@@ -185,7 +187,7 @@ class HCCoreServiceProvider extends HCBaseServiceProvider
      * @return null|Collection
      * @throws \Exception
      */
-    private function getPermissions(): ? Collection
+    private function getPermissions(): ?Collection
     {
         if (!cache()->has('hc-permissions')) {
             try {
