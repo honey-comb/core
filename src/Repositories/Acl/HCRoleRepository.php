@@ -141,7 +141,7 @@ class HCRoleRepository extends HCBaseRepository
             } else {
                 foreach ($user->roles as $role) {
                     $roles[] = [
-                        'id' => $role->id,
+                        'value' => $role->id,
                         'label' => $role->name,
                     ];
                 }
